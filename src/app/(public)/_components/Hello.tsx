@@ -1,13 +1,15 @@
 "use client";
 
+import { useUiStateContext } from "@/contexts/UiState.context";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleDoubleDown, FaGithub } from "react-icons/fa";
 import { SiTistory } from "react-icons/si";
 import { ReactTyped, Typed } from "react-typed";
 import { twMerge } from "tailwind-merge";
 
 function Hello() {
+    const { setMainReady } = useUiStateContext();
     const [ready, setReady] = useState<{ first: boolean; second: boolean }>({
         first: false,
         second: false,
@@ -21,6 +23,10 @@ function Hello() {
         }
         if (instance) instance.cursor.remove();
     };
+
+    useEffect(() => {
+        if (ready.first && ready.second) setMainReady(true);
+    }, [ready, setMainReady]);
 
     return (
         <section className="flex flex-col items-center justify-center h-dvh">
