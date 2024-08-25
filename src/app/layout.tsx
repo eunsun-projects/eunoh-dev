@@ -1,3 +1,4 @@
+import QueryProvider from "@/providers/QueryProvider";
 import type { Metadata } from "next";
 import { d2coding } from "./fonts";
 import "./globals.css";
@@ -14,7 +15,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={d2coding.className}>{children}</body>
+            <body className={d2coding.className}>
+                <QueryProvider>{children}</QueryProvider>
+            </body>
         </html>
     );
 }
