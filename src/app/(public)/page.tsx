@@ -1,5 +1,7 @@
+import MainComponent from "./_components/MainComponent";
+
 function MainPage() {
-    return <div>page</div>;
+    return <MainComponent />;
 }
 
 export default MainPage;
