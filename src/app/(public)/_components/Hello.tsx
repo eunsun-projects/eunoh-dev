@@ -7,6 +7,7 @@ import { FaAngleDoubleDown, FaGithub } from "react-icons/fa";
 import { SiTistory } from "react-icons/si";
 import { ReactTyped, Typed } from "react-typed";
 import { twMerge } from "tailwind-merge";
+import DarkLightModeButton from "./DarkLightModeButton";
 
 function Hello() {
     const { setMainReady } = useUiStateContext();
@@ -43,6 +44,16 @@ function Hello() {
                     <SiTistory className="text-2xl" />
                 </Link>
             </div>
+
+            <div 
+                className={twMerge(
+                    "absolute opacity-0 top-2 right-2 transition-all duration-1000",
+                    ready.first && ready.second && "opacity-100"
+                )}
+            >
+                <DarkLightModeButton />
+            </div>
+
             <div className="flex flex-col items-center justify-center gap-8">
                 <h3
                     className={twMerge(
