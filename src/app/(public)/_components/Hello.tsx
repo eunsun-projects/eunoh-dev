@@ -1,13 +1,10 @@
 "use client";
 
 import { useUiStateContext } from "@/contexts/UiState.context";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaAngleDoubleDown, FaGithub } from "react-icons/fa";
-import { SiTistory } from "react-icons/si";
+import { FaAngleDoubleDown } from "react-icons/fa";
 import { ReactTyped, Typed } from "react-typed";
 import { twMerge } from "tailwind-merge";
-import DarkLightModeButton from "./DarkLightModeButton";
 
 function Hello() {
     const { setMainReady } = useUiStateContext();
@@ -31,29 +28,6 @@ function Hello() {
 
     return (
         <section className="flex flex-col items-center justify-center h-dvh">
-            <div
-                className={twMerge(
-                    "absolute opacity-0 top-2 flex flex-row gap-2 items-center justify-center left-2 transition-all duration-1000",
-                    ready.first && ready.second && "opacity-100"
-                )}
-            >
-                <Link href="https://github.com/eunohhh">
-                    <FaGithub className="text-3xl" />
-                </Link>
-                <Link href="https://ifelseif.tistory.com">
-                    <SiTistory className="text-2xl" />
-                </Link>
-            </div>
-
-            <div 
-                className={twMerge(
-                    "absolute opacity-0 top-2 right-2 transition-all duration-1000",
-                    ready.first && ready.second && "opacity-100"
-                )}
-            >
-                <DarkLightModeButton />
-            </div>
-
             <div className="flex flex-col items-center justify-center gap-8">
                 <h3
                     className={twMerge(
@@ -68,9 +42,7 @@ function Hello() {
                 <div
                     className={twMerge(
                         "flex flex-col items-center justify-center text-6xl gap-8",
-                        ready.first &&
-                            ready.second &&
-                            "text-3xl transition-all duration-1000 gap-4"
+                        ready.first && ready.second && "text-3xl transition-all duration-1000 gap-4"
                     )}
                 >
                     <h2 className="font-bold text-center">
