@@ -40,15 +40,20 @@ function SkillsAndTools() {
                 <div className="flex justify-center w-full h-[6%]">
                     <h2 className="font-bold text-3xl xl:text-5xl">{"🛠️Skills & Tools🛠️"}</h2>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-6 xl:gap-10 w-full h-[70%] xl:px-2">
+                <div className="flex flex-col items-center justify-center gap-6 xl:gap-10 w-full h-[80%] xl:px-2 xl:h-[70%]">
                     <div className="flex flex-col items-center justify-center gap-3 xl:gap-6 w-full text-4xl xl:text-5xl">
-                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">{"> frontend"}</h3>
+                        <p className="flex text-center flex-col pb-4 font-bold text-2xl xl:text-[1.8rem] xl:block xl:pb-0">
+                            {"> frontend : "}
+                            <span className="text-xs xl:text-xl">
+                                다양한 프레임워크와 라이브러리를 다룰 수 있습니다
+                            </span>
+                        </p>
                         <div className="grid grid-cols-8 gap-3">
                             <FaHtml5 />
                             <FaCss3Alt />
                             <FaJs />
-                            <FaReact />
                             <SiTypescript />
+                            <FaReact />
                             <RiTailwindCssFill />
                             <FaSass />
                             <SiStyledcomponents />
@@ -64,7 +69,10 @@ function SkillsAndTools() {
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-3 xl:gap-6  w-full text-4xl xl:text-5xl">
-                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">{"> co-working"}</h3>
+                        <p className="flex text-center flex-col pb-4 font-bold text-2xl xl:text-[1.8rem] xl:block xl:pb-0">
+                            {"> co-working : "}
+                            <span className="text-xs xl:text-xl">슬랙, 피그마, 노션을 사용합니다</span>
+                        </p>
                         <div className="flex gap-3">
                             <FaSlack />
                             <GiZeppelin />
@@ -75,7 +83,10 @@ function SkillsAndTools() {
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-3 xl:gap-6  w-full text-4xl xl:text-5xl">
-                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">{"> others"}</h3>
+                        <p className="flex text-center flex-col font-bold text-2xl xl:text-[1.8rem] xl:block">
+                            {"> others : "}
+                            <span className="text-xs xl:text-xl">adobe제품과 LLM에 익숙합니다</span>
+                        </p>
                         <div className="flex gap-3">
                             <SiAdobephotoshop />
                             <SiAdobeillustrator />

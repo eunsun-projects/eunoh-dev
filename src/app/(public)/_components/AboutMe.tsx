@@ -34,7 +34,7 @@ function AboutMe() {
                             <ReactTyped
                                 startWhenVisible
                                 strings={[
-                                    "문제를 해결하고 새로운 기술을 습득하는 것을 즐기며, 항상 기본기에 충실하고자 합니다.",
+                                    "문제를 해결하고 새로운 기술을 습득하는 것을 좋아하며, 항상 기본기에 충실하고자 합니다.",
                                 ]}
                                 typeSpeed={20}
                             />
@@ -48,7 +48,7 @@ function AboutMe() {
                             <ReactTyped
                                 startWhenVisible
                                 strings={[
-                                    "무엇보다 중요한 것은 커뮤니케이션 능력이라고 믿습니다. 팀원들과 소통하고 협업하는 것을 즐깁니다.",
+                                    "무엇보다 중요한 것은 커뮤니케이션 능력이라고 생각합니다. 팀원들과 소통하고 협업하는 것을 즐깁니다.",
                                 ]}
                                 typeSpeed={20}
                             />
