@@ -1,9 +1,9 @@
 import UiStateProvider from "@/contexts/UiState.context";
 import React from "react";
-import DarkLightModeButton from "./_components/DarkLightModeButton";
-import InitialSetDarkMode from "./_components/InitialSetDarkMode";
-import Links from "./_components/Links";
-import RightBottomUI from "./_components/RightBottomUI";
+import DarkLightModeButton from "./_components/ui/DarkLightModeButton";
+import InitialSetDarkMode from "./_components/ui/InitialSetDarkMode";
+import Links from "./_components/ui/Links";
+import RightBottomUI from "./_components/ui/RightBottomUI";
 
 function MainLayout({ children }: { children: React.ReactNode }) {
     return (

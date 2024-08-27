@@ -9,12 +9,6 @@ function DarkLightModeButton() {
     const { mainReady } = useUiStateContext();
     const [theme, setTheme] = useState<string | null>(null);
 
-    useEffect(() => {
-        // 페이지 로드 시 현재 테마 설정을 가져옴
-        const currentTheme = localStorage.getItem("theme");
-        setTheme(currentTheme);
-    }, []);
-
     const toggleTheme = () => {
         if (theme === "dark") {
             document.documentElement.classList.remove("dark");
@@ -27,10 +21,16 @@ function DarkLightModeButton() {
         }
     };
 
+    useEffect(() => {
+        // 페이지 로드 시 현재 테마 설정을 가져옴
+        const currentTheme = localStorage.getItem("theme");
+        setTheme(currentTheme);
+    }, []);
+
     return (
         <div
             className={twMerge(
-                "absolute opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white",
+                "fixed opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white",
                 mainReady && "opacity-100"
             )}
         >

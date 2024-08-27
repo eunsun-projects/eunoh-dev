@@ -11,17 +11,17 @@ function RightBottomUI() {
     return (
         <div
             className={twMerge(
-                "fixed opacity-0 bottom-2 right-2 flex flex-col gap-2 justify-center items-center transition-opacity duration-1000 text-2xl",
+                "fixed opacity-0 bottom-2 right-2 flex flex-col gap-2 justify-center items-center transition-opacity duration-1000 text-lg xl:text-2xl",
                 mainReady && "opacity-100"
             )}
         >
-            <div className="rounded-full p-2 bg-white text-black flex justify-center items-center shadow-md">
+            <div className="rounded-full bg-white text-black flex justify-center items-center shadow-md p-1 lg:p-2">
                 <IoMail className="cursor-pointer" />
             </div>
-            <div className="rounded-full p-2 bg-white text-black flex justify-center items-center shadow-md">
+            <div className="rounded-full bg-white text-black flex justify-center items-center shadow-md p-1 lg:p-2">
                 <IoChatboxEllipses className="cursor-pointer" />
             </div>
-            <div className="rounded-full p-2 bg-white text-black flex justify-center items-center shadow-md">
+            <div className="rounded-full bg-white text-black flex justify-center items-center shadow-md p-1 lg:p-2">
                 <FaAngleUp className="cursor-pointer" />
             </div>
         </div>

@@ -31,7 +31,7 @@ function Hello() {
             <div className="flex flex-col items-center justify-center gap-8">
                 <h3
                     className={twMerge(
-                        "invisible opacity-0 text-3xl font-bold",
+                        "invisible text-center opacity-0 font-bold text-2xl xl:text-4xl",
                         ready.first &&
                             ready.second &&
                             "visible opacity-100 transition-opacity duration-1000"
@@ -41,18 +41,18 @@ function Hello() {
                 </h3>
                 <div
                     className={twMerge(
-                        "flex flex-col items-center justify-center text-6xl gap-8",
+                        "flex flex-col items-center justify-center gap-8",
                         ready.first && ready.second && "text-3xl transition-all duration-1000 gap-4"
                     )}
                 >
-                    <h2 className="font-bold text-center">
+                    <h2 className="font-bold text-center text-3xl xl:text-5xl">
                         <ReactTyped
                             strings={["안녕하세요"]}
                             typeSpeed={55}
                             onComplete={handleReady("first")}
                         />
                     </h2>
-                    <h2 className="font-bold text-center">
+                    <h2 className="font-bold text-center text-3xl xl:text-5xl">
                         <ReactTyped
                             strings={["FE개발자 오은 입니다"]}
                             typeSpeed={55}
