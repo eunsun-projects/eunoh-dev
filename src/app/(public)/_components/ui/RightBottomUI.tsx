@@ -11,7 +11,7 @@ function RightBottomUI() {
     return (
         <div
             className={twMerge(
-                "fixed opacity-0 bottom-2 right-2 flex flex-col gap-2 justify-center items-center transition-opacity duration-1000 text-lg xl:text-2xl",
+                "fixed opacity-0 bottom-2 right-2 flex flex-col gap-2 justify-center items-center transition-opacity duration-1000 z-50 text-lg xl:text-2xl",
                 mainReady && "opacity-100"
             )}
         >

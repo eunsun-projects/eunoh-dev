@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import AboutMe from "./AboutMe";
 import Hello from "./Hello";
+import SkillsAndTools from "./SkillsAndTools";
 
 function MainComponent() {
     const { mainReady } = useUiStateContext();
@@ -13,7 +14,6 @@ function MainComponent() {
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 100) {
-                // 스크롤 위치에 따라 값 조정
                 setShowHello(false);
             } else {
                 setShowHello(true);
@@ -43,6 +43,7 @@ function MainComponent() {
                 <Hello />
             </div>
             <AboutMe />
+            <SkillsAndTools />
         </main>
     );
 }

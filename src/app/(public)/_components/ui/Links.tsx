@@ -12,7 +12,7 @@ function Links() {
     return (
         <div
             className={twMerge(
-                "fixed opacity-0 top-2 flex flex-row gap-2 items-center justify-center left-2 transition-all duration-1000 text-black dark:text-white",
+                "fixed opacity-0 top-2 flex flex-row gap-2 items-center justify-center left-2 transition-all duration-1000 text-black dark:text-white z-50",
                 mainReady && "opacity-100"
             )}
         >

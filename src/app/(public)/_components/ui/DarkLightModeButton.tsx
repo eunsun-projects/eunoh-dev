@@ -30,8 +30,8 @@ function DarkLightModeButton() {
     return (
         <div
             className={twMerge(
-                "fixed opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white",
-                mainReady && "opacity-100"
+                "fixed opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white z-50",
+                mainReady && theme !== null && "opacity-100"
             )}
         >
             <button onClick={toggleTheme} className="text-3xl">
