@@ -22,11 +22,13 @@ function AboutMe() {
         >
             <div className="flex flex-col items-center justify-start gap-4 w-[90%] h-[84%] pt-10 xl:pt-0 xl:justify-center">
                 <div className="flex justify-start w-full h-[6%]">
-                    <h2 className="font-bold text-3xl xl:text-5xl">About Me</h2>
+                    <h2 className="font-bold text-3xl xl:text-5xl">🔥About Me🔥</h2>
                 </div>
-                <div className="flex flex-col justify-start w-full h-[70%]">
+                <div className="flex flex-col justify-start w-full h-[70%] xl:px-2">
                     <div className="flex flex-col items-start justify-center gap-4 h-[calc(100%/3)]">
-                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">기본기에 충실한 개발자</h3>
+                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">
+                            {"> 기본기에 충실한 개발자"}
+                        </h3>
 
                         <p className="text-base xl:text-lg">
                             <ReactTyped
@@ -39,7 +41,9 @@ function AboutMe() {
                         </p>
                     </div>
                     <div className="flex flex-col items-start justify-center gap-4 h-[calc(100%/3)]">
-                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">소통을 중요시하는 개발자</h3>
+                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">
+                            {"> 소통을 중요시하는 개발자"}
+                        </h3>
                         <p className="text-base xl:text-lg">
                             <ReactTyped
                                 startWhenVisible
@@ -51,7 +55,9 @@ function AboutMe() {
                         </p>
                     </div>
                     <div className="flex flex-col items-start justify-center gap-4 h-[calc(100%/3)]">
-                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">사용자를 생각하는 개발자</h3>
+                        <h3 className="font-bold text-2xl xl:text-[1.7rem]">
+                            {"> 사용자를 생각하는 개발자"}
+                        </h3>
                         <p className="text-base xl:text-lg">
                             <ReactTyped
                                 startWhenVisible

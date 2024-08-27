@@ -41,8 +41,10 @@ function Hello() {
                 </h3>
                 <div
                     className={twMerge(
-                        "flex flex-col items-center justify-center gap-8",
-                        ready.first && ready.second && "text-3xl transition-all duration-1000 gap-4"
+                        "flex flex-col items-center justify-center gap-6 relative -top-10",
+                        ready.first &&
+                            ready.second &&
+                            "text-4xl xl:text-6xl transition-all duration-1000 gap-4 top-0"
                     )}
                 >
                     <h2 className="font-bold text-center text-3xl xl:text-5xl">
