@@ -69,7 +69,7 @@ function Hello() {
                     ready.first && ready.second && "opacity-100"
                 )}
             >
-                <p>updated at 2024.08.30</p>
+                <p className="text-xs xl:text-lg">updated at 2024.08.30</p>
             </div>
             <div
                 className={twMerge(
