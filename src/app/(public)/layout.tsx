@@ -1,4 +1,4 @@
-import { UiStateProvider } from "@/contexts/uistate.context";
+import { UiStateProvider } from "@/contexts/ready.context";
 import React from "react";
 import DarkLightModeButton from "./_components/ui/DarkLightModeButton";
 import InitialSetDarkMode from "./_components/ui/InitialSetDarkMode";
