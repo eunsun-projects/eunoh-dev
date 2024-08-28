@@ -11,6 +11,17 @@ function AdminHeader() {
             <Link href="/admin">
                 <p className="text-2xl font-bold">AdminPage</p>
             </Link>
+            {user?.isAdmin && (
+                <div className="flex items-center gap-6">
+                    <Link href="/admin/list">
+                        <span>글 목록</span>
+                    </Link>
+                    <Link href="/admin/write">
+                        <span>글 작성</span>
+                    </Link>
+                </div>
+            )}
+
             {user ? (
                 <div className="flex items-center gap-2">
                     <span>{`${user.email} 님 반갑습니다!`}</span>
