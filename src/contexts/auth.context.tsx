@@ -34,18 +34,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const router = useRouter();
 
-    const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(async (provider) => {
-        try {
-            const data = await getLogInWithProvider(provider);
+    const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
+        async (provider) => {
+            try {
+                const data = await getLogInWithProvider(provider);
 
-            if (!data.url) console.error("로그인 실패, redirect url 없음");
+                if (!data.url) console.error("로그인 실패, redirect url 없음");
 
-            if (data.url) router.push(data.url);
-        } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : "Unknown error";
-            console.error(errorMessage);
-        }
-    }, []);
+                if (data.url) router.push(data.url);
+            } catch (error) {
+                const errorMessage = error instanceof Error ? error.message : "Unknown error";
+                console.error(errorMessage);
+            }
+        },
+        [router]
+    );
 
     const logOut: AuthContextType["logOut"] = useCallback(async () => {
         if (!user) return alert("로그인하고 눌러주세요");
