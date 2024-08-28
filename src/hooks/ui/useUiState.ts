@@ -1,4 +1,4 @@
-import { UiStateContext } from "@/contexts/uiState.context";
+import { UiStateContext } from "@/contexts/uistate.context";
 import { useContext } from "react";
 
 export const useUiState = () => {

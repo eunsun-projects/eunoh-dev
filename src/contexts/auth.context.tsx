@@ -7,7 +7,7 @@ import { useUserQuery } from "@/hooks/queries/auth";
 import { User } from "@/types/user.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
 
 export type AuthContextType = {
     user: User | null;
@@ -25,7 +25,7 @@ const initialValue: AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>(initialValue);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: PropsWithChildren) {
     const [isPending, setIsPending] = useState<boolean>(false);
 
     const { data: user, isPending: isUserPending, error } = useUserQuery();
