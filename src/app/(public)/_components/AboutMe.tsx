@@ -24,7 +24,7 @@ function AboutMe() {
                 <div className="flex justify-start w-full h-[6%]">
                     <h2 className="font-bold text-3xl xl:text-5xl">🔥About Me🔥</h2>
                 </div>
-                <div className="flex flex-col justify-start w-full h-[70%] xl:px-2">
+                <div className="flex flex-col justify-start gap-6 w-full h-[80%] xl:gap-2 xl:px-2">
                     <div className="flex flex-col items-start justify-center gap-4 h-[calc(100%/3)]">
                         <h3 className="font-bold text-2xl xl:text-[1.7rem]">
                             {"> 기본기에 충실한 개발자"}
@@ -48,7 +48,7 @@ function AboutMe() {
                             <ReactTyped
                                 startWhenVisible
                                 strings={[
-                                    "무엇보다 중요한 것은 커뮤니케이션 능력이라고 생각합니다. 팀원들과 소통하고 협업하는 것을 즐깁니다.",
+                                    "팀원들과 소통하고 협업하는 것을 즐깁니다. 무엇보다 중요한 것은 커뮤니케이션 능력이라고 생각합니다.",
                                 ]}
                                 typeSpeed={20}
                             />

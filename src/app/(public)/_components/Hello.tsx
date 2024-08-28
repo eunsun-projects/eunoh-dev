@@ -54,9 +54,9 @@ function Hello() {
                             onComplete={handleReady("first")}
                         />
                     </h2>
-                    <h2 className="font-bold text-center text-3xl xl:text-5xl">
+                    <h2 className="font-bold text-center text-3xl xl:text-[3rem] leading-normal">
                         <ReactTyped
-                            strings={["FE개발자 오은 입니다"]}
+                            strings={["FE개발자를 꿈꾸는<br />오은 입니다"]}
                             typeSpeed={55}
                             onComplete={handleReady("second")}
                         />
