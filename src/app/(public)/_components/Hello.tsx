@@ -1,13 +1,13 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import { useEffect, useState } from "react";
 import { FaAngleDoubleDown } from "react-icons/fa";
 import { ReactTyped, Typed } from "react-typed";
 import { twMerge } from "tailwind-merge";
 
 function Hello() {
-    const { setMainReady } = useUiStateContext();
+    const { setMainReady } = useUiState();
     const [ready, setReady] = useState<{ first: boolean; second: boolean }>({
         first: false,
         second: false,

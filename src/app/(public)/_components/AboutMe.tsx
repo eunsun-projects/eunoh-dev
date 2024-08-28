@@ -1,12 +1,12 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import { useInView } from "react-intersection-observer";
 import { ReactTyped } from "react-typed";
 import { twMerge } from "tailwind-merge";
 
 function AboutMe() {
-    const { mainReady } = useUiStateContext();
+    const { mainReady } = useUiState();
     const { ref, inView } = useInView({
         threshold: 0.5,
     });

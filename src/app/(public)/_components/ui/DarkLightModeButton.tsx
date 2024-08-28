@@ -1,12 +1,12 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import { useEffect, useState } from "react";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 
 function DarkLightModeButton() {
-    const { mainReady } = useUiStateContext();
+    const { mainReady } = useUiState();
     const [theme, setTheme] = useState<string | null>(null);
 
     const toggleTheme = () => {

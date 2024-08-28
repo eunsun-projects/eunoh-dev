@@ -1,6 +1,6 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import AboutMe from "./AboutMe";
@@ -8,7 +8,7 @@ import Hello from "./Hello";
 import SkillsAndTools from "./SkillsAndTools";
 
 function MainComponent() {
-    const { mainReady } = useUiStateContext();
+    const { mainReady } = useUiState();
     const [showHello, setShowHello] = useState(true);
 
     useEffect(() => {

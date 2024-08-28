@@ -1,6 +1,6 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import { FaCss3Alt, FaDiscord, FaGithub, FaHtml5, FaJs, FaReact, FaSass, FaSlack } from "react-icons/fa";
 import { GiZeppelin } from "react-icons/gi";
 import { IoLogoFigma, IoLogoFirebase, IoLogoVercel } from "react-icons/io5";
@@ -22,7 +22,7 @@ import { useInView } from "react-intersection-observer";
 import { twMerge } from "tailwind-merge";
 
 function SkillsAndTools() {
-    const { mainReady } = useUiStateContext();
+    const { mainReady } = useUiState();
     const { ref, inView } = useInView({
         threshold: 0.3,
     });

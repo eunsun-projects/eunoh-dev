@@ -1,12 +1,12 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import { FaAngleUp } from "react-icons/fa";
 import { IoChatboxEllipses, IoMail } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 
 function RightBottomUI() {
-    const { mainReady } = useUiStateContext();
+    const { mainReady } = useUiState();
 
     return (
         <div

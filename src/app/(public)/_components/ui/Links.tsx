@@ -1,13 +1,13 @@
 "use client";
 
-import { useUiStateContext } from "@/contexts/UiState.context";
+import { useUiState } from "@/hooks/ui/useUiState";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { SiTistory } from "react-icons/si";
 import { twMerge } from "tailwind-merge";
 
 function Links() {
-    const { mainReady } = useUiStateContext();
+    const { mainReady } = useUiState();
 
     return (
         <div
