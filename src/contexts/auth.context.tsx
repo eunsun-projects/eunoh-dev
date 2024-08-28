@@ -1,3 +1,5 @@
+"use client";
+
 import { useUserQuery } from "@/hooks/queries/auth/useUserQuery";
 import { User } from "@/types/user.types";
 import { createContext, useEffect, useState } from "react";
@@ -30,6 +32,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             console.error(error);
         }
     }, [error]);
+
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
 
     const value = {
         user: user ?? null,

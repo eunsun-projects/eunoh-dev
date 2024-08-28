@@ -12,7 +12,7 @@ async function AdminLayout({ children }: AdminLayoutProps) {
 
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({
-        queryKey: [QUERY_KEY_USER, userId],
+        queryKey: [QUERY_KEY_USER],
         queryFn: () => getUserServer(userId),
     });
     const dehydratedState = dehydrate(queryClient);
