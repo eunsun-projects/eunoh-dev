@@ -2,10 +2,9 @@ import { User } from "@/types/user.types";
 import fetchWrapper from "@/utils/common/fetchWrapper";
 
 export async function getUserServer(userId: string | null): Promise<User | null> {
-    const url = `/api/auth/user?userId=${userId}`;
+    if (!userId) return null;
+    const url = `/api/auth/user`;
     try {
-        if (!userId) return null;
-
         const data = await fetchWrapper<User>(url, {
             method: "GET",
             cache: "no-store",
