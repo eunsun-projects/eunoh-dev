@@ -7,13 +7,13 @@ function AdminHeader() {
     const { user, logOut, loginWithProvider } = useAuth();
 
     return (
-        <header className="flex items-center justify-center h-16">
+        <header className="flex items-center justify-between h-16 px-8">
             <Link href="/admin">
                 <p className="text-2xl font-bold">AdminPage</p>
             </Link>
             {user ? (
                 <div className="flex items-center gap-2">
-                    <span>{`${user.nickname} 님 반갑습니다!`}</span>
+                    <span>{`${user.email} 님 반갑습니다!`}</span>
                     <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={logOut}>
                         로그아웃
                     </button>

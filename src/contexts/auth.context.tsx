@@ -6,6 +6,7 @@ import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { useUserQuery } from "@/hooks/queries/auth";
 import { User } from "@/types/user.types";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { createContext, useCallback, useEffect, useState } from "react";
 
 export type AuthContextType = {
@@ -31,11 +32,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const queryClient = useQueryClient();
 
+    const router = useRouter();
+
     const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(async (provider) => {
         try {
             const data = await getLogInWithProvider(provider);
 
             if (!data.url) console.error("로그인 실패, redirect url 없음");
+
+            if (data.url) router.push(data.url);
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Unknown error";
             console.error(errorMessage);
@@ -67,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, [error]);
 
     useEffect(() => {
-        console.log(user);
+        console.log("user ======>", user);
     }, [user]);
 
     const value = {

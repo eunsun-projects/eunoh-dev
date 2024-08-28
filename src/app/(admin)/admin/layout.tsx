@@ -1,4 +1,4 @@
-import { getUserServer } from "@/apis/auth/server/get.user";
+import { postUserServer } from "@/apis/auth/server/post.user";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
 import { getUserFromHeader } from "@/utils/auth/getUserFromHeader";
@@ -14,7 +14,7 @@ async function AdminLayout({ children }: AdminLayoutProps) {
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({
         queryKey: [QUERY_KEY_USER],
-        queryFn: () => getUserServer(userId),
+        queryFn: () => postUserServer(userId),
     });
     const dehydratedState = dehydrate(queryClient);
 
