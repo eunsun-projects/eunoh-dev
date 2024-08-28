@@ -4,6 +4,7 @@ import { AuthProvider } from "@/contexts/auth.context";
 import { getUserFromHeader } from "@/utils/auth/getUserFromHeader";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { PropsWithChildren, Suspense } from "react";
+import AdminHeader from "./_components/AdminHeader";
 
 type AdminLayoutProps = PropsWithChildren;
 
@@ -20,7 +21,10 @@ async function AdminLayout({ children }: AdminLayoutProps) {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <HydrationBoundary state={dehydratedState}>
-                <AuthProvider>{children}</AuthProvider>
+                <AuthProvider>
+                    <AdminHeader />
+                    {children}
+                </AuthProvider>
             </HydrationBoundary>
         </Suspense>
     );
