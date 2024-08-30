@@ -1,9 +1,10 @@
 "use client";
 
 import { useAuth } from "@/hooks/auth/useAuth";
+import { useProjectMutation } from "@/hooks/queries/projects";
 import { PartialProject } from "@/types/project.types";
 import parseTextToObjects from "@/utils/common/parseTextToObjects";
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
@@ -28,6 +29,7 @@ type FormValues = {
 function AdminWritePage() {
     const { user } = useAuth();
     const { register, handleSubmit } = useForm();
+    const { mutate, isPending, error } = useProjectMutation();
 
     const titleId = useId();
     const descriptionId = useId();
@@ -63,117 +65,133 @@ function AdminWritePage() {
             decisions: newDecisionsArr,
             troubles: newTroublesArr,
         };
-        console.log("newProject ======>", newProject);
+        mutate(newProject);
     };
+
+    useEffect(() => {
+        if (error) console.error(error.message);
+    }, [error]);
 
     if (!user) {
         return <div>로그인 후 이용해주세요.</div>;
     }
 
     return (
-        <section className="flex flex-col gap-2 w-full h-full justify-center items-center">
-            <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex flex-row gap-2 items-center">
-                    <label htmlFor={titleId}>타이틀</label>
-                    <input type="text" className={inputStyle} id={titleId} {...register("title")} />
+        <>
+            {isPending && (
+                <div className="flex justify-center items-center w-full h-full bg-black/50 text-white fixed top-0 left-0">
+                    로딩중...
                 </div>
-                <div className="flex flex-row gap-2 items-center">
-                    <label htmlFor={descriptionId}>설명</label>
-                    <textarea
-                        className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
-                        id={descriptionId}
-                        {...register("description")}
-                    />
-                </div>
-                <div className="flex flex-row gap-2 items-center">
-                    <label htmlFor="keywords1">키워드</label>
-                    <input
-                        type="text"
-                        className={twMerge(inputStyle, "w-[120px]")}
-                        id={keywords1Id}
-                        {...register("keywords1")}
-                    />
-                    <input
-                        type="text"
-                        className={twMerge(inputStyle, "w-[120px]")}
-                        id={keywords2Id}
-                        {...register("keywords2")}
-                    />
-                    <input
-                        type="text"
-                        className={twMerge(inputStyle, "w-[120px]")}
-                        id={keywords3Id}
-                        {...register("keywords3")}
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label htmlFor={linkId}>링크</label>
-                    <input
-                        type="text"
-                        className={twMerge(inputStyle, "w-[300px]")}
-                        id={linkId}
-                        {...register("link")}
-                    />
-                    <label htmlFor={github_linkId}>깃허브 링크</label>
-                    <input
-                        type="text"
-                        className={twMerge(inputStyle, "w-[300px]")}
-                        id={github_linkId}
-                        {...register("github_link")}
-                    />
-                </div>
-                <div className="flex flex-row gap-2 items-center">
-                    <label htmlFor={started_atId}>시작일</label>
-                    <input
-                        type="date"
-                        className={inputStyle}
-                        id={started_atId}
-                        {...register("started_at")}
-                    />
-                    <label htmlFor={ended_atId}>종료일</label>
-                    <input type="date" className={inputStyle} id={ended_atId} {...register("ended_at")} />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label htmlFor={featuresId}>주요기능</label>
-                    <textarea
-                        className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
-                        id={featuresId}
-                        {...register("features")}
-                        placeholder="내용1 / 내용2 / 내용3 ..."
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label htmlFor={stacksId}>사용기술</label>
-                    <textarea
-                        className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
-                        id={stacksId}
-                        {...register("stacks")}
-                        placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label htmlFor={decisionsId}>기술적의사결정</label>
-                    <textarea
-                        className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
-                        id={decisionsId}
-                        {...register("decisions")}
-                        placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label htmlFor={troublesId}>트러블슈팅</label>
-                    <textarea
-                        className={twMerge(inputStyle, "w-[250px] h-[100px] xl:w-[500px]")}
-                        id={troublesId}
-                        {...register("troubles")}
-                        placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
-                    />
-                </div>
-                <button className="p-2 bg-blue-500 text-white rounded-md w-[50%] mx-auto" type="submit">
-                    작성하기
-                </button>
-            </form>
-        </section>
+            )}
+            <section className="flex flex-col gap-2 w-full h-full justify-center items-center">
+                <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor={titleId}>타이틀</label>
+                        <input type="text" className={inputStyle} id={titleId} {...register("title")} />
+                    </div>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor={descriptionId}>설명</label>
+                        <textarea
+                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            id={descriptionId}
+                            {...register("description")}
+                        />
+                    </div>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor="keywords1">키워드</label>
+                        <input
+                            type="text"
+                            className={twMerge(inputStyle, "w-[120px]")}
+                            id={keywords1Id}
+                            {...register("keywords1")}
+                        />
+                        <input
+                            type="text"
+                            className={twMerge(inputStyle, "w-[120px]")}
+                            id={keywords2Id}
+                            {...register("keywords2")}
+                        />
+                        <input
+                            type="text"
+                            className={twMerge(inputStyle, "w-[120px]")}
+                            id={keywords3Id}
+                            {...register("keywords3")}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor={linkId}>링크</label>
+                        <input
+                            type="text"
+                            className={twMerge(inputStyle, "w-[300px]")}
+                            id={linkId}
+                            {...register("link")}
+                        />
+                        <label htmlFor={github_linkId}>깃허브 링크</label>
+                        <input
+                            type="text"
+                            className={twMerge(inputStyle, "w-[300px]")}
+                            id={github_linkId}
+                            {...register("github_link")}
+                        />
+                    </div>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor={started_atId}>시작일</label>
+                        <input
+                            type="date"
+                            className={inputStyle}
+                            id={started_atId}
+                            {...register("started_at")}
+                        />
+                        <label htmlFor={ended_atId}>종료일</label>
+                        <input
+                            type="date"
+                            className={inputStyle}
+                            id={ended_atId}
+                            {...register("ended_at")}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor={featuresId}>주요기능</label>
+                        <textarea
+                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            id={featuresId}
+                            {...register("features")}
+                            placeholder="내용1 / 내용2 / 내용3 ..."
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor={stacksId}>사용기술</label>
+                        <textarea
+                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            id={stacksId}
+                            {...register("stacks")}
+                            placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor={decisionsId}>기술적의사결정</label>
+                        <textarea
+                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            id={decisionsId}
+                            {...register("decisions")}
+                            placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor={troublesId}>트러블슈팅</label>
+                        <textarea
+                            className={twMerge(inputStyle, "w-[250px] h-[100px] xl:w-[500px]")}
+                            id={troublesId}
+                            {...register("troubles")}
+                            placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
+                        />
+                    </div>
+                    <button className="p-2 bg-blue-500 text-white rounded-md w-[50%] mx-auto" type="submit">
+                        작성하기
+                    </button>
+                </form>
+            </section>
+        </>
     );
 }
 
