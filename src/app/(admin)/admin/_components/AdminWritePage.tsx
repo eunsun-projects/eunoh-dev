@@ -24,6 +24,7 @@ type FormValues = {
     stacks?: string;
     decisions?: string;
     troubles?: string;
+    images?: FileList;
 };
 
 function AdminWritePage() {
@@ -32,6 +33,7 @@ function AdminWritePage() {
     const { mutate, isPending, error } = useProjectMutation();
 
     const titleId = useId();
+    const imageId = useId();
     const descriptionId = useId();
     const keywords1Id = useId();
     const keywords2Id = useId();
@@ -65,7 +67,16 @@ function AdminWritePage() {
             decisions: newDecisionsArr,
             troubles: newTroublesArr,
         };
-        mutate(newProject);
+
+        const formData = new FormData();
+        if (data.images) {
+            for (let i = 0; i < data.images.length; i++) {
+                formData.append("images", data.images[i]);
+            }
+        }
+        formData.append("project", JSON.stringify(newProject));
+
+        mutate(formData);
     };
 
     useEffect(() => {
@@ -85,6 +96,17 @@ function AdminWritePage() {
             )}
             <section className="flex flex-col gap-2 w-full h-full justify-center items-center">
                 <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor={imageId}>이미지</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            className={inputStyle}
+                            id={imageId}
+                            {...register("images")}
+                        />
+                    </div>
                     <div className="flex flex-row gap-2 items-center">
                         <label htmlFor={titleId}>타이틀</label>
                         <input type="text" className={inputStyle} id={titleId} {...register("title")} />
