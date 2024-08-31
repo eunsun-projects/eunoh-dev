@@ -1,7 +1,6 @@
 "use client";
 
-import { getLogInWithProvider } from "@/apis/auth/client";
-import { deleteLogOut } from "@/apis/auth/client/delete.logout";
+import { deleteLogOut, getLogInWithProvider } from "@/apis/auth/client";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { useUserQuery } from "@/hooks/queries/auth";
 import { User } from "@/types/user.types";

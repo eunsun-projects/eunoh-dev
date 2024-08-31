@@ -3,6 +3,17 @@ import convertToWebP from "@/utils/common/convertToWebP";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
+export async function GET(req: Request) {
+    const supabase = createClient();
+    const { data, error } = await supabase.from("projects").select("*");
+
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data, { status: 200 });
+}
+
 export async function POST(req: Request) {
     let uploadResults: (string | null)[] = [];
     const supabase = createClient();
@@ -11,9 +22,9 @@ export async function POST(req: Request) {
 
     const newProjectJson = formData.get("project");
     const newProject = JSON.parse(newProjectJson as string) as PartialProject;
-    const images = formData.getAll("images") as File[];
+    const images = formData.getAll("images") as File[] | string;
 
-    if (images.length > 0) {
+    if (typeof images === "object" && images.length > 0) {
         const imageBufferPromises = images.map(async (image) => convertToWebP(image, 720));
 
         const imageBuffers = await Promise.all(imageBufferPromises);

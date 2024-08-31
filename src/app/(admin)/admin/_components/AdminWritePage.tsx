@@ -27,7 +27,12 @@ type FormValues = {
     images?: FileList;
 };
 
-function AdminWritePage() {
+type AdminWritePageProps = {
+    mode?: "write" | "edit";
+    project?: PartialProject;
+};
+
+function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
     const { user } = useAuth();
     const { register, handleSubmit } = useForm();
     const { mutate, isPending, error } = useProjectMutation();
@@ -68,11 +73,18 @@ function AdminWritePage() {
             troubles: newTroublesArr,
         };
 
+        if (mode === "edit") {
+            newProject.id = project?.id;
+            newProject.images = project?.images;
+        }
+
         const formData = new FormData();
         if (data.images) {
             for (let i = 0; i < data.images.length; i++) {
                 formData.append("images", data.images[i]);
             }
+        } else {
+            formData.append("images", "");
         }
         formData.append("project", JSON.stringify(newProject));
 
@@ -109,13 +121,20 @@ function AdminWritePage() {
                     </div>
                     <div className="flex flex-row gap-2 items-center">
                         <label htmlFor={titleId}>타이틀</label>
-                        <input type="text" className={inputStyle} id={titleId} {...register("title")} />
+                        <input
+                            type="text"
+                            className={inputStyle}
+                            id={titleId}
+                            placeholder={mode === "edit" ? project?.title || "" : ""}
+                            {...register("title")}
+                        />
                     </div>
                     <div className="flex flex-row gap-2 items-center">
                         <label htmlFor={descriptionId}>설명</label>
                         <textarea
                             className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={descriptionId}
+                            placeholder={mode === "edit" ? project?.description || "" : ""}
                             {...register("description")}
                         />
                     </div>
@@ -125,18 +144,21 @@ function AdminWritePage() {
                             type="text"
                             className={twMerge(inputStyle, "w-[120px]")}
                             id={keywords1Id}
+                            placeholder={mode === "edit" ? project?.keywords?.[0] || "" : ""}
                             {...register("keywords1")}
                         />
                         <input
                             type="text"
                             className={twMerge(inputStyle, "w-[120px]")}
                             id={keywords2Id}
+                            placeholder={mode === "edit" ? project?.keywords?.[1] || "" : ""}
                             {...register("keywords2")}
                         />
                         <input
                             type="text"
                             className={twMerge(inputStyle, "w-[120px]")}
                             id={keywords3Id}
+                            placeholder={mode === "edit" ? project?.keywords?.[2] || "" : ""}
                             {...register("keywords3")}
                         />
                     </div>
@@ -146,6 +168,7 @@ function AdminWritePage() {
                             type="text"
                             className={twMerge(inputStyle, "w-[300px]")}
                             id={linkId}
+                            placeholder={mode === "edit" ? project?.link || "" : ""}
                             {...register("link")}
                         />
                         <label htmlFor={github_linkId}>깃허브 링크</label>
@@ -153,6 +176,7 @@ function AdminWritePage() {
                             type="text"
                             className={twMerge(inputStyle, "w-[300px]")}
                             id={github_linkId}
+                            placeholder={mode === "edit" ? project?.github_link || "" : ""}
                             {...register("github_link")}
                         />
                     </div>
@@ -162,6 +186,7 @@ function AdminWritePage() {
                             type="date"
                             className={inputStyle}
                             id={started_atId}
+                            placeholder={mode === "edit" ? project?.started_at || "" : ""}
                             {...register("started_at")}
                         />
                         <label htmlFor={ended_atId}>종료일</label>
@@ -169,6 +194,7 @@ function AdminWritePage() {
                             type="date"
                             className={inputStyle}
                             id={ended_atId}
+                            placeholder={mode === "edit" ? project?.ended_at || "" : ""}
                             {...register("ended_at")}
                         />
                     </div>
@@ -178,7 +204,7 @@ function AdminWritePage() {
                             className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={featuresId}
                             {...register("features")}
-                            placeholder="내용1 / 내용2 / 내용3 ..."
+                            placeholder={mode === "edit" ? project?.features?.join(" / ") || "" : ""}
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -187,7 +213,20 @@ function AdminWritePage() {
                             className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={stacksId}
                             {...register("stacks")}
-                            placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
+                            placeholder={
+                                mode === "edit"
+                                    ? project?.stacks
+                                          ?.map((stack) =>
+                                              typeof stack === "object" &&
+                                              stack !== null &&
+                                              "subTitle" in stack &&
+                                              "subContent" in stack
+                                                  ? `${stack.subTitle || ""} : ${stack.subContent || ""}`
+                                                  : ""
+                                          )
+                                          .join(" / ") || ""
+                                    : ""
+                            }
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -196,7 +235,20 @@ function AdminWritePage() {
                             className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={decisionsId}
                             {...register("decisions")}
-                            placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
+                            placeholder={
+                                mode === "edit"
+                                    ? project?.decisions
+                                          ?.map((decision) =>
+                                              typeof decision === "object" &&
+                                              decision !== null &&
+                                              "subTitle" in decision &&
+                                              "subContent" in decision
+                                                  ? `${decision.subTitle || ""} : ${decision.subContent || ""}`
+                                                  : ""
+                                          )
+                                          .join(" / ") || ""
+                                    : ""
+                            }
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -205,7 +257,20 @@ function AdminWritePage() {
                             className={twMerge(inputStyle, "w-[250px] h-[100px] xl:w-[500px]")}
                             id={troublesId}
                             {...register("troubles")}
-                            placeholder="주제1 : 내용1 / 주제2 : 내용2 / 주제3 : 내용3 ..."
+                            placeholder={
+                                mode === "edit"
+                                    ? project?.troubles
+                                          ?.map((trouble) =>
+                                              typeof trouble === "object" &&
+                                              trouble !== null &&
+                                              "subTitle" in trouble &&
+                                              "subContent" in trouble
+                                                  ? `${trouble.subTitle || ""} : ${trouble.subContent || ""}`
+                                                  : ""
+                                          )
+                                          .join(" / ") || ""
+                                    : ""
+                            }
                         />
                     </div>
                     <button className="p-2 bg-blue-500 text-white rounded-md w-[50%] mx-auto" type="submit">
