@@ -94,7 +94,7 @@ function AdminWritePage() {
                     로딩중...
                 </div>
             )}
-            <section className="flex flex-col gap-2 w-full h-full justify-center items-center">
+            <section className="flex flex-col gap-2 w-full h-full justify-center items-center text-xs">
                 <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-row gap-2 items-center">
                         <label htmlFor={imageId}>이미지</label>
