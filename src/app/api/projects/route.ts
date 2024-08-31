@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabase
         .from("projects")
-        .upsert({ ...newProject, images: uploadResults.length === 0 ? [] : uploadResults })
+        .upsert({ ...newProject, images: uploadResults.length === 0 ? newProject.images : uploadResults })
         .select()
         .single();
 

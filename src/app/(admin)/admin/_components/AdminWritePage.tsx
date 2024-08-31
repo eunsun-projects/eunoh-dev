@@ -60,17 +60,20 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
         const newTroublesArr = parseTextToObjects(data.troubles || "");
 
         const newProject: PartialProject = {
-            title: data.title,
-            description: data.description,
-            keywords: [data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[],
-            link: data.link,
-            github_link: data.github_link,
-            started_at: data.started_at,
-            ended_at: data.ended_at,
-            features: newFeatureArr,
-            stacks: newStacksArr,
-            decisions: newDecisionsArr,
-            troubles: newTroublesArr,
+            title: mode === "edit" && !data.title ? project?.title : data.title,
+            description: mode === "edit" && !data.description ? project?.description : data.description,
+            keywords:
+                mode === "edit" && !data.keywords1 && !data.keywords2 && !data.keywords3
+                    ? project?.keywords
+                    : ([data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[]),
+            link: mode === "edit" && !data.link ? project?.link : data.link,
+            github_link: mode === "edit" && !data.github_link ? project?.github_link : data.github_link,
+            started_at: mode === "edit" && !data.started_at ? project?.started_at : data.started_at,
+            ended_at: mode === "edit" && !data.ended_at ? project?.ended_at : data.ended_at,
+            features: mode === "edit" && !data.features ? project?.features : newFeatureArr,
+            stacks: mode === "edit" && !data.stacks ? project?.stacks : newStacksArr,
+            decisions: mode === "edit" && !data.decisions ? project?.decisions : newDecisionsArr,
+            troubles: mode === "edit" && !data.troubles ? project?.troubles : newTroublesArr,
         };
 
         if (mode === "edit") {
