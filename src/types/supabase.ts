@@ -19,6 +19,7 @@ export type Database = {
           github_link: string | null
           id: string
           images: string[] | null
+          isView: boolean | null
           keywords: string[] | null
           link: string | null
           stacks: Json[] | null
@@ -35,6 +36,7 @@ export type Database = {
           github_link?: string | null
           id?: string
           images?: string[] | null
+          isView?: boolean | null
           keywords?: string[] | null
           link?: string | null
           stacks?: Json[] | null
@@ -51,6 +53,7 @@ export type Database = {
           github_link?: string | null
           id?: string
           images?: string[] | null
+          isView?: boolean | null
           keywords?: string[] | null
           link?: string | null
           stacks?: Json[] | null
