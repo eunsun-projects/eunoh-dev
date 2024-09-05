@@ -4,6 +4,7 @@ import { useUiState } from "@/hooks/ui/useUiState";
 import { useInView } from "react-intersection-observer";
 import { ReactTyped } from "react-typed";
 import { twMerge } from "tailwind-merge";
+import EunOh from "../../../../public/eunoh.svg";
 
 function AboutMe() {
     const { mainReady } = useUiState();
@@ -22,7 +23,9 @@ function AboutMe() {
         >
             <div className="flex flex-col items-center justify-start gap-4 w-[90%] h-[84%] pt-10 xl:pt-0 xl:justify-center">
                 <div className="flex justify-start w-full h-[6%]">
-                    <h2 className="font-bold text-3xl xl:text-5xl">🔥About Me🔥</h2>
+                    <h2 className="flex flex-row items-center font-bold text-3xl xl:text-5xl w-[50%]">
+                        <EunOh className="w-[10%] px-2" /> About Me <EunOh className="w-[10%] px-2" />
+                    </h2>
                 </div>
                 <div className="flex flex-col justify-start gap-6 w-full h-[80%] xl:gap-2 xl:px-2">
                     <div className="flex flex-col items-start justify-center gap-4 h-[calc(100%/3)]">
