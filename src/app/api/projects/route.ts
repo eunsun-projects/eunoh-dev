@@ -5,7 +5,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
     const supabase = createClient();
-    const { data, error } = await supabase.from("projects").select("*");
+    const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("number", { ascending: true });
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

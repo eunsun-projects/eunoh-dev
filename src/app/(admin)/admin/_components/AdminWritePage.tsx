@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/auth/useAuth";
 import { useProjectMutation } from "@/hooks/queries/projects";
 import { PartialProject } from "@/types/project.types";
 import parseTextToObjects from "@/utils/common/parseTextToObjects";
+import { useRouter } from "next/navigation";
 import { useEffect, useId } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
@@ -38,6 +39,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
     const { user } = useAuth();
     const { register, handleSubmit } = useForm();
     const { mutate, isPending, error } = useProjectMutation();
+    const router = useRouter();
 
     const titleId = useId();
     const imageId = useId();
@@ -98,6 +100,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
         formData.append("project", JSON.stringify(newProject));
 
         mutate(formData);
+        router.push("/admin/list");
     };
 
     useEffect(() => {
@@ -111,7 +114,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
     return (
         <>
             {isPending && (
-                <div className="flex justify-center items-center w-full h-full bg-black/50 text-white fixed top-0 left-0">
+                <div className="flex justify-center items-center w-full h-full bg-black/50 text-white fixed top-0 left-0 px-8">
                     로딩중...
                 </div>
             )}
