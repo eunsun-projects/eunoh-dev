@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import AboutMe from "./AboutMe";
 import Hello from "./Hello";
+import MyProjects from "./MyProjects";
 import SkillsAndTools from "./SkillsAndTools";
 
 function MainComponent() {
@@ -44,6 +45,7 @@ function MainComponent() {
             </div>
             <AboutMe />
             <SkillsAndTools />
+            <MyProjects />
         </main>
     );
 }
