@@ -30,6 +30,27 @@ function Modal({ project, closeModal }: ModalProps) {
                         <IoClose className="text-2xl xl:text-3xl" />
                     </button>
                 </div>
+
+                <div className="relative h-[96%] w-full flex flex-col justify-center items-center">
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                        <div className="flex flex-row gap-2">
+                            {project.keywords?.map((keyword) => (
+                                <span
+                                    key={keyword}
+                                    className="text-sm rounded-md px-2 py-1 border-2 border-gray-300"
+                                >
+                                    {keyword}
+                                </span>
+                            ))}
+                        </div>
+                        <h2 className="text-2xl font-bold">{project.title}</h2>
+                        <p className="text-sm">
+                            {project.started_at?.split("T")[0].split("-").join(".")} ~{" "}
+                            {project.ended_at?.split("T")[0].split("-").join(".")}
+                        </p>
+                    </div>
+                    <p className="text-base text-center whitespace-pre-wrap">{project.description}</p>
+                </div>
             </dialog>
         </div>
     );

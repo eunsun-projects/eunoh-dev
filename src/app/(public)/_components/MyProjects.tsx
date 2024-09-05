@@ -37,7 +37,7 @@ function MyProjects() {
             {modal && <Modal project={modal} closeModal={closeModal} />}
             <section
                 className={twMerge(
-                    "relative flex-col items-center justify-center h-dvh transition-opacity opacity-0 duration-1000 hidden w-full xl:gap-10",
+                    "relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0",
                     mainReady && "flex",
                     isLoading && "opacity-0",
                     inView && "opacity-100"
@@ -47,13 +47,13 @@ function MyProjects() {
                 <div className="flex justify-center w-full h-[6%]">
                     <h2 className="font-bold text-3xl xl:text-5xl">{"💻Projects💻"}</h2>
                 </div>
-                <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center xl:gap-6 w-[55%] h-[80%] xl:px-2 xl:h-[70%]">
+                <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[70%]">
                     {projects
                         ?.filter((project) => project.isView)
                         .map((project) => (
                             <div
                                 key={project.id}
-                                className="relative flex flex-col items-center justify-center w-full h-full border rounded hover:scale-105 transition-all duration-300 will-change-transform"
+                                className="relative flex flex-col items-center justify-center w-full min-h-[200px] h-full border rounded hover:scale-105 transition-all duration-300 will-change-transform"
                                 onMouseEnter={() => setMouseOver(project.id)}
                                 onMouseLeave={() => setMouseOver(null)}
                             >
