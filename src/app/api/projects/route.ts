@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const images = formData.getAll("images") as File[] | string;
 
     if (typeof images === "object" && images.length > 0) {
-        const imageBufferPromises = images.map(async (image) => convertToWebP(image, 400));
+        const imageBufferPromises = images.map(async (image) => convertToWebP(image, 720));
 
         const imageBuffers = await Promise.all(imageBufferPromises);
 

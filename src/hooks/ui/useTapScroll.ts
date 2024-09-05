@@ -7,10 +7,20 @@ type UseTapScrollProps = {
 
 export function useTapScroll({ refs }: UseTapScrollProps) {
     const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+    const [isOverflowing, setIsOverflowing] = useState<boolean[]>([]);
 
     useEffect(() => {
         const handleResize = () => {
             setIsDesktop(window.innerWidth >= 1280);
+
+            // 각 ref의 overflow 상태를 확인합니다.
+            const overflowStates = refs.map((ref) => {
+                if (ref.current) {
+                    return ref.current.scrollWidth > ref.current.clientWidth;
+                }
+                return false;
+            });
+            setIsOverflowing(overflowStates);
         };
 
         window.addEventListener("resize", handleResize);
@@ -19,7 +29,7 @@ export function useTapScroll({ refs }: UseTapScrollProps) {
         return () => {
             window.removeEventListener("resize", handleResize);
         };
-    }, []);
+    }, [refs]);
 
     // Handlers for arrow buttons on desktop, with specific ref
     const createScrollHandler = useCallback(
@@ -39,10 +49,18 @@ export function useTapScroll({ refs }: UseTapScrollProps) {
         [isDesktop]
     );
 
-    return isDesktop
-        ? {
-              createScrollLeft: (ref: React.RefObject<HTMLElement>) => createScrollHandler(ref, "left"),
-              createScrollRight: (ref: React.RefObject<HTMLElement>) => createScrollHandler(ref, "right"),
-          }
-        : null;
+    // 특정 ref가 overflow 상태일 때만 스크롤 핸들러를 반환
+    const getScrollHandlers = (index: number) => {
+        if (!isDesktop || !isOverflowing[index]) return null;
+
+        const ref = refs[index];
+        return {
+            createScrollLeft: () => createScrollHandler(ref, "left"),
+            createScrollRight: () => createScrollHandler(ref, "right"),
+        };
+    };
+
+    const scrollHandlers = getScrollHandlers(0);
+
+    return isDesktop ? { scrollHandlers } : null;
 }

@@ -1,6 +1,6 @@
 import { useProjectsQuery } from "@/hooks/queries/projects";
 import { useUiState } from "@/hooks/ui/useUiState";
-import { Project } from "@/types/project.types";
+import { Project, ProjectWithImages } from "@/types/project.types";
 import getImageSize from "@/utils/image/getImageSize";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,32 +17,36 @@ function MyProjects() {
     const { data: projects, isLoading, error } = useProjectsQuery();
     const [mouseOver, setMouseOver] = useState<string | null>(null);
     const [modal, setModal] = useState<{ project: Project; index: number } | null>(null);
-    const [imageSizes, setImageSizes] = useState<
-        { width: number | undefined; height: number | undefined }[][]
-    >([]);
+
+    const [projectWithImageSizes, setProjectWithImageSizes] = useState<ProjectWithImages[]>([]);
 
     const openModal = (project: Project, index: number) => setModal({ project, index });
     const closeModal = () => setModal(null);
 
     useEffect(() => {
         if (!projects) return;
-        const loadImageSizes = async () => {
-            const sizes = await Promise.all(
-                projects.map((project) =>
-                    Promise.all(
-                        project.images?.map(
-                            (image) =>
-                                getImageSize(image) as Promise<{
-                                    width: number | undefined;
-                                    height: number | undefined;
-                                }>
-                        ) ?? []
-                    )
-                )
-            );
-            setImageSizes(sizes);
-        };
-        loadImageSizes();
+
+        const promises = projects.map(async (project) => {
+            const sizes = await Promise.all(project.images?.map(getImageSize) ?? []);
+            const newImages =
+                project.images?.map((image, i) => ({
+                    image,
+                    width: sizes[i]?.width ?? 0,
+                    height: sizes[i]?.height ?? 0,
+                })) ?? [];
+
+            return {
+                ...project,
+                newImages,
+            };
+        });
+
+        async function resolving() {
+            const projectPromises = await Promise.all(promises);
+            const filteredProjects = projectPromises.filter((project) => project.isView);
+            setProjectWithImageSizes(filteredProjects);
+        }
+        resolving();
     }, [projects]);
 
     useEffect(() => {
@@ -59,12 +63,8 @@ function MyProjects() {
 
     return (
         <>
-            {modal && imageSizes.length > 0 && (
-                <Modal
-                    project={modal.project}
-                    closeModal={closeModal}
-                    imageSizes={imageSizes[modal.index]}
-                />
+            {modal && projectWithImageSizes.length > 0 && (
+                <Modal project={projectWithImageSizes[modal.index]} closeModal={closeModal} />
             )}
             <section
                 className={twMerge(

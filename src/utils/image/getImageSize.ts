@@ -1,4 +1,4 @@
-function getImageSize(url: string) {
+function getImageSize(url: string): Promise<{ width: number; height: number }> {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.src = url;

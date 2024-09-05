@@ -1,7 +1,7 @@
 "use client";
 
 import { useTapScroll } from "@/hooks/ui/useTapScroll";
-import { Project } from "@/types/project.types";
+import { ProjectWithImages } from "@/types/project.types";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -10,17 +10,15 @@ import { IoClose } from "react-icons/io5";
 import Navigate from "./Navigate";
 
 type ModalProps = {
-    project: Project;
+    project: ProjectWithImages;
     closeModal: () => void;
-    imageSizes: { width: number | undefined; height: number | undefined }[];
+    // imageSizes: { width: number | undefined; height: number | undefined }[];
 };
 
-function Modal({ project, closeModal, imageSizes }: ModalProps) {
+function Modal({ project, closeModal }: ModalProps) {
     const imageRef = useRef<HTMLImageElement>(null);
 
-    console.log(imageSizes);
-
-    const { createScrollLeft, createScrollRight } =
+    const { scrollHandlers } =
         useTapScroll({
             refs: [imageRef],
         }) ?? {};
@@ -69,35 +67,41 @@ function Modal({ project, closeModal, imageSizes }: ModalProps) {
                     </div>
                     <div className="relative flex w-[90%] py-4 justify-center items-center">
                         <div
-                            className="relative overflow-x-auto w-full flex gap-2 z-10 justify-center items-center mx-auto"
+                            className="relative w-fit overflow-x-scroll flex gap-2 z-10 justify-start items-center mx-auto"
                             ref={imageRef}
                         >
-                            {imageSizes &&
-                                project.images?.map((image, index) => (
-                                    <div key={image} className="relative overflow-hidden">
-                                        <Image
-                                            src={image}
-                                            alt={project.title ?? "detail image"}
-                                            width={imageSizes[index].width}
-                                            height={imageSizes[index].height}
-                                            priority
-                                            unoptimized
-                                            className="h-auto w-auto relative"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                                        />
-                                    </div>
-                                ))}
+                            {project.newImages?.map((image) => (
+                                <div
+                                    className="relative"
+                                    key={image.image}
+                                    style={{
+                                        minWidth: `${image.width / 2}px`,
+                                        aspectRatio: `${image.width / image.height}`,
+                                        width: `${image.width / 2}px`,
+                                        height: `${image.height / 2}px`,
+                                    }}
+                                >
+                                    <Image
+                                        src={image.image}
+                                        alt={project.title ?? "detail image"}
+                                        priority
+                                        fill
+                                        unoptimized
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            ))}
                         </div>
-                        {createScrollLeft && createScrollRight && (
+                        {scrollHandlers?.createScrollLeft && scrollHandlers?.createScrollRight && (
                             <div className="absolute flex w-full top-[50%]">
                                 <Navigate
                                     mode="before"
-                                    onClick={createScrollLeft(imageRef)}
+                                    onClick={scrollHandlers.createScrollLeft()}
                                     className="top-[50%]"
                                 />
                                 <Navigate
                                     mode="after"
-                                    onClick={createScrollRight(imageRef)}
+                                    onClick={scrollHandlers.createScrollRight()}
                                     className="top-[50%]"
                                 />
                             </div>
