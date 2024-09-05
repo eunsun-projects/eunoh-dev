@@ -22,6 +22,7 @@ export type Database = {
           isView: boolean | null
           keywords: string[] | null
           link: string | null
+          number: number | null
           stacks: Json[] | null
           started_at: string | null
           title: string | null
@@ -39,6 +40,7 @@ export type Database = {
           isView?: boolean | null
           keywords?: string[] | null
           link?: string | null
+          number?: number | null
           stacks?: Json[] | null
           started_at?: string | null
           title?: string | null
@@ -56,6 +58,7 @@ export type Database = {
           isView?: boolean | null
           keywords?: string[] | null
           link?: string | null
+          number?: number | null
           stacks?: Json[] | null
           started_at?: string | null
           title?: string | null
