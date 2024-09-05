@@ -43,7 +43,7 @@ function Modal({ project, closeModal }: ModalProps) {
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 backdrop-blur-sm dark:bg-black/50 bg-gray-300/50">
             <dialog
                 open
-                className="rounded-xl z-50 w-[90%] xl:w-[90%] max-h-[90%] xl:h-auto overflow-auto border-2 bg-white dark:border-white dark:bg-gray-900 dark:text-white border-gray-400 p-4 shadow-md"
+                className="rounded-xl z-50 h-auto w-[90%] xl:w-[90%] max-h-[90%] xl:h-auto overflow-auto border-2 bg-white dark:border-white dark:bg-gray-900 dark:text-white border-gray-400 p-4 shadow-md"
             >
                 <div className="relative h-[5%] w-full flex justify-end items-center gap-0.5 pb-4">
                     <div className="flex gap-2">

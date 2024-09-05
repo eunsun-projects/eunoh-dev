@@ -127,7 +127,7 @@ function MyProjects() {
                                         />
                                     </div>
                                     <div className="h-[40%] flex flex-col items-center justify-center">
-                                        <h3 className="text-sm font-bold">{project.title}</h3>
+                                        <h3 className="text-xs xl:text-sm font-bold">{project.title}</h3>
                                     </div>
                                 </div>
                             </div>
