@@ -1,6 +1,7 @@
 import { useProjectsQuery } from "@/hooks/queries/projects";
 import { useUiState } from "@/hooks/ui/useUiState";
 import { Project } from "@/types/project.types";
+import getImageSize from "@/utils/image/getImageSize";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -15,10 +16,34 @@ function MyProjects() {
     });
     const { data: projects, isLoading, error } = useProjectsQuery();
     const [mouseOver, setMouseOver] = useState<string | null>(null);
-    const [modal, setModal] = useState<Project | null>(null);
+    const [modal, setModal] = useState<{ project: Project; index: number } | null>(null);
+    const [imageSizes, setImageSizes] = useState<
+        { width: number | undefined; height: number | undefined }[][]
+    >([]);
 
-    const openModal = (project: Project) => setModal(project);
+    const openModal = (project: Project, index: number) => setModal({ project, index });
     const closeModal = () => setModal(null);
+
+    useEffect(() => {
+        if (!projects) return;
+        const loadImageSizes = async () => {
+            const sizes = await Promise.all(
+                projects.map((project) =>
+                    Promise.all(
+                        project.images?.map(
+                            (image) =>
+                                getImageSize(image) as Promise<{
+                                    width: number | undefined;
+                                    height: number | undefined;
+                                }>
+                        ) ?? []
+                    )
+                )
+            );
+            setImageSizes(sizes);
+        };
+        loadImageSizes();
+    }, [projects]);
 
     useEffect(() => {
         if (error) console.error(error);
@@ -34,7 +59,13 @@ function MyProjects() {
 
     return (
         <>
-            {modal && <Modal project={modal} closeModal={closeModal} />}
+            {modal && imageSizes.length > 0 && (
+                <Modal
+                    project={modal.project}
+                    closeModal={closeModal}
+                    imageSizes={imageSizes[modal.index]}
+                />
+            )}
             <section
                 className={twMerge(
                     "relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0",
@@ -50,7 +81,7 @@ function MyProjects() {
                 <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[70%]">
                     {projects
                         ?.filter((project) => project.isView)
-                        .map((project) => (
+                        .map((project, index) => (
                             <div
                                 key={project.id}
                                 className="relative flex flex-col items-center justify-center w-full min-h-[200px] h-full border rounded hover:scale-105 transition-all duration-300 will-change-transform"
@@ -66,7 +97,7 @@ function MyProjects() {
                                 >
                                     <div
                                         className="border rounded-sm p-2 min-w-[140px] hover:bg-gray-100 hover:text-gray-900 flex items-center justify-center cursor-pointer"
-                                        onClick={() => openModal(project)}
+                                        onClick={() => openModal(project, index)}
                                     >
                                         자세히 보기
                                     </div>
