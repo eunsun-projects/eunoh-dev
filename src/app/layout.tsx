@@ -1,4 +1,5 @@
 import QueryProvider from "@/providers/QueryProvider";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { d2coding } from "./fonts";
 import "./globals.css";
@@ -17,6 +18,7 @@ export default function RootLayout({
         <html lang="ko" className="dark">
             <body className={d2coding.className}>
                 <QueryProvider>{children}</QueryProvider>
+                <Analytics />
             </body>
         </html>
     );
