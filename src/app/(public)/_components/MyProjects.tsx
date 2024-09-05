@@ -84,7 +84,7 @@ function MyProjects() {
                         .map((project, index) => (
                             <div
                                 key={project.id}
-                                className="relative flex flex-col items-center justify-center w-full min-h-[200px] h-full border rounded hover:scale-105 transition-all duration-300 will-change-transform"
+                                className="relative flex flex-col items-center justify-center w-full min-h-[200px] h-full border-2 border-gray-400 dark:border-white rounded hover:scale-105 transition-all duration-300 will-change-transform shadow-md"
                                 onMouseEnter={() => setMouseOver(project.id)}
                                 onMouseLeave={() => setMouseOver(null)}
                             >
@@ -96,7 +96,7 @@ function MyProjects() {
                                     )}
                                 >
                                     <div
-                                        className="border rounded-sm p-2 min-w-[140px] hover:bg-gray-100 hover:text-gray-900 flex items-center justify-center cursor-pointer"
+                                        className="border-2 rounded-sm p-2 min-w-[140px] border-gray-400 dark:border-white hover:bg-gray-100 hover:text-gray-900 flex items-center justify-center cursor-pointer"
                                         onClick={() => openModal(project, index)}
                                     >
                                         자세히 보기
@@ -104,7 +104,7 @@ function MyProjects() {
                                     <Link
                                         href={project.github_link ?? ""}
                                         target="_blank"
-                                        className="border rounded-sm p-2 min-w-[140px] hover:bg-gray-100 hover:text-gray-900"
+                                        className="border-2 rounded-sm p-2 min-w-[140px] border-gray-400 dark:border-white hover:bg-gray-100 hover:text-gray-900"
                                     >
                                         Github 바로가기
                                     </Link>

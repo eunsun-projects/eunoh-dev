@@ -11,3 +11,8 @@ export type ProjectImage = {
 };
 
 export type PartialProject = Partial<Project>;
+
+export type Desc = {
+    subContent: string;
+    subTitle: string;
+};
