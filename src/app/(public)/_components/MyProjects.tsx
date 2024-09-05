@@ -78,7 +78,7 @@ function MyProjects() {
                 <div className="flex justify-center w-full h-[6%]">
                     <h2 className="font-bold text-3xl xl:text-5xl">{"💻Projects💻"}</h2>
                 </div>
-                <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[70%]">
+                <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[84%]">
                     {projects
                         ?.filter((project) => project.isView)
                         .map((project, index) => (
@@ -116,7 +116,7 @@ function MyProjects() {
                                         mouseOver === project.id && "hidden"
                                     )}
                                 >
-                                    <div className="relative h-1/2 aspect-auto w-full">
+                                    <div className="relative h-[60%] aspect-auto w-full">
                                         <Image
                                             src={project?.images?.[0] ?? ""}
                                             alt={project?.title ?? "thumbnail"}
@@ -126,7 +126,7 @@ function MyProjects() {
                                             priority
                                         />
                                     </div>
-                                    <div className="h-1/2 flex flex-col items-center justify-center">
+                                    <div className="h-[40%] flex flex-col items-center justify-center">
                                         <h3 className="text-sm font-bold">{project.title}</h3>
                                     </div>
                                 </div>

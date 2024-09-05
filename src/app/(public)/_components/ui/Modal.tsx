@@ -16,11 +16,11 @@ type ModalProps = {
 };
 
 function Modal({ project, closeModal }: ModalProps) {
-    const imageRef = useRef<HTMLImageElement>(null);
+    const imageRef = useRef<HTMLDivElement>(null);
 
     const { scrollHandlers } =
         useTapScroll({
-            refs: [imageRef],
+            ref: imageRef,
         }) ?? {};
 
     return (

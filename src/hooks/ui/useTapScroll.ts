@@ -1,27 +1,16 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 type UseTapScrollProps = {
-    refs: React.RefObject<HTMLElement>[];
+    ref: React.RefObject<HTMLDivElement>;
 };
 
-export function useTapScroll({ refs }: UseTapScrollProps) {
+export function useTapScroll({ ref }: UseTapScrollProps) {
     const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
-    const [isOverflowing, setIsOverflowing] = useState<boolean[]>([]);
+    const [isOverflowing, setIsOverflowing] = useState<boolean>(false);
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsDesktop(window.innerWidth >= 1280);
-
-            // 각 ref의 overflow 상태를 확인합니다.
-            const overflowStates = refs.map((ref) => {
-                if (ref.current) {
-                    return ref.current.scrollWidth > ref.current.clientWidth;
-                }
-                return false;
-            });
-            setIsOverflowing(overflowStates);
-        };
+        const handleResize = () => setIsDesktop(window.innerWidth >= 1280);
 
         window.addEventListener("resize", handleResize);
         handleResize(); // Initial check on mount
@@ -29,7 +18,18 @@ export function useTapScroll({ refs }: UseTapScrollProps) {
         return () => {
             window.removeEventListener("resize", handleResize);
         };
-    }, [refs]);
+    }, []);
+
+    useEffect(() => {
+        if (!ref.current) return;
+        const calculateOverflowStates = () => {
+            if (ref.current) {
+                setIsOverflowing(ref.current.scrollWidth > ref.current.clientWidth);
+            }
+        };
+        // Calculate overflow states on mount and when refs are updated
+        calculateOverflowStates();
+    }, [ref]);
 
     // Handlers for arrow buttons on desktop, with specific ref
     const createScrollHandler = useCallback(
@@ -49,18 +49,14 @@ export function useTapScroll({ refs }: UseTapScrollProps) {
         [isDesktop]
     );
 
-    // 특정 ref가 overflow 상태일 때만 스크롤 핸들러를 반환
-    const getScrollHandlers = (index: number) => {
-        if (!isDesktop || !isOverflowing[index]) return null;
+    const scrollHandlers = useMemo(() => {
+        if (!isDesktop || !isOverflowing) return null;
 
-        const ref = refs[index];
         return {
             createScrollLeft: () => createScrollHandler(ref, "left"),
             createScrollRight: () => createScrollHandler(ref, "right"),
         };
-    };
-
-    const scrollHandlers = getScrollHandlers(0);
+    }, [isDesktop, isOverflowing, ref, createScrollHandler]);
 
     return isDesktop ? { scrollHandlers } : null;
 }
