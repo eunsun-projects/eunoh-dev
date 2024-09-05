@@ -26,6 +26,7 @@ type FormValues = {
     troubles?: string;
     images?: FileList;
     isView?: boolean;
+    number?: number;
 };
 
 type AdminWritePageProps = {
@@ -53,6 +54,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
     const decisionsId = useId();
     const troublesId = useId();
     const isViewId = useId();
+    const numberId = useId();
 
     const onSubmit: SubmitHandler<FormValues> = (data) => {
         // 입력된 텍스트를 파싱하여 객체 배열로 변환
@@ -77,6 +79,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
             decisions: mode === "edit" && !data.decisions ? project?.decisions : newDecisionsArr,
             troubles: mode === "edit" && !data.troubles ? project?.troubles : newTroublesArr,
             isView: mode === "edit" && data.isView === undefined ? project?.isView : data.isView,
+            number: mode === "edit" && !data.number ? project?.number : data.number,
         };
 
         if (mode === "edit") {
@@ -123,6 +126,16 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                             className={inputStyle}
                             id={imageId}
                             {...register("images")}
+                        />
+                    </div>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor={numberId}>번호</label>
+                        <input
+                            type="number"
+                            className={inputStyle}
+                            id={numberId}
+                            placeholder={mode === "edit" ? project?.number?.toString() || "" : ""}
+                            {...register("number")}
                         />
                     </div>
                     <div className="flex flex-row gap-2 items-center">
