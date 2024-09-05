@@ -25,6 +25,7 @@ type FormValues = {
     decisions?: string;
     troubles?: string;
     images?: FileList;
+    isView?: boolean;
 };
 
 type AdminWritePageProps = {
@@ -51,6 +52,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
     const stacksId = useId();
     const decisionsId = useId();
     const troublesId = useId();
+    const isViewId = useId();
 
     const onSubmit: SubmitHandler<FormValues> = (data) => {
         // 입력된 텍스트를 파싱하여 객체 배열로 변환
@@ -74,6 +76,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
             stacks: mode === "edit" && !data.stacks ? project?.stacks : newStacksArr,
             decisions: mode === "edit" && !data.decisions ? project?.decisions : newDecisionsArr,
             troubles: mode === "edit" && !data.troubles ? project?.troubles : newTroublesArr,
+            isView: mode === "edit" && data.isView === undefined ? project?.isView : data.isView,
         };
 
         if (mode === "edit") {
@@ -274,6 +277,15 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                                           .join(" / ") || ""
                                     : ""
                             }
+                        />
+                    </div>
+                    <div className="flex flex-row gap-2 items-center">
+                        <label htmlFor={isViewId}>노출여부</label>
+                        <input
+                            type="checkbox"
+                            className={inputStyle}
+                            id={isViewId}
+                            {...register("isView")}
                         />
                     </div>
                     <button className="p-2 bg-blue-500 text-white rounded-md w-[50%] mx-auto" type="submit">

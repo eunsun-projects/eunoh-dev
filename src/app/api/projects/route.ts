@@ -29,8 +29,6 @@ export async function POST(req: Request) {
 
         const imageBuffers = await Promise.all(imageBufferPromises);
 
-        const filePath = `projects/${Date.now()}.webp`;
-
         if (imageBuffers.length === 0) {
             return NextResponse.json({ error: "이미지 변환 실패" }, { status: 500 });
         }
