@@ -1,6 +1,7 @@
 "use client";
 
 import { Desc } from "@/types/project.types";
+import React from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 
@@ -23,9 +24,8 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: JsonObjec
             <h3 className="text-xl font-bold w-[95%] xl:w-[45%] text-left mx-auto">{title[mode]}</h3>
             <ul className="flex flex-col gap-2 w-[95%] xl:w-[45%] mx-auto">
                 {jsonObject?.map((stack, index) => (
-                    <>
+                    <React.Fragment key={stack?.subTitle}>
                         <li
-                            key={stack?.subTitle}
                             className="flex gap-2 justify-start items-center cursor-pointer text-lg"
                             onClick={() => handleClick(index)}
                         >
@@ -41,7 +41,7 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: JsonObjec
                         >
                             {stack?.subContent}
                         </p>
-                    </>
+                    </React.Fragment>
                 ))}
             </ul>
         </div>
