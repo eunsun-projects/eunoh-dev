@@ -21,10 +21,12 @@ function MainComponent() {
             }
         };
 
+        document.documentElement.style.overscrollBehavior = "none";
         window.addEventListener("scroll", handleScroll);
 
         return () => {
             window.removeEventListener("scroll", handleScroll);
+            document.documentElement.style.overscrollBehavior = "auto";
         };
     }, []);
 

@@ -24,8 +24,8 @@ function AboutMe() {
             <div className="flex flex-col items-center justify-start gap-4 w-[90%] h-[84%] pt-10 xl:pt-0 xl:justify-center">
                 <div className="flex justify-start w-full h-[6%]">
                     <h2 className="flex flex-row items-center font-bold text-3xl w-full xl:text-5xl xl:w-[50%]">
-                        <EunOh className="w-[15%] xl:w-[10%] px-2" /> About Me{" "}
-                        <EunOh className="w-[15%] xl:w-[10%] px-2" />
+                        <EunOh className="w-[15%] xl:w-[10%] px-2 overflow-visible" /> About Me{" "}
+                        <EunOh className="w-[15%] xl:w-[10%] px-2 overflow-visible" />
                     </h2>
                 </div>
                 <div className="flex flex-col justify-start gap-6 w-full h-[80%] xl:gap-2 xl:px-2">

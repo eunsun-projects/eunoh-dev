@@ -22,9 +22,19 @@ function DarkLightModeButton() {
     };
 
     useEffect(() => {
-        // 페이지 로드 시 현재 테마 설정을 가져옴
-        const currentTheme = localStorage.getItem("theme");
-        setTheme(currentTheme);
+        // 사용자의 OS 설정에 따라 다크 모드 적용
+        if (
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+            setTheme("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+            setTheme("light");
+        }
     }, []);
 
     return (

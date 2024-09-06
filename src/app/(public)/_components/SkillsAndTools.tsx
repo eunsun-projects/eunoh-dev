@@ -38,7 +38,7 @@ function SkillsAndTools() {
         >
             <div className="flex flex-col items-center justify-start gap-8 w-[90%] h-[84%] pt-10 xl:pt-0 xl:justify-center">
                 <div className="flex justify-center w-full h-[6%]">
-                    <h2 className="font-bold text-3xl xl:text-5xl">{"🛠️Skills & Tools🛠️"}</h2>
+                    <h2 className="font-bold text-3xl xl:text-5xl">{"🛠️ Skills & Tools 🛠️"}</h2>
                 </div>
                 <div className="flex flex-col items-center justify-center gap-6 xl:gap-10 w-full h-[80%] xl:px-2 xl:h-[70%]">
                     <div className="flex flex-col items-center justify-center gap-3 xl:gap-6 w-full text-4xl xl:text-5xl">

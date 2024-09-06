@@ -76,7 +76,7 @@ function MyProjects() {
                 ref={ref}
             >
                 <div className="flex justify-center w-full h-[6%]">
-                    <h2 className="font-bold text-3xl xl:text-5xl">{"💻Projects💻"}</h2>
+                    <h2 className="font-bold text-3xl xl:text-5xl">{"💻 Projects 💻"}</h2>
                 </div>
                 <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[84%]">
                     {projects
