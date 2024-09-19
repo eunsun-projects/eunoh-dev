@@ -40,12 +40,15 @@ function Modal({ project, closeModal }: ModalProps) {
     const handleTroubleClick = (index: number) => setTroubleIndex((prev) => setStateFunction(prev, index));
 
     return (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 backdrop-blur-sm dark:bg-black/50 bg-gray-300/50">
+        <div
+            className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 backdrop-blur-sm dark:bg-black/50 bg-gray-300/50"
+            onClick={closeModal}
+        >
             <dialog
                 open
                 className="rounded-xl z-50 h-auto w-[90%] xl:w-[90%] max-h-[90%] xl:h-auto overflow-auto border-2 bg-white dark:border-white dark:bg-gray-900 dark:text-white border-gray-400 p-4 shadow-md"
             >
-                <div className="relative h-[5%] w-full flex justify-end items-center gap-0.5 pb-4">
+                <div className="sticky top-0 h-[5%] w-full flex justify-end items-center gap-0.5 pb-4 z-50">
                     <div className="flex gap-2">
                         <Link
                             href={project.link ?? ""}
