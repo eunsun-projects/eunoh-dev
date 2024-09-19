@@ -1,6 +1,7 @@
 import { PartialProject } from "@/types/project.types";
 import convertToWebP from "@/utils/common/convertToWebP";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -11,6 +12,7 @@ export async function GET(req: Request) {
         .order("number", { ascending: true });
 
     if (error) {
+        revalidatePath("/", "layout");
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -68,6 +70,7 @@ export async function POST(req: Request) {
         .single();
 
     if (error) {
+        revalidatePath("/", "layout");
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
