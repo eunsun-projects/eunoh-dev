@@ -1,7 +1,5 @@
-import { useProjectsQuery } from "@/hooks/queries/projects";
 import { useUiState } from "@/hooks/ui/useUiState";
 import { Project, ProjectWithImages } from "@/types/project.types";
-import getImageSize from "@/utils/image/getImageSize";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,49 +7,21 @@ import { useInView } from "react-intersection-observer";
 import { twMerge } from "tailwind-merge";
 import Modal from "./ui/Modal";
 
-function MyProjects() {
+interface MyProjectsProps {
+    projects: ProjectWithImages[];
+    isLoading: boolean;
+}
+
+function MyProjects({ projects, isLoading }: MyProjectsProps) {
     const { mainReady } = useUiState();
     const { ref, inView } = useInView({
         threshold: 0.3,
     });
-    const { data: projects, isLoading, error } = useProjectsQuery();
     const [mouseOver, setMouseOver] = useState<string | null>(null);
     const [modal, setModal] = useState<{ project: Project; index: number } | null>(null);
 
-    const [projectWithImageSizes, setProjectWithImageSizes] = useState<ProjectWithImages[]>([]);
-
     const openModal = (project: Project, index: number) => setModal({ project, index });
     const closeModal = () => setModal(null);
-
-    useEffect(() => {
-        if (!projects) return;
-
-        const promises = projects.map(async (project) => {
-            const sizes = await Promise.all(project.images?.map(getImageSize) ?? []);
-            const newImages =
-                project.images?.map((image, i) => ({
-                    image,
-                    width: sizes[i]?.width ?? 0,
-                    height: sizes[i]?.height ?? 0,
-                })) ?? [];
-
-            return {
-                ...project,
-                newImages,
-            };
-        });
-
-        async function resolving() {
-            const projectPromises = await Promise.all(promises);
-            const filteredProjects = projectPromises.filter((project) => project.isView);
-            setProjectWithImageSizes(filteredProjects);
-        }
-        resolving();
-    }, [projects]);
-
-    useEffect(() => {
-        if (error) console.error(error);
-    }, [error]);
 
     useEffect(() => {
         if (modal) {
@@ -63,8 +33,8 @@ function MyProjects() {
 
     return (
         <>
-            {modal && projectWithImageSizes.length > 0 && (
-                <Modal project={projectWithImageSizes[modal.index]} closeModal={closeModal} />
+            {modal && projects.length > 0 && (
+                <Modal project={projects[modal.index]} closeModal={closeModal} />
             )}
             <section
                 className={twMerge(
@@ -78,7 +48,7 @@ function MyProjects() {
                 <div className="flex justify-center w-full h-[6%]">
                     <h2 className="font-bold text-3xl xl:text-5xl">{"💻 Projects 💻"}</h2>
                 </div>
-                <div className="grid grid-cols-2 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[84%]">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[84%]">
                     {projects
                         ?.filter((project) => project.isView)
                         .map((project, index) => (

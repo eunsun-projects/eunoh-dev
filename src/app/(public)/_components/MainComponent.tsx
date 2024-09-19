@@ -1,6 +1,9 @@
 "use client";
 
+import { useProjectsQuery } from "@/hooks/queries/projects";
 import { useUiState } from "@/hooks/ui/useUiState";
+import { ProjectWithImages } from "@/types/project.types";
+import getImageSize from "@/utils/image/getImageSize";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import AboutMe from "./AboutMe";
@@ -11,6 +14,35 @@ import SkillsAndTools from "./SkillsAndTools";
 function MainComponent() {
     const { mainReady } = useUiState();
     const [showHello, setShowHello] = useState(true);
+    const { data: projects, isPending, error } = useProjectsQuery();
+    const [projectWithImageSizes, setProjectWithImageSizes] = useState<ProjectWithImages[]>([]);
+
+    useEffect(() => {
+        if (!projects) return;
+        const promises = projects.map(async (project) => {
+            const sizes = await Promise.all(project.images?.map(getImageSize) ?? []);
+            const newImages =
+                project.images?.map((image, i) => ({
+                    image,
+                    width: sizes[i]?.width ?? 0,
+                    height: sizes[i]?.height ?? 0,
+                })) ?? [];
+            return {
+                ...project,
+                newImages,
+            };
+        });
+        async function resolving() {
+            const projectPromises = await Promise.all(promises);
+            const filteredProjects = projectPromises.filter((project) => project.isView);
+            setProjectWithImageSizes(filteredProjects);
+        }
+        resolving();
+    }, [projects]);
+
+    useEffect(() => {
+        if (error) console.error(error);
+    }, [error]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -47,7 +79,7 @@ function MainComponent() {
             </div>
             <AboutMe />
             <SkillsAndTools />
-            <MyProjects />
+            <MyProjects projects={projectWithImageSizes} isLoading={isPending} />
         </main>
     );
 }
