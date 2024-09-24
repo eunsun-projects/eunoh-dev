@@ -21,7 +21,12 @@ function MyProjects({ projects, isLoading }: MyProjectsProps) {
     const [modal, setModal] = useState<{ project: Project; index: number } | null>(null);
 
     const openModal = (project: Project, index: number) => setModal({ project, index });
-    const closeModal = () => setModal(null);
+    const closeModal = (e: React.MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest("button") || target === e.currentTarget) {
+            setModal(null);
+        }
+    };
 
     useEffect(() => {
         if (modal) {
