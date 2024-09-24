@@ -12,8 +12,13 @@ import Navigate from "./Navigate";
 
 type ModalProps = {
     project: ProjectWithImages;
-    closeModal: () => void;
+    closeModal: (e: React.MouseEvent) => void;
     // imageSizes: { width: number | undefined; height: number | undefined }[];
+};
+
+const setStateFunction = (prev: number[] | null, index: number) => {
+    if (prev === null) return [index];
+    return prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index];
 };
 
 function Modal({ project, closeModal }: ModalProps) {
@@ -27,11 +32,6 @@ function Modal({ project, closeModal }: ModalProps) {
             ref: imageRef,
         }) ?? {};
 
-    const setStateFunction = (prev: number[] | null, index: number) => {
-        if (prev === null) return [index];
-        return prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index];
-    };
-
     const handleStackClick = (index: number) => setStackIndex((prev) => setStateFunction(prev, index));
 
     const handleDecisionClick = (index: number) =>
@@ -41,7 +41,7 @@ function Modal({ project, closeModal }: ModalProps) {
 
     return (
         <div
-            className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 backdrop-blur-sm dark:bg-black/50 bg-gray-300/50"
+            className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-40 backdrop-blur-sm dark:bg-black/50 bg-gray-300/50"
             onClick={closeModal}
         >
             <dialog
@@ -61,7 +61,7 @@ function Modal({ project, closeModal }: ModalProps) {
                             <FaGithub className="text-xl xl:text-2xl" />
                         </Link>
                     </div>
-                    <button onClick={closeModal}>
+                    <button type="button" onClick={closeModal}>
                         <IoClose className="text-2xl xl:text-3xl" />
                     </button>
                 </div>

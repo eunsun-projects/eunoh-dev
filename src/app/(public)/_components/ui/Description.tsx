@@ -5,7 +5,7 @@ import React from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 
-type JsonObject = {
+type DescriptionProps = {
     mode: "stacks" | "decisions" | "troubles";
     jsonObject: Desc[] | null;
     handleClick: (index: number) => void;
@@ -18,7 +18,7 @@ const title = {
     troubles: "💥 트러블 슈팅",
 };
 
-function Description({ mode, jsonObject, handleClick, selectedIndex }: JsonObject) {
+function Description({ mode, jsonObject, handleClick, selectedIndex }: DescriptionProps) {
     return (
         <div className="flex flex-col w-full gap-4 text-center">
             <h3 className="text-xl font-bold w-[95%] xl:w-[45%] text-left mx-auto">{title[mode]}</h3>
