@@ -14,7 +14,7 @@ import SkillsAndTools from "./SkillsAndTools";
 function MainComponent() {
   const { mainReady } = useUiState();
   const [showHello, setShowHello] = useState(true);
-  const { data: projects, isPending, error } = useProjectsQuery();
+  const { data: projects, error } = useProjectsQuery();
   const [projectWithImageSizes, setProjectWithImageSizes] = useState<ProjectWithImages[]>([]);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function MainComponent() {
       </div>
       <AboutMe />
       <SkillsAndTools />
-      <MyProjects projectsWithImageSizes={projectWithImageSizes} isLoading={isPending} />
+      {projects && <MyProjects projectsWithImageSizes={projectWithImageSizes} projects={projects} />}
     </main>
   );
 }

@@ -1,5 +1,3 @@
-import Loading from "@/app/loading";
-import { useProjectsQuery } from "@/hooks/queries/projects";
 import { useUiState } from "@/hooks/ui/useUiState";
 import { Project, ProjectWithImages } from "@/types/project.types";
 import cn from "@/utils/common/cn";
@@ -11,17 +9,16 @@ import Modal from "./ui/Modal";
 
 interface MyProjectsProps {
   projectsWithImageSizes: ProjectWithImages[];
-  isLoading: boolean;
+  projects: Project[];
 }
 
-function MyProjects({ projectsWithImageSizes, isLoading }: MyProjectsProps) {
+function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
   const { mainReady } = useUiState();
   const { ref, inView } = useInView({
     threshold: 0.3,
   });
   const [mouseOver, setMouseOver] = useState<string | null>(null);
   const [modal, setModal] = useState<{ project: Project; index: number } | null>(null);
-  const { data: projects, isPending, error } = useProjectsQuery();
 
   const openModal = (project: Project, index: number) => setModal({ project, index });
   const closeModal = (e: React.MouseEvent) => {
@@ -44,12 +41,10 @@ function MyProjects({ projectsWithImageSizes, isLoading }: MyProjectsProps) {
       {modal && projectsWithImageSizes.length > 0 && (
         <Modal project={projectsWithImageSizes[modal.index]} closeModal={closeModal} />
       )}
-      {isLoading && <Loading />}
       <section
         className={cn(
           "relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0",
           mainReady && "flex",
-          isLoading && "opacity-0",
           inView && "opacity-100"
         )}
         ref={ref}
