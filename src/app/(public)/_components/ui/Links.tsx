@@ -16,10 +16,10 @@ function Links() {
                 mainReady && "opacity-100"
             )}
         >
-            <Link href="https://github.com/eunohhh">
+            <Link href="https://github.com/eunohhh" className="z-40">
                 <FaGithub className="text-3xl" />
             </Link>
-            <Link href="https://ifelseif.tistory.com">
+            <Link href="https://ifelseif.tistory.com" className="z-40">
                 <SiTistory className="text-2xl" />
             </Link>
         </div>

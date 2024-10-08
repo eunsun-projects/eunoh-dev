@@ -72,7 +72,7 @@ function MyProjects({ projects, isLoading }: MyProjectsProps) {
                                 >
                                     <div
                                         className="border-2 rounded-sm p-2 min-w-[140px] border-gray-400 dark:border-white hover:bg-gray-100 hover:text-gray-900 flex items-center justify-center cursor-pointer"
-                                        onClick={() => cn(project, index)}
+                                        onClick={() => openModal(project, index)}
                                     >
                                         자세히 보기
                                     </div>

@@ -26,7 +26,7 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: Descripti
                 {jsonObject?.map((stack, index) => (
                     <React.Fragment key={stack?.subTitle}>
                         <li
-                            className="flex gap-2 justify-start items-center cursor-pointer text-lg"
+                            className="flex gap-2 justify-start items-center cursor-pointer text-base"
                             onClick={() => handleClick(index)}
                         >
                             {selectedIndex?.includes(index) ? <IoIosArrowDown /> : <IoIosArrowForward />}
@@ -35,7 +35,7 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: Descripti
 
                         <p
                             className={cn(
-                                "text-sm text-left pl-1",
+                                "text-sm text-left pl-1 break-keep",
                                 selectedIndex?.includes(index) ? "block" : "hidden"
                             )}
                         >

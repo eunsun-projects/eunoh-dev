@@ -50,14 +50,14 @@ function Hello() {
                     <h2 className="font-bold text-center text-3xl xl:text-5xl">
                         <ReactTyped
                             strings={["안녕하세요"]}
-                            typeSpeed={55}
+                            typeSpeed={65}
                             onComplete={handleReady("first")}
                         />
                     </h2>
                     <h2 className="font-bold text-center text-3xl xl:text-[3rem] leading-normal">
                         <ReactTyped
                             strings={["FE개발자를 꿈꾸는<br />오은 입니다"]}
-                            typeSpeed={55}
+                            typeSpeed={65}
                             onComplete={handleReady("second")}
                         />
                     </h2>
