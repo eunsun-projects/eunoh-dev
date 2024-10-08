@@ -1,6 +1,7 @@
 "use client";
 
 import { useUiState } from "@/hooks/ui/useUiState";
+import cn from "@/utils/common/cn";
 import { FaCss3Alt, FaDiscord, FaGithub, FaHtml5, FaJs, FaReact, FaSass, FaSlack } from "react-icons/fa";
 import { GiZeppelin } from "react-icons/gi";
 import { IoLogoFigma, IoLogoFirebase, IoLogoVercel } from "react-icons/io5";
@@ -19,7 +20,6 @@ import {
 } from "react-icons/si";
 import { TbBrandRedux } from "react-icons/tb";
 import { useInView } from "react-intersection-observer";
-import { twMerge } from "tailwind-merge";
 
 function SkillsAndTools() {
     const { mainReady } = useUiState();
@@ -29,7 +29,7 @@ function SkillsAndTools() {
 
     return (
         <section
-            className={twMerge(
+            className={cn(
                 "relative flex-col items-center justify-center h-dvh transition-opacity opacity-0 duration-1000 hidden w-full",
                 mainReady && "flex",
                 inView && "opacity-100"

@@ -1,9 +1,9 @@
 "use client";
 
 import { Desc } from "@/types/project.types";
+import cn from "@/utils/common/cn";
 import React from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { twMerge } from "tailwind-merge";
 
 type DescriptionProps = {
     mode: "stacks" | "decisions" | "troubles";
@@ -34,7 +34,7 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: Descripti
                         </li>
 
                         <p
-                            className={twMerge(
+                            className={cn(
                                 "text-sm text-left pl-1",
                                 selectedIndex?.includes(index) ? "block" : "hidden"
                             )}

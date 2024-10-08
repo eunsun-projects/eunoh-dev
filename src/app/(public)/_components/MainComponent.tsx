@@ -3,9 +3,9 @@
 import { useProjectsQuery } from "@/hooks/queries/projects";
 import { useUiState } from "@/hooks/ui/useUiState";
 import { ProjectWithImages } from "@/types/project.types";
+import cn from "@/utils/common/cn";
 import getImageSize from "@/utils/image/getImageSize";
 import { useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import AboutMe from "./AboutMe";
 import Hello from "./Hello";
 import MyProjects from "./MyProjects";
@@ -64,16 +64,13 @@ function MainComponent() {
 
     return (
         <main
-            className={twMerge(
+            className={cn(
                 "h-dvh flex flex-col items-center justify-center dark:bg-gray-900 dark:text-white",
                 mainReady && "h-auto"
             )}
         >
             <div
-                className={twMerge(
-                    "transition-opacity duration-1000",
-                    showHello ? "opacity-100" : "opacity-0"
-                )}
+                className={cn("transition-opacity duration-1000", showHello ? "opacity-100" : "opacity-0")}
             >
                 <Hello />
             </div>

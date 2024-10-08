@@ -3,11 +3,11 @@
 import { useAuth } from "@/hooks/auth/useAuth";
 import { useProjectMutation } from "@/hooks/queries/projects";
 import { PartialProject } from "@/types/project.types";
+import cn from "@/utils/common/cn";
 import parseTextToObjects from "@/utils/common/parseTextToObjects";
 import { useRouter } from "next/navigation";
 import { useEffect, useId } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
 
 const inputStyle = "w-[180px] border border-gray-300 rounded-md p-2";
 
@@ -154,7 +154,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                     <div className="flex flex-row gap-2 items-center">
                         <label htmlFor={descriptionId}>설명</label>
                         <textarea
-                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={descriptionId}
                             placeholder={mode === "edit" ? project?.description || "" : ""}
                             {...register("description")}
@@ -164,21 +164,21 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                         <label htmlFor="keywords1">키워드</label>
                         <input
                             type="text"
-                            className={twMerge(inputStyle, "w-[120px]")}
+                            className={cn(inputStyle, "w-[120px]")}
                             id={keywords1Id}
                             placeholder={mode === "edit" ? project?.keywords?.[0] || "" : ""}
                             {...register("keywords1")}
                         />
                         <input
                             type="text"
-                            className={twMerge(inputStyle, "w-[120px]")}
+                            className={cn(inputStyle, "w-[120px]")}
                             id={keywords2Id}
                             placeholder={mode === "edit" ? project?.keywords?.[1] || "" : ""}
                             {...register("keywords2")}
                         />
                         <input
                             type="text"
-                            className={twMerge(inputStyle, "w-[120px]")}
+                            className={cn(inputStyle, "w-[120px]")}
                             id={keywords3Id}
                             placeholder={mode === "edit" ? project?.keywords?.[2] || "" : ""}
                             {...register("keywords3")}
@@ -188,7 +188,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                         <label htmlFor={linkId}>링크</label>
                         <input
                             type="text"
-                            className={twMerge(inputStyle, "w-[300px]")}
+                            className={cn(inputStyle, "w-[300px]")}
                             id={linkId}
                             placeholder={mode === "edit" ? project?.link || "" : ""}
                             {...register("link")}
@@ -196,7 +196,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                         <label htmlFor={github_linkId}>깃허브 링크</label>
                         <input
                             type="text"
-                            className={twMerge(inputStyle, "w-[300px]")}
+                            className={cn(inputStyle, "w-[300px]")}
                             id={github_linkId}
                             placeholder={mode === "edit" ? project?.github_link || "" : ""}
                             {...register("github_link")}
@@ -223,7 +223,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                     <div className="flex flex-col gap-1">
                         <label htmlFor={featuresId}>주요기능</label>
                         <textarea
-                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={featuresId}
                             {...register("features")}
                             placeholder={mode === "edit" ? project?.features?.join(" / ") || "" : ""}
@@ -232,7 +232,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                     <div className="flex flex-col gap-1">
                         <label htmlFor={stacksId}>사용기술</label>
                         <textarea
-                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={stacksId}
                             {...register("stacks")}
                             placeholder={
@@ -254,7 +254,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                     <div className="flex flex-col gap-1">
                         <label htmlFor={decisionsId}>기술적의사결정</label>
                         <textarea
-                            className={twMerge(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
+                            className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
                             id={decisionsId}
                             {...register("decisions")}
                             placeholder={
@@ -276,7 +276,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
                     <div className="flex flex-col gap-1">
                         <label htmlFor={troublesId}>트러블슈팅</label>
                         <textarea
-                            className={twMerge(inputStyle, "w-[250px] h-[100px] xl:w-[500px]")}
+                            className={cn(inputStyle, "w-[250px] h-[100px] xl:w-[500px]")}
                             id={troublesId}
                             {...register("troubles")}
                             placeholder={

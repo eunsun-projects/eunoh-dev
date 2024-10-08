@@ -1,9 +1,9 @@
 "use client";
 
 import { useUiState } from "@/hooks/ui/useUiState";
+import cn from "@/utils/common/cn";
 import { FaAngleUp } from "react-icons/fa";
 // import { IoChatboxEllipses, IoMail } from "react-icons/io5";
-import { twMerge } from "tailwind-merge";
 
 function RightBottomUI() {
     const { mainReady } = useUiState();
@@ -17,7 +17,7 @@ function RightBottomUI() {
 
     return (
         <div
-            className={twMerge(
+            className={cn(
                 "fixed opacity-0 bottom-2 right-2 flex flex-col gap-2 justify-center items-center transition-opacity duration-1000 z-40 text-lg xl:text-2xl",
                 mainReady && "opacity-100"
             )}
