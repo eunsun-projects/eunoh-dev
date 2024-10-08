@@ -1,9 +1,9 @@
 "use client";
 
 import { useUiState } from "@/hooks/ui/useUiState";
+import cn from "@/utils/common/cn";
 import { useEffect, useState } from "react";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-import { twMerge } from "tailwind-merge";
 
 function DarkLightModeButton() {
     const { mainReady } = useUiState();
@@ -39,7 +39,7 @@ function DarkLightModeButton() {
 
     return (
         <div
-            className={twMerge(
+            className={cn(
                 "fixed opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white z-50",
                 mainReady && theme !== null && "opacity-100"
             )}

@@ -1,10 +1,10 @@
 import { useUiState } from "@/hooks/ui/useUiState";
 import { Project, ProjectWithImages } from "@/types/project.types";
+import cn from "@/utils/common/cn";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { twMerge } from "tailwind-merge";
 import Modal from "./ui/Modal";
 
 interface MyProjectsProps {
@@ -42,7 +42,7 @@ function MyProjects({ projects, isLoading }: MyProjectsProps) {
                 <Modal project={projects[modal.index]} closeModal={closeModal} />
             )}
             <section
-                className={twMerge(
+                className={cn(
                     "relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0",
                     mainReady && "flex",
                     isLoading && "opacity-0",
@@ -64,7 +64,7 @@ function MyProjects({ projects, isLoading }: MyProjectsProps) {
                                 onMouseLeave={() => setMouseOver(null)}
                             >
                                 <div
-                                    className={twMerge(
+                                    className={cn(
                                         "hidden absolute w-full h-[90%]",
                                         mouseOver === project.id &&
                                             "flex flex-col items-center justify-center gap-2"
@@ -86,7 +86,7 @@ function MyProjects({ projects, isLoading }: MyProjectsProps) {
                                 </div>
 
                                 <div
-                                    className={twMerge(
+                                    className={cn(
                                         "flex flex-col h-full w-full",
                                         mouseOver === project.id && "hidden"
                                     )}

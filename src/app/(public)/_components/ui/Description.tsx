@@ -1,9 +1,9 @@
 "use client";
 
 import { Desc } from "@/types/project.types";
+import cn from "@/utils/common/cn";
 import React from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { twMerge } from "tailwind-merge";
 
 type DescriptionProps = {
     mode: "stacks" | "decisions" | "troubles";
@@ -26,7 +26,7 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: Descripti
                 {jsonObject?.map((stack, index) => (
                     <React.Fragment key={stack?.subTitle}>
                         <li
-                            className="flex gap-2 justify-start items-center cursor-pointer text-lg"
+                            className="flex gap-2 justify-start items-center cursor-pointer text-base"
                             onClick={() => handleClick(index)}
                         >
                             {selectedIndex?.includes(index) ? <IoIosArrowDown /> : <IoIosArrowForward />}
@@ -34,8 +34,8 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: Descripti
                         </li>
 
                         <p
-                            className={twMerge(
-                                "text-sm text-left pl-1",
+                            className={cn(
+                                "text-sm text-left pl-1 break-keep",
                                 selectedIndex?.includes(index) ? "block" : "hidden"
                             )}
                         >

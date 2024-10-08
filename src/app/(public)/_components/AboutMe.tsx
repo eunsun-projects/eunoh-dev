@@ -1,9 +1,9 @@
 "use client";
 
 import { useUiState } from "@/hooks/ui/useUiState";
+import cn from "@/utils/common/cn";
 import { useInView } from "react-intersection-observer";
 import { ReactTyped } from "react-typed";
-import { twMerge } from "tailwind-merge";
 import EunOh from "../../../../public/eunoh.svg";
 
 function AboutMe() {
@@ -14,7 +14,7 @@ function AboutMe() {
 
     return (
         <section
-            className={twMerge(
+            className={cn(
                 "relative flex-col items-center justify-center h-dvh transition-opacity opacity-0 duration-1000 hidden w-full",
                 mainReady && "flex",
                 inView && "opacity-100"

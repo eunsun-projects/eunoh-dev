@@ -41,12 +41,12 @@ function Modal({ project, closeModal }: ModalProps) {
 
     return (
         <div
-            className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-40 backdrop-blur-sm dark:bg-black/50 bg-gray-300/50"
+            className="fixed top-0 left-0 w-full h-full flex justify-center items-center backdrop-blur-sm dark:bg-black/50 bg-gray-300/50 z-50"
             onClick={closeModal}
         >
             <dialog
                 open
-                className="rounded-xl z-50 h-auto w-[90%] xl:w-[90%] max-h-[90%] xl:h-auto overflow-auto border-2 bg-white dark:border-white dark:bg-gray-900 dark:text-white border-gray-400 p-4 shadow-md"
+                className="rounded-xl z-50 p-2 h-auto w-full xl:w-[90%] max-h-[90%] xl:h-auto overflow-auto border-2 bg-white dark:border-white dark:bg-gray-900 dark:text-white border-gray-400 xl:p-4 shadow-md"
             >
                 <div className="sticky top-0 h-[5%] w-full flex justify-end items-center gap-0.5 pb-4 z-50">
                     <div className="flex gap-2">
@@ -127,14 +127,20 @@ function Modal({ project, closeModal }: ModalProps) {
                         )}
                     </div>
 
-                    <p className="text-base text-center whitespace-pre-wrap pb-4">{project.description}</p>
+                    <p className="text-base text-center whitespace-pre-wrap pb-4 break-keep">
+                        {project.description}
+                    </p>
 
-                    <div className="flex flex-col w-[95%] xl:w-full gap-4 text-left">
+                    <div className="flex flex-col w-full gap-4 text-left">
                         <h3 className="text-xl font-bold w-[95%] xl:w-[45%] text-left mx-auto">
                             🗝️ 주요 기능 및 특징
                         </h3>
-                        <ul className="list-disc list-inside w-full xl:w-[45%] mx-auto flex flex-col gap-2">
-                            {project.features?.map((feature) => <li key={feature}>{feature}</li>)}
+                        <ul className="list-disc list-inside w-[94%] xl:w-[45%] mx-auto flex flex-col gap-2">
+                            {project.features?.map((feature) => (
+                                <li key={feature} className="text-sm">
+                                    {feature}
+                                </li>
+                            ))}
                         </ul>
                     </div>
 

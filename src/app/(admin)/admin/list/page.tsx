@@ -2,9 +2,9 @@
 
 import { useProjectMutation, useProjectsQuery } from "@/hooks/queries/projects";
 import { Project } from "@/types/project.types";
+import cn from "@/utils/common/cn";
 import Link from "next/link";
 import { useEffect } from "react";
-import { twMerge } from "tailwind-merge";
 
 function ListPage() {
     const { data: projects, isLoading, error } = useProjectsQuery();
@@ -37,7 +37,7 @@ function ListPage() {
                 {projects?.map((project) => (
                     <li
                         key={project.id}
-                        className={twMerge(
+                        className={cn(
                             "flex flex-row items-center justify-between gap-2",
                             project.isView ? "bg-white" : "bg-gray-100 text-gray-400"
                         )}
