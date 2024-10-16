@@ -61,7 +61,7 @@ function Hello() {
           ready.first && ready.second && "opacity-100"
         )}
       >
-        <p className="text-xs xl:text-lg">updated at 2024.10.08</p>
+        <p className="text-xs xl:text-lg">updated at 2024.10.16</p>
       </div>
       <div
         className={cn(
