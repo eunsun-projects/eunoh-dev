@@ -4,7 +4,7 @@ import { useUiState } from "@/hooks/ui/useUiState";
 import cn from "@/utils/common/cn";
 import { useInView } from "react-intersection-observer";
 import { ReactTyped } from "react-typed";
-import EunOh from "../../../../public/eunoh.svg";
+import EunOh from "../../../public/eunoh.svg";
 
 function AboutMe() {
   const { mainReady } = useUiState();
