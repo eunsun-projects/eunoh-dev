@@ -23,6 +23,7 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
   const openModal = (project: Project, index: number) => setModal({ project, index });
   const closeModal = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
+    if (target.closest("#navigate-button")) return;
     if (target.closest("button") || target === e.currentTarget) {
       setModal(null);
     }
@@ -52,7 +53,7 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
         <div className="flex justify-center w-full h-[6%]">
           <h2 className="font-bold text-3xl xl:text-5xl">{"💻 Projects 💻"}</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[55%] h-full xl:px-2 xl:h-[84%]">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[60%] h-full xl:px-2 xl:h-[84%]">
           {projects
             ?.filter((project) => project.isView)
             .map((project, index) => (
