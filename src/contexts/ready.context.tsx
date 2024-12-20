@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useState } from 'react';
 
 export type UiStateContextType = {
-    mainReady: boolean;
-    setMainReady: (ready: boolean) => void;
+  mainReady: boolean;
+  setMainReady: (ready: boolean) => void;
 };
 
 const initialState: UiStateContextType = {
-    mainReady: false,
-    setMainReady: () => {},
+  mainReady: false,
+  setMainReady: () => {},
 };
 
 export const UiStateContext = createContext<UiStateContextType>(initialState);
 
 export function UiStateProvider({ children }: PropsWithChildren) {
-    const [mainReady, setMainReady] = useState(false);
+  const [mainReady, setMainReady] = useState(false);
 
-    const value = {
-        mainReady,
-        setMainReady,
-    };
+  const value = {
+    mainReady,
+    setMainReady,
+  };
 
-    return <UiStateContext.Provider value={value}>{children}</UiStateContext.Provider>;
+  return <UiStateContext.Provider value={value}>{children}</UiStateContext.Provider>;
 }

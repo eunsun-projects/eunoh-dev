@@ -1,7 +1,7 @@
-import AdminWritePage from "../_components/AdminWritePage";
+import AdminWritePage from '../_components/AdminWritePage';
 
 function WritePage() {
-    return <AdminWritePage />;
+  return <AdminWritePage />;
 }
 
 export default WritePage;

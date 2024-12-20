@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useTapScroll } from "@/hooks/ui/useTapScroll";
-import { Desc, ProjectWithImages } from "@/types/project.types";
-import Image from "next/image";
-import Link from "next/link";
-import { useRef, useState } from "react";
-import { FaGithub, FaLink } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
-import Description from "./Description";
-import Navigate from "./Navigate";
+import { useTapScroll } from '@/hooks/ui/useTapScroll';
+import { Desc, ProjectWithImages } from '@/types/project.types';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRef, useState } from 'react';
+import { FaGithub, FaLink } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
+import Description from './Description';
+import Navigate from './Navigate';
 
 type ModalProps = {
   project: ProjectWithImages;
@@ -32,11 +32,14 @@ function Modal({ project, closeModal }: ModalProps) {
       ref: imageRef,
     }) ?? {};
 
-  const handleStackClick = (index: number) => setStackIndex((prev) => setStateFunction(prev, index));
+  const handleStackClick = (index: number) =>
+    setStackIndex((prev) => setStateFunction(prev, index));
 
-  const handleDecisionClick = (index: number) => setDecisionIndex((prev) => setStateFunction(prev, index));
+  const handleDecisionClick = (index: number) =>
+    setDecisionIndex((prev) => setStateFunction(prev, index));
 
-  const handleTroubleClick = (index: number) => setTroubleIndex((prev) => setStateFunction(prev, index));
+  const handleTroubleClick = (index: number) =>
+    setTroubleIndex((prev) => setStateFunction(prev, index));
 
   return (
     <div
@@ -49,10 +52,14 @@ function Modal({ project, closeModal }: ModalProps) {
       >
         <div className="sticky top-0 h-[5%] w-full flex justify-end items-center gap-0.5 pb-4 z-50">
           <div className="flex gap-2">
-            <Link href={project.link ?? ""} target="_blank" className="flex justify-center items-center">
+            <Link
+              href={project.link ?? ''}
+              target="_blank"
+              className="flex justify-center items-center"
+            >
               <FaLink className="text-xl xl:text-[1.4rem]" />
             </Link>
-            <Link href={project.github_link ?? ""} target="_blank">
+            <Link href={project.github_link ?? ''} target="_blank">
               <FaGithub className="text-xl xl:text-2xl" />
             </Link>
           </div>
@@ -65,17 +72,20 @@ function Modal({ project, closeModal }: ModalProps) {
           <div className="flex flex-col gap-2 justify-center items-center">
             <div className="flex flex-row gap-2">
               {project.keywords?.map((keyword) => (
-                <span key={keyword} className="text-sm rounded-md px-2 py-1 border-2 border-gray-300">
+                <span
+                  key={keyword}
+                  className="text-sm rounded-md px-2 py-1 border-2 border-gray-300"
+                >
                   {keyword}
                 </span>
               ))}
             </div>
-            <Link href={project.link ?? ""} target="_blank">
+            <Link href={project.link ?? ''} target="_blank">
               <h2 className="text-2xl font-bold">{project.title}</h2>
             </Link>
             <p className="text-sm">
-              {project.started_at?.split("T")[0].split("-").join(".")} ~{" "}
-              {project.ended_at?.split("T")[0].split("-").join(".")}
+              {project.started_at?.split('T')[0].split('-').join('.')} ~{' '}
+              {project.ended_at?.split('T')[0].split('-').join('.')}
             </p>
           </div>
           <div className="relative flex w-[90%] py-4 justify-center items-center">
@@ -96,7 +106,7 @@ function Modal({ project, closeModal }: ModalProps) {
                 >
                   <Image
                     src={image.image}
-                    alt={project.title ?? "detail image"}
+                    alt={project.title ?? 'detail image'}
                     priority
                     fill
                     unoptimized
@@ -107,16 +117,28 @@ function Modal({ project, closeModal }: ModalProps) {
             </div>
             {scrollHandlers?.createScrollLeft && scrollHandlers?.createScrollRight && (
               <div className="absolute flex w-full top-[50%]">
-                <Navigate mode="before" onClick={scrollHandlers.createScrollLeft()} className="top-[50%]" />
-                <Navigate mode="after" onClick={scrollHandlers.createScrollRight()} className="top-[50%]" />
+                <Navigate
+                  mode="before"
+                  onClick={scrollHandlers.createScrollLeft()}
+                  className="top-[50%]"
+                />
+                <Navigate
+                  mode="after"
+                  onClick={scrollHandlers.createScrollRight()}
+                  className="top-[50%]"
+                />
               </div>
             )}
           </div>
 
-          <p className="text-base text-center whitespace-pre-wrap pb-4 break-keep">{project.description}</p>
+          <p className="text-base text-center whitespace-pre-wrap pb-4 break-keep">
+            {project.description}
+          </p>
 
           <div className="flex flex-col w-full gap-4 text-left">
-            <h3 className="text-xl font-bold w-[95%] xl:w-[45%] text-left mx-auto">🗝️ 주요 기능 및 특징</h3>
+            <h3 className="text-xl font-bold w-[95%] xl:w-[45%] text-left mx-auto">
+              🗝️ 주요 기능 및 특징
+            </h3>
             <ul className="list-disc list-inside w-[94%] xl:w-[45%] mx-auto flex flex-col gap-2">
               {project.features?.map((feature) => (
                 <li key={feature} className="text-sm">

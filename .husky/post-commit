@@ -1,1 +1,4 @@
-git add . && git commit -m 'chore: apply lint/format fixes' || true && git push
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+git add . && git commit -m "chore: apply lint/format fixes" || true && git push

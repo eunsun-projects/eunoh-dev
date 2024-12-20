@@ -1,5 +1,5 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
@@ -22,11 +22,11 @@ export async function updateSession(request: NextRequest) {
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
   const {
@@ -35,19 +35,19 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    request.nextUrl.pathname !== "/" &&
-    !request.nextUrl.pathname.startsWith("/admin") &&
-    !request.nextUrl.pathname.startsWith("/api") &&
-    !request.nextUrl.pathname.startsWith("/loading")
+    request.nextUrl.pathname !== '/' &&
+    !request.nextUrl.pathname.startsWith('/admin') &&
+    !request.nextUrl.pathname.startsWith('/api') &&
+    !request.nextUrl.pathname.startsWith('/loading')
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = "/admin";
+    url.pathname = '/admin';
     return NextResponse.redirect(url);
   }
 
   if (user) {
-    requestHeaders.set("x-user", user.id);
+    requestHeaders.set('x-user', user.id);
 
     // 새로운 응답 객체 생성
     supabaseResponse = NextResponse.next({

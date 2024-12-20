@@ -1,17 +1,17 @@
 function getImageSize(url: string): Promise<{ width: number; height: number }> {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = url;
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = url;
 
-        img.onload = () => {
-            resolve({
-                width: img.naturalWidth,
-                height: img.naturalHeight,
-            });
-        };
+    img.onload = () => {
+      resolve({
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+      });
+    };
 
-        img.onerror = reject;
-    });
+    img.onerror = reject;
+  });
 }
 
 export default getImageSize;

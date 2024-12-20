@@ -1,11 +1,11 @@
-import { useUiState } from "@/hooks/ui/useUiState";
-import { Project, ProjectWithImages } from "@/types/project.types";
-import cn from "@/utils/common/cn";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import Modal from "./ui/Modal";
+import { useUiState } from '@/hooks/ui/useUiState';
+import { Project, ProjectWithImages } from '@/types/project.types';
+import cn from '@/utils/common/cn';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Modal from './ui/Modal';
 
 interface MyProjectsProps {
   projectsWithImageSizes: ProjectWithImages[];
@@ -23,17 +23,17 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
   const openModal = (project: Project, index: number) => setModal({ project, index });
   const closeModal = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (target.closest("#navigate-button")) return;
-    if (target.closest("button") || target === e.currentTarget) {
+    if (target.closest('#navigate-button')) return;
+    if (target.closest('button') || target === e.currentTarget) {
       setModal(null);
     }
   };
 
   useEffect(() => {
     if (modal) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
     }
   }, [modal]);
 
@@ -44,14 +44,14 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
       )}
       <section
         className={cn(
-          "relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0",
-          mainReady && "flex",
-          inView && "opacity-100"
+          'relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0',
+          mainReady && 'flex',
+          inView && 'opacity-100',
         )}
         ref={ref}
       >
         <div className="flex justify-center w-full h-[6%]">
-          <h2 className="font-bold text-3xl xl:text-5xl">{"💻 Projects 💻"}</h2>
+          <h2 className="font-bold text-3xl xl:text-5xl">{'💻 Projects 💻'}</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center gap-4 xl:gap-6 w-[90%] xl:w-[60%] h-full xl:px-2 xl:h-[84%]">
           {projects
@@ -65,8 +65,8 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
               >
                 <div
                   className={cn(
-                    "hidden absolute w-full h-[90%]",
-                    mouseOver === project.id && "flex flex-col items-center justify-center gap-2"
+                    'hidden absolute w-full h-[90%]',
+                    mouseOver === project.id && 'flex flex-col items-center justify-center gap-2',
                   )}
                 >
                   <div
@@ -76,7 +76,7 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
                     자세히 보기
                   </div>
                   <Link
-                    href={project.github_link ?? ""}
+                    href={project.github_link ?? ''}
                     target="_blank"
                     className="border-2 rounded-sm p-2 min-w-[140px] border-gray-400 dark:border-white hover:bg-gray-100 hover:text-gray-900"
                   >
@@ -84,11 +84,16 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
                   </Link>
                 </div>
 
-                <div className={cn("flex flex-col h-full w-full", mouseOver === project.id && "hidden")}>
+                <div
+                  className={cn(
+                    'flex flex-col h-full w-full',
+                    mouseOver === project.id && 'hidden',
+                  )}
+                >
                   <div className="relative h-[60%] aspect-auto w-full">
                     <Image
-                      src={project?.images?.[0] ?? ""}
-                      alt={project?.title ?? "thumbnail"}
+                      src={project?.images?.[0] ?? ''}
+                      alt={project?.title ?? 'thumbnail'}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover rounded-sm"
