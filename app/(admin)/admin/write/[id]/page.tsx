@@ -1,12 +1,13 @@
 'use client';
 
 import { useProjectsQuery } from '@/hooks/queries/projects';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 import AdminWritePage from '../../_components/AdminWritePage';
 
-function EditPage({ params }: { params: { id: string } }) {
+function EditPage({ params }: { params: Promise<{ id: string }> }) {
   const { data, isLoading, error } = useProjectsQuery();
-  const project = data?.find((project) => project.id === params.id);
+  const { id } = use(params);
+  const project = data?.find((project) => project.id === id);
 
   useEffect(() => {
     if (error) console.error(error.message);
