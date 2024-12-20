@@ -10,7 +10,7 @@ import AdminHeader from './_components/AdminHeader';
 type AdminLayoutProps = PropsWithChildren;
 
 async function AdminLayout({ children }: AdminLayoutProps) {
-  const userId = getUserFromHeader();
+  const userId = await getUserFromHeader();
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
