@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('projects')
     .select('*')
@@ -21,7 +21,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   let uploadResults: (string | null)[] = [];
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const formData = await req.formData();
 
