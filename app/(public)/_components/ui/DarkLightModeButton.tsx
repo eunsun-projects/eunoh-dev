@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md';
 
 interface DarkLightModeButtonProps {
-  ready: boolean;
+  ready?: boolean;
 }
 
-function DarkLightModeButton({ ready }: DarkLightModeButtonProps) {
+function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
   const [theme, setTheme] = useState<string | null>(null);
 
   const toggleTheme = () => {
