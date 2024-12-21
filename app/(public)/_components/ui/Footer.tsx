@@ -1,17 +1,17 @@
 'use client';
 
-import { useReadyState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useReadyState';
 import cn from '@/utils/common/cn';
 import Link from 'next/link';
 
 function Footer() {
-  const { mainReady } = useReadyState();
+  const { isMainReady } = useReadyState();
 
   return (
     <footer
       className={cn(
         'opacity-0 max-w-[640px] mx-auto relative bottom-0 left-0 right-0 my-[64px] flex items-center justify-between transition-opacity duration-1000',
-        mainReady && 'opacity-100',
+        isMainReady && 'opacity-100',
       )}
     >
       <p className="text-sm">

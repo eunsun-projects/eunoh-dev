@@ -1,13 +1,13 @@
 'use client';
 
-import { useReadyState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useReadyState';
 import { ReactTyped } from 'react-typed';
 import DarkLightModeButton from './ui/DarkLightModeButton';
 import Links from './ui/Links';
 import Nav from './ui/Nav';
 
 function Hello() {
-  const { mainReady, setMainReady } = useReadyState();
+  const { isMainReady, setIsMainReady } = useReadyState();
 
   return (
     <section className="flex flex-col">
@@ -16,7 +16,7 @@ function Hello() {
           <h1 className="font-bold text-neutral-900 dark:text-neutral-50">
             <ReactTyped strings={['오은: FE engineer']} typeSpeed={10} />
           </h1>
-          <DarkLightModeButton ready={mainReady} />
+          <DarkLightModeButton ready={isMainReady} />
         </div>
         <div className="flex flex-col gap-2 text-sm">
           <p>
@@ -31,7 +31,7 @@ function Hello() {
                 '팀의 동기부여를 이끌며 협업 속에서 더 큰 성과를 만들어가는 데 열정을 가지고 있습니다.',
               ]}
               typeSpeed={9}
-              onComplete={() => setMainReady(true)}
+              onComplete={() => setIsMainReady(true)}
             />
           </p>
           <p>
@@ -41,8 +41,8 @@ function Hello() {
             />
           </p>
         </div>
-        <Links ready={mainReady} />
-        <Nav ready={mainReady} />
+        <Links ready={isMainReady} />
+        <Nav ready={isMainReady} />
       </div>
     </section>
   );

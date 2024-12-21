@@ -1,4 +1,4 @@
-import { useReadyState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useReadyState';
 import { Project, ProjectWithImages } from '@/types/project.types';
 import cn from '@/utils/common/cn';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ interface MyProjectsProps {
 }
 
 function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
-  const { mainReady } = useReadyState();
+  const { isMainReady } = useReadyState();
   const { ref, inView } = useInView({
     threshold: 0.3,
   });
@@ -45,7 +45,7 @@ function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
       <section
         className={cn(
           'relative flex-col items-center justify-center min-h-dvh h-full xl:h-dvh transition-opacity opacity-0 duration-1000 hidden w-full gap-6 xl:gap-10 pb-10 xl:pb-0',
-          mainReady && 'flex',
+          isMainReady && 'flex',
           inView && 'opacity-100',
         )}
         ref={ref}

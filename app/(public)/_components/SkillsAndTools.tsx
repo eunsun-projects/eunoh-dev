@@ -1,6 +1,6 @@
 'use client';
 
-import { useReadyState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useReadyState';
 import cn from '@/utils/common/cn';
 import {
   FaCss3Alt,
@@ -31,7 +31,7 @@ import { TbBrandRedux } from 'react-icons/tb';
 import { useInView } from 'react-intersection-observer';
 
 function SkillsAndTools() {
-  const { mainReady } = useReadyState();
+  const { isMainReady } = useReadyState();
   const { ref, inView } = useInView({
     threshold: 0.3,
   });
@@ -40,7 +40,7 @@ function SkillsAndTools() {
     <section
       className={cn(
         'relative flex-col items-center justify-center h-dvh transition-opacity opacity-0 duration-1000 hidden w-full',
-        mainReady && 'flex',
+        isMainReady && 'flex',
         inView && 'opacity-100',
       )}
       ref={ref}

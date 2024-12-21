@@ -1,14 +1,14 @@
 'use client';
 
 import { useProjectsQuery } from '@/hooks/queries/projects';
-import { useReadyState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useReadyState';
 import { ProjectWithImages } from '@/types/project.types';
 import getImageSize from '@/utils/image/getImageSize';
 import { useEffect, useState } from 'react';
 import Hello from './Hello';
 
 function Home() {
-  const { mainReady } = useReadyState();
+  const { isMainReady } = useReadyState();
   const [showHello, setShowHello] = useState(true);
   const { data: projects, error } = useProjectsQuery();
   const [projectWithImageSizes, setProjectWithImageSizes] = useState<ProjectWithImages[]>([]);
