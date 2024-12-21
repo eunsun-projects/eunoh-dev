@@ -3,15 +3,18 @@
 import { useReadyState } from '@/hooks/ui/useReadyState';
 import cn from '@/utils/common/cn';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 function Footer() {
+  const pathname = usePathname();
   const { isMainReady } = useReadyState();
 
   return (
     <footer
       className={cn(
         'opacity-0 max-w-[640px] mx-auto relative bottom-0 left-0 right-0 my-[64px] flex items-center justify-between transition-opacity duration-1000',
-        isMainReady && 'opacity-100',
+        isMainReady && pathname === '/' && 'opacity-100',
+        pathname !== '/' && 'opacity-100',
       )}
     >
       <p className="text-sm">
