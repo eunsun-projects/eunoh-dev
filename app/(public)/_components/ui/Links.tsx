@@ -1,26 +1,41 @@
 'use client';
 
-import { useUiState } from '@/hooks/ui/useUiState';
 import cn from '@/utils/common/cn';
 import Link from 'next/link';
-import { FaGithub } from 'react-icons/fa';
+import { FaAt, FaGithub } from 'react-icons/fa';
 import { SiTistory } from 'react-icons/si';
 
-function Links() {
-  const { mainReady } = useUiState();
+interface LinksProps {
+  ready: boolean;
+}
 
+function Links({ ready }: LinksProps) {
   return (
     <div
       className={cn(
-        'fixed opacity-0 top-2 flex flex-row gap-2 items-center justify-center left-2 transition-all duration-1000 text-black dark:text-white z-50',
-        mainReady && 'opacity-100',
+        'w-full opacity-0 flex flex-row gap-2 items-center justify-end left-2 transition-all duration-1000',
+        ready && 'opacity-100',
       )}
     >
-      <Link href="https://github.com/eunohhh" className="z-40">
-        <FaGithub className="text-3xl" />
+      <Link
+        href="mailto:bdohhhhh@gmail.com"
+        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+      >
+        <FaAt />
       </Link>
-      <Link href="https://ifelseif.tistory.com" className="z-40">
-        <SiTistory className="text-2xl" />
+      <Link
+        href="https://github.com/eunohhh"
+        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+        target="_blank"
+      >
+        <FaGithub />
+      </Link>
+      <Link
+        href="https://ifelseif.tistory.com"
+        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+        target="_blank"
+      >
+        <SiTistory className="text-sm" />
       </Link>
     </div>
   );

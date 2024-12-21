@@ -1,16 +1,16 @@
 import { UiStateProvider } from '@/contexts/ready.context';
 import React from 'react';
-import DarkLightModeButton from './_components/ui/DarkLightModeButton';
-import Links from './_components/ui/Links';
-import RightBottomUI from './_components/ui/RightBottomUI';
+import Footer from './_components/ui/Footer';
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <UiStateProvider>
-      <DarkLightModeButton />
-      <Links />
-      {children}
-      <RightBottomUI />
+      <div className="bg-neutral-50 text-neutral-600 dark:bg-neutral-900 dark:text-neutral-400 min-h-dvh">
+        <main className="max-w-[640px] mx-auto pt-[128px] min-h-[calc(100dvh-128px-20px)]">
+          {children}
+        </main>
+        <Footer />
+      </div>
     </UiStateProvider>
   );
 }

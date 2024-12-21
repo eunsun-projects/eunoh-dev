@@ -1,4 +1,4 @@
-import { useUiState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useUiState';
 import { Project, ProjectWithImages } from '@/types/project.types';
 import cn from '@/utils/common/cn';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ interface MyProjectsProps {
 }
 
 function MyProjects({ projectsWithImageSizes, projects }: MyProjectsProps) {
-  const { mainReady } = useUiState();
+  const { mainReady } = useReadyState();
   const { ref, inView } = useInView({
     threshold: 0.3,
   });

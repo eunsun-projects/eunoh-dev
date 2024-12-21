@@ -3,7 +3,7 @@ import { QUERY_KEY_PROJECTS } from '@/constants/query.constants';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import Loading from '../loading';
-import MainComponent from './_components/MainComponent';
+import Home from './_components/Home';
 
 async function MainPage() {
   const queryClient = new QueryClient();
@@ -18,7 +18,7 @@ async function MainPage() {
   return (
     <Suspense fallback={<Loading />}>
       <HydrationBoundary state={dehydratedState}>
-        <MainComponent />
+        <Home />
       </HydrationBoundary>
     </Suspense>
   );

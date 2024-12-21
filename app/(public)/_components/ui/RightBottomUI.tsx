@@ -1,12 +1,12 @@
 'use client';
 
-import { useUiState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useUiState';
 import cn from '@/utils/common/cn';
 import { FaAngleUp } from 'react-icons/fa';
 // import { IoChatboxEllipses, IoMail } from "react-icons/io5";
 
 function RightBottomUI() {
-  const { mainReady } = useUiState();
+  const { mainReady } = useReadyState();
 
   const handleScrollToTop = () => {
     window.scrollTo({

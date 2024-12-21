@@ -1,18 +1,14 @@
 'use client';
 
 import { useProjectsQuery } from '@/hooks/queries/projects';
-import { useUiState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useUiState';
 import { ProjectWithImages } from '@/types/project.types';
-import cn from '@/utils/common/cn';
 import getImageSize from '@/utils/image/getImageSize';
 import { useEffect, useState } from 'react';
-import AboutMe from './AboutMe';
 import Hello from './Hello';
-import MyProjects from './MyProjects';
-import SkillsAndTools from './SkillsAndTools';
 
-function MainComponent() {
-  const { mainReady } = useUiState();
+function Home() {
+  const { mainReady } = useReadyState();
   const [showHello, setShowHello] = useState(true);
   const { data: projects, error } = useProjectsQuery();
   const [projectWithImageSizes, setProjectWithImageSizes] = useState<ProjectWithImages[]>([]);
@@ -63,24 +59,15 @@ function MainComponent() {
   }, []);
 
   return (
-    <main
-      className={cn(
-        'h-dvh flex flex-col items-center justify-center dark:bg-gray-900 dark:text-white',
-        mainReady && 'h-auto',
-      )}
-    >
-      <div
-        className={cn('transition-opacity duration-1000', showHello ? 'opacity-100' : 'opacity-0')}
-      >
-        <Hello />
-      </div>
-      <AboutMe />
-      <SkillsAndTools />
-      {projects && (
+    <>
+      <Hello />
+      {/* <AboutMe />
+      <SkillsAndTools /> */}
+      {/* {projects && (
         <MyProjects projectsWithImageSizes={projectWithImageSizes} projects={projects} />
-      )}
-    </main>
+      )} */}
+    </>
   );
 }
 
-export default MainComponent;
+export default Home;

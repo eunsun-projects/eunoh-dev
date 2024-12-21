@@ -1,6 +1,6 @@
 'use client';
 
-import { useUiState } from '@/hooks/ui/useUiState';
+import { useReadyState } from '@/hooks/ui/useUiState';
 import cn from '@/utils/common/cn';
 import {
   FaCss3Alt,
@@ -31,7 +31,7 @@ import { TbBrandRedux } from 'react-icons/tb';
 import { useInView } from 'react-intersection-observer';
 
 function SkillsAndTools() {
-  const { mainReady } = useUiState();
+  const { mainReady } = useReadyState();
   const { ref, inView } = useInView({
     threshold: 0.3,
   });

@@ -1,12 +1,14 @@
 'use client';
 
-import { useUiState } from '@/hooks/ui/useUiState';
 import cn from '@/utils/common/cn';
 import { useEffect, useState } from 'react';
 import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md';
 
-function DarkLightModeButton() {
-  const { mainReady } = useUiState();
+interface DarkLightModeButtonProps {
+  ready: boolean;
+}
+
+function DarkLightModeButton({ ready }: DarkLightModeButtonProps) {
   const [theme, setTheme] = useState<string | null>(null);
 
   const toggleTheme = () => {
@@ -40,11 +42,11 @@ function DarkLightModeButton() {
   return (
     <div
       className={cn(
-        'fixed opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white z-50',
-        mainReady && theme !== null && 'opacity-100',
+        'opacity-0 transition-all duration-1000 flex items-center justify-center text-xl',
+        ready && theme !== null && 'opacity-100',
       )}
     >
-      <button onClick={toggleTheme} className="text-3xl">
+      <button onClick={toggleTheme}>
         {theme === 'dark' ? <MdOutlineDarkMode /> : <MdDarkMode />}
       </button>
     </div>

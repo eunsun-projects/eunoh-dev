@@ -1,7 +1,7 @@
 import { UiStateContext } from '@/contexts/ready.context';
 import { useContext } from 'react';
 
-export const useUiState = () => {
+export const useReadyState = () => {
   const context = useContext(UiStateContext);
 
   if (context === undefined || context === null) {
