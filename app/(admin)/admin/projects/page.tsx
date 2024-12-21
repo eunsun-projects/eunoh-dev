@@ -6,7 +6,7 @@ import cn from '@/utils/common/cn';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-function ListPage() {
+function AdminProjectsListPage() {
   const { data: projects, isLoading, error } = useProjectsQuery();
   const { mutate, isPending, error: mutationError } = useProjectMutation();
 
@@ -59,4 +59,4 @@ function ListPage() {
   );
 }
 
-export default ListPage;
+export default AdminProjectsListPage;
