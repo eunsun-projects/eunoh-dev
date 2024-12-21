@@ -2,9 +2,7 @@
 
 import { useReadyState } from '@/hooks/ui/useReadyState';
 import { ReactTyped } from 'react-typed';
-import DarkLightModeButton from './ui/DarkLightModeButton';
-import Links from './ui/Links';
-import Nav from './ui/Nav';
+import { DarkLightModeButton, Links, Nav } from './ui';
 
 function Hello() {
   const { isMainReady, setIsMainReady } = useReadyState();

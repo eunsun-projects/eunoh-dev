@@ -61,8 +61,6 @@ function Home() {
   return (
     <>
       <Hello />
-      {/* <AboutMe />
-      <SkillsAndTools /> */}
       {/* {projects && (
         <MyProjects projectsWithImageSizes={projectWithImageSizes} projects={projects} />
       )} */}

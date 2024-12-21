@@ -1,4 +1,4 @@
-import SkillsAndTools from './_components/SkillsAndTools';
+import { SkillsAndTools } from './_components';
 
 function SkillsPage() {
   return <SkillsAndTools />;

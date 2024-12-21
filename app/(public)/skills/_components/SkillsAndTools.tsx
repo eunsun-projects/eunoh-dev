@@ -32,8 +32,8 @@ import {
   SiTurborepo,
 } from 'react-icons/si';
 import { TbBrandRedux, TbBrandThreejs } from 'react-icons/tb';
-import Zustand from '../../_components/svgs/Zustand';
-import DarkLightModeButton from '../../_components/ui/DarkLightModeButton';
+import { Zustand } from '../../_components/svgs';
+import { DarkLightModeButton } from '../../_components/ui';
 
 function SkillsAndTools() {
   return (
