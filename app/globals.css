@@ -1,6 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+  /* Define light and dark mode colors */
+  :root {
+    --text-color: rgb(23 23 23 / var(--tw-text-opacity, 1)); /* Default text color for light mode */
+  }
+}
 
 @layer utilities {
   .text-balance {
@@ -9,6 +15,10 @@
 
   .opacity-animate {
     animation: opacity-animate 2s ease-in-out;
+  }
+
+  .dark {
+    --text-color: rgb(250 250 250 / var(--tw-text-opacity, 1)); /* Text color for dark mode */
   }
 }
 

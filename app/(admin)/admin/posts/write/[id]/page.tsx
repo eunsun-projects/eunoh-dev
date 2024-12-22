@@ -2,7 +2,7 @@
 
 import { usePostsQuery } from '@/hooks/queries/posts';
 import { use, useEffect } from 'react';
-import AdminWritePage from '../../_components/PostsWriteTemplate';
+import PostsWriteTemplate from '../../_components/PostsWriteTemplate';
 
 function EditPage({ params }: { params: Promise<{ id: string }> }) {
   const { data, isLoading, error } = usePostsQuery();
@@ -15,7 +15,7 @@ function EditPage({ params }: { params: Promise<{ id: string }> }) {
 
   if (isLoading) return <div>Loading...</div>;
 
-  return <AdminWritePage mode="edit" post={post} />;
+  return <PostsWriteTemplate mode="edit" post={post} />;
 }
 
 export default EditPage;

@@ -1,6 +1,7 @@
 'use client';
 
 import cn from '@/utils/common/cn';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md';
 
@@ -10,6 +11,7 @@ interface DarkLightModeButtonProps {
 
 function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
   const [theme, setTheme] = useState<string | null>(null);
+  const pathname = usePathname();
 
   const toggleTheme = () => {
     if (theme === 'dark') {
@@ -42,8 +44,9 @@ function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
   return (
     <div
       className={cn(
-        'opacity-0 transition-all duration-1000 flex items-center justify-center text-xl',
+        'opacity-0 flex items-center justify-center text-xl',
         ready && theme !== null && 'opacity-100',
+        pathname === '/' && 'transition-all duration-1000',
       )}
     >
       <button onClick={toggleTheme}>

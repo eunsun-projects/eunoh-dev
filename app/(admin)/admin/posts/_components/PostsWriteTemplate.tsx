@@ -18,6 +18,8 @@ type FormValues = {
   keywords2?: string;
   keywords3?: string;
   isView?: boolean;
+  engTitle?: string;
+  summary?: string;
 };
 
 interface PostsWriteTemplateProps {
@@ -28,7 +30,7 @@ interface PostsWriteTemplateProps {
 function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
   const { user } = useAuth();
   const [markdown, setMarkdown] = useState('**Hello world!!!**');
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit } = useForm<FormValues>();
   const { mutate, isPending: mutationPending, error: mutationError } = usePostMutation();
   const router = useRouter();
 
@@ -36,13 +38,13 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
   const categoryId = useId();
   const keywordsId = useId();
   const isViewId = useId();
-
+  const engTitleId = useId();
+  const summaryId = useId();
   const handleChange = useCallback((value: string | undefined) => {
     setMarkdown(value || '');
   }, []);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
     const newPost: PartialPost = {
       title: mode === 'edit' && !data.title ? post?.title : data.title,
       markdown: mode === 'edit' && !post?.markdown ? post?.markdown : markdown,
@@ -52,6 +54,7 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
         mode === 'edit' && !data.keywords1 && !data.keywords2 && !data.keywords3
           ? post?.keywords
           : ([data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[]),
+      engTitle: mode === 'edit' && !data.engTitle ? post?.engTitle : data.engTitle,
     };
 
     if (mode === 'edit') {
@@ -98,6 +101,26 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
             id={titleId}
             defaultValue={mode === 'edit' ? post?.title || '' : ''}
             {...register('title')}
+          />
+        </div>
+        <div className="flex flex-row gap-2 items-center">
+          <label htmlFor={engTitleId}>영어타이틀</label>
+          <input
+            type="text"
+            className={cn(inputStyle, 'w-[300px]')}
+            id={engTitleId}
+            defaultValue={mode === 'edit' ? post?.engTitle || '' : ''}
+            {...register('engTitle')}
+          />
+        </div>
+        <div className="flex flex-row gap-2 items-center">
+          <label htmlFor={summaryId}>요약</label>
+          <input
+            type="text"
+            className={cn(inputStyle, 'w-[300px]')}
+            id={summaryId}
+            defaultValue={mode === 'edit' ? post?.summary || '' : ''}
+            {...register('summary')}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">

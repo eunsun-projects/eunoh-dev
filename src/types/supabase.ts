@@ -7,28 +7,34 @@ export type Database = {
         Row: {
           category: string | null;
           created_at: string;
+          engTitle: string | null;
           id: string;
           isView: boolean;
           keywords: string[] | null;
           markdown: string | null;
+          summary: string | null;
           title: string | null;
         };
         Insert: {
           category?: string | null;
           created_at?: string;
+          engTitle?: string | null;
           id?: string;
           isView?: boolean;
           keywords?: string[] | null;
           markdown?: string | null;
+          summary?: string | null;
           title?: string | null;
         };
         Update: {
           category?: string | null;
           created_at?: string;
+          engTitle?: string | null;
           id?: string;
           isView?: boolean;
           keywords?: string[] | null;
           markdown?: string | null;
+          summary?: string | null;
           title?: string | null;
         };
         Relationships: [];

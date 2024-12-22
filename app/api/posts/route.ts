@@ -5,8 +5,12 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const supabase = await createClient();
-  const { data, error } = await supabase.from('posts').select('*');
-  // .order('created_at', { ascending: false });
+
+  // select without markdown column
+  const { data, error } = await supabase
+    .from('posts')
+    .select('id, title, engTitle, created_at, category, keywords, summary')
+    .order('created_at', { ascending: false });
 
   if (error) {
     revalidatePath('/', 'layout');
