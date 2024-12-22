@@ -6,14 +6,8 @@ import { Post } from '@/types/post.types';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import PublicPostTemplate from '../_components/PublicPostTemplate';
-
 interface PublicPostPageProps {
   params: Promise<{ engTitle: string }>;
-}
-
-export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({ engTitle: post.engTitle }));
 }
 
 async function PublicPostPage({ params }: PublicPostPageProps) {
@@ -29,9 +23,14 @@ async function PublicPostPage({ params }: PublicPostPageProps) {
   const posts = await queryClient.getQueryData<Post[]>([QUERY_KEY_POSTS]);
   const post = posts?.find((post) => post.engTitle === engTitle);
 
+  // 추후 404 페이지 추가
+  if (!post) {
+    return <div>Post not found</div>;
+  }
+
   await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEY_POSTS, post?.id],
-    queryFn: () => getPost(post?.id as string),
+    queryKey: [QUERY_KEY_POSTS, post.id],
+    queryFn: () => getPost(post.id),
   });
 
   const dehydratedState = dehydrate(queryClient);
@@ -39,7 +38,7 @@ async function PublicPostPage({ params }: PublicPostPageProps) {
   return (
     <Suspense fallback={<Loading />}>
       <HydrationBoundary state={dehydratedState}>
-        <PublicPostTemplate id={post?.id as string} />
+        <PublicPostTemplate id={post.id} />
       </HydrationBoundary>
     </Suspense>
   );
