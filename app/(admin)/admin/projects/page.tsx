@@ -45,7 +45,7 @@ function AdminProjectsListPage() {
             <span>{project.title}</span>
             <div className="flex items-center gap-2">
               <span>이동</span>
-              <Link href={`/admin/write/${project.id}`}>
+              <Link href={`/admin/projects/write/${project.id}`}>
                 <span>수정</span>
               </Link>
               <span className="cursor-pointer" onClick={() => handleDelete(project)}>

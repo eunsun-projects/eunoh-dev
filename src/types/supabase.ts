@@ -3,6 +3,36 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      posts: {
+        Row: {
+          category: string | null;
+          created_at: string;
+          id: string;
+          isView: boolean;
+          keywords: string[] | null;
+          markdown: string | null;
+          title: string | null;
+        };
+        Insert: {
+          category?: string | null;
+          created_at?: string;
+          id?: string;
+          isView?: boolean;
+          keywords?: string[] | null;
+          markdown?: string | null;
+          title?: string | null;
+        };
+        Update: {
+          category?: string | null;
+          created_at?: string;
+          id?: string;
+          isView?: boolean;
+          keywords?: string[] | null;
+          markdown?: string | null;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
       projects: {
         Row: {
           created_at: string;
@@ -105,6 +135,51 @@ export type Database = {
         };
         Relationships: [];
       };
+      viewer: {
+        Row: {
+          author: string;
+          created_at: string;
+          id: string;
+          img: string;
+          material: string;
+          nick: string;
+          number: number | null;
+          objurl: string;
+          size: string;
+          thumb: string;
+          title: string;
+          year: number;
+        };
+        Insert: {
+          author?: string;
+          created_at?: string;
+          id?: string;
+          img?: string;
+          material?: string;
+          nick?: string;
+          number?: number | null;
+          objurl?: string;
+          size?: string;
+          thumb?: string;
+          title?: string;
+          year?: number;
+        };
+        Update: {
+          author?: string;
+          created_at?: string;
+          id?: string;
+          img?: string;
+          material?: string;
+          nick?: string;
+          number?: number | null;
+          objurl?: string;
+          size?: string;
+          thumb?: string;
+          title?: string;
+          year?: number;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -193,4 +268,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema['CompositeTypes']
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
+    ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never;

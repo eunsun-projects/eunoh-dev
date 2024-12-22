@@ -319,7 +319,10 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               defaultChecked={mode === 'edit' ? project?.isView || false : false}
             />
           </div>
-          <button className="p-2 bg-blue-500 text-white rounded-md w-[50%] mx-auto" type="submit">
+          <button
+            className="p-2 bg-blue-500 text-white rounded-md w-[50%] mx-auto mb-20"
+            type="submit"
+          >
             작성하기
           </button>
         </form>

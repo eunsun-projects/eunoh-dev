@@ -1,6 +1,7 @@
 import { postUserServer } from '@/apis/auth/server/post.user';
+import { getPosts } from '@/apis/posts';
 import { getProjects } from '@/apis/projects';
-import { QUERY_KEY_PROJECTS, QUERY_KEY_USER } from '@/constants/query.constants';
+import { QUERY_KEY_POSTS, QUERY_KEY_PROJECTS, QUERY_KEY_USER } from '@/constants/query.constants';
 import { AuthProvider } from '@/contexts/auth.context';
 import { getUserFromHeader } from '@/utils/auth/getUserFromHeader';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
@@ -20,6 +21,10 @@ async function AdminLayout({ children }: AdminLayoutProps) {
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEY_PROJECTS],
     queryFn: () => getProjects(),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEY_POSTS],
+    queryFn: () => getPosts(),
   });
   const dehydratedState = dehydrate(queryClient);
 
