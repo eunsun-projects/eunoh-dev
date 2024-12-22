@@ -6,7 +6,7 @@ import { AuthProvider } from '@/contexts/auth.context';
 import { getUserFromHeader } from '@/utils/auth/getUserFromHeader';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { PropsWithChildren, Suspense } from 'react';
-import AdminHeader from './projects/_components/AdminHeader';
+import AdminHeader from './_components/AdminHeader';
 
 type AdminLayoutProps = PropsWithChildren;
 

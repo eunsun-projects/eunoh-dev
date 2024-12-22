@@ -1,5 +1,7 @@
+import { PostsListTemplate } from './_components';
+
 function AdminPostsListPage() {
-  return <div>page</div>;
+  return <PostsListTemplate />;
 }
 
 export default AdminPostsListPage;

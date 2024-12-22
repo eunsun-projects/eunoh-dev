@@ -14,16 +14,10 @@ function AdminHeader() {
       {user?.isAdmin && (
         <div className="flex items-center gap-6">
           <Link href="/admin/projects">
-            <span>프로젝트 목록</span>
-          </Link>
-          <Link href="/admin/projects/write">
-            <span>프로젝트 작성</span>
+            <span>프로젝트</span>
           </Link>
           <Link href="/admin/posts">
-            <span>글 목록</span>
-          </Link>
-          <Link href="/admin/posts/write">
-            <span>글 작성</span>
+            <span>포스트</span>
           </Link>
         </div>
       )}

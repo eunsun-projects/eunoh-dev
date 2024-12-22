@@ -55,6 +55,9 @@ function AdminProjectsListPage() {
           </li>
         ))}
       </ul>
+      <Link href="/admin/projects/write" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        <span>프로젝트 작성</span>
+      </Link>
     </div>
   );
 }

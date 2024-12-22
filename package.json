@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint --cache .",
     "genTypes": "supabase gen types typescript --project-id \"urtfszkmtgmcqrnchihz\" --schema public > src/types/supabase.ts",
-    "prepare": "husky install",
+    "prepare": "husky",
     "format": "prettier --cache --write ."
   },
   "dependencies": {

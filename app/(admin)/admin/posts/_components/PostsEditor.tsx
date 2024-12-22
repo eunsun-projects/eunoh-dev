@@ -1,3 +1,5 @@
+'use client';
+
 import '@uiw/react-markdown-preview/markdown.css';
 import { MDEditorProps } from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
@@ -10,7 +12,14 @@ const MDEditor = dynamic<MDEditorProps>(() => import('@uiw/react-md-editor'), {
 export type EditorProps = MDEditorProps;
 
 function PostsEditor({ ...rest }: MDEditorProps) {
-  return <MDEditor {...rest} />;
+  return (
+    <MDEditor
+      {...rest}
+      className="w-full min-h-[500px]"
+      style={{ minHeight: '500px' }}
+      height={500}
+    />
+  );
 }
 
 export default PostsEditor;

@@ -100,7 +100,7 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
     formData.append('project', JSON.stringify(newProject));
 
     mutate(formData);
-    router.push('/admin/list');
+    router.push('/admin/projects');
   };
 
   useEffect(() => {
@@ -138,7 +138,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={inputStyle}
               id={numberId}
               defaultValue={mode === 'edit' ? project?.number?.toString() || '' : ''}
-              value={watch('number')}
               {...register('number')}
             />
           </div>
@@ -149,7 +148,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={inputStyle}
               id={titleId}
               defaultValue={mode === 'edit' ? project?.title || '' : ''}
-              value={watch('title')}
               {...register('title')}
             />
           </div>
@@ -159,7 +157,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[300px] h-[100px] xl:w-[500px]')}
               id={descriptionId}
               defaultValue={mode === 'edit' ? project?.description || '' : ''}
-              value={watch('description')}
               {...register('description')}
             />
           </div>
@@ -170,7 +167,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[120px]')}
               id={keywords1Id}
               defaultValue={mode === 'edit' ? project?.keywords?.[0] || '' : ''}
-              value={watch('keywords1')}
               {...register('keywords1')}
             />
             <input
@@ -178,7 +174,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[120px]')}
               id={keywords2Id}
               defaultValue={mode === 'edit' ? project?.keywords?.[1] || '' : ''}
-              value={watch('keywords2')}
               {...register('keywords2')}
             />
             <input
@@ -186,7 +181,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[120px]')}
               id={keywords3Id}
               defaultValue={mode === 'edit' ? project?.keywords?.[2] || '' : ''}
-              value={watch('keywords3')}
               {...register('keywords3')}
             />
           </div>
@@ -197,7 +191,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[300px]')}
               id={linkId}
               defaultValue={mode === 'edit' ? project?.link || '' : ''}
-              value={watch('link')}
               {...register('link')}
             />
             <label htmlFor={github_linkId}>깃허브 링크</label>
@@ -206,7 +199,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[300px]')}
               id={github_linkId}
               defaultValue={mode === 'edit' ? project?.github_link || '' : ''}
-              value={watch('github_link')}
               {...register('github_link')}
             />
           </div>
@@ -217,7 +209,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={inputStyle}
               id={started_atId}
               defaultValue={mode === 'edit' ? project?.started_at || '' : ''}
-              value={watch('started_at')}
               {...register('started_at')}
             />
             <label htmlFor={ended_atId}>종료일</label>
@@ -226,7 +217,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={inputStyle}
               id={ended_atId}
               defaultValue={mode === 'edit' ? project?.ended_at || '' : ''}
-              value={watch('ended_at')}
               {...register('ended_at')}
             />
           </div>
@@ -236,7 +226,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               className={cn(inputStyle, 'w-[300px] h-[100px] xl:w-[500px]')}
               id={featuresId}
               defaultValue={mode === 'edit' ? project?.features?.join(' / ') || '' : ''}
-              value={watch('features')}
               {...register('features')}
             />
           </div>
@@ -260,7 +249,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
                       .join(' / ') || ''
                   : ''
               }
-              value={watch('stacks')}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -283,7 +271,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
                       .join(' / ') || ''
                   : ''
               }
-              value={watch('decisions')}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -306,7 +293,6 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
                       .join(' / ') || ''
                   : ''
               }
-              value={watch('troubles')}
             />
           </div>
           <div className="flex flex-row gap-2 items-center">

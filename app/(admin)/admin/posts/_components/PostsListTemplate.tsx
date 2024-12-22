@@ -1,3 +1,5 @@
+'use client';
+
 import { usePostMutation, usePostsQuery } from '@/hooks/queries/posts';
 import { Post } from '@/types/post.types';
 import cn from '@/utils/common/cn';
@@ -43,6 +45,9 @@ function PostsListTemplate() {
           </li>
         ))}
       </ul>
+      <Link href="/admin/posts/write" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        <span>글 작성</span>
+      </Link>
     </div>
   );
 }
