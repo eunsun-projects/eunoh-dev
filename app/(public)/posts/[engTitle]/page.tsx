@@ -1,6 +1,7 @@
 import { getPost } from '@/apis/post';
 import { getPosts } from '@/apis/posts';
 import Loading from '@/app/loading';
+import NotFound from '@/app/not-found';
 import { QUERY_KEY_POSTS } from '@/constants/query.constants';
 import { Post } from '@/types/post.types';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
@@ -23,9 +24,8 @@ async function PublicPostPage({ params }: PublicPostPageProps) {
   const posts = await queryClient.getQueryData<Post[]>([QUERY_KEY_POSTS]);
   const post = posts?.find((post) => post.engTitle === engTitle);
 
-  // 추후 404 페이지 추가
   if (!post) {
-    return <div>Post not found</div>;
+    return <NotFound />;
   }
 
   await queryClient.prefetchQuery({

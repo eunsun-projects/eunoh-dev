@@ -1,7 +1,7 @@
-import Home from './_components/Home';
+import HomeTemplate from './_components/HomeTemplate';
 
 function MainPage() {
-  return <Home />;
+  return <HomeTemplate />;
 }
 
 export default MainPage;

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Hello from './Hello';
 
-function Home() {
+function HomeTemplate() {
   useEffect(() => {
     document.documentElement.style.overscrollBehavior = 'none';
 
@@ -15,4 +15,4 @@ function Home() {
   return <Hello />;
 }
 
-export default Home;
+export default HomeTemplate;
