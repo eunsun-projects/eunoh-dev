@@ -19,20 +19,20 @@ function Links({ ready }: LinksProps) {
     >
       <Link
         href="mailto:bdohhhhh@gmail.com"
-        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+        className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200"
       >
         <FaAt />
       </Link>
       <Link
         href="https://github.com/eunohhh"
-        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+        className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200"
         target="_blank"
       >
         <FaGithub />
       </Link>
       <Link
         href="https://ifelseif.tistory.com"
-        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+        className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200"
         target="_blank"
       >
         <SiTistory className="text-sm" />

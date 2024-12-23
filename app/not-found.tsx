@@ -12,7 +12,7 @@ export default function NotFound() {
         <div className="relative max-w-fit">
           <Link
             href="/"
-            className="text-neutral-900 dark:text-neutral-50 flex flex-row items-center gap-1 p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+            className="text-neutral-900 dark:text-neutral-50 flex flex-row items-center gap-1 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200"
           >
             <span className="text-base">Return Home</span>
             <RiArrowGoBackFill className="text-base cursor-pointer" />

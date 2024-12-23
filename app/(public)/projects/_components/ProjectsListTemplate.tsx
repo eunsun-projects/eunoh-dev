@@ -15,7 +15,7 @@ function ProjectsListTemplate() {
 
   return (
     <section>
-      <div className="flex flex-col justify-start gap-8 w-[90%] h-[84%] pt-10 xl:pt-0 xl:justify-center">
+      <div className="w-full flex flex-col justify-start gap-8 w-[90%] h-[84%] pt-10 xl:pt-0 xl:justify-center">
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
             {'💻 Projects 💻'}
@@ -27,7 +27,7 @@ function ProjectsListTemplate() {
             <div key={project.id} className="w-full flex justify-between">
               <div className="flex flex-row gap-2 w-[90%]">
                 <Link href={`/projects/${project.id}`} className="min-w-44">
-                  <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200">
+                  <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200">
                     {project.title}
                   </h3>
                 </Link>
@@ -41,17 +41,17 @@ function ProjectsListTemplate() {
                   ))}
                 </div>
               </div>
-              <div className="flex flex-row gap-1 justify-end w-[10%]">
+              <div className="flex flex-row gap-1 justify-end items-center w-[10%]">
                 <Link
                   href={project.link as string}
-                  className="text-xs p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+                  className="text-xs p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200"
                   target="_blank"
                 >
                   <FaLink />
                 </Link>
                 <Link
                   href={project.github_link as string}
-                  className="text-xs p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200"
+                  className="text-xs p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200"
                   target="_blank"
                 >
                   <FaGithub />

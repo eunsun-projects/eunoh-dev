@@ -46,7 +46,7 @@ function Nav({ ready }: NavProps) {
           <div key={item.title} className="flex flex-row gap-2 items-center">
             <Link
               href={item.href}
-              className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200 text-neutral-900 dark:text-neutral-200"
+              className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200 text-neutral-900 dark:text-neutral-200"
             >
               {item.title}
             </Link>

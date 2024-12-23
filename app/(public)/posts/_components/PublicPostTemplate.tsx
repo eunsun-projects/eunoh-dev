@@ -27,7 +27,7 @@ function PublicPostTemplate({ id }: PublicPostTemplateProps) {
 
   return (
     <section className="flex flex-col gap-8">
-      <div className="flex justify-between w-full">
+      <div className="w-full flex justify-between">
         <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
           {post?.title}
         </h2>

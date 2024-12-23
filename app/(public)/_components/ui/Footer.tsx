@@ -21,18 +21,20 @@ function Footer() {
         {'2025 . '}
         <Link
           href="/"
-          className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200 text-neutral-900 dark:text-neutral-200"
+          className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200 text-neutral-900 dark:text-neutral-200"
         >
           오은
         </Link>
       </p>
-      <Link
-        href="https://github.com/eunsun-projects/eunoh-dev"
-        target="_blank"
-        className="p-0.5 hover:bg-neutral-500 hover:rounded-sm transition-all duration-200 text-neutral-900 dark:text-neutral-200"
-      >
-        repo
-      </Link>
+      <p className="text-base">
+        <Link
+          href="https://github.com/eunsun-projects/eunoh-dev"
+          target="_blank"
+          className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200 text-neutral-900 dark:text-neutral-200"
+        >
+          repo
+        </Link>
+      </p>
     </footer>
   );
 }
