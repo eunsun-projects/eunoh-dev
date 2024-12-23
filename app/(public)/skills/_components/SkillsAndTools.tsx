@@ -38,7 +38,7 @@ import { DarkLightModeButton } from '../../_components/ui';
 function SkillsAndTools() {
   return (
     <section>
-      <div className="w-full flex flex-col justify-start gap-8 h-[84%] pt-10 xl:pt-0 xl:justify-center">
+      <div className="w-full flex flex-col justify-start gap-8 pt-10 xl:pt-0 xl:justify-center">
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg">
             {'🛠️ Skills & Tools 🛠️'}
