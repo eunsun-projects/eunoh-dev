@@ -2,7 +2,7 @@
 
 import cn from '@/utils/common/cn';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md';
 
 interface DarkLightModeButtonProps {
@@ -10,7 +10,7 @@ interface DarkLightModeButtonProps {
 }
 
 function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
-  const [theme, setTheme] = useState<string | null>(null);
+  const [theme, setTheme] = useState<string>('dark');
   const pathname = usePathname();
 
   const toggleTheme = () => {
@@ -25,21 +25,21 @@ function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
     }
   };
 
-  useEffect(() => {
-    // 사용자의 OS 설정에 따라 다크 모드 적용
-    if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      setTheme('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      setTheme('light');
-    }
-  }, []);
+  // useEffect(() => {
+  //   // 사용자의 OS 설정에 따라 다크 모드 적용
+  //   if (
+  //     localStorage.theme === 'dark' ||
+  //     (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  //   ) {
+  //     document.documentElement.classList.add('dark');
+  //     localStorage.setItem('theme', 'dark');
+  //     setTheme('dark');
+  //   } else {
+  //     document.documentElement.classList.remove('dark');
+  //     localStorage.setItem('theme', 'light');
+  //     setTheme('light');
+  //   }
+  // }, []);
 
   return (
     <div

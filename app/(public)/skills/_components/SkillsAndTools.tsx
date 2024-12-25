@@ -38,7 +38,7 @@ import { DarkLightModeButton } from '../../_components/ui';
 function SkillsAndTools() {
   return (
     <section>
-      <div className="w-full flex flex-col justify-start gap-8 pt-10 xl:pt-0 xl:justify-center">
+      <div className="w-full flex flex-col justify-start gap-8">
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg">
             {'🛠️ Skills & Tools 🛠️'}
@@ -48,10 +48,10 @@ function SkillsAndTools() {
         <div className="flex flex-col gap-6 w-full">
           <div className="flex flex-col gap-2 w-full">
             <p className="flex flex-col font-bold">{'> frontend : '}</p>
-            <div className="flex flex-col gap-2 text-xs">
+            <div className="flex flex-col gap-2 text-[9px] xl:text-xs">
               <div className="flex items-center gap-1">
                 <FaHtml5 className="text-neutral-900 dark:text-neutral-50 text-lg" />
-                <span className="text-neutral-900 dark:text-neutral-50">{'html'}</span>
+                <span className="text-neutral-900 dark:text-neutral-50 text-xs">{'html'}</span>
                 <span>{'- 시맨틱 태그를 활용하여 접근성을 고려한 구조를 설계합니다.'}</span>
               </div>
               <div className="flex items-center gap-1">
@@ -200,26 +200,30 @@ function SkillsAndTools() {
           </div>
           <div className="flex flex-col gap-3 w-full">
             <p className="flex flex-col font-bold">{'> others : '}</p>
-            <div className="flex flex-row gap-2 text-lg">
-              <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
-                <SiAdobephotoshop />
-                <span className="text-xs">{'photoshop'}</span>
+            <div className="flex flex-col xl:flex-row gap-2 text-lg">
+              <div className="flex flex-row gap-2">
+                <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
+                  <SiAdobephotoshop />
+                  <span className="text-xs">{'photoshop'}</span>
+                </div>
+                <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
+                  <SiAdobeillustrator />
+                  <span className="text-xs">{'illustrator'}</span>
+                </div>
+                <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
+                  <SiAdobepremierepro />
+                  <span className="text-xs">{'premiere'}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
-                <SiAdobeillustrator />
-                <span className="text-xs">{'illustrator'}</span>
-              </div>
-              <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
-                <SiAdobepremierepro />
-                <span className="text-xs">{'premiere'}</span>
-              </div>
-              <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
-                <SiBlender />
-                <span className="text-xs">{'blender'}</span>
-              </div>
-              <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
-                <SiOpenai />
-                <span className="text-xs">{'openai'}</span>
+              <div className="flex flex-row gap-2">
+                <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
+                  <SiBlender />
+                  <span className="text-xs">{'blender'}</span>
+                </div>
+                <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
+                  <SiOpenai />
+                  <span className="text-xs">{'openai'}</span>
+                </div>
               </div>
             </div>
           </div>

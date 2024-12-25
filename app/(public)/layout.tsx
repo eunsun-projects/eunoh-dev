@@ -8,7 +8,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
     <UiStateProvider>
       <OverScroll />
       <div className="min-h-full">
-        <main className="max-w-[640px] mx-auto pt-[128px] min-h-[calc(100dvh-128px-28px)]">
+        <main className="max-w-[640px] mx-auto pt-[64px] min-h-[calc(100dvh-128px-28px)] xl:pt-[128px]">
           {children}
         </main>
         <Footer />

@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="dark">
       <body
-        className={`${d2coding.className} bg-neutral-50 text-neutral-600 dark:bg-neutral-900 dark:text-neutral-400`}
+        className={`${d2coding.className} bg-neutral-50 text-neutral-600 dark:bg-neutral-900 dark:text-neutral-400 p-2 xl:p-0`}
       >
         <QueryProvider>{children}</QueryProvider>
         <Analytics />

@@ -37,11 +37,11 @@ function Nav({ ready }: NavProps) {
   return (
     <section
       className={cn(
-        'opacity-0 w-full flex items-center justify-between my-14 transition-all duration-1000',
+        'opacity-0 w-full flex items-center justify-between my-6 xl:my-14 transition-all duration-1000',
         ready && 'opacity-100',
       )}
     >
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-0.5 xl:gap-1 text-sm xl:text-base">
         {NAV_ITEMS.map((item) => (
           <div key={item.title} className="flex flex-row gap-2 items-center">
             <Link
@@ -50,7 +50,7 @@ function Nav({ ready }: NavProps) {
             >
               {item.title}
             </Link>
-            <span className="text-sm">{item.description}</span>
+            <span className="text-xs xl:text-sm">{item.description}</span>
           </div>
         ))}
       </div>

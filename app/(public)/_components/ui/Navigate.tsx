@@ -13,7 +13,7 @@ const Navigate: React.FC<NavigateProps> = ({ mode, onClick, className }) => {
   return (
     <div
       className={cn(
-        'absolute flex items-center justify-center w-9 h-9 text-black hover:text-primary-color-400 z-50',
+        'absolute flex items-center justify-center w-6 h-6 text-black hover:text-primary-color-400 z-40',
         mode === 'before'
           ? '-left-[15px] top-[60%] -translate-y-[50%]'
           : '-right-[15px] top-[60%] -translate-y-[50%]',

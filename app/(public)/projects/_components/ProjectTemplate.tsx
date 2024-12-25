@@ -1,12 +1,12 @@
 'use client';
 
 import { useTapScroll } from '@/hooks/ui/useTapScroll';
-import { Desc, ProjectWithImages } from '@/types/project.types';
-import Image from 'next/image';
+import { Desc, ProjectImage, ProjectWithImages } from '@/types/project.types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useRef, useState } from 'react';
 import { RiArrowGoBackFill } from 'react-icons/ri';
-import { DarkLightModeButton, Description, Navigate } from '../../_components/ui';
+import { DarkLightModeButton, Description, Modal, Navigate } from '../../_components/ui';
+import ProjectNextImage from './ProjectImage';
 
 interface ProjectTemplateProps {
   project: ProjectWithImages;
@@ -22,11 +22,25 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
 
   const [decisionIndex, setDecisionIndex] = useState<number[] | null>(null);
   const [troubleIndex, setTroubleIndex] = useState<number[] | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null);
+  const imageDivRef = useRef<HTMLDivElement>(null);
 
-  const imageRef = useRef<HTMLDivElement>(null);
+  const handleOpenModal = useCallback(
+    (image: ProjectImage) => () => {
+      setSelectedImage(image);
+      setIsOpen(true);
+    },
+    [setIsOpen],
+  );
+
+  const handleCloseModal = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
   const { scrollHandlers } =
     useTapScroll({
-      ref: imageRef,
+      ref: imageDivRef,
     }) ?? {};
 
   const handleDecisionClick = useCallback(
@@ -40,106 +54,99 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
   );
 
   return (
-    <section className="flex flex-col gap-8">
-      <div className="w-full flex justify-between">
-        <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
-          {project.title}
-        </h2>
-        <div className="flex items-center gap-2">
-          <RiArrowGoBackFill className="text-lg cursor-pointer" onClick={() => router.back()} />
-          <DarkLightModeButton />
+    <>
+      {isOpen && selectedImage && (
+        <Modal closeModal={handleCloseModal}>
+          <ProjectNextImage image={selectedImage} type="modal" />
+        </Modal>
+      )}
+      <section className="flex flex-col gap-8">
+        <div className="w-full flex justify-between">
+          <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
+            {project.title}
+          </h2>
+          <div className="flex items-center gap-2">
+            <RiArrowGoBackFill className="text-lg cursor-pointer" onClick={() => router.back()} />
+            <DarkLightModeButton />
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col gap-4">
-        <p className="text-sm">
-          {project.started_at?.split('T')[0].split('-').join('.')} ~{' '}
-          {project.ended_at?.split('T')[0].split('-').join('.')}
-        </p>
-        <div className="flex flex-row gap-2">
-          {project.keywords?.map((keyword) => (
-            <span
-              key={keyword}
-              className="text-sm rounded-md px-1 py-0.5 border border-neutral-600 dark:border-neutral-400"
-            >
-              {keyword}
-            </span>
-          ))}
-        </div>
-        {/** 이미지 영역 */}
-        <div className="relative flex w-full py-4 justify-center items-center">
-          <div
-            className="relative overflow-x-scroll flex gap-2 z-10 justify-start items-center mx-auto"
-            ref={imageRef}
-          >
-            {project.newImages?.map((image) => (
-              <div
-                className="relative"
-                key={image.image}
-                style={{
-                  minWidth: `${image.width / 2}px`,
-                  aspectRatio: `${image.width / image.height}`,
-                  width: `${image.width / 2}px`,
-                  height: `${image.height / 2}px`,
-                }}
+        <div className="flex flex-col gap-4">
+          <p className="text-sm">
+            {project.started_at?.split('T')[0].split('-').join('.')} ~{' '}
+            {project.ended_at?.split('T')[0].split('-').join('.')}
+          </p>
+          <div className="flex flex-row gap-2">
+            {project.keywords?.map((keyword) => (
+              <span
+                key={keyword}
+                className="text-sm rounded-md px-1 py-0.5 border border-neutral-600 dark:border-neutral-400"
               >
-                <Image
-                  src={image.image}
-                  alt={project.title ?? 'detail image'}
-                  priority
-                  fill
-                  unoptimized
-                  className="w-full h-full object-contain"
-                />
-              </div>
+                {keyword}
+              </span>
             ))}
           </div>
-          {scrollHandlers?.createScrollLeft && scrollHandlers?.createScrollRight && (
-            <div className="absolute flex w-full top-[50%]">
-              <Navigate
-                mode="before"
-                onClick={scrollHandlers.createScrollLeft()}
-                className="top-[50%]"
-              />
-              <Navigate
-                mode="after"
-                onClick={scrollHandlers.createScrollRight()}
-                className="top-[50%]"
-              />
+          {/** 이미지 영역 */}
+          <div className="relative flex w-full py-4 justify-center items-center">
+            <div
+              className="relative overflow-x-scroll flex gap-2 z-10 justify-start items-center mx-auto"
+              ref={imageDivRef}
+            >
+              {project.newImages?.map((image) => (
+                <ProjectNextImage
+                  key={image.image}
+                  image={image}
+                  onClick={handleOpenModal(image)}
+                />
+              ))}
             </div>
-          )}
+            {scrollHandlers?.createScrollLeft && scrollHandlers?.createScrollRight && (
+              <div className="absolute flex w-full top-[50%]">
+                <Navigate
+                  mode="before"
+                  onClick={scrollHandlers.createScrollLeft()}
+                  className="top-[50%]"
+                />
+                <Navigate
+                  mode="after"
+                  onClick={scrollHandlers.createScrollRight()}
+                  className="top-[50%]"
+                />
+              </div>
+            )}
+          </div>
+
+          {/** 주요 기능 및 특징 */}
+          <div className="flex flex-col w-full gap-4 text-left">
+            <h3 className="font-bold m-0 text-neutral-900 dark:text-neutral-50 text-sm">
+              🗝️ 주요 기능 및 특징
+            </h3>
+            <ul className="flex flex-col gap-1">
+              {project.features?.map((feature) => (
+                <li key={feature} className="text-xs">
+                  {'- ' + feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/** 기술적 의사 결정 */}
+          <Description
+            mode="decisions"
+            jsonObject={project.decisions as Desc[]}
+            handleClick={handleDecisionClick}
+            selectedIndex={decisionIndex}
+          />
+
+          {/** 트러블 슈팅 */}
+          <Description
+            mode="troubles"
+            jsonObject={project.troubles as Desc[]}
+            handleClick={handleTroubleClick}
+            selectedIndex={troubleIndex}
+          />
         </div>
-
-        {/** 주요 기능 및 특징 */}
-        <div className="flex flex-col w-full gap-4 text-left">
-          <h3 className="font-bold m-0 text-neutral-900 dark:text-neutral-50 text-sm">
-            🗝️ 주요 기능 및 특징
-          </h3>
-          <ul className="flex flex-col gap-1">
-            {project.features?.map((feature) => (
-              <li key={feature} className="text-xs">
-                {'- ' + feature}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/** 기술적 의사 결정 */}
-        <Description
-          mode="decisions"
-          jsonObject={project.decisions as Desc[]}
-          handleClick={handleDecisionClick}
-          selectedIndex={decisionIndex}
-        />
-
-        {/** 트러블 슈팅 */}
-        <Description
-          mode="troubles"
-          jsonObject={project.troubles as Desc[]}
-          handleClick={handleTroubleClick}
-          selectedIndex={troubleIndex}
-        />
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 

@@ -15,7 +15,7 @@ function ProjectsListTemplate() {
 
   return (
     <section>
-      <div className="w-full flex flex-col justify-start gap-8 pt-10 xl:pt-0 xl:justify-center">
+      <div className="w-full flex flex-col justify-start gap-8 xl:justify-center">
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
             {'💻 Projects 💻'}
@@ -25,13 +25,13 @@ function ProjectsListTemplate() {
         <div className="flex flex-col gap-2 w-full">
           {projects?.map((project) => (
             <div key={project.id} className="w-full flex justify-between">
-              <div className="flex flex-row gap-2 w-[90%]">
-                <Link href={`/projects/${project.id}`} className="min-w-44">
+              <div className="flex flex-row gap-0 w-[90%] xl:gap-2">
+                <Link href={`/projects/${project.id}`} className="min-w-40 xl:min-w-44">
                   <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200">
                     {project.title}
                   </h3>
                 </Link>
-                <div className="flex flex-row gap-1 text-xs">
+                <div className="flex flex-row gap-1 text-[10px] xl:text-xs">
                   <span>{'- '}</span>
                   {project.keywords?.map((keyword, index) => (
                     <p key={keyword} className="m-0">

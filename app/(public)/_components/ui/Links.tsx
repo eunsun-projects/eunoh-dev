@@ -13,7 +13,7 @@ function Links({ ready }: LinksProps) {
   return (
     <div
       className={cn(
-        'w-full opacity-0 flex flex-row gap-2 items-center justify-end left-2 transition-all duration-1000',
+        'w-full opacity-0 flex flex-row gap-1 xl:gap-2 items-center justify-end left-2 transition-all duration-1000 text-xs xl:text-sm',
         ready && 'opacity-100',
       )}
     >
@@ -35,7 +35,7 @@ function Links({ ready }: LinksProps) {
         className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 text-neutral-900 dark:text-neutral-50 hover:rounded-sm transition-all duration-200"
         target="_blank"
       >
-        <SiTistory className="text-sm" />
+        <SiTistory className="text-[11px] xl:text-sm" />
       </Link>
     </div>
   );
