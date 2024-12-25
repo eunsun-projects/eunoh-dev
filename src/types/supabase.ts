@@ -12,6 +12,7 @@ export type Database = {
           isView: boolean;
           keywords: string[] | null;
           markdown: string | null;
+          posted_at: string | null;
           summary: string | null;
           title: string | null;
         };
@@ -23,6 +24,7 @@ export type Database = {
           isView?: boolean;
           keywords?: string[] | null;
           markdown?: string | null;
+          posted_at?: string | null;
           summary?: string | null;
           title?: string | null;
         };
@@ -34,6 +36,7 @@ export type Database = {
           isView?: boolean;
           keywords?: string[] | null;
           markdown?: string | null;
+          posted_at?: string | null;
           summary?: string | null;
           title?: string | null;
         };

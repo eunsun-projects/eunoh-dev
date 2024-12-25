@@ -20,6 +20,7 @@ type FormValues = {
   isView?: boolean;
   engTitle?: string;
   summary?: string;
+  posted_at?: string;
 };
 
 interface PostsWriteTemplateProps {
@@ -40,6 +41,8 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
   const isViewId = useId();
   const engTitleId = useId();
   const summaryId = useId();
+  const posted_atId = useId();
+
   const handleChange = useCallback((value: string | undefined) => {
     setMarkdown(value || '');
   }, []);
@@ -55,6 +58,7 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
           ? post?.keywords
           : ([data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[]),
       engTitle: mode === 'edit' && !data.engTitle ? post?.engTitle : data.engTitle,
+      posted_at: mode === 'edit' && !data.posted_at ? post?.posted_at : data.posted_at,
     };
 
     if (mode === 'edit') {
@@ -91,6 +95,16 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
             id={isViewId}
             {...register('isView')}
             defaultChecked={mode === 'edit' ? post?.isView || false : false}
+          />
+        </div>
+        <div className="flex flex-row gap-2 items-center">
+          <label htmlFor={posted_atId}>작성일</label>
+          <input
+            type="date"
+            className={inputStyle}
+            id={posted_atId}
+            defaultValue={mode === 'edit' ? post?.posted_at || '' : ''}
+            {...register('posted_at')}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
