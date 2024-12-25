@@ -4,11 +4,11 @@ import { useAuth } from '@/hooks/auth/useAuth';
 import { usePostMutation } from '@/hooks/queries/posts';
 import { PartialPost } from '@/types/post.types';
 import cn from '@/utils/common/cn';
+import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PostsEditor from './PostsEditor';
-
 const inputStyle = 'w-[180px] border border-gray-300 rounded-md p-2';
 
 type FormValues = {
@@ -30,7 +30,7 @@ interface PostsWriteTemplateProps {
 
 function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
   const { user } = useAuth();
-  const [markdown, setMarkdown] = useState('**Hello world!!!**');
+  const [markdown, setMarkdown] = useState(post?.markdown || '**Hello world!!!**');
   const { register, handleSubmit } = useForm<FormValues>();
   const { mutate, isPending: mutationPending, error: mutationError } = usePostMutation();
   const router = useRouter();
@@ -59,6 +59,7 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
           : ([data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[]),
       engTitle: mode === 'edit' && !data.engTitle ? post?.engTitle : data.engTitle,
       posted_at: mode === 'edit' && !data.posted_at ? post?.posted_at : data.posted_at,
+      summary: mode === 'edit' && !data.summary ? post?.summary : data.summary,
     };
 
     if (mode === 'edit') {
@@ -103,7 +104,9 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
             type="date"
             className={inputStyle}
             id={posted_atId}
-            defaultValue={mode === 'edit' ? post?.posted_at || '' : ''}
+            defaultValue={
+              mode === 'edit' ? format(new Date(post?.posted_at as string), 'yyyy-MM-dd') : ''
+            }
             {...register('posted_at')}
           />
         </div>
@@ -131,7 +134,7 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
           <label htmlFor={summaryId}>요약</label>
           <input
             type="text"
-            className={cn(inputStyle, 'w-[300px]')}
+            className={cn(inputStyle, 'w-[700px]')}
             id={summaryId}
             defaultValue={mode === 'edit' ? post?.summary || '' : ''}
             {...register('summary')}

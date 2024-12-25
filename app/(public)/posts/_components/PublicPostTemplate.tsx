@@ -8,9 +8,9 @@ import { useEffect } from 'react';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
+import remarkGfm from 'remark-gfm';
 import { DarkLightModeButton } from '../../_components/ui';
-import './markdown-style.css';
-
+import styles from './markdown-style.module.css';
 interface PublicPostTemplateProps {
   id: string;
 }
@@ -37,7 +37,13 @@ function PublicPostTemplate({ id }: PublicPostTemplateProps) {
         </div>
       </div>
       <div>
-        <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{post?.markdown}</ReactMarkdown>
+        <ReactMarkdown
+          className={styles.markdown}
+          rehypePlugins={[rehypeHighlight]}
+          remarkPlugins={[remarkGfm]}
+        >
+          {post?.markdown}
+        </ReactMarkdown>
       </div>
     </section>
   );

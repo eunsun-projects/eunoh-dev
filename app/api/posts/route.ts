@@ -9,7 +9,7 @@ export async function GET() {
   // select without markdown column
   const { data, error } = await supabase
     .from('posts')
-    .select('id, title, engTitle, created_at, category, keywords, summary')
+    .select('id, title, engTitle, created_at, category, keywords, summary, isView, posted_at')
     .order('created_at', { ascending: false });
 
   if (error) {

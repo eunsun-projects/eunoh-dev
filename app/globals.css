@@ -4,7 +4,10 @@
 @layer base {
   /* Define light and dark mode colors */
   :root {
-    --text-color: rgb(23 23 23 / var(--tw-text-opacity, 1)); /* Default text color for light mode */
+    --text-color--high: rgb(
+      23 23 23 / var(--tw-text-opacity, 1)
+    ); /* Default text color for light mode */
+    --text-color--low: rgb(100 100 100 / var(--tw-text-opacity, 1));
   }
 }
 
@@ -18,7 +21,8 @@
   }
 
   .dark {
-    --text-color: rgb(250 250 250 / var(--tw-text-opacity, 1)); /* Text color for dark mode */
+    --text-color--high: rgb(230 230 230 / var(--tw-text-opacity, 1)); /* Text color for dark mode */
+    --text-color--low: rgb(186 186 186 / var(--tw-text-opacity, 1));
   }
 }
 

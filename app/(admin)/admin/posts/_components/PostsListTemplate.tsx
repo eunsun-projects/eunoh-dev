@@ -28,8 +28,8 @@ function PostsListTemplate() {
           <li
             key={post.id}
             className={cn(
-              'flex flex-row items-center justify-between gap-2',
-              post.isView ? 'bg-white' : 'bg-gray-100 text-gray-400',
+              'flex flex-row items-center justify-between gap-2 hover:bg-gray-300',
+              post.isView ? 'bg-white' : 'bg-gray-300 text-gray-400',
             )}
           >
             <span>{post.title}</span>
