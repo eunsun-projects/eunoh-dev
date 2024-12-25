@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "framer-motion": "^11.15.0",
     "highlight.js": "^11.11.0",
     "husky": "^9.1.7",
     "next": "15.1.0",
