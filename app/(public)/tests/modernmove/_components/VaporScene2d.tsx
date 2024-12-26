@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { animated, useSpring } from '@react-spring/web';
+import { a, useSpring } from '@react-spring/web';
 import { useEffect, useRef, useState } from 'react';
 import styles from '../_styles/modern-move.module.css';
 
@@ -88,7 +88,7 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
   }, [audio, play]);
 
   return (
-    <animated.div
+    <a.div
       className={styles.canvas2d}
       style={{ opacity: opacity, position: 'absolute', zIndex: '1' }}
     >
@@ -111,6 +111,6 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
         alt="modernmove_2d"
         onLoad={handleImageLoad}
       />
-    </animated.div>
+    </a.div>
   );
 }
