@@ -24,7 +24,7 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
   const [troubleIndex, setTroubleIndex] = useState<number[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null);
-  const imageDivRef = useRef<HTMLDivElement>();
+  const imageDivRef = useRef<HTMLDivElement | null>(null);
 
   const handleOpenModal = useCallback(
     (image: ProjectImage) => () => {
