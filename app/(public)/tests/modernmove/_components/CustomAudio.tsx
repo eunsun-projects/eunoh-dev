@@ -2,16 +2,14 @@
 
 import { useEffect, useRef } from 'react';
 import styles from '../_styles/modern-move.module.css';
+import { useModernMoveContext } from './ModernMoveContext';
 
-interface CustomAudioProps {
-  audio: HTMLAudioElement;
-}
-
-export default function CustomAudio({ audio }: CustomAudioProps) {
+export default function CustomAudio() {
+  const { audio } = useModernMoveContext();
   const progressRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (!progressRef.current) return;
+    if (!progressRef.current || !audio) return;
     progressRef.current.style.width = '0%';
 
     const drawProgress = (currTime: number, totalTime: number) => {

@@ -7,17 +7,18 @@ import styles from '../_styles/modern-move.module.css';
 
 import { useRouter } from 'next/navigation';
 import Landscape from './Landscape';
+import MmLoader from './MmLoader';
+import { useModernMoveContext } from './ModernMoveContext';
 import MoonLoaderBlack from './MoonLoaderBlack';
 import VaporwaveScene from './VaporScene';
 
 export default function ModernMoveTemplate() {
   const [innerW, setInnerW] = useState<number | null>(null);
-  const [play, setPlay] = useState(false); // 오디오 플레이어의 재생 여부를 나타내는 상태 값이다.
-  const [threeD, setThreeD] = useState(true);
   const [awaiting, setAwaiting] = useState(true);
   const [ending, setEnding] = useState(false);
-  const [meteor, setMeteor] = useState(false);
-  const [objet, setObjet] = useState(false);
+
+  const { play, threeD, meteor, objet, setPlay, setThreeD, setObjet, setAudio } =
+    useModernMoveContext();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const monitorRef = useRef<HTMLDivElement | null>(null);
@@ -39,11 +40,11 @@ export default function ModernMoveTemplate() {
   };
 
   const handleMeteorClick = () => {
-    setMeteor(true);
+    meteor.current = true;
     const timer = setTimeout(() => {
-      setMeteor(false);
+      meteor.current = false;
       clearTimeout(timer);
-    }, 2000);
+    }, 2500);
   };
 
   const handleObjetClick = () => {
@@ -59,13 +60,6 @@ export default function ModernMoveTemplate() {
   const handlePauseClick = () => {
     if (!audioRef.current) return;
     audioRef.current.pause();
-    setPlay(false);
-  };
-
-  const handleStopClick = () => {
-    if (!audioRef.current) return;
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
     setPlay(false);
   };
 
@@ -121,15 +115,17 @@ export default function ModernMoveTemplate() {
     };
   }, []);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      setAudio(audioRef.current);
+    }
+  }, [setAudio]);
+
+  console.log('canvas 1 render');
+
   return (
     <>
-      <audio
-        ref={audioRef}
-        src="/assets/modernmove/modernmove.mp3"
-        preload="metadata"
-        muted
-        onEnded={handleEnding}
-      />
+      <audio ref={audioRef} src="/assets/modernmove/modernmove.mp3" muted onEnded={handleEnding} />
       <Suspense fallback={<MoonLoaderBlack />}>
         <div ref={monitorRef} className={styles.monitortop}>
           <Landscape />
@@ -138,26 +134,13 @@ export default function ModernMoveTemplate() {
             <div className={styles.monitortopvoid}></div>
 
             <div className={styles.monitorcanvasbox}>
-              {/* {innerW && !ending ? (
-                <VaporwaveScene
-                  audio={audioRef.current as HTMLAudioElement}
-                  play={play}
-                  threeD={threeD}
-                  meteor={meteor}
-                  objet={objet}
-                />
+              {innerW && !ending ? (
+                <VaporwaveScene />
               ) : (
                 <div className={styles.mmloader}>
                   <MmLoader />
                 </div>
-              )} */}
-              <VaporwaveScene
-                audio={audioRef.current as HTMLAudioElement}
-                play={play}
-                threeD={threeD}
-                meteor={meteor}
-                objet={objet}
-              />
+              )}
             </div>
 
             <div className={styles.monitorbottombox}>
@@ -221,34 +204,20 @@ export default function ModernMoveTemplate() {
                   )}
                 </div>
                 <div style={{ display: 'grid' }}>
-                  {!meteor ? (
-                    <img
-                      id="star"
-                      className={styles.gamegibtntop}
-                      style={{
-                        position: 'relative',
-                        height: 'auto',
-                        zIndex: '6',
-                        boxSizing: 'border-box',
-                        pointerEvents: awaiting ? 'none' : 'all',
-                      }}
-                      src="/assets/modernmove/gamegi-starbtn.webp"
-                      alt="gamegi_star"
-                      onClick={handleMeteorClick}
-                    />
-                  ) : (
-                    <img
-                      className={styles.gamegibtntop}
-                      style={{
-                        position: 'relative',
-                        height: 'auto',
-                        zIndex: '6',
-                        boxSizing: 'border-box',
-                      }}
-                      src="/assets/modernmove/gamegi-transstarbtn.webp"
-                      alt="gamegi_star"
-                    />
-                  )}
+                  <img
+                    id="star"
+                    className={styles.gamegibtntop}
+                    style={{
+                      position: 'relative',
+                      height: 'auto',
+                      zIndex: '6',
+                      boxSizing: 'border-box',
+                      pointerEvents: awaiting ? 'none' : 'all',
+                    }}
+                    src="/assets/modernmove/gamegi-starbtn.webp"
+                    alt="gamegi_star"
+                    onClick={handleMeteorClick}
+                  />
                 </div>
                 <div style={{ display: 'grid' }}>
                   <img

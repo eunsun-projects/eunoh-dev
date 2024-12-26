@@ -18,6 +18,7 @@ import CustomAudio from './CustomAudio';
 import Earth from './Earth';
 import Firework from './Firework';
 import generateBuildings from './GenerateBuildings';
+import { useModernMoveContext } from './ModernMoveContext';
 import MoonLoaderBlack from './MoonLoaderBlack';
 import MoonLoaderDrei from './MoonLoaderDrei';
 import CustomMovingGrid from './MovingGrid';
@@ -211,14 +212,7 @@ function setSceneName(obj: Group<Object3DEventMap> | Object3D<Object3DEventMap>,
   }
 }
 
-interface ModelProps {
-  audio: HTMLAudioElement;
-  play: boolean;
-  meteor: boolean;
-  objet: boolean;
-}
-
-function Model({ audio, play, meteor, objet }: ModelProps) {
+function Model() {
   const loadedArr = useLoader(GLTFLoader, modelUrl);
   const maxwellAction = useAnimations(loadedArr[4].animations, loadedArr[4].scene);
   const catfaceAction = useAnimations(loadedArr[7].animations, loadedArr[7].scene);
@@ -238,6 +232,8 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
   const [firework3, setFirework3] = useState(false);
   const [firework4, setFirework4] = useState(false);
   const [movStars, setMovStars] = useState<MovingStars | null>(null);
+
+  const { play, objet, audio } = useModernMoveContext();
 
   const refs = useRef<{ [key: string]: Object3D<Object3DEventMap> }>({});
   const earthRef = useRef<Mesh<SphereGeometry, MeshStandardMaterial> | null>(null);
@@ -352,6 +348,7 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
     }
 
     function recieve() {
+      if (!audio) return;
       const curr = audio.currentTime;
 
       if (curr > 93 && curr < 93.3 && play) {
@@ -433,18 +430,6 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
       {tunnel && <directionalLight color="#fff" position={[0, 8, 30]} intensity={1} />}
       {buildings}
 
-      {meteor && (
-        <>
-          <StarTrail position={[290, 100, -60]} />
-          <StarTrail position={[210, 100, -40]} />
-          <StarTrail position={[160, 100, -30]} />
-          <StarTrail position={[110, 100, -20]} />
-          <StarTrail position={[70, 100, 0]} />
-          <StarTrail position={[20, 100, -20]} />
-          <StarTrail position={[-30, 100, -30]} />
-          <StarTrail position={[-80, 100, -40]} />
-        </>
-      )}
       {objects === 0 && <Earth ref={earthRef} />}
       {objects === 1 && (
         <primitive
@@ -482,7 +467,7 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
           scale={modelData[2].scale}
         />
       )}
-      {!audio.ended && (
+      {audio && !audio.ended && (
         <>
           <primitive
             name={modelData[3].name}
@@ -579,7 +564,7 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
           scale={modelData[8].scale}
         />
       )}
-      {!audio.ended && (
+      {audio && !audio.ended && (
         <>
           <primitive
             name={modelData[10].name}
@@ -649,7 +634,7 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
           />
         </>
       )}
-      {!audio.ended && lamp && (
+      {audio && !audio.ended && lamp && (
         <>
           <primitive
             name={modelData[15].name}
@@ -677,37 +662,8 @@ function Model({ audio, play, meteor, objet }: ModelProps) {
   );
 }
 
-interface SceneProps {
-  audio: HTMLAudioElement;
-  play: boolean;
-  meteor: boolean;
-  objet: boolean;
-}
-
-function Scene({ audio, play, meteor, objet }: SceneProps) {
-  return (
-    <>
-      <Stars count={1300} depth={60} radius={1} saturation={0.5} factor={0.3} speed={3} />
-      <Model audio={audio} play={play} meteor={meteor} objet={objet} />
-    </>
-  );
-}
-
-interface VaporwaveSceneProps {
-  audio: HTMLAudioElement;
-  play: boolean;
-  threeD: boolean;
-  meteor: boolean;
-  objet: boolean;
-}
-
-export default function VaporwaveScene({
-  audio,
-  play,
-  threeD,
-  meteor,
-  objet,
-}: VaporwaveSceneProps) {
+export default function VaporwaveScene() {
+  const { audio } = useModernMoveContext();
   const [crack, setCrack] = useState({ xx: 0, yy: 0 }); // 432 정도
   const [ready, setReady] = useState(false);
 
@@ -715,6 +671,7 @@ export default function VaporwaveScene({
 
   useEffect(() => {
     function recieve() {
+      if (!audio) return;
       const curr = audio.currentTime;
       if (curr > 179 && curr < 179.3) {
         setCrack({ xx: 300, yy: 150 });
@@ -767,11 +724,11 @@ export default function VaporwaveScene({
           )} */}
           {ready && (
             <>
-              <VaporwaveScene2d threeD={threeD} ready={ready} audio={audio} play={play} />
+              <VaporwaveScene2d ready={ready} />
 
               <div className={styles.customaudiobox}>
                 <div style={{ position: 'relative', boxSizing: 'border-box', padding: '1rem' }}>
-                  <CustomAudio audio={audio} />
+                  <CustomAudio />
                 </div>
               </div>
             </>
@@ -791,7 +748,8 @@ export default function VaporwaveScene({
               <Suspense fallback={<MoonLoaderDrei />}>
                 <ambientLight />
                 <directionalLight color="#fff" position={[0, 5, 10]} intensity={5} />
-                <Scene audio={audio} play={play} meteor={meteor} objet={objet} />
+                <Stars count={1300} depth={60} radius={1} saturation={0.5} factor={0.3} speed={3} />
+                <Model />
                 <Cloud
                   position={[0, 0, -30]}
                   scale={[20, 20, 20]}
@@ -800,7 +758,16 @@ export default function VaporwaveScene({
                   segments={20}
                   color="#9dbaf0"
                 />
+
                 <CustomMovingGrid />
+                <StarTrail position={[290, 100, -60]} />
+                <StarTrail position={[210, 100, -40]} />
+                <StarTrail position={[160, 100, -30]} />
+                <StarTrail position={[110, 100, -20]} />
+                <StarTrail position={[70, 100, 0]} />
+                <StarTrail position={[20, 100, -20]} />
+                <StarTrail position={[-30, 100, -30]} />
+                <StarTrail position={[-80, 100, -40]} />
                 {/* {ready && (
                 <EffectComposer>
                   <Bloom

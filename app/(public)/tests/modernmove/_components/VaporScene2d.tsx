@@ -4,15 +4,10 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styles from '../_styles/modern-move.module.css';
+import { useModernMoveContext } from './ModernMoveContext';
 
-interface VaporwaveScene2dProps {
-  threeD: boolean;
-  ready: boolean;
-  audio: HTMLAudioElement;
-  play: boolean;
-}
-
-export default function VaporwaveScene2d({ threeD, ready, audio, play }: VaporwaveScene2dProps) {
+export default function VaporwaveScene2d({ ready }: { ready: boolean }) {
+  const { threeD, audio, play } = useModernMoveContext();
   const [isLoaded, setIsLoaded] = useState(false);
   const [earth, setEarth] = useState(false);
   const earthRef = useRef<HTMLImageElement>(null);
@@ -29,7 +24,7 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
 
   useEffect(() => {
     function recieve() {
-      if (!earthRef.current) return;
+      if (!earthRef.current || !audio) return;
       const curr = audio.currentTime;
       if (curr > 3 && curr < 3.3 && play) {
         setEarth(true);
