@@ -3,7 +3,7 @@
 import { useTapScroll } from '@/hooks/ui/useTapScroll';
 import { Desc, ProjectImage, ProjectWithImages } from '@/types/project.types';
 import { useRouter } from 'next/navigation';
-import { RefObject, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import { DarkLightModeButton, Description, Modal, Navigate } from '../../_components/ui';
 import ProjectNextImage from './ProjectImage';
@@ -40,7 +40,7 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
 
   const { scrollHandlers } =
     useTapScroll({
-      ref: imageDivRef as RefObject<HTMLDivElement>,
+      ref: imageDivRef,
     }) ?? {};
 
   const handleDecisionClick = useCallback(
@@ -89,7 +89,7 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
           <div className="relative flex w-full py-4 justify-center items-center">
             <div
               className="relative overflow-x-scroll flex gap-2 z-10 justify-start items-center mx-auto"
-              ref={imageDivRef as RefObject<HTMLDivElement>}
+              ref={imageDivRef}
             >
               {project.newImages?.map((image) => (
                 <ProjectNextImage
