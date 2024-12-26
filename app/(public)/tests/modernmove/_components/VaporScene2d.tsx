@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { a, useSpring } from '@react-spring/web';
+import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styles from '../_styles/modern-move.module.css';
 
@@ -13,16 +13,14 @@ interface VaporwaveScene2dProps {
 }
 
 export default function VaporwaveScene2d({ threeD, ready, audio, play }: VaporwaveScene2dProps) {
-  const [isLoaded, setIsLoaded] = useState(false); // 이미지 로드 상태를 추적하는 상태 변수
-  const { opacity } = useSpring({ opacity: threeD ? 0 : 1 }); // 3d 캔바스 로드되기 전까지 0 으로 유지기능 추가할것 isLoaded && threeD
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const [earth, setEarth] = useState(false);
   const earthRef = useRef<HTMLImageElement>(null);
 
   const handleImageLoad = () => {
     if (ready) {
       const timer = setTimeout(() => {
-        setIsLoaded(true); // 이미지가 로드되면 상태를 업데이트합니다.
+        setIsLoaded(true);
         console.log('Image loaded!');
         clearTimeout(timer);
       }, 1000);
@@ -35,46 +33,9 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
       const curr = audio.currentTime;
       if (curr > 3 && curr < 3.3 && play) {
         setEarth(true);
-        earthRef.current.style.transform = 'translateY(180px)';
       }
       if (curr > 9 && curr < 9.3 && play) {
         setEarth(false);
-      }
-      if (curr > 15 && curr < 15.3 && play) {
-      }
-      if (curr > 21 && curr < 21.3 && play) {
-      }
-      if (curr > 27 && curr < 27.3 && play) {
-      }
-      if (curr > 33 && curr < 33.3 && play) {
-      }
-      if (curr > 39 && curr < 39.3 && play) {
-      }
-      if (curr > 45 && curr < 45.3 && play) {
-      }
-      if (curr > 51 && curr < 51.3 && play) {
-      }
-      if (curr > 57 && curr < 57.3 && play) {
-      }
-      if (curr > 63 && curr < 63.3 && play) {
-      }
-      if (curr > 69 && curr < 69.3 && play) {
-      }
-      if (curr > 75 && curr < 75.3 && play) {
-      }
-      if (curr > 81 && curr < 81.3 && play) {
-      }
-      if (curr > 87 && curr < 87.5 && play) {
-      }
-      if (curr > 93 && curr < 93.3 && play) {
-      }
-      if (curr > 99 && curr < 99.3 && play) {
-      }
-      if (curr > 99 && curr < 99.3 && play) {
-      }
-      if (curr > 105 && curr < 105.3 && play) {
-      }
-      if (curr > 126 && curr < 126.3 && play) {
       }
     }
 
@@ -88,11 +49,14 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
   }, [audio, play]);
 
   return (
-    <a.div
+    <motion.div
       className={styles.canvas2d}
-      style={{ opacity: opacity, position: 'absolute', zIndex: '1' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: threeD ? 0 : 1 }}
+      transition={{ duration: 1 }}
+      style={{ position: 'absolute', zIndex: '1' }}
     >
-      <img
+      <motion.img
         ref={earthRef}
         src="/assets/modernmove/earth3.gif"
         style={{
@@ -100,8 +64,11 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
           top: '130px',
           zIndex: '2',
           opacity: earth ? '1' : '0',
-          transition: 'transform 7s',
         }}
+        animate={{
+          transform: earth ? 'translateY(180px)' : 'translateY(0px)',
+        }}
+        transition={{ duration: 7 }}
         alt="earth"
       />
       <img
@@ -111,6 +78,6 @@ export default function VaporwaveScene2d({ threeD, ready, audio, play }: Vaporwa
         alt="modernmove_2d"
         onLoad={handleImageLoad}
       />
-    </a.div>
+    </motion.div>
   );
 }
