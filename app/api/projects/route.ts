@@ -9,6 +9,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
+    .eq('isView', true)
     .order('number', { ascending: true });
 
   if (error) {
