@@ -1,54 +1,59 @@
-"use client";
+'use client';
 
-import { useUiState } from "@/hooks/ui/useUiState";
-import cn from "@/utils/common/cn";
-import { useEffect, useState } from "react";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import cn from '@/utils/common/cn';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md';
 
-function DarkLightModeButton() {
-    const { mainReady } = useUiState();
-    const [theme, setTheme] = useState<string | null>(null);
+interface DarkLightModeButtonProps {
+  ready?: boolean;
+}
 
-    const toggleTheme = () => {
-        if (theme === "dark") {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-            setTheme("light");
-        } else {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            setTheme("dark");
-        }
-    };
+function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
+  const [theme, setTheme] = useState<string>('dark');
+  const pathname = usePathname();
 
-    useEffect(() => {
-        // 사용자의 OS 설정에 따라 다크 모드 적용
-        if (
-            localStorage.theme === "dark" ||
-            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            setTheme("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-            setTheme("light");
-        }
-    }, []);
+  const toggleTheme = () => {
+    if (theme === 'dark') {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      setTheme('light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      setTheme('dark');
+    }
+  };
 
-    return (
-        <div
-            className={cn(
-                "fixed opacity-0 top-2 right-2 transition-all duration-1000 text-black dark:text-white z-50",
-                mainReady && theme !== null && "opacity-100"
-            )}
-        >
-            <button onClick={toggleTheme} className="text-3xl">
-                {theme === "dark" ? <MdOutlineDarkMode /> : <MdDarkMode />}
-            </button>
-        </div>
-    );
+  // useEffect(() => {
+  //   // 사용자의 OS 설정에 따라 다크 모드 적용
+  //   if (
+  //     localStorage.theme === 'dark' ||
+  //     (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  //   ) {
+  //     document.documentElement.classList.add('dark');
+  //     localStorage.setItem('theme', 'dark');
+  //     setTheme('dark');
+  //   } else {
+  //     document.documentElement.classList.remove('dark');
+  //     localStorage.setItem('theme', 'light');
+  //     setTheme('light');
+  //   }
+  // }, []);
+
+  return (
+    <div
+      className={cn(
+        'opacity-0 flex items-center justify-center text-xl',
+        ready && theme !== null && 'opacity-100',
+        pathname === '/' && 'transition-all duration-1000',
+      )}
+    >
+      <button onClick={toggleTheme}>
+        {theme === 'dark' ? <MdOutlineDarkMode /> : <MdDarkMode />}
+      </button>
+    </div>
+  );
 }
 
 export default DarkLightModeButton;

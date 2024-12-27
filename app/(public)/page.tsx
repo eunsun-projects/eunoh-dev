@@ -1,27 +1,7 @@
-import { getProjects } from "@/apis/projects";
-import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { Suspense } from "react";
-import Loading from "../loading";
-import MainComponent from "./_components/MainComponent";
+import HomeTemplate from './_components/HomeTemplate';
 
-async function MainPage() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEY_PROJECTS],
-    queryFn: () => getProjects(),
-  });
-
-  const dehydratedState = dehydrate(queryClient);
-
-  return (
-    <Suspense fallback={<Loading />}>
-      <HydrationBoundary state={dehydratedState}>
-        <MainComponent />
-      </HydrationBoundary>
-    </Suspense>
-  );
+function MainPage() {
+  return <HomeTemplate />;
 }
 
 export default MainPage;

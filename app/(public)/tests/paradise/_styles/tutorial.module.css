@@ -1,0 +1,674 @@
+.backdiv {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: black;
+  box-sizing: border-box;
+}
+.maindiv {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+}
+.leftdiv {
+  width: 33.3%;
+  height: 100%;
+  background-color: black;
+}
+.rightdiv {
+  width: 33.3%;
+  height: 100%;
+  background-color: black;
+}
+
+.middiv {
+  position: relative;
+  width: 33.3%;
+  height: 100%;
+  /* padding: 1rem; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+.mastbox {
+  position: relative;
+  width: 100%;
+  height: 42%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+.mast {
+  position: relative;
+  height: 100%;
+  white-space: pre-line;
+  text-align: justify;
+  color: white;
+  padding: 0.2rem;
+  border: 3px ridge white;
+  border-radius: 5px;
+  animation: letter-glow 0.05s infinite;
+}
+/* .mast span{
+  animation: letter-glow 0.05s forwards;
+} */
+
+.imgbox {
+  margin-top: 10%;
+  position: relative;
+  width: 95%;
+  height: 40%;
+}
+.monitorvideos {
+  pointer-events: none;
+  position: absolute;
+  opacity: 1;
+  width: 95%;
+  height: 40%;
+  margin-top: 10%;
+}
+.video1 {
+  position: absolute;
+  top: 0;
+  /* 꼭 넣어봐 */
+  object-fit: fill;
+  pointer-events: none;
+}
+.btnbox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  /* background-color: white; */
+}
+.btncon {
+  color: white;
+  position: relative;
+  font-size: 1.5rem;
+  animation: letter-glow 0.05s infinite;
+  z-index: 1;
+  cursor: pointer;
+}
+@-webkit-keyframes letter-glow {
+  0% {
+    opacity: 0;
+    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1);
+  }
+  66% {
+    opacity: 1;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.9);
+  }
+  77% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes letter-glow {
+  0% {
+    opacity: 0;
+    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1);
+  }
+  66% {
+    opacity: 1;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.9);
+  }
+  77% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0);
+  }
+}
+
+/*모달*/
+.qrmiddiv {
+  position: relative;
+  width: 33.3%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.fullmonitorvideos {
+  pointer-events: none;
+  position: absolute;
+  opacity: 1;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  margin-top: 10%;
+}
+
+.qrimgbox {
+  position: relative;
+  width: 25rem;
+  height: 30rem;
+  /* height: 32.5rem; */
+  /* 1:1.3 */
+}
+.qrmiddiv p {
+  width: 25rem;
+}
+.qrtitle {
+  text-align: center;
+  box-sizing: border-box;
+  font-size: 1.5rem;
+  color: brown;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qrcontents {
+  height: fit-content;
+  font-size: 1rem;
+}
+.qrcontents p:nth-child(1) {
+  color: blue;
+  line-height: 1.5rem;
+  line-height: 3rem;
+}
+.qrcontents p:nth-child(2) {
+  white-space: pre-line;
+  text-align: justify;
+  /* padding: 1rem; */
+  box-sizing: border-box;
+  line-height: 1.5rem;
+  color: black;
+  padding-bottom: 1rem;
+  box-sizing: border-box;
+}
+.qrcontents p:nth-child(3) {
+  white-space: pre-line;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  line-height: 2rem;
+}
+.qrcontents p:nth-child(4) {
+  box-sizing: border-box;
+  padding-top: 1rem;
+  text-align: center;
+  white-space: pre-line;
+}
+.qrbtnbox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  animation: slow 5s forwards;
+}
+.qrbtncon {
+  color: black;
+  position: relative;
+  font-size: 2rem;
+  z-index: 1;
+  animation: letter-glow 0.05s infinite;
+  cursor: pointer;
+}
+
+@keyframes slow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/*newspaper*/
+.newsmid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: white;
+}
+.newspaperfull {
+  position: relative;
+  background-image: linear-gradient(to bottom, #808080b5 60%, white);
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  box-sizing: border-box;
+  filter: sepia(0.1);
+}
+.newsimgbox {
+  position: relative;
+  width: 28rem;
+  height: 34rem;
+  /* 1:1.2 */
+}
+/* .newstop{
+  width: 90%;
+  border-bottom: 2px solid black;
+  text-align: right;
+  margin: 1rem 0;
+}
+.newstitle{
+  text-align: center;
+  box-sizing: border-box;
+  color: black;
+  height: 5rem;
+  width: 90%;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: grey;
+}
+.newscontop{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+.newsconleft{
+  position: relative;
+  width: 35%;
+
+  font-size: 1.3rem;
+  text-align: justify;
+  padding-top: 1rem;
+}
+
+.newsconrightbox{
+  position: relative;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content:flex-end;
+  background-color: black;
+}
+.newsconright{
+  position: relative;
+  font-size: 1.7rem;
+  color: white;
+  height: fit-content;
+  writing-mode: vertical-lr;
+  padding: 1rem 0.5rem;
+  box-sizing: border-box;
+}
+
+.newsconbottom{
+  position: relative;
+  font-size: 1.3rem;
+  width: 90%;
+  margin-top: -10.5rem;
+}
+.newsconbottom p{
+  width: 80%;
+  text-align: justify;
+} */
+
+.narration {
+  line-height: 1.5rem;
+  width: 95%;
+  height: 25%;
+  border: 3px ridge black;
+  border-radius: 5px;
+  /* padding: 2rem 0; */
+  position: relative;
+  font-size: 1rem;
+  white-space: pre-line;
+  display: flex;
+  align-items: flex-start;
+}
+.narration p {
+  padding: 0.2rem;
+}
+/*다이어리*/
+.diarymid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  filter: contrast(0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: white;
+}
+.notebox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 90%;
+}
+.notefull {
+  position: relative;
+  font-size: 1.3rem;
+  line-height: 2.2rem;
+  width: 90%;
+  height: fit-content;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 0;
+}
+.notefull p {
+  border-bottom: 1px solid black;
+}
+.diaryfont {
+  padding: 0 0.2rem;
+  box-sizing: border-box;
+  animation: diaryslow 5s forwards;
+}
+
+@keyframes diaryslow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/*나레이션*/
+.narrationmid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* filter: contrast(0.6); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  color: white;
+}
+.lastnarration {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  white-space: pre-line;
+  line-height: 1.5rem;
+  z-index: 1;
+}
+.narrabtnbox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  animation: slow 7s forwards;
+}
+.narrabtncon {
+  color: white;
+  position: relative;
+  font-size: 2rem;
+  animation: letter-glow 0.05s infinite;
+  z-index: 1;
+  cursor: pointer;
+}
+.narrasmoke {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  animation: slow 2s forwards;
+}
+/* 태블릿 가로(아이패드 프로에선 글씨가 좀 작은 경향이 있음 나중에 나눌거면 1366 부터 높이면됨) */
+@media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .qrmiddiv p {
+    width: 17rem;
+  }
+  .qrimgbox {
+    width: 12rem;
+    height: 15.6rem;
+  }
+  .qrcontents {
+    font-size: 0.8rem;
+  }
+  .newsimgbox {
+    width: 20rem;
+    height: 24rem;
+  }
+}
+/*아이패드 미니 ~ 아이패드 프로 세로*/
+@media screen and (min-width: 1024px) and (max-width: 1137px) and (orientation: portrait) {
+  /* 인트로 */
+  .maindiv {
+    overflow: hidden;
+  }
+  .leftdiv {
+    display: none;
+  }
+  .rightdiv {
+    display: none;
+  }
+  .middiv {
+    width: 100%;
+  }
+  .qrmiddiv {
+    width: 100%;
+  }
+  .newsmid {
+    width: 100%;
+  }
+  .diarymid {
+    width: 100%;
+  }
+  .narrationmid {
+    width: 100%;
+  }
+  /*상세 튜토리얼 첫페이지*/
+  .imgbox {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+  .mastbox {
+    width: 96%;
+  }
+  .mast {
+    font-size: 1.8rem;
+  }
+  /*상세 qr페이지*/
+  .qrtitle {
+    font-size: 1.8rem;
+  }
+  .qrcontents {
+    font-size: 1.5rem;
+  }
+  .qrcontents p:nth-child(2) {
+    line-height: 2.3rem;
+  }
+  /*상세 신문페이지*/
+  .newsimgbox {
+    width: 40rem;
+    height: 48rem;
+  }
+  .narration {
+    width: 96%;
+    font-size: 1.8rem;
+    line-height: 2rem;
+  }
+  /*상세 일기페이지*/
+  .notefull {
+    font-size: 2rem;
+    line-height: 3.2rem;
+  }
+  /*상세 연기페이지*/
+  .lastnarration {
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+  }
+}
+/* 아이패드 보다 작은 태블릿 세로 (갤탭 등) */
+@media screen and (min-width: 711px) and (max-width: 1023px) and (orientation: portrait) {
+  /* 인트로 */
+  .maindiv {
+    overflow: hidden;
+  }
+  .leftdiv {
+    display: none;
+  }
+  .rightdiv {
+    display: none;
+  }
+  .middiv {
+    width: 100%;
+  }
+  .qrmiddiv {
+    width: 100%;
+  }
+  .newsmid {
+    width: 100%;
+  }
+  .diarymid {
+    width: 100%;
+  }
+  .narrationmid {
+    width: 100%;
+  }
+  /*상세 튜토리얼 첫페이지*/
+  .imgbox {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+  .mast {
+    font-size: 1.4rem;
+  }
+  /*상세 신문페이지*/
+  .narration {
+    font-size: 1.4rem;
+  }
+  /*상세 일기페이지*/
+  .notefull {
+    font-size: 1.6rem;
+  }
+  /*상세 연기페이지*/
+  .lastnarration {
+    font-size: 1.4rem;
+  }
+}
+/* 큰 사이즈 까지 고려한 모바일 */
+@media screen and (max-width: 710px) {
+  .maindiv {
+    overflow: hidden;
+  }
+  .leftdiv {
+    display: none;
+  }
+  .rightdiv {
+    display: none;
+  }
+  .middiv {
+    width: 100%;
+  }
+  .qrmiddiv {
+    width: 100%;
+  }
+  .newsmid {
+    width: 100%;
+  }
+  .diarymid {
+    width: 100%;
+  }
+  .narrationmid {
+    width: 100%;
+  }
+  /*상세 튜토리얼 첫페이지*/
+  .imgbox {
+    margin-top: 1%;
+    margin-bottom: 0%;
+  }
+  .monitorvideos {
+    margin-top: 1%;
+  }
+  .mastbox {
+    height: 46%;
+  }
+  .mast {
+    font-size: 1rem;
+    line-height: 1.4rem;
+  }
+  .btncon {
+    font-size: 1.3rem;
+  }
+  .fullmonitorvideos {
+    width: 100vw;
+    height: 100vh;
+  }
+  /*상세 qr페이지*/
+  .qrimgbox {
+    width: 12rem;
+    height: 15.6rem;
+    /* 1:1.3 */
+  }
+  .qrmiddiv p {
+    width: 20rem;
+  }
+  /*상세 신문페이지*/
+  .newsimgbox {
+    width: 22rem;
+    height: 26.4rem;
+  }
+  .narration {
+    font-size: 1rem;
+  }
+  /*상세 다이어리페이지*/
+  .notefull {
+    font-size: 1.5rem;
+    margin-top: 1.2rem;
+  }
+  /*상세 연기페이지*/
+  .lastnarration {
+    font-size: 1rem;
+  }
+}
+/* 모바일 - 아이폰 작은것 */
+@media screen and (max-width: 375px) {
+  /*상세 신문페이지*/
+
+  /*상세 다이어리페이지*/
+  .notefull {
+    font-size: 1.3rem;
+  }
+}
+
+/* 갤럭시 s9+ 등 특이하게 작은애들 */
+@media screen and (max-width: 320px) {
+  .mast {
+    font-size: 0.8rem;
+  }
+  .qrmiddiv p {
+    width: 18rem;
+  }
+  .qrcontents {
+    width: 90%;
+    font-size: 0.8rem;
+  }
+  .newspaperfull {
+    height: 60%;
+  }
+  .newsimgbox {
+    width: 16rem;
+    height: 19.2rem;
+  }
+}

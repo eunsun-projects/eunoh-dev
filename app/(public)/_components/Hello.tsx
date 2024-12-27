@@ -1,75 +1,49 @@
-"use client";
+'use client';
 
-import { useUiState } from "@/hooks/ui/useUiState";
-import cn from "@/utils/common/cn";
-import { useEffect, useState } from "react";
-import { FaAngleDoubleDown } from "react-icons/fa";
-import { ReactTyped, Typed } from "react-typed";
+import { useReadyState } from '@/hooks/ui/useReadyState';
+import { ReactTyped } from 'react-typed';
+import { DarkLightModeButton, Links, Nav } from './ui';
 
 function Hello() {
-  const { setMainReady } = useUiState();
-  const [ready, setReady] = useState<{ first: boolean; second: boolean }>({
-    first: false,
-    second: false,
-  });
-
-  const handleReady = (type: "first" | "second") => (instance: Typed) => {
-    if (type === "first") {
-      setReady((prev) => ({ ...prev, first: true }));
-    } else {
-      setReady((prev) => ({ ...prev, second: true }));
-    }
-    if (instance) instance.cursor.remove();
-  };
-
-  useEffect(() => {
-    if (ready.first && ready.second) setMainReady(true);
-  }, [ready, setMainReady]);
+  const { isMainReady, setIsMainReady } = useReadyState();
 
   return (
-    <section className="flex flex-col items-center justify-center h-dvh">
-      <div className="flex flex-col items-center justify-center gap-8">
-        <h3
-          className={cn(
-            "invisible text-center opacity-0 font-bold text-2xl xl:text-4xl",
-            ready.first && ready.second && "visible opacity-100 transition-opacity duration-1000"
-          )}
-        >
-          {"Eun Oh's Dev Portfolio"}
-        </h3>
-        <div
-          className={cn(
-            "flex flex-col items-center justify-center gap-6 relative -top-10",
-            ready.first && ready.second && "text-4xl xl:text-6xl transition-all duration-1000 gap-4 top-0"
-          )}
-        >
-          <h2 className="font-bold text-center text-3xl xl:text-5xl">
-            <ReactTyped strings={["안녕하세요"]} typeSpeed={30} onComplete={handleReady("first")} />
-          </h2>
-          <h2 className="font-bold text-center text-3xl xl:text-[3rem] leading-normal">
-            <ReactTyped
-              strings={["FE개발자를 꿈꾸는<br />오은 입니다"]}
-              typeSpeed={30}
-              onComplete={handleReady("second")}
-            />
-          </h2>
+    <section className="flex flex-col">
+      <div className="flex flex-col gap-9">
+        <div className="flex flex-row gap-2 items-center justify-between">
+          <h1 className="font-bold text-neutral-900 dark:text-neutral-50">
+            <ReactTyped strings={['오은: FE engineer']} typeSpeed={10} />
+          </h1>
+          <DarkLightModeButton ready={isMainReady} />
         </div>
-      </div>
-      <div
-        className={cn(
-          "absolute opacity-0 bottom-2 left-2 flex flex-row gap-2 items-center justify-center transition-all duration-1000",
-          ready.first && ready.second && "opacity-100"
-        )}
-      >
-        <p className="text-xs xl:text-lg">updated at 2024.11.06</p>
-      </div>
-      <div
-        className={cn(
-          "absolute opacity-0 bottom-2 transition-all duration-1000",
-          ready.first && ready.second && "opacity-100"
-        )}
-      >
-        <FaAngleDoubleDown className="text-3xl animate-bounce" />
+        <div className="flex flex-col gap-2 text-xs xl:text-sm text-balance break-keep whitespace-pre-wrap min-h-[96px] xl:min-h-fit">
+          <p>
+            <ReactTyped
+              strings={['사용자의 경험을 세심하게 다듬고, 탐구와 기록을 이어가며 성장합니다.']}
+              typeSpeed={10}
+              className="text-balance break-keep whitespace-pre-wrap"
+            />
+          </p>
+          <p>
+            <ReactTyped
+              strings={[
+                '팀의 동기부여를 이끌며 협업 속에서 만들어지는 성과에 열정을 가지고 있습니다.',
+              ]}
+              typeSpeed={9}
+              onComplete={() => setIsMainReady(true)}
+              className="text-balance break-keep whitespace-pre-wrap"
+            />
+          </p>
+          <p>
+            <ReactTyped
+              strings={['정말 해결해야 하는 것이 무엇인지 항상 고민합니다.']}
+              typeSpeed={10}
+              className="text-balance break-keep whitespace-pre-wrap"
+            />
+          </p>
+        </div>
+        <Links ready={isMainReady} />
+        <Nav ready={isMainReady} />
       </div>
     </section>
   );
