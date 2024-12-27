@@ -24,7 +24,7 @@ const NAV_ITEMS = [
   },
   {
     title: 'as-an-artist',
-    href: '/as-an-artist',
+    href: 'https://work.eunoh.top',
     description: '- 예술가로서',
   },
 ];
