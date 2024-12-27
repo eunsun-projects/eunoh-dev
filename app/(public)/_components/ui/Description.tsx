@@ -25,7 +25,7 @@ function Description({ mode, jsonObject, handleClick, selectedIndex }: Descripti
         {jsonObject?.map((stack, index) => (
           <div className="flex flex-col gap-2" key={stack?.subTitle}>
             <li
-              className="flex gap-2 justify-start items-center cursor-pointer text-sm"
+              className="flex gap-2 justify-start items-center cursor-pointer text-xs"
               onClick={() => handleClick(index)}
             >
               {selectedIndex?.includes(index) ? <IoIosArrowDown /> : <IoIosArrowForward />}
