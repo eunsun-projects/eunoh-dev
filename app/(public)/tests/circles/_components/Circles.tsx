@@ -196,18 +196,15 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
       const moveDirection = new THREE.Vector3();
       if (data.direction && data.direction.angle) {
         const radian = data.angle.radian; // radian 판단
-        // const angle = data.direction.angle; // angle 방향 판단
-
         if (!isColliding && startMoving === false) {
           // 충돌 상태가 아닐 때만 움직임을 처리
-
-          if (radian < 0.524 && radian > 5.756) {
+          if (radian < 0.524 || radian > 5.756) {
             // right
             moveDirection.x = 1;
           } else if (radian < 1.046 && radian > 0.524) {
             // right up
-            moveDirection.z = -1;
             moveDirection.x = 1;
+            moveDirection.z = -1;
           } else if (radian < 2.092 && radian > 1.046) {
             // up
             moveDirection.z = -1;
@@ -231,9 +228,19 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
             moveDirection.x = 1;
           }
 
-          // 방향 벡터를 정규화하고 움직일 거리를 곱합니다.
-          const speed = 0.05; // 원하는 속도 값으로 조절
-          moveDirection.normalize().multiplyScalar(speed);
+          // 2) 카메라의 yaw 추출
+          const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+          euler.setFromQuaternion(camera.quaternion);
+          // yaw only
+          const yaw = euler.y;
+
+          // 3) moveDirection을 yaw만큼 회전
+          moveDirection.applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+
+          // 4) speed 곱하고 플레이어(혹은 카메라) 위치 이동
+          const speed = 0.05;
+          moveDirection.multiplyScalar(speed);
+          camera.position.add(moveDirection);
 
           setMoveDirections(moveDirection);
         } else {
@@ -335,7 +342,7 @@ export default function Circles({ ready, audio }: CirclesProps) {
       <div
         style={{
           position: 'absolute',
-          height: '100%',
+          height: 'calc(var(--vh, 1vh) * 100)',
           width: '100vw',
           margin: '0px',
           opacity: ready ? '1' : '0',
