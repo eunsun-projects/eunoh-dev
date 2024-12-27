@@ -205,6 +205,27 @@ function Fxsample() {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      // 컴포넌트 언마운트 시
+      if (xyzAudioContext) {
+        // 1) 재생 중인 소스를 stop
+        if (fxObj?.currSource) {
+          try {
+            fxObj.currSource.stop();
+          } catch (error) {
+            console.error('Error stopping source:', error);
+          }
+        }
+
+        // 2) AudioContext 종료
+        if (xyzAudioContext.state !== 'closed') {
+          xyzAudioContext.close().catch((err) => console.error(err));
+        }
+      }
+    };
+  }, [xyzAudioContext, fxObj]);
+
   return (
     <>
       <div
