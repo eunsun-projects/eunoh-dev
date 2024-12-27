@@ -82,6 +82,9 @@ importers:
       nipplejs:
         specifier: ^0.10.2
         version: 0.10.2
+      postprocessing:
+        specifier: ^6.36.4
+        version: 6.36.4(three@0.168.0)
       prettier:
         specifier: ^3.4.2
         version: 3.4.2
