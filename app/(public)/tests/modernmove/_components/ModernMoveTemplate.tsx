@@ -65,7 +65,7 @@ export default function ModernMoveTemplate() {
 
   const handleThreeDClick = () => {
     if (!audioRef.current) return;
-    audioRef.current.volume = 0.5;
+    audioRef.current.volume = 0.4;
     audioRef.current.muted = false;
     audioRef.current
       .play()
@@ -78,7 +78,7 @@ export default function ModernMoveTemplate() {
     setThreeD(!threeD);
   };
 
-  const handleHomeClick = () => router.push('/');
+  const handleHomeClick = () => router.push('/tests');
 
   const handleEnding = () => {
     console.log('ended!');

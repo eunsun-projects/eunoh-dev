@@ -1,6 +1,46 @@
 'use client';
 
+import Link from 'next/link';
 import { DarkLightModeButton } from '../../_components/ui';
+
+const testLists = [
+  {
+    id: 1,
+    title: '3D Viewer',
+    description: '웹 GLB, FBX, OBJ 파일 뷰어',
+    href: '/tests/3dviewer',
+  },
+  {
+    id: 2,
+    title: 'Circles',
+    description: '조이스틱으로 가상 공간 탐험',
+    href: '/tests/circles',
+  },
+  {
+    id: 3,
+    title: 'Modernmove',
+    description: 'vaporwave 디스플레이',
+    href: '/tests/modernmove',
+  },
+  {
+    id: 4,
+    title: 'Scrolling-wave',
+    description: '간단한 유저 트리거 애니메이션',
+    href: '/tests/scrolling-wave',
+  },
+  {
+    id: 5,
+    title: 'Sound FX',
+    description: 'Web Audio API 테스트',
+    href: '/tests/soundfx',
+  },
+  {
+    id: 6,
+    title: 'Paradise',
+    description: '위치기반 군중 게임 프로토타입',
+    href: '/tests/paradise',
+  },
+];
 
 function TestListTemplate() {
   return (
@@ -12,7 +52,31 @@ function TestListTemplate() {
           </h2>
           <DarkLightModeButton />
         </div>
-        <div className="flex flex-col gap-3 w-full"></div>
+        <div className="flex flex-col gap-3 w-full">
+          {testLists.map((test, index) => (
+            <div key={test.id} className="w-full flex justify-between">
+              <div className="flex flex-row gap-0 w-[90%] xl:gap-2">
+                {index === 2 ? (
+                  <a href={test.href} className="min-w-40 xl:min-w-44">
+                    <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200">
+                      {test.title}
+                    </h3>
+                  </a>
+                ) : (
+                  <Link href={test.href} className="min-w-40 xl:min-w-44">
+                    <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200">
+                      {test.title}
+                    </h3>
+                  </Link>
+                )}
+                <p className="flex flex-row gap-1 text-[10px] xl:text-xs">
+                  <span>{'- '}</span>
+                  <span className="m-0">{test.description}</span>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

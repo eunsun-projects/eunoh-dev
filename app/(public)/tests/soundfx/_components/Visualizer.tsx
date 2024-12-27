@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import styles from '../_styles/soundfx.module.css';
 import { FxObj } from './Fxsample';
 
 interface VisualizerProps {
   context: AudioContext;
   fxObj: FxObj;
+  index: number;
+  playing: boolean;
 }
 
 const SMOOTHING = 0.8;
@@ -14,10 +16,10 @@ const FFT_SIZE = 2048;
 const HEIGHT = 120; //360
 const WIDTH = 480; //640
 
-export default function Visualizer({ context, fxObj }: VisualizerProps) {
+export default function Visualizer({ context, fxObj, index, playing }: VisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
+  const draw = useCallback(() => {
     if (fxObj.currSource !== null && fxObj.currSource !== undefined) {
       const analyser = context.createAnalyser();
 
@@ -85,7 +87,12 @@ export default function Visualizer({ context, fxObj }: VisualizerProps) {
         console.log('paused at', fxObj.offsetTime);
       }
     }
-  }, [fxObj.currBuffer, fxObj.isPlaying, context, fxObj]);
+  }, [fxObj, context]);
+
+  useEffect(() => {
+    if (!playing) return;
+    draw();
+  }, [playing, index, draw]);
 
   return (
     <div className={styles.webapbox}>
