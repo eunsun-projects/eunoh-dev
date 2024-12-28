@@ -37,6 +37,7 @@
     "next": "15.1.2",
     "next-remove-imports": "^1.0.12",
     "nipplejs": "^0.10.2",
+    "openai": "^4.77.0",
     "postprocessing": "^6.36.4",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
