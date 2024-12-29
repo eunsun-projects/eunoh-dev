@@ -12,14 +12,14 @@
     </style>
   </head>
   <body>
-    <iframe id='test-frame' allow='fullscreen; xr-spatial-tracking'></iframe>
+    <iframe id="test-frame" allow="fullscreen; xr-spatial-tracking"></iframe>
   </body>
   <script>
     (async function () {
       const urlParams = new URLSearchParams(window.location.search);
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       async function getPageVersion() {
-      // if specifying a specific version of the page through a URL param, use that...
+        // if specifying a specific version of the page through a URL param, use that...
         const pageVersionOverride = urlParams.get('pageVersion');
         if (pageVersionOverride) {
           return pageVersionOverride;
@@ -50,7 +50,7 @@
       console.log('Showcase SDK test page version', testPageVersion);
 
       // listen for updated hashes when the embedded page
-      window.addEventListener('message', e => {
+      window.addEventListener('message', (e) => {
         if (e.data.type === 'update-hash') {
           window.location.hash = e.data.hash;
         }
@@ -64,7 +64,6 @@
         // ... if not, treat it as a version string instead
         testFrame.src = buildPageUrl(testPageVersion);
       }
-
     })();
   </script>
 </html>
