@@ -26,7 +26,30 @@ export async function POST(req: Request) {
 
     const imageUrl = imageGeneration.data[0].url;
 
+    if (!imageUrl) {
+      return NextResponse.json({ error: 'Missing image URL' }, { status: 400 });
+    }
+
     return NextResponse.json({ imageUrl }, { status: 200 });
+
+    // const response = await fetch(imageUrl);
+    // if (!response.ok) {
+    //   return NextResponse.json({ error: 'Failed to fetch image' }, { status: response.status });
+    // }
+
+    // // 1) ArrayBuffer로 읽기
+    // const arrayBuffer = await response.arrayBuffer();
+
+    // // 2) Base64로 변환
+    // const base64Image = Buffer.from(arrayBuffer).toString('base64');
+
+    // // 3) JSON으로 반환
+    // return NextResponse.json(
+    //   {
+    //     imageUrl: `data:image/png;base64,${base64Image}`,
+    //   },
+    //   { status: 200 },
+    // );
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to generate image' }, { status: 500 });
