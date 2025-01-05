@@ -6,13 +6,9 @@ declare namespace JSX {
   }
 }
 
-// global.d.ts (프로젝트 최상단, or /app/global.d.ts)
 declare global {
   interface Window {
-    MP_SDK?: {
-      connect: (iframe: HTMLElement, options?: any) => Promise<any>;
-      // etc...
-    };
+    MP_SDK: any;
   }
 }
 
