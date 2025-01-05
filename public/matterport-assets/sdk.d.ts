@@ -1,4 +1,4 @@
-// 24.11.1_webgl-598-gae59c48b5b
+// 24.12.3_webgl-944-ge03b07c22c
 /// <reference types="webxr" />
 
 import * as THREE from 'three';
@@ -3036,6 +3036,7 @@ export declare namespace Sensor {
 		 */
 		dispose(): void;
 	}
+	type Volume = SphereVolume | BoxVolume | CylinderVolume;
 	type SphereVolume = {
 		/** The origin of the sphere. */
 		origin: Vector3;
@@ -3060,16 +3061,20 @@ export declare namespace Sensor {
 	};
 	/**
 	 * A Source represents a volume that will be detected by a Sensor.
+	 *
 	 * The type of the source, describes the type of volume associated with it.
+	 *
 	 * For example, with a `type` of `SourceType.SPHERE` the `volume` is a `SphereVolume`; a `SourceType.BOX` has a `BoxVolume`.
+	 * @param VolumeT [[SphereVolume]] | [[BoxVolume]] | [[CylinderVolume]]
+	 * @param UserData Arbitrary data to associate with the Source.
 	 */
-	interface ISource<Volume = SphereVolume | BoxVolume | CylinderVolume, UserData extends Record<string, unknown> = Record<string, unknown>> {
+	interface ISource<VolumeT = SphereVolume | BoxVolume | CylinderVolume, UserDataT extends Record<string, unknown> = Record<string, unknown>> {
 		/** The type of source. */
 		type: SourceType;
-		/** The volume that represents the range of emissions from this `ISource`. */
-		volume: Volume;
+		/** The volume that represents the range of emissions from this `ISource`. See [[Volume]]. */
+		volume: VolumeT;
 		/** Arbitrary data that can be used to set additional metadata, for example. */
-		userData: UserData;
+		userData: UserDataT;
 		/**
 		 * Let the sensor system know there is an update to this `ISource`.<br>
 		 * When changing any properties on `volume`, no changes will be reflected on the source or in Showcase until `commit` is called.
@@ -3297,6 +3302,10 @@ export declare namespace Tag {
 		roomId: string;
 		/** The ids of the attachments currently attached to this tag */
 		attachments: string[];
+		/**
+		 * The keywords associated with this Tag.
+		 * Modifying the contents of this array will automatically sync updates to the tag and notify any existing observables.
+		 */
 		keywords: string[];
 		/** Read-only Font Awesome id for icons set in workshop, e.g. "face-grin-tongue-squint"
 		 * This value does not change if [[Tag.editIcon]] is used. This value is an empty string if no fontId was set.
@@ -3327,6 +3336,7 @@ export declare namespace Tag {
 		opacity?: number;
 		iconId?: string;
 		attachments?: string[];
+		keywords?: string[];
 	};
 	type EditPositionDescriptor = {
 		id: string;
@@ -3348,6 +3358,15 @@ export declare namespace Tag {
 	 */
 	type ProgressOptions = {
 		progress?: (percentComplete: number) => void;
+	};
+	/**
+	 * @hidden
+	 * @internal
+	 * @experimental
+	 */
+	type ImportTagsOptions = {
+		progress?: (percentComplete: number) => void;
+		allowedLayers?: string[];
 	};
 	type EditableProperties = {
 		label: string;
@@ -3474,7 +3493,7 @@ export interface Tag {
 	 * @param sid external space id containg tags
 	 * @param options
 	 */
-	importTags(spaceSid: string, options: Partial<Tag.ProgressOptions>): Promise<string[]>;
+	importTags(spaceSid: string, options: Partial<Tag.ImportTagsOptions>): Promise<string[]>;
 	/**
 	 * Moves all transient tags into a persistent layer. Tag sids are not preserved.
 	 *
@@ -4218,6 +4237,7 @@ export declare namespace Tour {
 	}
 	type CurrentStepData = {
 		step: string | null;
+		index: number | null;
 	};
 	enum PlayState {
 		INACTIVE = "tour.inactive",
@@ -4430,7 +4450,7 @@ export declare namespace View {
 		 */
 		setActive(returnToStart?: boolean): Promise<void>;
 		/**
-		 * Add a Layer to this View
+		 * Add an existing Layer to this View
 		 *
 		 * ```typescript
 		 * view.addLayer(layer);
