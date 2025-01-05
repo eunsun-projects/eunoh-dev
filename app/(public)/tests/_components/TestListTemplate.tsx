@@ -40,6 +40,12 @@ const testLists = [
     description: '위치기반 군중 게임 프로토타입',
     href: '/tests/paradise',
   },
+  {
+    id: 7,
+    title: 'Matterport SDK',
+    description: 'Matterport SDK 테스트',
+    href: '/tests/mpsdk',
+  },
 ];
 
 function TestListTemplate() {
@@ -56,7 +62,7 @@ function TestListTemplate() {
           {testLists.map((test, index) => (
             <div key={test.id} className="w-full flex justify-between">
               <div className="flex flex-row gap-0 w-[90%] xl:gap-2">
-                {index === 2 ? (
+                {index === 2 || index === 6 ? (
                   <a href={test.href} className="min-w-40 xl:min-w-44">
                     <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200">
                       {test.title}
