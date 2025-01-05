@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { MpSdk } from '../../../../../public/matterport-assets/sdk';
 import Shadow from '../_class/Shadow.class';
 import lights from '../_data/lights';
 import { model } from '../_data/model';
+import { GetSDK } from '../_lib/getSdk';
 import loadScene from '../_lib/loadScene';
 
 const KEY = process.env.NEXT_PUBLIC_MATTERPORT_API_KEY;
@@ -14,10 +15,8 @@ const KEY = process.env.NEXT_PUBLIC_MATTERPORT_API_KEY;
 function MpSdkTemplate() {
   const [mpsdk, setMpsdk] = useState<MpSdk | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    const iframe = iframeRef.current;
     setTimeout(() => {
       setIsLoaded(true);
     }, 0);
@@ -25,19 +24,19 @@ function MpSdkTemplate() {
     return () => {
       setIsLoaded(false);
       setMpsdk(null);
-      if (iframe) {
-        iframe.src = '';
-      }
     };
   }, []);
 
   useEffect(() => {
-    const showcase = document.getElementById('showcase-iframe') as HTMLIFrameElement;
-    const showcaseWindow = showcase.contentWindow;
+    // const showcase = document.getElementById('showcase-iframe') as HTMLIFrameElement;
+    // const showcaseWindow = showcase.contentWindow;
     if (isLoaded) {
       try {
-        if (!showcaseWindow?.MP_SDK) return;
-        showcaseWindow.MP_SDK.connect(showcaseWindow).then((sdk: MpSdk) => {
+        // if (!showcaseWindow?.MP_SDK) return;
+        // showcaseWindow.MP_SDK.connect(showcaseWindow).then((sdk: MpSdk) => {
+        //   setMpsdk(sdk);
+        // });
+        GetSDK('showcase-iframe').then((sdk: MpSdk) => {
           setMpsdk(sdk);
         });
       } catch (error) {
@@ -101,7 +100,6 @@ function MpSdkTemplate() {
     <div className="h-dvh w-full relative" id="mp-sdk-container">
       <iframe
         id="showcase-iframe"
-        ref={iframeRef}
         src={`/matterport-assets/showcase.html?m=fYzEr6ZgD5q&qs=1&views=0&sdkviews=0&brand=0&help=0&title=0&lang=en&play=1&application-key=${KEY}&applicationKey=${KEY}`}
         width="100%"
         height="100%"
