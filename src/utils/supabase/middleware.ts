@@ -36,6 +36,7 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     request.nextUrl.pathname !== '/' &&
+    !request.nextUrl.pathname.startsWith('/matterport-assets') &&
     !request.nextUrl.pathname.startsWith('/assets') &&
     !request.nextUrl.pathname.startsWith('/skills') &&
     !request.nextUrl.pathname.startsWith('/projects') &&

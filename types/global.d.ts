@@ -5,3 +5,11 @@ declare namespace JSX {
     meshLineMaterial: any;
   }
 }
+
+declare global {
+  interface Window {
+    MP_SDK: any;
+  }
+}
+
+export {};
