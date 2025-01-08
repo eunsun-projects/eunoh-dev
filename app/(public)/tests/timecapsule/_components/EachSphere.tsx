@@ -1,20 +1,23 @@
 'use client';
 
+import { Sphere } from '@react-three/drei';
 import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useShallow } from 'zustand/react/shallow';
 import { TimeCapsuleState, useTimeCapsuleStore } from '../_libs/zustand';
 
 interface EachSphereProps {
-  count: number;
+  position: number[];
+  color: THREE.Color;
 }
 
-function EachSphere({ count = 1 }: EachSphereProps) {
+function EachSphere({ position, color }: EachSphereProps) {
   const { camera, controls } = useThree();
-  const meshRef = useRef<THREE.Mesh>(null);
+  const sphereRef = useRef<THREE.Mesh>(null);
   const cameraTargetRef = useRef<THREE.Vector3>(new THREE.Vector3());
+  const previousFocusedObject = useRef<THREE.Mesh | null>(null);
   const { focusedObject, setFocusedObject } = useTimeCapsuleStore(
     useShallow((state: TimeCapsuleState) => ({
       focusedObject: state.focusedObject,
@@ -24,27 +27,13 @@ function EachSphere({ count = 1 }: EachSphereProps) {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     const object = e.eventObject;
-    const instanceId = e.instanceId;
-    if (object instanceof THREE.InstancedMesh) {
-      if (instanceId !== undefined) {
-        setFocusedObject({ object, instanceId });
-      } else {
-        setFocusedObject({ object });
-      }
+    if (object instanceof THREE.Mesh) {
+      setFocusedObject({ object });
     }
   };
 
-  const instanceColor = useMemo(() => {
-    const hue = 250 + Math.random() * 50; // Random hue
-    const saturation = 40 + Math.random() * 60; // Random saturation
-    const lightness = 60; // Fixed lightness
-
-    return new THREE.Color(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
-  }, []);
-
-  console.log(controls);
-  useFrame((state, delta) => {
-    if (!meshRef.current || !controls) return;
+  useFrame(() => {
+    if (!sphereRef.current || !controls) return;
     if (focusedObject) {
       let target;
 
@@ -56,10 +45,10 @@ function EachSphere({ count = 1 }: EachSphereProps) {
 
       const smoothness = 0.05;
       cameraTargetRef.current.lerp(target, smoothness);
-      camera.lookAt(cameraTargetRef.current);
+      camera.lookAt(target);
 
       // Zoom을 부드럽게 변경
-      const targetZoom = 5; // 목표 줌 레벨
+      const targetZoom = 2; // 목표 줌 레벨
       camera.zoom = THREE.MathUtils.lerp(camera.zoom, targetZoom, smoothness);
       camera.updateProjectionMatrix(); // Zoom 변경 후 프로젝션 매트릭스 업데이트
 
@@ -74,31 +63,45 @@ function EachSphere({ count = 1 }: EachSphereProps) {
   });
 
   useEffect(() => {
-    if (focusedObject) {
-      (meshRef.current?.material as THREE.MeshStandardMaterial).emissiveIntensity = 2;
-    } else {
-      (meshRef.current?.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.01;
+    if (!focusedObject) {
+      if (previousFocusedObject.current) {
+        (previousFocusedObject.current?.material as THREE.MeshStandardMaterial).emissiveIntensity =
+          0.03;
+      }
+      return;
     }
+    if (previousFocusedObject.current?.uuid !== focusedObject.object.uuid) {
+      if (previousFocusedObject.current) {
+        (previousFocusedObject.current?.material as THREE.MeshStandardMaterial).emissiveIntensity =
+          0.03;
+      }
+      (focusedObject.object.material as THREE.MeshStandardMaterial).emissiveIntensity = 4;
+    } else {
+      (previousFocusedObject.current?.material as THREE.MeshStandardMaterial).emissiveIntensity = 4;
+    }
+    previousFocusedObject.current = focusedObject.object;
   }, [focusedObject, controls]);
 
   return (
-    <instancedMesh
-      ref={meshRef}
-      args={[undefined, undefined, count]}
-      castShadow
-      receiveShadow
+    <Sphere
+      ref={sphereRef}
+      scale={0.1}
+      position={position}
       onClick={handleClick}
       onPointerOver={() => (document.body.style.cursor = 'pointer')}
       onPointerOut={() => (document.body.style.cursor = 'default')}
-      position={[1.5, 0, 0]}
     >
-      <sphereGeometry args={[0.05, 32, 32]} />
-      <meshStandardMaterial
-        color={instanceColor}
-        emissive={instanceColor}
-        emissiveIntensity={0.01}
-      />
-    </instancedMesh>
+      <Sphere scale={1.2} position={[0, 0, 0]}>
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={1}
+          opacity={0.1}
+          transparent
+        />
+      </Sphere>
+      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.01} />
+    </Sphere>
   );
 }
 
