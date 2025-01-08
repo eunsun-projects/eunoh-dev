@@ -25,8 +25,8 @@ function BloomEffect() {
     // UnrealBloomPass 추가
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(size.width, size.height), // 해상도
-      1.5, // Bloom 강도
-      0.4, // Bloom 반경
+      1, // Bloom 강도
+      0.3, // Bloom 반경
       0.2, // Bloom 임계값
       // 5, // strength
       // 1.2, // radius
@@ -40,7 +40,7 @@ function BloomEffect() {
     const bokehPass = new BokehPass(scene, camera, {
       focus: 15.0,
       aperture: 0.025,
-      maxblur: 0.001,
+      maxblur: 0.0003,
     });
     composerRef.current.addPass(bokehPass);
     bokehPassRef.current = bokehPass;

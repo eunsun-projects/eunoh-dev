@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import * as THREE from 'three';
 import { useTimeCapsuleStore } from '../_libs/zustand';
 import TimeCapsuleScene from './TimeCapsuleScene';
+import TimeCapsuleUi from './TimeCapsuleUi';
 
 function TimeCapsuleCanvas() {
   const { focusedObject, setFocusedObject } = useTimeCapsuleStore();
@@ -20,12 +21,12 @@ function TimeCapsuleCanvas() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div style={{ width: '100%', height: '100%' }}>
+      <div className="relative w-full h-full">
+        <TimeCapsuleUi />
         <Canvas
           color="black"
           onPointerMissed={handlePointerMissed}
           camera={{ position: [0, 6, 5], fov: 75 }}
-          gl={{ antialias: true }}
         >
           <TimeCapsuleScene />
         </Canvas>

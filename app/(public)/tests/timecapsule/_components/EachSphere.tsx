@@ -6,29 +6,30 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useShallow } from 'zustand/react/shallow';
-import { TimeCapsuleState, useTimeCapsuleStore } from '../_libs/zustand';
+import { TimeCapsule, TimeCapsuleState, useTimeCapsuleStore } from '../_libs/zustand';
 
 interface EachSphereProps {
-  position: number[];
-  color: THREE.Color;
+  timeCapsule: TimeCapsule;
 }
 
-function EachSphere({ position, color }: EachSphereProps) {
+function EachSphere({ timeCapsule }: EachSphereProps) {
   const { camera, controls } = useThree();
   const sphereRef = useRef<THREE.Mesh>(null);
   const cameraTargetRef = useRef<THREE.Vector3>(new THREE.Vector3());
   const previousFocusedObject = useRef<THREE.Mesh | null>(null);
-  const { focusedObject, setFocusedObject } = useTimeCapsuleStore(
+  const { focusedObject, timeCapsules, setFocusedObject } = useTimeCapsuleStore(
     useShallow((state: TimeCapsuleState) => ({
       focusedObject: state.focusedObject,
+      timeCapsules: state.timeCapsules,
       setFocusedObject: state.setFocusedObject,
     })),
   );
+  const initialTimeCapsulesLength = useRef(timeCapsules.length);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     const object = e.eventObject;
     if (object instanceof THREE.Mesh) {
-      setFocusedObject({ object });
+      setFocusedObject({ object, timeCapsule });
     }
   };
 
@@ -47,18 +48,22 @@ function EachSphere({ position, color }: EachSphereProps) {
       cameraTargetRef.current.lerp(target, smoothness);
       camera.lookAt(target);
 
-      // Zoom을 부드럽게 변경
-      const targetZoom = 2; // 목표 줌 레벨
-      camera.zoom = THREE.MathUtils.lerp(camera.zoom, targetZoom, smoothness);
-      camera.updateProjectionMatrix(); // Zoom 변경 후 프로젝션 매트릭스 업데이트
+      // Fov를 부드럽게 변경
+      if (camera instanceof THREE.PerspectiveCamera) {
+        const targetFOV = 60; // 목표 줌 레벨
+        camera.fov = THREE.MathUtils.lerp(camera.fov, targetFOV, smoothness);
+        camera.updateProjectionMatrix(); // Zoom 변경 후 프로젝션 매트릭스 업데이트
+      }
 
       (controls as OrbitControls).target.copy(cameraTargetRef.current);
       (controls as OrbitControls).update();
     } else {
       // 초기 카메라 상태 복귀
-      const targetZoom = 1; // 초기 줌 레벨
-      camera.zoom = THREE.MathUtils.lerp(camera.zoom, targetZoom, 0.05);
-      camera.updateProjectionMatrix();
+      if (camera instanceof THREE.PerspectiveCamera) {
+        const targetFOV = 125; // 초기 줌 레벨
+        camera.fov = THREE.MathUtils.lerp(camera.fov, targetFOV, 0.05);
+        camera.updateProjectionMatrix();
+      }
     }
   });
 
@@ -66,14 +71,14 @@ function EachSphere({ position, color }: EachSphereProps) {
     if (!focusedObject) {
       if (previousFocusedObject.current) {
         (previousFocusedObject.current?.material as THREE.MeshStandardMaterial).emissiveIntensity =
-          0.03;
+          0.01;
       }
       return;
     }
     if (previousFocusedObject.current?.uuid !== focusedObject.object.uuid) {
       if (previousFocusedObject.current) {
         (previousFocusedObject.current?.material as THREE.MeshStandardMaterial).emissiveIntensity =
-          0.03;
+          0.01;
       }
       (focusedObject.object.material as THREE.MeshStandardMaterial).emissiveIntensity = 4;
     } else {
@@ -82,25 +87,38 @@ function EachSphere({ position, color }: EachSphereProps) {
     previousFocusedObject.current = focusedObject.object;
   }, [focusedObject, controls]);
 
+  useEffect(() => {
+    if (timeCapsules.length > initialTimeCapsulesLength.current) {
+      setFocusedObject({
+        object: sphereRef.current as THREE.Mesh,
+        timeCapsule: timeCapsules[timeCapsules.length - 1],
+      });
+    }
+  }, [timeCapsules, setFocusedObject]);
+
   return (
     <Sphere
       ref={sphereRef}
-      scale={0.1}
-      position={position}
+      scale={0.15}
+      position={timeCapsule.position}
       onClick={handleClick}
       onPointerOver={() => (document.body.style.cursor = 'pointer')}
       onPointerOut={() => (document.body.style.cursor = 'default')}
     >
-      <Sphere scale={1.2} position={[0, 0, 0]}>
+      <Sphere scale={1.25} position={[0, 0, 0]}>
         <meshStandardMaterial
-          color={color}
-          emissive={color}
+          color={timeCapsule.color}
+          emissive={timeCapsule.color}
           emissiveIntensity={1}
           opacity={0.1}
           transparent
         />
       </Sphere>
-      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.01} />
+      <meshStandardMaterial
+        color={timeCapsule.color}
+        emissive={timeCapsule.color}
+        emissiveIntensity={0.01}
+      />
     </Sphere>
   );
 }
