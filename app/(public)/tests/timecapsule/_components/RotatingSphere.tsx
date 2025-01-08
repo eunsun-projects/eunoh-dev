@@ -17,7 +17,7 @@ function RotatingSphere() {
 
   return (
     <group ref={groupRef}>
-      <EachSphere />
+      <EachSphere count={1} />
       <Sphere scale={0.1} position={[-1.5, 0, 0]}>
         <meshStandardMaterial color="blue" />
       </Sphere>

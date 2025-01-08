@@ -1,11 +1,17 @@
+import * as THREE from 'three';
 import { create } from 'zustand';
 
+export interface FocusedObject {
+  object: THREE.Mesh;
+  instanceId?: number;
+}
+
 export interface TimeCapsuleState {
-  isClicked: boolean;
-  setIsClicked: (isClicked: boolean) => void;
+  focusedObject: FocusedObject | null;
+  setFocusedObject: (focusedObject: FocusedObject | null) => void;
 }
 
 export const useTimeCapsuleStore = create<TimeCapsuleState>((set) => ({
-  isClicked: false,
-  setIsClicked: (isClicked) => set({ isClicked }),
+  focusedObject: null,
+  setFocusedObject: (focusedObject: FocusedObject | null) => set({ focusedObject }),
 }));

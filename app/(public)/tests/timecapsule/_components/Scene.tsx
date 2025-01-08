@@ -10,11 +10,11 @@ import RotatingSphere from './RotatingSphere';
 import TimeCapsuleCamera from './TimeCapsuleCamera';
 
 function Scene() {
-  const { setIsClicked } = useTimeCapsuleStore();
+  const { setFocusedObject } = useTimeCapsuleStore();
 
   const handlePointerMissed = () => {
     console.log('pointer missed');
-    setIsClicked(false);
+    setFocusedObject(null);
   };
 
   return (

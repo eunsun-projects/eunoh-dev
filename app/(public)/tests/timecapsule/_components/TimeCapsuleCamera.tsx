@@ -1,9 +1,9 @@
 'use client';
 
-import { CameraControls } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 
 function TimeCapsuleCamera() {
-  return <CameraControls makeDefault maxDistance={50} />;
+  return <OrbitControls makeDefault maxDistance={50} />;
 }
 
 export default TimeCapsuleCamera;
