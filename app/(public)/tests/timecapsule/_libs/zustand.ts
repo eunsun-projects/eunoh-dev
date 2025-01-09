@@ -12,6 +12,7 @@ export interface TimeCapsule {
   updatedAt: string;
   position: number[];
   color: THREE.Color;
+  object: THREE.Mesh | null;
 }
 
 export interface FocusedObject {
@@ -25,6 +26,7 @@ export interface TimeCapsuleState {
   timeCapsules: TimeCapsule[];
   setFocusedObject: (focusedObject: FocusedObject | null) => void;
   setTimeCapsules: (timeCapsule: TimeCapsule) => void;
+  updateTimeCapsule: (object: THREE.Mesh) => void;
 }
 
 const makeInitialTimecapSules = () => {
@@ -37,6 +39,7 @@ const makeInitialTimecapSules = () => {
     updatedAt: new Date().toISOString(),
     position: [generateRandomPosition(), generateRandomPosition(), generateRandomPosition()],
     color: generateColor(),
+    object: null,
   }));
 };
 
@@ -49,5 +52,11 @@ export const useTimeCapsuleStore = create<TimeCapsuleState>((set) => ({
   setTimeCapsules: (timeCapsule: TimeCapsule) =>
     set((state) => ({
       timeCapsules: [...(state.timeCapsules || []), timeCapsule],
+    })),
+  updateTimeCapsule: (object: THREE.Mesh) =>
+    set((state) => ({
+      timeCapsules: state.timeCapsules.map((timeCapsule) =>
+        !timeCapsule.object ? { ...timeCapsule, object } : timeCapsule,
+      ),
     })),
 }));
