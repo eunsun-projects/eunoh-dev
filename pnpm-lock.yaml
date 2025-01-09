@@ -145,6 +145,9 @@ importers:
       three.meshline:
         specifier: ^1.4.0
         version: 1.4.0
+      uuid:
+        specifier: ^11.0.4
+        version: 11.0.4
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -9869,6 +9872,13 @@ packages:
       }
     engines: { node: '>= 0.4.0' }
 
+  uuid@11.0.4:
+    resolution:
+      {
+        integrity: sha512-IzL6VtTTYcAhA/oghbFJ1Dkmqev+FpQWnCBaKq/gUluLxliWvO8DPFWfIviRmYbtaavtSQe4WBL++rFjdcGWEg==,
+      }
+    hasBin: true
+
   uuid@9.0.1:
     resolution:
       {
@@ -17575,6 +17585,8 @@ snapshots:
 
   utils-merge@1.0.1:
     optional: true
+
+  uuid@11.0.4: {}
 
   uuid@9.0.1: {}
 

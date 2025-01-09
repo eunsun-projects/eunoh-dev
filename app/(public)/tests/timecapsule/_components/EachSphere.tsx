@@ -17,11 +17,12 @@ function EachSphere({ timeCapsule }: EachSphereProps) {
   const sphereRef = useRef<THREE.Mesh>(null);
   const cameraTargetRef = useRef<THREE.Vector3>(new THREE.Vector3());
   const previousFocusedObject = useRef<THREE.Mesh | null>(null);
-  const { focusedObject, timeCapsules, setFocusedObject } = useTimeCapsuleStore(
+  const { focusedObject, timeCapsules, setFocusedObject, updateTimeCapsule } = useTimeCapsuleStore(
     useShallow((state: TimeCapsuleState) => ({
       focusedObject: state.focusedObject,
       timeCapsules: state.timeCapsules,
       setFocusedObject: state.setFocusedObject,
+      updateTimeCapsule: state.updateTimeCapsule,
     })),
   );
   const initialTimeCapsulesLength = useRef(timeCapsules.length);
@@ -60,7 +61,7 @@ function EachSphere({ timeCapsule }: EachSphereProps) {
     } else {
       // 초기 카메라 상태 복귀
       if (camera instanceof THREE.PerspectiveCamera) {
-        const targetFOV = 125; // 초기 줌 레벨
+        const targetFOV = 135; // 초기 줌 레벨
         camera.fov = THREE.MathUtils.lerp(camera.fov, targetFOV, 0.05);
         camera.updateProjectionMatrix();
       }
@@ -94,30 +95,39 @@ function EachSphere({ timeCapsule }: EachSphereProps) {
         timeCapsule: timeCapsules[timeCapsules.length - 1],
       });
     }
-  }, [timeCapsules, setFocusedObject]);
+  }, [timeCapsules, setFocusedObject, updateTimeCapsule]);
+
+  useEffect(() => {
+    if (!sphereRef.current) return;
+    sphereRef.current.userData = {
+      name: 'timeCapsule',
+      timeCapsule,
+    };
+    updateTimeCapsule(sphereRef.current);
+  }, [timeCapsule, updateTimeCapsule]);
 
   return (
     <Sphere
       ref={sphereRef}
-      scale={0.15}
+      scale={0.25}
       position={timeCapsule.position}
       onClick={handleClick}
       onPointerOver={() => (document.body.style.cursor = 'pointer')}
       onPointerOut={() => (document.body.style.cursor = 'default')}
     >
-      <Sphere scale={1.25} position={[0, 0, 0]}>
+      <Sphere scale={0.8} position={[0, 0, 0]}>
         <meshStandardMaterial
           color={timeCapsule.color}
           emissive={timeCapsule.color}
-          emissiveIntensity={1}
-          opacity={0.1}
-          transparent
+          emissiveIntensity={0.01}
         />
       </Sphere>
       <meshStandardMaterial
         color={timeCapsule.color}
         emissive={timeCapsule.color}
-        emissiveIntensity={0.01}
+        emissiveIntensity={1}
+        opacity={0.1}
+        transparent
       />
     </Sphere>
   );

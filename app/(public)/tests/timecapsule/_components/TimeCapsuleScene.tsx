@@ -2,18 +2,20 @@ import { Sphere, Stars } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
 import * as THREE from 'three';
+import { useTimeCapsuleStore } from '../_libs/zustand';
 import BloomEffect from './BloomEffect';
 import RotatingSpheres from './RotatingSpheres';
 import TimeCapsuleCamera from './TimeCapsuleCamera';
 
 function TimeCapsuleScene() {
-  const { camera } = useThree();
+  const { camera, scene } = useThree();
+  const { updateTimeCapsule } = useTimeCapsuleStore();
 
   useEffect(() => {
     if (camera instanceof THREE.PerspectiveCamera) {
       const startFOV = camera.fov; // 초기 fov 값
-      const targetFOV = 125; // 목표 fov 값
-      const duration = 1500; // 1.5초 동안 보간
+      const targetFOV = 135; // 목표 fov 값
+      const duration = 1000; // 1.5초 동안 보간
       const startTime = performance.now();
 
       const animateFOV = () => {
@@ -31,10 +33,19 @@ function TimeCapsuleScene() {
     }
   }, [camera]);
 
+  useEffect(() => {
+    if (!scene) return;
+    scene.traverse((child) => {
+      if (child.userData.name === 'timeCapsule') {
+        updateTimeCapsule(child as THREE.Mesh);
+      }
+    });
+  }, [scene, updateTimeCapsule]);
+
   return (
     <>
       <ambientLight intensity={0.01} />
-      <Sphere scale={0.05} position={[0, 0, 0]}>
+      <Sphere scale={0.01} position={[0, 0, 0]}>
         <meshStandardMaterial color="white" emissive="white" emissiveIntensity={2} />
         <pointLight position={[0, 0, 0]} intensity={50000} color="white" power={10000} />
       </Sphere>
