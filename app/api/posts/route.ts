@@ -34,9 +34,9 @@ export async function POST(req: Request) {
     .single();
 
   if (error) {
-    revalidatePath('/', 'layout');
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  revalidatePath('/', 'layout');
   return NextResponse.json(data, { status: 201 });
 }
