@@ -1,4 +1,4 @@
-import { postSajuImageTest } from '@/apis/tests/post.tests';
+import { postSajuImageTest } from '@/apis/tests/api.tests';
 import { SajuImageTestResponse } from '@/types/tests.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
