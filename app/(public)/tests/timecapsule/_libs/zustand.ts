@@ -1,62 +1,55 @@
+import { FocusedObject, TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
 import * as THREE from 'three';
 import { create } from 'zustand';
-import { generateColor } from './generateColor';
-import { generateRandomPosition } from './generatePosition';
-
-export interface TimeCapsule {
-  userId: string;
-  title: string;
-  description: string;
-  password: string;
-  createdAt: string;
-  updatedAt: string;
-  position: number[];
-  color: THREE.Color;
-  object: THREE.Mesh | null;
-}
-
-export interface FocusedObject {
-  object: THREE.Mesh;
-  instanceId?: number;
-  timeCapsule?: TimeCapsule;
-}
 
 export interface TimeCapsuleState {
-  focusedObject: FocusedObject | null;
+  focusedObject: FocusedObject;
   timeCapsules: TimeCapsule[];
-  setFocusedObject: (focusedObject: FocusedObject | null) => void;
-  setTimeCapsules: (timeCapsule: TimeCapsule) => void;
-  updateTimeCapsule: (object: THREE.Mesh) => void;
+  timeCapsulesWithoutObject: TimeCapsuleFromSupabase[];
+  queryStringTimeCapsuleId: string;
+  setQueryStringTimeCapsuleId: (queryStringTimeCapsuleId: string) => void;
+  setFocusedObject: (focusedObject: FocusedObject) => void;
+  setTimeCapsules: (timeCapsules: TimeCapsule[]) => void;
+  setTimeCapsulesWithoutObject: (timeCapsulesWithoutObject: TimeCapsuleFromSupabase[]) => void;
+  updateTimeCapsuleObject: (object: THREE.Mesh) => void;
+  addTimeCapsule: (timeCapsule: TimeCapsule) => void;
+  editTimeCapsule: (timeCapsule: TimeCapsule) => void;
+  deleteTimeCapsule: (timeCapsule: TimeCapsule) => void;
 }
 
-const makeInitialTimecapSules = () => {
-  return Array.from({ length: 10 }, () => ({
-    userId: 'user123',
-    title: 'New Capsule',
-    description: 'This is a new time capsule',
-    password: 'secure',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    position: [generateRandomPosition(), generateRandomPosition(), generateRandomPosition()],
-    color: generateColor(),
-    object: null,
-  }));
-};
-
-const initialTimeCapsules = makeInitialTimecapSules();
-
+console.log('zustand restarted??');
 export const useTimeCapsuleStore = create<TimeCapsuleState>((set) => ({
-  focusedObject: null,
-  timeCapsules: initialTimeCapsules,
-  setFocusedObject: (focusedObject: FocusedObject | null) => set({ focusedObject }),
-  setTimeCapsules: (timeCapsule: TimeCapsule) =>
+  focusedObject: {
+    isIdle: null,
+    timeCapsule: null,
+  },
+  timeCapsules: [],
+  timeCapsulesWithoutObject: [],
+  queryStringTimeCapsuleId: '',
+  setQueryStringTimeCapsuleId: (queryStringTimeCapsuleId: string) =>
+    set({ queryStringTimeCapsuleId }),
+  setFocusedObject: (focusedObject: FocusedObject) => set({ focusedObject }),
+  setTimeCapsules: (timeCapsules: TimeCapsule[]) => set({ timeCapsules }),
+  setTimeCapsulesWithoutObject: (timeCapsulesWithoutObject: TimeCapsuleFromSupabase[]) =>
+    set({ timeCapsulesWithoutObject }),
+  addTimeCapsule: (timeCapsule: TimeCapsule) =>
     set((state) => ({
       timeCapsules: [...(state.timeCapsules || []), timeCapsule],
     })),
-  updateTimeCapsule: (object: THREE.Mesh) =>
+  updateTimeCapsuleObject: (object: THREE.Mesh) =>
     set((state) => ({
       timeCapsules: state.timeCapsules.map((timeCapsule) =>
-        !timeCapsule.object ? { ...timeCapsule, object } : timeCapsule,
+        timeCapsule.id === object.name ? { ...timeCapsule, object } : timeCapsule,
       ),
+    })),
+  editTimeCapsule: (newTimeCapsule: TimeCapsule) =>
+    set((state) => ({
+      timeCapsules: state.timeCapsules.map((timeCapsule) =>
+        timeCapsule.id === newTimeCapsule.id ? { ...timeCapsule, ...newTimeCapsule } : timeCapsule,
+      ),
+    })),
+  deleteTimeCapsule: (timeCapsule: TimeCapsule) =>
+    set((state) => ({
+      timeCapsules: state.timeCapsules.filter((t) => t.id !== timeCapsule.id),
     })),
 }));

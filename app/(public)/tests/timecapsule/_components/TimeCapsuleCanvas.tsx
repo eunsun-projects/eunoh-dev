@@ -1,37 +1,25 @@
 'use client';
 
-import Loading from '@/app/loading';
 import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
-import * as THREE from 'three';
 import { useTimeCapsuleStore } from '../_libs/zustand';
 import TimeCapsuleScene from './TimeCapsuleScene';
-import TimeCapsuleUi from './TimeCapsuleUi';
 
 function TimeCapsuleCanvas() {
-  const { focusedObject, setFocusedObject } = useTimeCapsuleStore();
+  const { setFocusedObject } = useTimeCapsuleStore();
 
   const handlePointerMissed = () => {
     console.log('pointer missed');
-    if (focusedObject?.object.material) {
-      (focusedObject?.object.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.03;
-    }
-    setFocusedObject(null);
+    setFocusedObject({ isIdle: true, timeCapsule: null });
   };
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="relative w-full h-full">
-        <TimeCapsuleUi />
-        <Canvas
-          color="black"
-          onPointerMissed={handlePointerMissed}
-          camera={{ position: [0, 6, 5], fov: 75 }}
-        >
-          <TimeCapsuleScene />
-        </Canvas>
-      </div>
-    </Suspense>
+    <Canvas
+      color="black"
+      onPointerMissed={handlePointerMissed}
+      camera={{ position: [0, 6, 5], fov: 75 }}
+    >
+      <TimeCapsuleScene />
+    </Canvas>
   );
 }
 

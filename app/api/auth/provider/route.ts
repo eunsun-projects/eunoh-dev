@@ -1,15 +1,13 @@
 import { PUBLIC_URL } from '@/constants/common.constants';
-import { QUERY_KEY_USER } from '@/constants/query.constants';
 import { createClient } from '@/utils/supabase/server';
 import { Provider } from '@supabase/supabase-js';
-import { QueryClient } from '@tanstack/react-query';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const provider = searchParams.get('provider');
+  const next = searchParams.get('next') ?? '/';
 
-  const queryClient = new QueryClient();
   const supabase = await createClient();
   if (!PUBLIC_URL) {
     return NextResponse.json({ error: 'PUBLIC_URL is not set' }, { status: 401 });
@@ -30,18 +28,13 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: provider as Provider,
     options: {
-      // redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`,
-      redirectTo: `${getURL()}/api/auth/callback`,
+      redirectTo: `${getURL()}api/auth/callback?next=${next}`,
     },
   });
 
   if (error) {
     return NextResponse.json({ error: error?.message }, { status: 401 });
   }
-
-  queryClient.invalidateQueries({
-    queryKey: [QUERY_KEY_USER],
-  });
 
   return NextResponse.json(data, { status: 200 });
 }
