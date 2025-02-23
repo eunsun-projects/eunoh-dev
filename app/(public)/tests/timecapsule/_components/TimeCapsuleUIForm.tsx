@@ -11,7 +11,7 @@ import { useEditTimeCapsulesMutation, useTimeCapsulesMutation } from '../_hooks/
 import { generateColor } from '../_libs/generateColor';
 import { generateRandomPosition } from '../_libs/generatePosition';
 import { useTimeCapsuleStore } from '../_libs/zustand';
-import { TimeCapsuleUIState } from './TimeCapsuleUi';
+import { TimeCapsuleUIState } from './TimeCapsuleUI';
 
 interface TimeCapsuleUIFormProps {
   isOpen: TimeCapsuleUIState;

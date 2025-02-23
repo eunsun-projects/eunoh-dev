@@ -8,7 +8,7 @@ import { useFormContext } from 'react-hook-form';
 import { IoClose } from 'react-icons/io5';
 import { useDeleteTimeCapsulesMutation } from '../_hooks/timecapsule.hooks';
 import { useTimeCapsuleStore } from '../_libs/zustand';
-import { TimeCapsuleUIState } from './TimeCapsuleUi';
+import { TimeCapsuleUIState } from './TimeCapsuleUI';
 
 interface TimeCapsuleUIListProps {
   setIsOpen: Dispatch<SetStateAction<TimeCapsuleUIState>>;
