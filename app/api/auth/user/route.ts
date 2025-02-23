@@ -60,3 +60,15 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json(user, { status: 200 });
 }
+
+export async function DELETE() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    return NextResponse.json('Logout failed', { status: 500 });
+  }
+
+  return NextResponse.json('Logout successful', { status: 200 });
+}
