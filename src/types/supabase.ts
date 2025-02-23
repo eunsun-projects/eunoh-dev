@@ -117,11 +117,55 @@ export type Database = {
         };
         Relationships: [];
       };
+      timecapsules: {
+        Row: {
+          color: string;
+          created_at: string;
+          description: string | null;
+          id: string;
+          password: string | null;
+          position: number[];
+          title: string | null;
+          updated_at: string | null;
+          user_email: string;
+        };
+        Insert: {
+          color: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          password?: string | null;
+          position: number[];
+          title?: string | null;
+          updated_at?: string | null;
+          user_email: string;
+        };
+        Update: {
+          color?: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          password?: string | null;
+          position?: number[];
+          title?: string | null;
+          updated_at?: string | null;
+          user_email?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'timecapsule_user_email_fkey';
+            columns: ['user_email'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['email'];
+          },
+        ];
+      };
       users: {
         Row: {
           avatar: string | null;
           created_at: string;
-          email: string | null;
+          email: string;
           id: string;
           isAdmin: boolean;
           nickname: string | null;
@@ -129,7 +173,7 @@ export type Database = {
         Insert: {
           avatar?: string | null;
           created_at?: string;
-          email?: string | null;
+          email: string;
           id?: string;
           isAdmin?: boolean;
           nickname?: string | null;
@@ -137,7 +181,7 @@ export type Database = {
         Update: {
           avatar?: string | null;
           created_at?: string;
-          email?: string | null;
+          email?: string;
           id?: string;
           isAdmin?: boolean;
           nickname?: string | null;

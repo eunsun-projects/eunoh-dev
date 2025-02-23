@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { Tables } from './supabase';
+
 export type SajuImageTestResponse = {
   error?: string;
   imageUrl?: string;
@@ -15,3 +18,14 @@ export type SajuTestResponse = {
   message: SajuMessage;
   imageUrl?: string;
 };
+
+export type TimeCapsuleFromSupabase = Tables<'timecapsules'>;
+
+export interface TimeCapsule extends TimeCapsuleFromSupabase {
+  object: THREE.Mesh | null;
+}
+
+export interface FocusedObject {
+  isIdle: boolean | null;
+  timeCapsule: TimeCapsule | null;
+}

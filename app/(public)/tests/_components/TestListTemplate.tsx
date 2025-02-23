@@ -46,6 +46,12 @@ const testLists = [
     description: 'Matterport SDK 테스트',
     href: '/tests/mpsdk',
   },
+  {
+    id: 8,
+    title: 'Time Capsule',
+    description: '별 타임캡슐 테스트',
+    href: '/tests/timecapsule',
+  },
 ];
 
 function TestListTemplate() {
