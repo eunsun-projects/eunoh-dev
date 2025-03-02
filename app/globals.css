@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   /* Define light and dark mode colors */
   :root {
@@ -23,6 +24,16 @@
   .dark {
     --text-color--high: rgb(230 230 230 / var(--tw-text-opacity, 1)); /* Text color for dark mode */
     --text-color--low: rgb(186 186 186 / var(--tw-text-opacity, 1));
+  }
+}
+
+@layer components {
+  .text-stroke {
+    -webkit-text-stroke: 0.5px black;
+  }
+
+  .text-stroke-green {
+    -webkit-text-stroke: 0.5px rgb(0, 255, 0);
   }
 }
 

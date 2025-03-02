@@ -52,6 +52,12 @@ const testLists = [
     description: '별 타임캡슐 테스트',
     href: '/tests/timecapsule',
   },
+  {
+    id: 9,
+    title: 'Chat',
+    description: 'Chat Stream 테스트',
+    href: '/tests/chat',
+  },
 ];
 
 function TestListTemplate() {
