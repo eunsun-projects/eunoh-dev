@@ -2,6 +2,7 @@
 
 import { useTapScroll } from '@/hooks/ui/useTapScroll';
 import { Desc, ProjectImage, ProjectWithImages } from '@/types/project.types';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useRef, useState } from 'react';
 import { RiArrowGoBackFill } from 'react-icons/ri';
@@ -62,9 +63,13 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
       )}
       <section className="flex flex-col gap-8">
         <div className="w-full flex justify-between">
-          <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
-            {project.title}
-          </h2>
+          <div className="dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200 px-0.5">
+            <Link href={project.link as string} target="_blank">
+              <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg">
+                {project.title}
+              </h2>
+            </Link>
+          </div>
           <div className="flex items-center gap-2">
             <RiArrowGoBackFill className="text-lg cursor-pointer" onClick={() => router.back()} />
             <DarkLightModeButton />
