@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       response_format: 'url',
     });
 
-    const imageUrl = imageGeneration.data[0].url;
+    const imageUrl = imageGeneration.data?.[0]?.url;
 
     if (!imageUrl) {
       return NextResponse.json({ error: 'Missing image URL' }, { status: 400 });
