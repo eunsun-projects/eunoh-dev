@@ -8,13 +8,14 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const provider = searchParams.get("provider");
+  const next = searchParams.get("next");
 
   const queryClient = new QueryClient();
   const supabase = await createClient();
   if (!PUBLIC_URL) {
     return NextResponse.json(
       { error: "PUBLIC_URL is not set" },
-      { status: 401 },
+      { status: 401 }
     );
   }
 
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
     provider: provider as Provider,
     options: {
       // redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`,
-      redirectTo: `${getURL()}/api/auth/callback`,
+      redirectTo: `${getURL()}/api/auth/callback?next=${next}`,
     },
   });
 
