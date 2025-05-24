@@ -1,6 +1,4 @@
-import Loading from "@/app/loading";
 import type { Metadata, Viewport } from "next";
-import { Suspense } from "react";
 import ModernMoveProvider from "./_components/ModernMoveContext";
 import ModernMoveTemplate from "./_components/ModernMoveTemplate";
 
@@ -19,10 +17,10 @@ export const viewport: Viewport = {
 
 export default function ModernMovePage() {
   return (
-    <Suspense fallback={<Loading />}>
-      <ModernMoveProvider>
-        <ModernMoveTemplate />
-      </ModernMoveProvider>
-    </Suspense>
+    // <Suspense fallback={<Loading />}>
+    <ModernMoveProvider>
+      <ModernMoveTemplate />
+    </ModernMoveProvider>
+    // </Suspense>
   );
 }
