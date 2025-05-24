@@ -60,7 +60,7 @@ const testLists = [
   },
   {
     id: 10,
-    title: "API 가격 계산기",
+    title: "usage-calculator",
     description: "LLM API 사용량 계산기",
     href: "/tests/usage-calculator",
   },
