@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import cn from '@/utils/common/cn';
-import Link from 'next/link';
-import { FaAt, FaGithub } from 'react-icons/fa';
-import { SiTistory } from 'react-icons/si';
+import cn from "@/utils/common/cn";
+import Link from "next/link";
+import { FaAt, FaGithub } from "react-icons/fa";
+import { SiTistory } from "react-icons/si";
 
 interface LinksProps {
   ready: boolean;
@@ -13,8 +13,8 @@ function Links({ ready }: LinksProps) {
   return (
     <div
       className={cn(
-        'w-full opacity-0 flex flex-row gap-1 xl:gap-2 items-center justify-end left-2 transition-all duration-1000 text-xs xl:text-sm',
-        ready && 'opacity-100',
+        "w-full opacity-0 flex flex-row gap-1 xl:gap-2 items-center justify-end left-2 transition-all duration-1000 text-xs xl:text-sm",
+        ready && "opacity-100",
       )}
     >
       <Link

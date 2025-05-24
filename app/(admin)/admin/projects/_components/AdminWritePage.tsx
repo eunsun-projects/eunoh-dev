@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks/auth/useAuth';
-import { useProjectMutation } from '@/hooks/queries/projects';
-import { PartialProject } from '@/types/project.types';
-import cn from '@/utils/common/cn';
-import parseTextToObjects from '@/utils/common/parseTextToObjects';
-import { useRouter } from 'next/navigation';
-import { useEffect, useId } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAuth } from "@/hooks/auth/useAuth";
+import { useProjectMutation } from "@/hooks/queries/projects";
+import type { PartialProject } from "@/types/project.types";
+import cn from "@/utils/common/cn";
+import parseTextToObjects from "@/utils/common/parseTextToObjects";
+import { useRouter } from "next/navigation";
+import { useEffect, useId } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 
-const inputStyle = 'w-[180px] border border-gray-300 rounded-md p-2';
+const inputStyle = "w-[180px] border border-gray-300 rounded-md p-2";
 
 type FormValues = {
   title?: string;
@@ -31,11 +31,11 @@ type FormValues = {
 };
 
 type AdminWritePageProps = {
-  mode?: 'write' | 'edit';
+  mode?: "write" | "edit";
   project?: PartialProject;
 };
 
-function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
+function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
   const { user } = useAuth();
   const { register, handleSubmit, watch } = useForm();
   const { mutate, isPending, error } = useProjectMutation();
@@ -60,31 +60,51 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     // 입력된 텍스트를 파싱하여 객체 배열로 변환
-    const newFeatureArr = data.features?.split(' / ') || [];
-    const newStacksArr = parseTextToObjects(data.stacks || '');
-    const newDecisionsArr = parseTextToObjects(data.decisions || '');
-    const newTroublesArr = parseTextToObjects(data.troubles || '');
+    const newFeatureArr = data.features?.split(" / ") || [];
+    const newStacksArr = parseTextToObjects(data.stacks || "");
+    const newDecisionsArr = parseTextToObjects(data.decisions || "");
+    const newTroublesArr = parseTextToObjects(data.troubles || "");
 
     const newProject: PartialProject = {
-      title: mode === 'edit' && !data.title ? project?.title : data.title,
-      description: mode === 'edit' && !data.description ? project?.description : data.description,
+      title: mode === "edit" && !data.title ? project?.title : data.title,
+      description:
+        mode === "edit" && !data.description
+          ? project?.description
+          : data.description,
       keywords:
-        mode === 'edit' && !data.keywords1 && !data.keywords2 && !data.keywords3
+        mode === "edit" && !data.keywords1 && !data.keywords2 && !data.keywords3
           ? project?.keywords
-          : ([data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[]),
-      link: mode === 'edit' && !data.link ? project?.link : data.link,
-      github_link: mode === 'edit' && !data.github_link ? project?.github_link : data.github_link,
-      started_at: mode === 'edit' && !data.started_at ? project?.started_at : data.started_at,
-      ended_at: mode === 'edit' && !data.ended_at ? project?.ended_at : data.ended_at,
-      features: mode === 'edit' && !data.features ? project?.features : newFeatureArr,
-      stacks: mode === 'edit' && !data.stacks ? project?.stacks : newStacksArr,
-      decisions: mode === 'edit' && !data.decisions ? project?.decisions : newDecisionsArr,
-      troubles: mode === 'edit' && !data.troubles ? project?.troubles : newTroublesArr,
-      isView: mode === 'edit' && data.isView === undefined ? project?.isView : data.isView,
-      number: mode === 'edit' && !data.number ? project?.number : data.number,
+          : ([data.keywords1, data.keywords2, data.keywords3].filter(
+              Boolean,
+            ) as string[]),
+      link: mode === "edit" && !data.link ? project?.link : data.link,
+      github_link:
+        mode === "edit" && !data.github_link
+          ? project?.github_link
+          : data.github_link,
+      started_at:
+        mode === "edit" && !data.started_at
+          ? project?.started_at
+          : data.started_at,
+      ended_at:
+        mode === "edit" && !data.ended_at ? project?.ended_at : data.ended_at,
+      features:
+        mode === "edit" && !data.features ? project?.features : newFeatureArr,
+      stacks: mode === "edit" && !data.stacks ? project?.stacks : newStacksArr,
+      decisions:
+        mode === "edit" && !data.decisions
+          ? project?.decisions
+          : newDecisionsArr,
+      troubles:
+        mode === "edit" && !data.troubles ? project?.troubles : newTroublesArr,
+      isView:
+        mode === "edit" && data.isView === undefined
+          ? project?.isView
+          : data.isView,
+      number: mode === "edit" && !data.number ? project?.number : data.number,
     };
 
-    if (mode === 'edit') {
+    if (mode === "edit") {
       newProject.id = project?.id;
       newProject.images = project?.images;
     }
@@ -92,15 +112,15 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
     const formData = new FormData();
     if (data.images) {
       for (let i = 0; i < data.images.length; i++) {
-        formData.append('images', data.images[i]);
+        formData.append("images", data.images[i]);
       }
     } else {
-      formData.append('images', '');
+      formData.append("images", "");
     }
-    formData.append('project', JSON.stringify(newProject));
+    formData.append("project", JSON.stringify(newProject));
 
     mutate(formData);
-    router.push('/admin/projects');
+    router.push("/admin/projects");
   };
 
   useEffect(() => {
@@ -128,7 +148,7 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               multiple
               className={inputStyle}
               id={imageId}
-              {...register('images')}
+              {...register("images")}
             />
           </div>
           <div className="flex flex-row gap-2 items-center">
@@ -137,8 +157,10 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               type="number"
               className={inputStyle}
               id={numberId}
-              defaultValue={mode === 'edit' ? project?.number?.toString() || '' : ''}
-              {...register('number')}
+              defaultValue={
+                mode === "edit" ? project?.number?.toString() || "" : ""
+              }
+              {...register("number")}
             />
           </div>
           <div className="flex flex-row gap-2 items-center">
@@ -147,59 +169,59 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               type="text"
               className={inputStyle}
               id={titleId}
-              defaultValue={mode === 'edit' ? project?.title || '' : ''}
-              {...register('title')}
+              defaultValue={mode === "edit" ? project?.title || "" : ""}
+              {...register("title")}
             />
           </div>
           <div className="flex flex-row gap-2 items-center">
             <label htmlFor={descriptionId}>설명</label>
             <textarea
-              className={cn(inputStyle, 'w-[300px] h-[100px] xl:w-[500px]')}
+              className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
               id={descriptionId}
-              defaultValue={mode === 'edit' ? project?.description || '' : ''}
-              {...register('description')}
+              defaultValue={mode === "edit" ? project?.description || "" : ""}
+              {...register("description")}
             />
           </div>
           <div className="flex flex-row gap-2 items-center">
             <label htmlFor="keywords1">키워드</label>
             <input
               type="text"
-              className={cn(inputStyle, 'w-[120px]')}
+              className={cn(inputStyle, "w-[120px]")}
               id={keywords1Id}
-              defaultValue={mode === 'edit' ? project?.keywords?.[0] || '' : ''}
-              {...register('keywords1')}
+              defaultValue={mode === "edit" ? project?.keywords?.[0] || "" : ""}
+              {...register("keywords1")}
             />
             <input
               type="text"
-              className={cn(inputStyle, 'w-[120px]')}
+              className={cn(inputStyle, "w-[120px]")}
               id={keywords2Id}
-              defaultValue={mode === 'edit' ? project?.keywords?.[1] || '' : ''}
-              {...register('keywords2')}
+              defaultValue={mode === "edit" ? project?.keywords?.[1] || "" : ""}
+              {...register("keywords2")}
             />
             <input
               type="text"
-              className={cn(inputStyle, 'w-[120px]')}
+              className={cn(inputStyle, "w-[120px]")}
               id={keywords3Id}
-              defaultValue={mode === 'edit' ? project?.keywords?.[2] || '' : ''}
-              {...register('keywords3')}
+              defaultValue={mode === "edit" ? project?.keywords?.[2] || "" : ""}
+              {...register("keywords3")}
             />
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor={linkId}>링크</label>
             <input
               type="text"
-              className={cn(inputStyle, 'w-[300px]')}
+              className={cn(inputStyle, "w-[300px]")}
               id={linkId}
-              defaultValue={mode === 'edit' ? project?.link || '' : ''}
-              {...register('link')}
+              defaultValue={mode === "edit" ? project?.link || "" : ""}
+              {...register("link")}
             />
             <label htmlFor={github_linkId}>깃허브 링크</label>
             <input
               type="text"
-              className={cn(inputStyle, 'w-[300px]')}
+              className={cn(inputStyle, "w-[300px]")}
               id={github_linkId}
-              defaultValue={mode === 'edit' ? project?.github_link || '' : ''}
-              {...register('github_link')}
+              defaultValue={mode === "edit" ? project?.github_link || "" : ""}
+              {...register("github_link")}
             />
           </div>
           <div className="flex flex-row gap-2 items-center">
@@ -208,90 +230,92 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               type="date"
               className={inputStyle}
               id={started_atId}
-              defaultValue={mode === 'edit' ? project?.started_at || '' : ''}
-              {...register('started_at')}
+              defaultValue={mode === "edit" ? project?.started_at || "" : ""}
+              {...register("started_at")}
             />
             <label htmlFor={ended_atId}>종료일</label>
             <input
               type="date"
               className={inputStyle}
               id={ended_atId}
-              defaultValue={mode === 'edit' ? project?.ended_at || '' : ''}
-              {...register('ended_at')}
+              defaultValue={mode === "edit" ? project?.ended_at || "" : ""}
+              {...register("ended_at")}
             />
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor={featuresId}>주요기능</label>
             <textarea
-              className={cn(inputStyle, 'w-[300px] h-[100px] xl:w-[500px]')}
+              className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
               id={featuresId}
-              defaultValue={mode === 'edit' ? project?.features?.join(' / ') || '' : ''}
-              {...register('features')}
+              defaultValue={
+                mode === "edit" ? project?.features?.join(" / ") || "" : ""
+              }
+              {...register("features")}
             />
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor={stacksId}>사용기술</label>
             <textarea
-              className={cn(inputStyle, 'w-[300px] h-[100px] xl:w-[500px]')}
+              className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
               id={stacksId}
-              {...register('stacks')}
+              {...register("stacks")}
               defaultValue={
-                mode === 'edit'
+                mode === "edit"
                   ? project?.stacks
                       ?.map((stack) =>
-                        typeof stack === 'object' &&
+                        typeof stack === "object" &&
                         stack !== null &&
-                        'subTitle' in stack &&
-                        'subContent' in stack
-                          ? `${stack.subTitle || ''} : ${stack.subContent || ''}`
-                          : '',
+                        "subTitle" in stack &&
+                        "subContent" in stack
+                          ? `${stack.subTitle || ""} : ${stack.subContent || ""}`
+                          : "",
                       )
-                      .join(' / ') || ''
-                  : ''
+                      .join(" / ") || ""
+                  : ""
               }
             />
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor={decisionsId}>기술적의사결정</label>
             <textarea
-              className={cn(inputStyle, 'w-[300px] h-[100px] xl:w-[500px]')}
+              className={cn(inputStyle, "w-[300px] h-[100px] xl:w-[500px]")}
               id={decisionsId}
-              {...register('decisions')}
+              {...register("decisions")}
               defaultValue={
-                mode === 'edit'
+                mode === "edit"
                   ? project?.decisions
                       ?.map((decision) =>
-                        typeof decision === 'object' &&
+                        typeof decision === "object" &&
                         decision !== null &&
-                        'subTitle' in decision &&
-                        'subContent' in decision
-                          ? `${decision.subTitle || ''} : ${decision.subContent || ''}`
-                          : '',
+                        "subTitle" in decision &&
+                        "subContent" in decision
+                          ? `${decision.subTitle || ""} : ${decision.subContent || ""}`
+                          : "",
                       )
-                      .join(' / ') || ''
-                  : ''
+                      .join(" / ") || ""
+                  : ""
               }
             />
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor={troublesId}>트러블슈팅</label>
             <textarea
-              className={cn(inputStyle, 'w-[250px] h-[100px] xl:w-[500px]')}
+              className={cn(inputStyle, "w-[250px] h-[100px] xl:w-[500px]")}
               id={troublesId}
-              {...register('troubles')}
+              {...register("troubles")}
               defaultValue={
-                mode === 'edit'
+                mode === "edit"
                   ? project?.troubles
                       ?.map((trouble) =>
-                        typeof trouble === 'object' &&
+                        typeof trouble === "object" &&
                         trouble !== null &&
-                        'subTitle' in trouble &&
-                        'subContent' in trouble
-                          ? `${trouble.subTitle || ''} : ${trouble.subContent || ''}`
-                          : '',
+                        "subTitle" in trouble &&
+                        "subContent" in trouble
+                          ? `${trouble.subTitle || ""} : ${trouble.subContent || ""}`
+                          : "",
                       )
-                      .join(' / ') || ''
-                  : ''
+                      .join(" / ") || ""
+                  : ""
               }
             />
           </div>
@@ -301,8 +325,10 @@ function AdminWritePage({ mode = 'write', project }: AdminWritePageProps) {
               type="checkbox"
               className={inputStyle}
               id={isViewId}
-              {...register('isView')}
-              defaultChecked={mode === 'edit' ? project?.isView || false : false}
+              {...register("isView")}
+              defaultChecked={
+                mode === "edit" ? project?.isView || false : false
+              }
             />
           </div>
           <button

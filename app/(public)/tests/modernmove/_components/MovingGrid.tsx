@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { useFrame } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 const CustomMovingGrid = () => {
   const gridRef = useRef<THREE.GridHelper>(null);
@@ -54,7 +54,7 @@ const CustomMovingGrid = () => {
       moveable.push(1, 1, 0, 0);
     }
     gridRef.current.geometry.setAttribute(
-      'moveable',
+      "moveable",
       new THREE.BufferAttribute(new Uint8Array(moveable), 1),
     );
 
@@ -69,7 +69,13 @@ const CustomMovingGrid = () => {
     }
   });
 
-  return <gridHelper ref={gridRef} args={[250, 20, '#80a6ed', '#80a6ed']} position={[0, -12, 0]} />;
+  return (
+    <gridHelper
+      ref={gridRef}
+      args={[250, 20, "#80a6ed", "#80a6ed"]}
+      position={[0, -12, 0]}
+    />
+  );
 };
 
 export default CustomMovingGrid;

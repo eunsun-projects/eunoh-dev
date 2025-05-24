@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import cn from '@/utils/common/cn';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { MdDarkMode, MdOutlineDarkMode } from 'react-icons/md';
+import cn from "@/utils/common/cn";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 
 interface DarkLightModeButtonProps {
   ready?: boolean;
 }
 
 function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
-  const [theme, setTheme] = useState<string>('dark');
+  const [theme, setTheme] = useState<string>("dark");
   const pathname = usePathname();
 
   const toggleTheme = () => {
-    if (theme === 'dark') {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      setTheme('light');
+    if (theme === "dark") {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      setTheme("light");
     } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      setTheme('dark');
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setTheme("dark");
     }
   };
 
@@ -44,13 +44,13 @@ function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
   return (
     <div
       className={cn(
-        'opacity-0 flex items-center justify-center text-xl',
-        ready && theme !== null && 'opacity-100',
-        pathname === '/' && 'transition-all duration-1000',
+        "opacity-0 flex items-center justify-center text-xl",
+        ready && theme !== null && "opacity-100",
+        pathname === "/" && "transition-all duration-1000",
       )}
     >
-      <button onClick={toggleTheme}>
-        {theme === 'dark' ? <MdOutlineDarkMode /> : <MdDarkMode />}
+      <button type="button" onClick={toggleTheme}>
+        {theme === "dark" ? <MdOutlineDarkMode /> : <MdDarkMode />}
       </button>
     </div>
   );

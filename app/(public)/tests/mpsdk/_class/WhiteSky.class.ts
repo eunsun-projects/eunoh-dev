@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as THREE from 'three';
-import { MpSdk } from '../../../../../public/matterport-assets/sdk';
+import * as THREE from "three";
+import type { MpSdk } from "../../../../../public/matterport-assets/sdk";
 
 class WhiteSky {
   inputs: {
@@ -36,14 +36,14 @@ class WhiteSky {
       this.outputs.objectRoot = node;
       this.outputs.collider = node;
 
-      mpSdk.Mode.current.subscribe(function (mode: any) {
+      mpSdk.Mode.current.subscribe((mode: any) => {
         // console.log('Current view mode is is ', mode);
-        if (mode === 'mode.inside') {
+        if (mode === "mode.inside") {
           skyMesh.visible = false;
         } else if (
-          mode === 'mode.dollhouse' ||
-          mode === 'mode.floorplan' ||
-          mode === 'mode.transitioning'
+          mode === "mode.dollhouse" ||
+          mode === "mode.floorplan" ||
+          mode === "mode.transitioning"
         ) {
           skyMesh.visible = true;
         }

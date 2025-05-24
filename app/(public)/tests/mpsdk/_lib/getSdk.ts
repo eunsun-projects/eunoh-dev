@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const GetSDK = function (elementId: string | HTMLIFrameElement): Promise<any> {
-  return new Promise(function (resolve, reject) {
-    const checkIframe = async function () {
+export const GetSDK = (elementId: string | HTMLIFrameElement): Promise<any> =>
+  new Promise((resolve, reject) => {
+    const checkIframe = async () => {
       let iframe = null;
       if (elementId instanceof HTMLIFrameElement) {
         iframe = elementId as HTMLIFrameElement;
@@ -19,4 +19,3 @@ export const GetSDK = function (elementId: string | HTMLIFrameElement): Promise<
     };
     const intervalId = setInterval(checkIframe, 100);
   });
-};

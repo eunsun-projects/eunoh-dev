@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Loading from '@/app/loading';
-import { usePostsQuery } from '@/hooks/queries/posts';
-import { format } from 'date-fns';
-import Link from 'next/link';
-import { useEffect } from 'react';
-import { DarkLightModeButton } from '../../_components/ui';
+import Loading from "@/app/loading";
+import { usePostsQuery } from "@/hooks/queries/posts";
+import { format } from "date-fns";
+import Link from "next/link";
+import { useEffect } from "react";
+import { DarkLightModeButton } from "../../_components/ui";
 
 function PublicPostsListTemplate() {
   const { data: posts, isLoading, error } = usePostsQuery();
@@ -23,7 +23,7 @@ function PublicPostsListTemplate() {
       <div className="w-full flex flex-col justify-start gap-8">
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
-            {'📝 Posts 📝'}
+            {"📝 Posts 📝"}
           </h2>
           <DarkLightModeButton />
         </div>
@@ -45,7 +45,9 @@ function PublicPostsListTemplate() {
                 <p className="text-[10px] xl:text-xs m-0">{post.summary}</p>
               </div>
               <div className="flex">
-                <p className="text-sm m-0">{format(new Date(post.posted_at as string), 'yyyy')}</p>
+                <p className="text-sm m-0">
+                  {format(new Date(post.posted_at as string), "yyyy")}
+                </p>
               </div>
             </div>
           ))}

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useProjectMutation, useProjectsQuery } from '@/hooks/queries/projects';
-import { Project } from '@/types/project.types';
-import cn from '@/utils/common/cn';
-import Link from 'next/link';
-import { useEffect } from 'react';
+import { useProjectMutation, useProjectsQuery } from "@/hooks/queries/projects";
+import type { Project } from "@/types/project.types";
+import cn from "@/utils/common/cn";
+import Link from "next/link";
+import { useEffect } from "react";
 
 function AdminProjectsListPage() {
   const { data: projects, isLoading, error } = useProjectsQuery();
@@ -17,8 +17,8 @@ function AdminProjectsListPage() {
     };
 
     const formData = new FormData();
-    formData.append('images', '');
-    formData.append('project', JSON.stringify(newProject));
+    formData.append("images", "");
+    formData.append("project", JSON.stringify(newProject));
 
     mutate(formData);
   };
@@ -38,8 +38,8 @@ function AdminProjectsListPage() {
           <li
             key={project.id}
             className={cn(
-              'flex flex-row items-center justify-between gap-2',
-              project.isView ? 'bg-white' : 'bg-gray-100 text-gray-400',
+              "flex flex-row items-center justify-between gap-2",
+              project.isView ? "bg-white" : "bg-gray-100 text-gray-400",
             )}
           >
             <span>{project.title}</span>
@@ -48,14 +48,23 @@ function AdminProjectsListPage() {
               <Link href={`/admin/projects/write/${project.id}`}>
                 <span>수정</span>
               </Link>
-              <span className="cursor-pointer" onClick={() => handleDelete(project)}>
+              <span
+                className="cursor-pointer"
+                onClick={() => handleDelete(project)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleDelete(project);
+                }}
+              >
                 삭제
               </span>
             </div>
           </li>
         ))}
       </ul>
-      <Link href="/admin/projects/write" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+      <Link
+        href="/admin/projects/write"
+        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+      >
         <span>프로젝트 작성</span>
       </Link>
     </div>

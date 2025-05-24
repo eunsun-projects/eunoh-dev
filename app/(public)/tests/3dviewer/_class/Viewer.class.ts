@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import testData from '@/app/(public)/tests/3dviewer/_data/test.data';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { GlitchPass } from 'three/addons/postprocessing/GlitchPass.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { RenderPixelatedPass } from 'three/addons/postprocessing/RenderPixelatedPass.js';
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-import { DotScreenShader } from 'three/addons/shaders/DotScreenShader.js';
-import styles from '../_styles/viewer.module.css';
+import testData from "@/app/(public)/tests/3dviewer/_data/test.data";
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelatedPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
+import styles from "../_styles/viewer.module.css";
 
-import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 type ModelData = {
   obj: string;
-  type: 'gltf' | 'obj' | 'fbx';
+  type: "gltf" | "obj" | "fbx";
 };
 
 const colors = {
@@ -65,7 +65,11 @@ export default class SonnyClass {
   overlay: HTMLDivElement | null;
   loadDiv: HTMLDivElement | null;
   loadingManager: THREE.LoadingManager | null;
-  constructor(canvasRef: HTMLDivElement, overlayRef: HTMLDivElement, loadDivRef: HTMLDivElement) {
+  constructor(
+    canvasRef: HTMLDivElement,
+    overlayRef: HTMLDivElement,
+    loadDivRef: HTMLDivElement,
+  ) {
     this.loadCounter = 0;
     this.nowLoading = 0;
     this.running = true; // 디스트로이 시 false 로 변경되는 상태 스테이트
@@ -105,7 +109,8 @@ export default class SonnyClass {
     // renderer.shadowMap.bias = -0.01;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    if (this.canvas?.firstChild) this.canvas.removeChild(this.canvas.firstChild); // 만약 캔버스에 이미 domElement 요소가 있다면 삭제
+    if (this.canvas?.firstChild)
+      this.canvas.removeChild(this.canvas.firstChild); // 만약 캔버스에 이미 domElement 요소가 있다면 삭제
     this.canvas?.appendChild(renderer.domElement); // 캔버스에 렌더러 적용
     this.renderer = renderer;
 
@@ -198,12 +203,12 @@ export default class SonnyClass {
     /************* model loader ***************/
     const loader = new GLTFLoader(this.loadingManager);
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/examples/jsm/libs/draco/');
+    dracoLoader.setDecoderPath("/examples/jsm/libs/draco/");
     loader.setDRACOLoader(dracoLoader);
     this.loader = loader;
 
     /************ init App **************/
-    this.setupModel({ obj: testData[0].obj, type: 'gltf' });
+    this.setupModel({ obj: testData[0].obj, type: "gltf" });
     this.setupLight();
     this.setupControls();
     this.setupEffects();
@@ -232,14 +237,15 @@ export default class SonnyClass {
     this.scene.add(this.pointLight);
   }
 
-  setupLoader(type: 'gltf' | 'obj' | 'fbx') {
+  setupLoader(type: "gltf" | "obj" | "fbx") {
     if (!this.loadingManager) return;
-    if (type === 'gltf') {
+    if (type === "gltf") {
       return;
-    } else if (type === 'obj') {
+      // biome-ignore lint/style/noUselessElse: <explanation>
+    } else if (type === "obj") {
       this.loader = new OBJLoader(this.loadingManager);
-    } else if (type === 'fbx') {
-      this.loader = new FBXLoader(this.loadingManager);
+    } else if (type === "fbx") {
+      this.loader = new FBXLoader();
     }
   }
 
@@ -256,7 +262,10 @@ export default class SonnyClass {
       const wireframeMaterial = new THREE.LineBasicMaterial({
         color: 0xff0000,
       });
-      const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+      const wireframe = new THREE.LineSegments(
+        wireframeGeometry,
+        wireframeMaterial,
+      );
       wireframe.visible = false;
       object.add(wireframe);
       this.originalMaterial?.push(object.material); //  머티리얼 복사
@@ -339,20 +348,20 @@ export default class SonnyClass {
     }
     if (this.loadingManager) {
       this.loadingManager.onLoad = () => {
-        console.log('loaded!');
+        console.log("loaded!");
       };
       this.loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
         this.loadCounter = (itemsLoaded / itemsTotal) * 100;
         if (this.overlay && this.loadDiv) {
           this.loadDiv.innerHTML = `Loading.. ${Math.round(this.loadCounter)}%`;
-          this.overlay.style.transition = `opacity ${this.loadCounter / 100}s ease-out ${
+          this.overlay.style.transition = `opacity ${
             this.loadCounter / 100
-          }s`;
+          }s ease-out ${this.loadCounter / 100}s`;
           if (this.loadCounter === 100) {
             this.nowLoading = 1;
             this.loadDiv.remove();
-            this.overlay.style.opacity = '0';
-            this.overlay.style.display = 'none';
+            this.overlay.style.opacity = "0";
+            this.overlay.style.display = "none";
           } else if (this.loadCounter < 100) {
             this.nowLoading = 0;
           }
@@ -360,13 +369,16 @@ export default class SonnyClass {
       };
       this.loadingManager.onError = (url) => {
         if (this.loadDiv) {
-          this.loadDiv.innerHTML = `error ocurred! restart page!`;
-          this.loadDiv.style.fontSize = '1rem';
+          this.loadDiv.innerHTML = "error ocurred! restart page!";
+          this.loadDiv.style.fontSize = "1rem";
         }
         console.error(url);
-        const isTextureError = url.includes('jpeg') || url.includes('png') || url.includes('jpg');
+        const isTextureError =
+          url.includes("jpeg") || url.includes("png") || url.includes("jpg");
         if (isTextureError) {
-          alert('반드시 파일에 텍스처가 포함되어 있어야 합니다! 새로고침합니다');
+          alert(
+            "반드시 파일에 텍스처가 포함되어 있어야 합니다! 새로고침합니다",
+          );
           window.location.reload();
           return;
         }
@@ -392,13 +404,17 @@ export default class SonnyClass {
     this.glitchPass = glitchPass;
     // composer.addPass( glitchPass );
 
-    const renderPixelatedPass = new RenderPixelatedPass(10, this.scene, this.camera);
+    const renderPixelatedPass = new RenderPixelatedPass(
+      10,
+      this.scene,
+      this.camera,
+    );
     // renderPixelatedPass.name = "pixel";
     this.pixelPass = renderPixelatedPass;
     // composer.addPass( renderPixelatedPass );
 
     const effect1 = new ShaderPass(DotScreenShader);
-    effect1.uniforms['scale'].value = 3;
+    effect1.uniforms.scale.value = 3;
     // effect1.name = "dot";
     this.dotScreenPass = effect1;
     // composer.addPass( effect1 );
@@ -408,21 +424,22 @@ export default class SonnyClass {
 
     const genCubeUrls = (prefix: string, postfix: string) => {
       return [
-        prefix + 'px' + postfix,
-        prefix + 'nx' + postfix,
-        prefix + 'py' + postfix,
-        prefix + 'ny' + postfix,
-        prefix + 'pz' + postfix,
-        prefix + 'nz' + postfix,
+        `${prefix}px${postfix}`,
+        `${prefix}nx${postfix}`,
+        `${prefix}py${postfix}`,
+        `${prefix}ny${postfix}`,
+        `${prefix}pz${postfix}`,
+        `${prefix}nz${postfix}`,
       ];
     };
 
     const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
-    const ldrUrls = genCubeUrls('/assets/viewer/whitecube2/', '.png');
+    const ldrUrls = genCubeUrls("/assets/viewer/whitecube2/", ".png");
     const envTexture = new THREE.CubeTextureLoader().load(
       ldrUrls,
       (ldrCubeMap: THREE.CubeTexture) => {
-        this.physicalMaterial.envMap = pmremGenerator.fromCubemap(envTexture).texture;
+        this.physicalMaterial.envMap =
+          pmremGenerator.fromCubemap(envTexture).texture;
         pmremGenerator.dispose();
         this.cubeMap = ldrCubeMap;
       },
@@ -444,26 +461,27 @@ export default class SonnyClass {
   }
   removeLightPlus() {
     this.removeLight();
-    const rightIcon = document.querySelectorAll('.xyzright');
+    const rightIcon = document.querySelectorAll(".xyzright");
     rightIcon.forEach((e) => {
-      if (e.classList.value.includes(styles.xyzon)) e.classList.remove(styles.xyzon);
+      if (e.classList.value.includes(styles.xyzon))
+        e.classList.remove(styles.xyzon);
     });
   }
   lightModeChange(target: string) {
     switch (target) {
-      case 'wb_sunny':
+      case "wb_sunny":
         this.removeLight();
         this.scene.add(this.sunLight);
         break;
-      case 'wb_iridescent':
+      case "wb_iridescent":
         this.removeLight();
         this.scene.add(this.iredLight);
         break;
-      case 'lightbulb':
+      case "lightbulb":
         this.removeLight();
         this.scene.add(this.bulbLight);
         break;
-      case 'highlight':
+      case "highlight":
         this.removeLight();
         this.scene.add(this.pinLight);
         break;
@@ -506,26 +524,30 @@ export default class SonnyClass {
       //Geometry 삭제
       if (object instanceof THREE.Mesh && object.geometry) {
         object.geometry.dispose();
-        console.log('geo disposed!');
+        console.log("geo disposed!");
       }
       // Material 삭제
       if (object instanceof THREE.Mesh && object.material) {
         if (Array.isArray(object.material)) {
-          object.material.forEach((material: THREE.Material) => this.disposeMaterial(material));
-          console.log('material array disposed!');
+          object.material.forEach((material: THREE.Material) =>
+            this.disposeMaterial(material),
+          );
+          console.log("material array disposed!");
         } else {
           this.disposeMaterial(object.material);
-          console.log('material disposed!');
+          console.log("material disposed!");
         }
       }
     });
   }
   disposeMaterial(material: THREE.Material) {
     // 텍스처 삭제
-    if (material instanceof THREE.MeshBasicMaterial && material.map) material.map.dispose();
+    if (material instanceof THREE.MeshBasicMaterial && material.map)
+      material.map.dispose();
     if (material instanceof THREE.MeshPhongMaterial && material.lightMap)
       material.lightMap.dispose();
-    if (material instanceof THREE.MeshPhongMaterial && material.bumpMap) material.bumpMap.dispose();
+    if (material instanceof THREE.MeshPhongMaterial && material.bumpMap)
+      material.bumpMap.dispose();
     if (material instanceof THREE.MeshPhongMaterial && material.normalMap)
       material.normalMap.dispose();
     if (material instanceof THREE.MeshPhongMaterial && material.specularMap)
@@ -545,13 +567,13 @@ export default class SonnyClass {
     }
   }
   xyzonViewRemove() {
-    const viewIcon = document.querySelectorAll('.xyzview');
+    const viewIcon = document.querySelectorAll(".xyzview");
     viewIcon.forEach((e) => {
       e.classList.remove(styles.xyzon);
     });
   }
   xyzonEffectsRemove() {
-    const effectsIcon = document.querySelectorAll('.xyzeffects');
+    const effectsIcon = document.querySelectorAll(".xyzeffects");
     effectsIcon.forEach((e) => {
       e.classList.remove(styles.xyzon);
     });
@@ -566,7 +588,9 @@ export default class SonnyClass {
       }
       if (this.baseMesh)
         this.baseMesh.forEach((e, i) => {
-          e.material = this.originalMaterial ? this.originalMaterial[i] : this.basicMaterial;
+          e.material = this.originalMaterial
+            ? this.originalMaterial[i]
+            : this.basicMaterial;
         });
     } else {
       this.xyzonViewRemove();
@@ -588,7 +612,9 @@ export default class SonnyClass {
       this.xyzonViewRemove();
       if (this.baseMesh)
         this.baseMesh.forEach((e, i) => {
-          e.material = this.originalMaterial ? this.originalMaterial[i] : this.basicMaterial;
+          e.material = this.originalMaterial
+            ? this.originalMaterial[i]
+            : this.basicMaterial;
         });
     } else {
       this.xyzonViewRemove();
@@ -610,7 +636,9 @@ export default class SonnyClass {
       this.xyzonViewRemove();
       if (this.baseMesh)
         this.baseMesh.forEach((e, i) => {
-          e.material = this.originalMaterial ? this.originalMaterial[i] : this.basicMaterial;
+          e.material = this.originalMaterial
+            ? this.originalMaterial[i]
+            : this.basicMaterial;
         });
       if (this.scene) this.scene.background = new THREE.Color(0xc7c7c7);
     } else {

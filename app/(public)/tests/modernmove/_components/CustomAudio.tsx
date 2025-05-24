@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import styles from '../_styles/modern-move.module.css';
-import { useModernMoveContext } from './ModernMoveContext';
+import { useEffect, useRef } from "react";
+import styles from "../_styles/modern-move.module.css";
+import { useModernMoveContext } from "./ModernMoveContext";
 
 export default function CustomAudio() {
   const { audio } = useModernMoveContext();
@@ -10,7 +10,7 @@ export default function CustomAudio() {
 
   useEffect(() => {
     if (!progressRef.current || !audio) return;
-    progressRef.current.style.width = '0%';
+    progressRef.current.style.width = "0%";
 
     const drawProgress = (currTime: number, totalTime: number) => {
       if (progressRef.current) {
@@ -23,28 +23,38 @@ export default function CustomAudio() {
       drawProgress(currentTime, duration);
     };
 
-    if (audio !== undefined && audio.src) {
-      audio.addEventListener('timeupdate', timeupdateHandler);
+    if (audio?.src) {
+      audio.addEventListener("timeupdate", timeupdateHandler);
     }
 
     return () => {
       if (audio !== undefined) {
-        audio.removeEventListener('timeUpdate', timeupdateHandler);
+        audio.removeEventListener("timeUpdate", timeupdateHandler);
       }
     };
   }, [audio]);
 
   return (
-    <div style={{ height: '50px', color: 'white', zIndex: '1000', position: 'relative' }}>
-      <div className={styles.progress_container} style={{ height: '0.3rem', width: '99%' }}>
+    <div
+      style={{
+        height: "50px",
+        color: "white",
+        zIndex: "1000",
+        position: "relative",
+      }}
+    >
+      <div
+        className={styles.progress_container}
+        style={{ height: "0.3rem", width: "99%" }}
+      >
         <span
           id="progress"
           ref={progressRef}
           style={{
-            display: 'block',
-            position: 'relative',
-            height: '100%',
-            backgroundColor: 'aqua',
+            display: "block",
+            position: "relative",
+            height: "100%",
+            backgroundColor: "aqua",
           }}
         />
       </div>

@@ -5,7 +5,7 @@ import {
   LineBasicMaterial,
   LineSegments,
   Vector2,
-} from 'three';
+} from "three";
 
 export class MovingGrid extends LineSegments {
   totalTime: { value: number };
@@ -48,8 +48,8 @@ export class MovingGrid extends LineSegments {
 
     const posArray = new Float32BufferAttribute(new Float32Array(positions), 3);
     const movArray = new Float32BufferAttribute(new Float32Array(moveable), 1);
-    this.geometry.setAttribute('position', posArray);
-    this.geometry.setAttribute('moveable', movArray);
+    this.geometry.setAttribute("position", posArray);
+    this.geometry.setAttribute("moveable", movArray);
 
     // (3) material을 ShaderMaterial로 교체 + onBeforeCompile
     //     여기서는 "z축" 방향으로 라인을 계속 움직이는 예시
@@ -71,7 +71,7 @@ export class MovingGrid extends LineSegments {
 
         ${shader.vertexShader}
       `.replace(
-        '#include <begin_vertex>',
+        "#include <begin_vertex>",
         /* gl_Position 직전에 'position' 수정 로직 삽입 */
         `#include <begin_vertex>
          if(moveable > 0.5){

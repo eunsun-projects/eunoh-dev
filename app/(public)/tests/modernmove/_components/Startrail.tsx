@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useFrame } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { MeshLine, MeshLineMaterial } from 'three.meshline';
-import { useModernMoveContext } from './ModernMoveContext';
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
+import { MeshLine, MeshLineMaterial } from "three.meshline";
+import { useModernMoveContext } from "./ModernMoveContext";
 
 interface CustomTrailProps {
   /** 초기 위치 */
@@ -39,7 +39,7 @@ export default function CustomTrail({ position }: CustomTrailProps) {
 
     // 이 초기 포인트를 meshLine에 설정
     meshLine.setPoints(pointsRef.current);
-  }, [meshLine, memoizedPosition, lineLength]);
+  }, [meshLine, memoizedPosition]);
 
   useFrame((state, delta) => {
     if (!starRef.current) return;
@@ -58,7 +58,11 @@ export default function CustomTrail({ position }: CustomTrailProps) {
       starRef.current.position.y -= delta * 200;
     } else {
       // meteor.current가 false면 별은 원래 위치로
-      starRef.current.position.set(memoizedPosition[0], memoizedPosition[1], memoizedPosition[2]);
+      starRef.current.position.set(
+        memoizedPosition[0],
+        memoizedPosition[1],
+        memoizedPosition[2],
+      );
 
       // lineLength * 3개의 공간(x,y,z)을 준비
       pointsRef.current = new Array(lineLength * 3);
@@ -86,7 +90,7 @@ export default function CustomTrail({ position }: CustomTrailProps) {
         <primitive
           object={
             new MeshLineMaterial({
-              color: 'white',
+              color: "white",
               lineWidth: 1,
               transparent: true,
               opacity: 0.8,

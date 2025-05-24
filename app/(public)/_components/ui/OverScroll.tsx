@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 function OverScroll() {
   useEffect(() => {
-    document.documentElement.style.overscrollBehavior = 'none';
+    document.documentElement.style.overscrollBehavior = "none";
 
     // 원래 return 에서 정리했었는데
     // root layout 에 적용되었는데도 불구하고

@@ -1,9 +1,13 @@
-import { getProjects } from '@/apis/projects';
-import Loading from '@/app/loading';
-import { QUERY_KEY_PROJECTS } from '@/constants/query.constants';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import ProjectsListTemplate from './_components/ProjectsListTemplate';
+import { getProjects } from "@/apis/projects";
+import Loading from "@/app/loading";
+import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Suspense } from "react";
+import ProjectsListTemplate from "./_components/ProjectsListTemplate";
 
 async function ProjectsPage() {
   const queryClient = new QueryClient();

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import styles from '../_styles/soundfx.module.css';
-import { FxObj } from './Fxsample';
+import { useEffect, useState } from "react";
+import styles from "../_styles/soundfx.module.css";
+import type { FxObj } from "./Fxsample";
 
 interface FilterProps {
   context: AudioContext;
@@ -45,7 +45,11 @@ export default function Filter({ context, fxObj }: FilterProps) {
       const minValue = 40;
       const maxValue = context.sampleRate / 2;
       const numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
-      const multiplier = Math.pow(2, numberOfOctaves * (Number(e.currentTarget.value) - 1.0));
+      // biome-ignore lint/style/useExponentiationOperator: <explanation>
+      const multiplier = Math.pow(
+        2,
+        numberOfOctaves * (Number(e.currentTarget.value) - 1.0),
+      );
       filterSet.frequency.value = maxValue * multiplier;
     }
   };
@@ -70,16 +74,28 @@ export default function Filter({ context, fxObj }: FilterProps) {
 
   return (
     <div className={styles.webapbox}>
-      <p style={{ fontSize: '1.2rem' }}>filter</p>
+      <p style={{ fontSize: "1.2rem" }}>filter</p>
       <div className={styles.webapfilter}>
-        <input type="checkbox" id="c1" checked={checked} onChange={handleCheckChange}></input>
+        <input
+          type="checkbox"
+          id="c1"
+          checked={checked}
+          onChange={handleCheckChange}
+        />
         <label htmlFor="c1">
           <span>Enable filter</span>
         </label>
       </div>
 
       <div className={styles.webapfilterbtn}>
-        <input type="range" min={0} max={1} step={0.02} value={valueF} onChange={handleChangeF} />
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.02}
+          value={valueF}
+          onChange={handleChangeF}
+        />
         <span>Frequency</span>
       </div>
       <div className={styles.webapfilterbtn}>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as THREE from 'three';
-import { Scene } from '../../../../../public/matterport-assets/sdk';
+import * as THREE from "three";
+import type { Scene } from "../../../../../public/matterport-assets/sdk";
 
 /** ============ class White background ============== */
 class Shadow implements Scene.IComponent {
@@ -21,7 +21,7 @@ class Shadow implements Scene.IComponent {
   notify: any;
   spyOnEvent: any;
   constructor() {
-    this.componentType = 'mp.shadow';
+    this.componentType = "mp.shadow";
     this.inputs = {
       visible: true,
       castShadow: true,
@@ -55,8 +55,8 @@ class Shadow implements Scene.IComponent {
       node.add(mesh);
 
       mesh.receiveShadow = true;
-      node.name = 'shadowMat';
-      mesh.name = 'shadowMat';
+      node.name = "shadowMat";
+      mesh.name = "shadowMat";
 
       this.outputs.objectRoot = mesh;
       this.outputs.collider = mesh;

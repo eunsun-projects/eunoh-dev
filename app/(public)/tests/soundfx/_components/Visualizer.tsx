@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef } from 'react';
-import styles from '../_styles/soundfx.module.css';
-import { FxObj } from './Fxsample';
+import { useCallback, useEffect, useRef } from "react";
+import styles from "../_styles/soundfx.module.css";
+import type { FxObj } from "./Fxsample";
 
 interface VisualizerProps {
   context: AudioContext;
@@ -16,7 +16,12 @@ const FFT_SIZE = 2048;
 const HEIGHT = 120; //360
 const WIDTH = 480; //640
 
-export default function Visualizer({ context, fxObj, index, playing }: VisualizerProps) {
+export default function Visualizer({
+  context,
+  fxObj,
+  index,
+  playing,
+}: VisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const draw = useCallback(() => {
@@ -32,7 +37,7 @@ export default function Visualizer({ context, fxObj, index, playing }: Visualize
 
       if (fxObj.isPlaying) {
         fxObj.startTime = context.currentTime;
-        console.log('started at', fxObj.offsetTime);
+        console.log("started at", fxObj.offsetTime);
 
         // Connect graph
         fxObj.currSource.connect(analyser);
@@ -42,7 +47,7 @@ export default function Visualizer({ context, fxObj, index, playing }: Visualize
         function draw() {
           if (!canvasRef.current) return;
           const canvas = canvasRef.current;
-          const drawContext = canvas.getContext('2d');
+          const drawContext = canvas.getContext("2d");
           if (!drawContext) return;
           drawContext.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -65,7 +70,7 @@ export default function Visualizer({ context, fxObj, index, playing }: Visualize
             const offset = HEIGHT - height - 1;
             const barWidth = WIDTH / analyser.frequencyBinCount;
             const hue = (i / analyser.frequencyBinCount) * 360;
-            drawContext.fillStyle = 'white'; //'hsl(' + hue + ', 100%, 50%)'
+            drawContext.fillStyle = "white"; //'hsl(' + hue + ', 100%, 50%)'
             drawContext.globalAlpha = 1.0;
             drawContext.fillRect(i * barWidth, offset, 1, height); // i * barWidth, offset, barWidth, height
           }
@@ -77,14 +82,14 @@ export default function Visualizer({ context, fxObj, index, playing }: Visualize
             const height = HEIGHT * percent;
             const offset = HEIGHT - height - 1;
             const barWidth = WIDTH / analyser.frequencyBinCount;
-            drawContext.fillStyle = 'white';
+            drawContext.fillStyle = "white";
             drawContext.fillRect(i * barWidth, offset, 1, 2);
           }
 
           requestAnimationFrame(draw);
         }
       } else {
-        console.log('paused at', fxObj.offsetTime);
+        console.log("paused at", fxObj.offsetTime);
       }
     }
   }, [fxObj, context]);
@@ -92,12 +97,12 @@ export default function Visualizer({ context, fxObj, index, playing }: Visualize
   useEffect(() => {
     if (!playing) return;
     draw();
-  }, [playing, index, draw]);
+  }, [playing, draw]);
 
   return (
     <div className={styles.webapbox}>
-      <p style={{ fontSize: '1.2rem' }}>visualizer</p>
-      <canvas className={styles.webapcanvas} ref={canvasRef}></canvas>
+      <p style={{ fontSize: "1.2rem" }}>visualizer</p>
+      <canvas className={styles.webapcanvas} ref={canvasRef} />
     </div>
   );
 }

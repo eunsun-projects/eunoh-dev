@@ -434,7 +434,9 @@
   animation: slow 2s forwards;
 }
 /* 태블릿 가로(아이패드 프로에선 글씨가 좀 작은 경향이 있음 나중에 나눌거면 1366 부터 높이면됨) */
-@media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+@media screen and (min-width: 1024px) and (max-width: 1366px) and (
+    orientation: landscape
+  ) {
   .qrmiddiv p {
     width: 17rem;
   }
@@ -451,7 +453,9 @@
   }
 }
 /*아이패드 미니 ~ 아이패드 프로 세로*/
-@media screen and (min-width: 1024px) and (max-width: 1137px) and (orientation: portrait) {
+@media screen and (min-width: 1024px) and (max-width: 1137px) and (
+    orientation: portrait
+  ) {
   /* 인트로 */
   .maindiv {
     overflow: hidden;
@@ -520,7 +524,9 @@
   }
 }
 /* 아이패드 보다 작은 태블릿 세로 (갤탭 등) */
-@media screen and (min-width: 711px) and (max-width: 1023px) and (orientation: portrait) {
+@media screen and (min-width: 711px) and (max-width: 1023px) and (
+    orientation: portrait
+  ) {
   /* 인트로 */
   .maindiv {
     overflow: hidden;

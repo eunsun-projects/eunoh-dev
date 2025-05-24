@@ -1,12 +1,16 @@
-import { getPost } from '@/apis/post';
-import { getPosts } from '@/apis/posts';
-import Loading from '@/app/loading';
-import NotFound from '@/app/not-found';
-import { QUERY_KEY_POSTS } from '@/constants/query.constants';
-import { Post } from '@/types/post.types';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import PublicPostTemplate from '../_components/PublicPostTemplate';
+import { getPost } from "@/apis/post";
+import { getPosts } from "@/apis/posts";
+import Loading from "@/app/loading";
+import NotFound from "@/app/not-found";
+import { QUERY_KEY_POSTS } from "@/constants/query.constants";
+import type { Post } from "@/types/post.types";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Suspense } from "react";
+import PublicPostTemplate from "../_components/PublicPostTemplate";
 interface PublicPostPageProps {
   params: Promise<{ engTitle: string }>;
 }

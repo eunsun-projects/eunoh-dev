@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { raleway } from '../_fonts/circlesFonts';
-import styles from '../_styles/circles.module.css';
-import Circles from './Circles';
-import CustomAudio from './CustomAudio';
+import { useEffect, useRef, useState } from "react";
+import { raleway } from "../_fonts/circlesFonts";
+import styles from "../_styles/circles.module.css";
+import Circles from "./Circles";
+import CustomAudio from "./CustomAudio";
 
-const texts = ['..Fear Not..', '..Circle..', '..Is..', '..Here..', 'Ready'];
+const texts = ["..Fear Not..", "..Circle..", "..Is..", "..Here..", "Ready"];
 
 const morphTime = 1.5;
 const cooldownTime = 0.5;
@@ -22,7 +22,7 @@ export default function CirclesTemplate() {
 
   function handleCircleClick() {
     // 원형 div를 클릭했을 때 원하는 로직을 여기에 추가
-    console.log('Circle clicked!');
+    console.log("Circle clicked!");
     if (!audioRef.current) return;
     audioRef.current.play();
     audioRef.current.volume = 0.4;
@@ -60,11 +60,18 @@ export default function CirclesTemplate() {
     function setMorph(fraction: number) {
       if (elts.text1 && elts.text2) {
         elts.text2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-        elts.text2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+        elts.text2.style.opacity = `${
+          // biome-ignore lint/style/useExponentiationOperator: <explanation>
+          Math.pow(fraction, 0.4) * 100
+        }%`;
 
+        // biome-ignore lint/style/noParameterAssign: <explanation>
         fraction = 1 - fraction;
         elts.text1.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-        elts.text1.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+        elts.text1.style.opacity = `${
+          // biome-ignore lint/style/useExponentiationOperator: <explanation>
+          Math.pow(fraction, 0.4) * 100
+        }%`;
 
         elts.text1.textContent = texts[textIndex % texts.length];
         elts.text2.textContent = texts[(textIndex + 1) % texts.length];
@@ -80,11 +87,11 @@ export default function CirclesTemplate() {
     function doCooldown() {
       morph = 0;
       if (elts.text2 && elts.text1) {
-        elts.text2.style.filter = '';
-        elts.text2.style.opacity = '100%';
+        elts.text2.style.filter = "";
+        elts.text2.style.opacity = "100%";
 
-        elts.text1.style.filter = '';
-        elts.text1.style.opacity = '0%';
+        elts.text1.style.filter = "";
+        elts.text1.style.opacity = "0%";
       }
     }
 
@@ -104,7 +111,7 @@ export default function CirclesTemplate() {
         }
         doMorph();
         // "Ready"가 출력되면 원형 div를 보이게 함
-        if (texts[textIndex % texts.length] === 'Ready') {
+        if (texts[textIndex % texts.length] === "Ready") {
           setCircleVisible(true);
         }
       } else {
@@ -127,31 +134,41 @@ export default function CirclesTemplate() {
 
   return (
     <div className={raleway.className}>
-      <audio ref={audioRef} src="/assets/circles/circles.mp3" preload="metadata" />
+      {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
+      <audio
+        ref={audioRef}
+        src="/assets/circles/circles.mp3"
+        preload="metadata"
+      />
       {!ready && (
         <div
           style={{
-            position: 'absolute',
-            width: '100vw',
-            height: 'calc(var(--vh, 1vh) * 100)',
-            zIndex: '1000',
+            position: "absolute",
+            width: "100vw",
+            height: "calc(var(--vh, 1vh) * 100)",
+            zIndex: "1000",
           }}
         >
           <div
+            onKeyDown={handleCircleClick}
             ref={circle}
             className={styles.circle}
             onClick={handleCircleClick}
             style={{
-              opacity: circleVisible ? '1' : '0',
-              pointerEvents: circleVisible ? 'all' : 'none',
+              opacity: circleVisible ? "1" : "0",
+              pointerEvents: circleVisible ? "all" : "none",
             }}
-          ></div>
-          <div className={styles.container} style={{ display: circleVisible ? 'none' : 'flex' }}>
-            <span ref={text1} className={styles.text1}></span>
-            <span ref={text2} className={styles.text2}></span>
+          />
+          <div
+            className={styles.container}
+            style={{ display: circleVisible ? "none" : "flex" }}
+          >
+            <span ref={text1} className={styles.text1} />
+            <span ref={text2} className={styles.text2} />
           </div>
 
-          <svg id="filters">
+          {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
+          <svg id="filters" aria-label="Filters">
             <defs>
               <filter id="threshold">
                 <feColorMatrix
@@ -168,11 +185,9 @@ export default function CirclesTemplate() {
         </div>
       )}
       {ready && (
-        <>
-          <div style={{ position: 'absolute' }}>
-            <CustomAudio audio={audioRef.current as HTMLAudioElement} />
-          </div>
-        </>
+        <div style={{ position: "absolute" }}>
+          <CustomAudio audio={audioRef.current as HTMLAudioElement} />
+        </div>
       )}
       <Circles ready={ready} audio={audioRef.current as HTMLAudioElement} />
     </div>

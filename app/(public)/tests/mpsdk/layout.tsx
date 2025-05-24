@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { PropsWithChildren } from 'react';
-import { RiArrowGoBackFill } from 'react-icons/ri';
+import Link from "next/link";
+import type { PropsWithChildren } from "react";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
 function MpSdkLayout({ children }: PropsWithChildren) {
   return (

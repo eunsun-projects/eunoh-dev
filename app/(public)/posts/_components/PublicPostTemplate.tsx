@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Loading from '@/app/loading';
-import { usePostQuery } from '@/hooks/queries/post/usePostQuery';
-import 'highlight.js/styles/a11y-dark.css';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { RiArrowGoBackFill } from 'react-icons/ri';
-import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
-import remarkGfm from 'remark-gfm';
-import { DarkLightModeButton } from '../../_components/ui';
-import styles from './markdown-style.module.css';
+import Loading from "@/app/loading";
+import { usePostQuery } from "@/hooks/queries/post/usePostQuery";
+import "highlight.js/styles/a11y-dark.css";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
+import { DarkLightModeButton } from "../../_components/ui";
+import styles from "./markdown-style.module.css";
 interface PublicPostTemplateProps {
   id: string;
 }
@@ -32,7 +32,10 @@ function PublicPostTemplate({ id }: PublicPostTemplateProps) {
           {post?.title}
         </h2>
         <div className="flex items-center gap-2">
-          <RiArrowGoBackFill className="text-lg cursor-pointer" onClick={() => router.back()} />
+          <RiArrowGoBackFill
+            className="text-lg cursor-pointer"
+            onClick={() => router.back()}
+          />
           <DarkLightModeButton />
         </div>
       </div>

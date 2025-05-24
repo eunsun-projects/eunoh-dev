@@ -1,4 +1,4 @@
-import { PostsListTemplate } from './_components';
+import { PostsListTemplate } from "./_components";
 
 function AdminPostsListPage() {
   return <PostsListTemplate />;

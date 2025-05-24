@@ -1,24 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { Suspense, useEffect, useRef, useState } from 'react';
-import styles from '../_styles/modern-move.module.css';
+import Image from "next/image";
+import { Suspense, useEffect, useRef, useState } from "react";
+import styles from "../_styles/modern-move.module.css";
 
-import { useRouter } from 'next/navigation';
-import Landscape from './Landscape';
-import MmLoader from './MmLoader';
-import { useModernMoveContext } from './ModernMoveContext';
-import MoonLoaderBlack from './MoonLoaderBlack';
-import VaporwaveScene from './VaporScene';
+import { useRouter } from "next/navigation";
+import Landscape from "./Landscape";
+import MmLoader from "./MmLoader";
+import { useModernMoveContext } from "./ModernMoveContext";
+import MoonLoaderBlack from "./MoonLoaderBlack";
+import VaporwaveScene from "./VaporScene";
 
 export default function ModernMoveTemplate() {
   const [innerW, setInnerW] = useState<number | null>(null);
   const [awaiting, setAwaiting] = useState(true);
   const [ending, setEnding] = useState(false);
 
-  const { play, threeD, meteor, objet, setPlay, setThreeD, setObjet, setAudio } =
-    useModernMoveContext();
+  const {
+    play,
+    threeD,
+    meteor,
+    objet,
+    setPlay,
+    setThreeD,
+    setObjet,
+    setAudio,
+  } = useModernMoveContext();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const monitorRef = useRef<HTMLDivElement | null>(null);
@@ -78,10 +86,10 @@ export default function ModernMoveTemplate() {
     setThreeD(!threeD);
   };
 
-  const handleHomeClick = () => router.push('/tests');
+  const handleHomeClick = () => router.push("/tests");
 
   const handleEnding = () => {
-    console.log('ended!');
+    console.log("ended!");
     const timer = setTimeout(() => {
       setEnding(true);
       clearTimeout(timer);
@@ -92,26 +100,26 @@ export default function ModernMoveTemplate() {
     /** ============ set screensize =============== */
     const setScreenSize = () => {
       const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     };
 
     setInnerW(window.innerWidth);
     setAwaiting(false);
     /** ====== Generate a resize event if the device doesn't do it ====== */
     window.addEventListener(
-      'orientationchange',
-      () => window.dispatchEvent(new Event('resize')),
+      "orientationchange",
+      () => window.dispatchEvent(new Event("resize")),
       false,
     );
-    window.addEventListener('resize', setScreenSize);
-    window.dispatchEvent(new Event('resize'));
+    window.addEventListener("resize", setScreenSize);
+    window.dispatchEvent(new Event("resize"));
     return () => {
       window.removeEventListener(
-        'orientationchange',
-        () => window.dispatchEvent(new Event('resize')),
+        "orientationchange",
+        () => window.dispatchEvent(new Event("resize")),
         false,
       );
-      window.removeEventListener('resize', setScreenSize);
+      window.removeEventListener("resize", setScreenSize);
     };
   }, []);
 
@@ -121,17 +129,22 @@ export default function ModernMoveTemplate() {
     }
   }, [setAudio]);
 
-  console.log('canvas 1 render');
+  console.log("canvas 1 render");
 
   return (
     <>
-      <audio ref={audioRef} src="/assets/modernmove/modernmove.mp3" muted onEnded={handleEnding} />
+      <audio
+        ref={audioRef}
+        src="/assets/modernmove/modernmove.mp3"
+        muted
+        onEnded={handleEnding}
+      />
       <Suspense fallback={<MoonLoaderBlack />}>
         <div ref={monitorRef} className={styles.monitortop}>
           <Landscape />
 
           <div className={styles.monitorbox}>
-            <div className={styles.monitortopvoid}></div>
+            <div className={styles.monitortopvoid} />
 
             <div className={styles.monitorcanvasbox}>
               {innerW && !ending ? (
@@ -148,6 +161,7 @@ export default function ModernMoveTemplate() {
                 <div id="voidhomebtn" className={styles.monitorhomeboxinner}>
                   {!objet ? (
                     <img
+                      onKeyDown={handleObjetClick}
                       className={styles.homebtnvankoimg}
                       src="/assets/modernmove/gamegi_vanko.webp"
                       alt="vanko01"
@@ -155,12 +169,14 @@ export default function ModernMoveTemplate() {
                     />
                   ) : (
                     <img
+                      onKeyDown={handleObjetClick}
                       className={styles.homebtnvankoimg}
                       src="/assets/modernmove/gamegi_vankowow.webp"
                       alt="vanko02"
                     />
                   )}
                   <img
+                    onKeyDown={handleObjetClick}
                     className={styles.homebtnbackimg}
                     src="/assets/modernmove/gamegibtn-big.webp"
                     alt="gamegi_home_box"
@@ -169,18 +185,19 @@ export default function ModernMoveTemplate() {
               </div>
 
               <div className={styles.monitorbottombtngrid}>
-                <div style={{ display: 'grid' }}>
+                <div style={{ display: "grid" }}>
                   {!play ? (
                     <img
+                      onKeyDown={handlePlayClick}
                       id="play"
                       className={styles.gamegibtn}
                       style={{
-                        position: 'relative',
-                        height: 'auto',
-                        zIndex: '6',
-                        boxSizing: 'border-box',
-                        cursor: 'pointer',
-                        pointerEvents: awaiting ? 'none' : 'all',
+                        position: "relative",
+                        height: "auto",
+                        zIndex: "6",
+                        boxSizing: "border-box",
+                        cursor: "pointer",
+                        pointerEvents: awaiting ? "none" : "all",
                       }}
                       src="/assets/modernmove/gamegi-playbtn.webp"
                       alt="gamegi_play"
@@ -188,14 +205,15 @@ export default function ModernMoveTemplate() {
                     />
                   ) : (
                     <img
+                      onKeyDown={handlePauseClick}
                       id="pause"
                       className={styles.gamegibtn}
                       style={{
-                        position: 'relative',
-                        height: 'auto',
-                        zIndex: '6',
-                        boxSizing: 'border-box',
-                        cursor: 'pointer',
+                        position: "relative",
+                        height: "auto",
+                        zIndex: "6",
+                        boxSizing: "border-box",
+                        cursor: "pointer",
                       }}
                       src="/assets/modernmove/gamegi-pausebtn.webp"
                       alt="gamegi_pause"
@@ -203,49 +221,52 @@ export default function ModernMoveTemplate() {
                     />
                   )}
                 </div>
-                <div style={{ display: 'grid' }}>
+                <div style={{ display: "grid" }}>
                   <img
+                    onKeyDown={handleMeteorClick}
                     id="star"
                     className={styles.gamegibtntop}
                     style={{
-                      position: 'relative',
-                      height: 'auto',
-                      zIndex: '6',
-                      boxSizing: 'border-box',
-                      pointerEvents: awaiting ? 'none' : 'all',
+                      position: "relative",
+                      height: "auto",
+                      zIndex: "6",
+                      boxSizing: "border-box",
+                      pointerEvents: awaiting ? "none" : "all",
                     }}
                     src="/assets/modernmove/gamegi-starbtn.webp"
                     alt="gamegi_star"
                     onClick={handleMeteorClick}
                   />
                 </div>
-                <div style={{ display: 'grid' }}>
+                <div style={{ display: "grid" }}>
                   <img
+                    onKeyDown={handleHomeClick}
                     id="threed"
                     className={styles.gamegibtn}
                     style={{
-                      position: 'relative',
-                      height: 'auto',
-                      zIndex: '6',
-                      boxSizing: 'border-box',
-                      pointerEvents: awaiting ? 'none' : 'all',
+                      position: "relative",
+                      height: "auto",
+                      zIndex: "6",
+                      boxSizing: "border-box",
+                      pointerEvents: awaiting ? "none" : "all",
                     }}
                     src="/assets/modernmove/gamegi-homebtn.webp"
                     alt="gamegi_home"
                     onClick={handleHomeClick}
                   />
                 </div>
-                <div style={{ display: 'grid' }}>
+                <div style={{ display: "grid" }}>
                   {threeD ? (
                     <img
+                      onKeyDown={handleThreeDClick}
                       id="threed"
                       className={styles.gamegibtntop}
                       style={{
-                        position: 'relative',
-                        height: 'auto',
-                        zIndex: '6',
-                        boxSizing: 'border-box',
-                        pointerEvents: awaiting ? 'none' : 'all',
+                        position: "relative",
+                        height: "auto",
+                        zIndex: "6",
+                        boxSizing: "border-box",
+                        pointerEvents: awaiting ? "none" : "all",
                       }}
                       src="/assets/modernmove/gamegi-3dbtn.webp"
                       alt="gamegi_3d"
@@ -253,12 +274,13 @@ export default function ModernMoveTemplate() {
                     />
                   ) : (
                     <img
+                      onKeyDown={handleThreeDClick}
                       className={styles.gamegibtntop}
                       style={{
-                        position: 'relative',
-                        height: 'auto',
-                        zIndex: '6',
-                        boxSizing: 'border-box',
+                        position: "relative",
+                        height: "auto",
+                        zIndex: "6",
+                        boxSizing: "border-box",
                       }}
                       src="/assets/modernmove/gamegi-2dbtn.webp"
                       alt="gamegi_2d"
@@ -267,14 +289,14 @@ export default function ModernMoveTemplate() {
                   )}
                 </div>
 
-                <div></div>
-                <div></div>
+                <div />
+                <div />
               </div>
             </div>
 
             <Image
-              style={{ pointerEvents: 'none' }}
-              src={'/assets/modernmove/newgamegibody.webp'}
+              style={{ pointerEvents: "none" }}
+              src={"/assets/modernmove/newgamegibody.webp"}
               alt="gamegi"
               fill
               priority
@@ -284,22 +306,22 @@ export default function ModernMoveTemplate() {
 
           <div
             style={{
-              display: 'block',
-              width: '100%',
-              height: '100%',
-              position: 'relative',
-              zIndex: '0',
+              display: "block",
+              width: "100%",
+              height: "100%",
+              position: "relative",
+              zIndex: "0",
             }}
           >
             <div
               style={{
-                width: '100%',
-                height: '100%',
-                backgroundSize: '20rem',
-                backgroundRepeat: 'repeat',
-                backgroundImage: 'url(/assets/modernmove/modernback.png)',
+                width: "100%",
+                height: "100%",
+                backgroundSize: "20rem",
+                backgroundRepeat: "repeat",
+                backgroundImage: "url(/assets/modernmove/modernback.png)",
               }}
-            ></div>
+            />
           </div>
         </div>
       </Suspense>

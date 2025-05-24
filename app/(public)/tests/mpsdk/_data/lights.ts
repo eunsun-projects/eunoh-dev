@@ -1,10 +1,10 @@
 const lights = {
-  version: '1.0',
+  version: "1.0",
   ambient: {
     enabled: true,
     color: { r: 1, g: 1, b: 1 },
     intensity: 0.4,
-    name: 'amb',
+    name: "amb",
     castShadow: true,
   },
   directional: {

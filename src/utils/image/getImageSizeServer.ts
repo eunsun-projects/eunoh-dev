@@ -1,6 +1,8 @@
-import sharp from 'sharp';
+import sharp from "sharp";
 
-async function getImageSizeServer(url: string): Promise<{ width: number; height: number }> {
+async function getImageSizeServer(
+  url: string,
+): Promise<{ width: number; height: number }> {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -11,7 +13,7 @@ async function getImageSizeServer(url: string): Promise<{ width: number; height:
   const metadata = await sharp(Buffer.from(buffer)).metadata();
 
   if (!metadata.width || !metadata.height) {
-    throw new Error('Could not retrieve image dimensions');
+    throw new Error("Could not retrieve image dimensions");
   }
 
   return {

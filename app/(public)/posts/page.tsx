@@ -1,9 +1,13 @@
-import { getPosts } from '@/apis/posts';
-import Loading from '@/app/loading';
-import { QUERY_KEY_POSTS } from '@/constants/query.constants';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import PublicPostsListTemplate from './_components/PublicPostsListTemplate';
+import { getPosts } from "@/apis/posts";
+import Loading from "@/app/loading";
+import { QUERY_KEY_POSTS } from "@/constants/query.constants";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Suspense } from "react";
+import PublicPostsListTemplate from "./_components/PublicPostsListTemplate";
 
 async function PostsPage() {
   const queryClient = new QueryClient();

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 export default class SmokeClass {
   private _canvas: HTMLCanvasElement;
@@ -30,7 +30,12 @@ export default class SmokeClass {
     const scene = new THREE.Scene();
     this._scene = scene;
     //카메라 만들기
-    const camera = new THREE.PerspectiveCamera(75, fixedWidth / fixedHeight, 1, 10000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      fixedWidth / fixedHeight,
+      1,
+      10000,
+    );
     this._camera = camera;
 
     camera.position.z = 1000;
@@ -59,7 +64,7 @@ export default class SmokeClass {
     const smokeParticles: THREE.Mesh[] = [];
     this._smokeParticles = smokeParticles;
 
-    textureLoader.load('/assets/paradise/clouds.png', (texture) => {
+    textureLoader.load("/assets/paradise/clouds.png", (texture) => {
       const smokeMaterial = new THREE.MeshLambertMaterial({
         color: 0xffffff,
         map: texture,

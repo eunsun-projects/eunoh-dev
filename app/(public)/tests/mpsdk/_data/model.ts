@@ -1,25 +1,25 @@
 enum Component {
-  OBJ_LOADER = 'mp.objLoader',
-  FBX_LOADER = 'mp.fbxLoader',
-  DAE_LOADER = 'mp.daeLoader',
-  GLTF_LOADER = 'mp.gltfLoader',
-  SCROLLING_TUBE = 'mp.scrollingTube',
-  TRANSFORM_CONTROLS = 'mp.transformControls',
-  LIGHTS_COMPONENT = 'mp.lights',
-  POINT_LIGHT = 'mp.pointLight',
-  DIRECTIONAL_LIGHT = 'mp.directionalLight',
-  AMBIENT_LIGHT = 'mp.ambientLight',
-  CAMERA = 'mp.camera',
-  INPUT = 'mp.input',
-  XR = 'mp.xr',
+  OBJ_LOADER = "mp.objLoader",
+  FBX_LOADER = "mp.fbxLoader",
+  DAE_LOADER = "mp.daeLoader",
+  GLTF_LOADER = "mp.gltfLoader",
+  SCROLLING_TUBE = "mp.scrollingTube",
+  TRANSFORM_CONTROLS = "mp.transformControls",
+  LIGHTS_COMPONENT = "mp.lights",
+  POINT_LIGHT = "mp.pointLight",
+  DIRECTIONAL_LIGHT = "mp.directionalLight",
+  AMBIENT_LIGHT = "mp.ambientLight",
+  CAMERA = "mp.camera",
+  INPUT = "mp.input",
+  XR = "mp.xr",
 }
 
 export const model = [
   {
-    id: '01_TheDawnofChristianity',
+    id: "01_TheDawnofChristianity",
     type: Component.GLTF_LOADER,
     inputs: {
-      url: '/assets/mpsdk/01_TheDawnofChristianity.glb',
+      url: "/assets/mpsdk/01_TheDawnofChristianity.glb",
     },
     position: [2, 0, -1],
     rotation: [0, 0, 0],
@@ -36,10 +36,10 @@ export const model = [
     },
   },
   {
-    id: '02',
+    id: "02",
     type: Component.GLTF_LOADER,
     inputs: {
-      url: '',
+      url: "",
     },
     position: [0, 0, 0],
     rotation: [0, 0, 0],

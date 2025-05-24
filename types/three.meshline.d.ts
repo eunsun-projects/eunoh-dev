@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare module 'three.meshline' {
+declare module "three.meshline" {
   export class MeshLine {
     setPoints(points: number[]): void;
   }

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks/auth/useAuth';
-import Link from 'next/link';
+import { useAuth } from "@/hooks/auth/useAuth";
+import Link from "next/link";
 
 function AdminHeader() {
   const { user, logOut, loginWithProvider } = useAuth();
@@ -25,15 +25,20 @@ function AdminHeader() {
       {user ? (
         <div className="flex items-center gap-2">
           <span>{`${user.email} 님 반갑습니다!`}</span>
-          <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={logOut}>
+          <button
+            type="button"
+            className="bg-red-500 text-white px-4 py-2 rounded-md"
+            onClick={logOut}
+          >
             로그아웃
           </button>
         </div>
       ) : (
         <div className="flex items-center">
           <button
+            type="button"
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            onClick={() => loginWithProvider('google')}
+            onClick={() => loginWithProvider("google")}
           >
             구글로그인
           </button>

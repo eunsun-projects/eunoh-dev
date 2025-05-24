@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useProjectsQuery } from '@/hooks/queries/projects';
-import { use, useEffect } from 'react';
-import AdminWritePage from '../../_components/AdminWritePage';
+import { useProjectsQuery } from "@/hooks/queries/projects";
+import { use, useEffect } from "react";
+import AdminWritePage from "../../_components/AdminWritePage";
 
 function EditPage({ params }: { params: Promise<{ id: string }> }) {
   const { data, isLoading, error } = useProjectsQuery();

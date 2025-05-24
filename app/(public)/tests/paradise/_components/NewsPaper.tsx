@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import useClickSound from '../_hooks/useClickSound';
-import styles from '../_styles/tutorial.module.css';
-import { Hankyoreh, SinistreBold, YuniverseBold } from './paradiseFonts';
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import useClickSound from "../_hooks/useClickSound";
+import styles from "../_styles/tutorial.module.css";
+import { Hankyoreh, SinistreBold, YuniverseBold } from "./paradiseFonts";
 
 interface NewspaperProps {
   setFunnel: (funnel: number) => void;
 }
 
 function Newspaper({ setFunnel }: NewspaperProps) {
-  const fullText = `누군가 실종됐나 본데..\n아까 내가 찍었던 포스터와 연결되는 건가..?\n그런데 주머니에 이게 뭐지...\n일기장..?\n일단 일기장이 있으니 첫 장을 펴보자.`;
+  const fullText =
+    "누군가 실종됐나 본데..\n아까 내가 찍었던 포스터와 연결되는 건가..?\n그런데 주머니에 이게 뭐지...\n일기장..?\n일단 일기장이 있으니 첫 장을 펴보자.";
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
   const playClickSound = useClickSound();
 
@@ -23,6 +24,7 @@ function Newspaper({ setFunnel }: NewspaperProps) {
     setFunnel(3);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // console.log(index)
     if (index < fullText.length) {
@@ -37,7 +39,7 @@ function Newspaper({ setFunnel }: NewspaperProps) {
     <>
       <div className={styles.backdiv}>
         <div className={styles.maindiv}>
-          <div className={styles.leftdiv}></div>
+          <div className={styles.leftdiv} />
 
           <div className={`${styles.middiv} ${Hankyoreh.className}`}>
             <div className={styles.newsmid}>
@@ -57,11 +59,11 @@ function Newspaper({ setFunnel }: NewspaperProps) {
                 <div className={styles.newsimgbox}>
                   <Image
                     priority
-                    src={'/assets/paradise/newspaper2.webp'}
+                    src={"/assets/paradise/newspaper2.webp"}
                     alt="elements"
                     fill
                     sizes="(max-width: 1920px) 100%, 100%"
-                  ></Image>
+                  />
                 </div>
               </div>
 
@@ -72,6 +74,7 @@ function Newspaper({ setFunnel }: NewspaperProps) {
               <div className={styles.qrbtnbox}>
                 <div
                   className={`${styles.qrbtncon} ${SinistreBold.className}`}
+                  onKeyDown={handleModal}
                   onClick={handleModal}
                 >
                   next
@@ -80,7 +83,7 @@ function Newspaper({ setFunnel }: NewspaperProps) {
             </div>
           </div>
 
-          <div className={styles.rightdiv}></div>
+          <div className={styles.rightdiv} />
         </div>
       </div>
     </>

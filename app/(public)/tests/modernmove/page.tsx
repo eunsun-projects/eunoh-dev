@@ -1,20 +1,20 @@
-import Loading from '@/app/loading';
-import { Metadata, Viewport } from 'next';
-import { Suspense } from 'react';
-import ModernMoveProvider from './_components/ModernMoveContext';
-import ModernMoveTemplate from './_components/ModernMoveTemplate';
+import Loading from "@/app/loading";
+import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
+import ModernMoveProvider from "./_components/ModernMoveContext";
+import ModernMoveTemplate from "./_components/ModernMoveTemplate";
 
 export const metadata: Metadata = {
-  title: 'ModernMove',
-  description: 'ModernMove',
+  title: "ModernMove",
+  description: "ModernMove",
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: 'cover',
+  viewportFit: "cover",
 };
 
 export default function ModernMovePage() {

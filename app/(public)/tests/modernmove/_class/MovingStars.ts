@@ -3,10 +3,10 @@ import {
   Float32BufferAttribute,
   Points,
   PointsMaterial,
-  PointsMaterialParameters,
-  ShaderMaterial,
+  type PointsMaterialParameters,
+  type ShaderMaterial,
   Vector3,
-} from 'three';
+} from "three";
 
 class MovingStars extends Points {
   totalTime: { value: number };
@@ -22,7 +22,7 @@ class MovingStars extends Points {
       }),
     );
     g.scale(w, 1, d);
-    g.setAttribute('phase', new Float32BufferAttribute(phase, 1));
+    g.setAttribute("phase", new Float32BufferAttribute(phase, 1));
     const m = new PointsMaterial({
       color: 0xffdfff, //0xffddff 0x80a6ed
       size: 3,
@@ -34,13 +34,15 @@ class MovingStars extends Points {
                     ${shader.vertexShader}
                 `
           .replace(
-            `#include <begin_vertex>`,
+            "#include <begin_vertex>",
             `#include <begin_vertex>
-                    transformed.z = mod(position.z + time - ${d / 2}., ${d}.) - ${d / 2}.;
+                    transformed.z = mod(position.z + time - ${
+                      d / 2
+                    }., ${d}.) - ${d / 2}.;
                 `,
           ) //float twinkle = 0.5 + abs(sin(time * 0.05 + phase)) * 0.5;
           .replace(
-            `gl_PointSize = size;`,
+            "gl_PointSize = size;",
             `
                     float twinkle = 0.5 + abs(sin(time * 0.05 + phase)) * 0.5;
                     gl_PointSize = size * twinkle;`,
@@ -49,7 +51,7 @@ class MovingStars extends Points {
         shader.fragmentShader = `
                 ${shader.fragmentShader}
             `.replace(
-          `vec4 diffuseColor = vec4( diffuse, opacity );`,
+          "vec4 diffuseColor = vec4( diffuse, opacity );",
           `
                 vec3 col = diffuse;
                 vec2 uv = abs((gl_PointCoord - 0.5) * 2.);

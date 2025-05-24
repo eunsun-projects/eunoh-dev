@@ -1,6 +1,12 @@
-'use client';
+"use client";
 
-import { createContext, RefObject, useContext, useRef, useState } from 'react';
+import {
+  createContext,
+  type RefObject,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 
 export const modernMoveContext = createContext({
   play: false,

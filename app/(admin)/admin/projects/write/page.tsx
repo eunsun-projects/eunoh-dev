@@ -1,4 +1,4 @@
-import AdminWritePage from '../_components/AdminWritePage';
+import AdminWritePage from "../_components/AdminWritePage";
 
 function AdminProjectsWritePage() {
   return <AdminWritePage />;

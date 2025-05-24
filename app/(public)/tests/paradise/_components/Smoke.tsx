@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import SmokeClass from '../_class/smokeClass';
-import styles from '../_styles/paradise.module.css';
+import { useEffect, useRef } from "react";
+import SmokeClass from "../_class/smokeClass";
+import styles from "../_styles/paradise.module.css";
 export default function Smoke() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -17,7 +17,7 @@ export default function Smoke() {
       smokeclass.resize(canvasBoxRef.current);
     };
     //화면 리사이즈에 대비
-    window.addEventListener('resize', handler);
+    window.addEventListener("resize", handler);
     // window.onresize = smokeclass.resize(canvasRef.current)
     //시작 시 리사이즈 필수로 한번 호출
     smokeclass.resize(canvasBoxRef.current);
@@ -37,7 +37,7 @@ export default function Smoke() {
   return (
     <>
       <div ref={canvasBoxRef} className={styles.smokecanvasbox}>
-        <canvas className={styles.smokecanvas} ref={canvasRef}></canvas>
+        <canvas className={styles.smokecanvas} ref={canvasRef} />
       </div>
     </>
   );

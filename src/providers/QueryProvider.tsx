@@ -1,6 +1,10 @@
-'use client';
-import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+"use client";
+import {
+  QueryClient,
+  QueryClientProvider,
+  isServer,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -23,10 +27,9 @@ function getQueryClient() {
   if (isServer) {
     // 서버: 항상 새 쿼리 클라이언트 만들기
     return makeQueryClient();
-  } else {
-    if (!browserQueryClient) browserQueryClient = makeQueryClient();
-    return browserQueryClient;
   }
+  if (!browserQueryClient) browserQueryClient = makeQueryClient();
+  return browserQueryClient;
 }
 
 function QueryProvider({ children }: { children: React.ReactNode }) {
@@ -37,7 +40,7 @@ function QueryProvider({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       {children}
       <ReactQueryDevtools
-        initialIsOpen={process.env.NEXT_PUBLIC_RUN_MODE === 'local'}
+        initialIsOpen={process.env.NEXT_PUBLIC_RUN_MODE === "local"}
         // buttonPosition="top-right"
         buttonPosition="bottom-right"
       />

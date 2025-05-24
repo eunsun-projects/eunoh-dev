@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
 function BloomEffect() {
   const { scene, camera, gl, size } = useThree();

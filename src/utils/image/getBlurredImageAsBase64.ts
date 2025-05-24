@@ -1,10 +1,10 @@
-import { promises as fs } from 'fs';
-import { join } from 'path';
-import sharp from 'sharp';
+import { promises as fs } from "node:fs";
+import { join } from "node:path";
+import sharp from "sharp";
 
 // 이미지를 리사이즈하고 블러 처리한 후 base64로 인코딩하는 함수
 async function getBlurredImageAsBase64(imgPath: string) {
-  const filePath = join(process.cwd(), 'public', imgPath);
+  const filePath = join(process.cwd(), "public", imgPath);
 
   // 이미지 파일을 읽어들임
   const imageBuffer = await fs.readFile(filePath);
@@ -19,7 +19,7 @@ async function getBlurredImageAsBase64(imgPath: string) {
     .toBuffer();
 
   // base64로 인코딩하여 반환
-  const base64 = `data:image/jpeg;base64,${resizedBuffer.toString('base64')}`;
+  const base64 = `data:image/jpeg;base64,${resizedBuffer.toString("base64")}`;
 
   // 원본 width, height, base64 데이터를 객체 형태로 반환
   return {

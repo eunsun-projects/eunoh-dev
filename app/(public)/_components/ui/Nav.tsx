@@ -1,31 +1,31 @@
-import cn from '@/utils/common/cn';
-import Link from 'next/link';
+import cn from "@/utils/common/cn";
+import Link from "next/link";
 
 const NAV_ITEMS = [
   {
-    title: 'skills',
-    href: '/skills',
-    description: '- 기술 스택',
+    title: "skills",
+    href: "/skills",
+    description: "- 기술 스택",
   },
   {
-    title: 'projects',
-    href: '/projects',
-    description: '- 진행한 프로젝트',
+    title: "projects",
+    href: "/projects",
+    description: "- 진행한 프로젝트",
   },
   {
-    title: 'posts',
-    href: '/posts',
-    description: '- 탐구와 기록',
+    title: "posts",
+    href: "/posts",
+    description: "- 탐구와 기록",
   },
   {
-    title: 'tests',
-    href: '/tests',
-    description: '- 여러가지 테스트들',
+    title: "tests",
+    href: "/tests",
+    description: "- 여러가지 테스트들",
   },
   {
-    title: 'as-an-artist',
-    href: 'https://work.eunoh.top',
-    description: '- 예술가로서',
+    title: "as-an-artist",
+    href: "https://work.eunoh.top",
+    description: "- 예술가로서",
   },
 ];
 
@@ -37,8 +37,8 @@ function Nav({ ready }: NavProps) {
   return (
     <section
       className={cn(
-        'opacity-0 w-full flex items-center justify-between my-6 xl:my-14 transition-all duration-1000',
-        ready && 'opacity-100',
+        "opacity-0 w-full flex items-center justify-between my-6 xl:my-14 transition-all duration-1000",
+        ready && "opacity-100",
       )}
     >
       <div className="flex flex-col gap-0.5 xl:gap-1 text-sm xl:text-base">

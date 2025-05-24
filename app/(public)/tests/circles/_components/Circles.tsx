@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { Physics, usePlane } from '@react-three/cannon';
-import { PerspectiveCamera, Torus, useHelper } from '@react-three/drei';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Joystick } from 'nipplejs';
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
-import * as THREE from 'three';
-import CustomCameraRotationControls from '../_controls/CustomCameraRotationControls';
-import ManualComposer from './ManualComposer';
+import { Physics, usePlane } from "@react-three/cannon";
+import { PerspectiveCamera, Torus, useHelper } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import type { Joystick } from "nipplejs";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
+import CustomCameraRotationControls from "../_controls/CustomCameraRotationControls";
+import ManualComposer from "./ManualComposer";
 
 const SmallTorus = forwardRef(
   (
-    props: { position: [number, number, number]; color: string; emissive: string },
+    props: {
+      position: [number, number, number];
+      color: string;
+      emissive: string;
+    },
     ref: React.Ref<THREE.Mesh>,
   ) => {
     return (
@@ -23,23 +27,41 @@ const SmallTorus = forwardRef(
         position={props.position}
         scale={[0.05, 0.05, 0.05]}
       >
-        <meshPhongMaterial color={props.color} emissive={props.emissive} emissiveIntensity={7} />
+        <meshPhongMaterial
+          color={props.color}
+          emissive={props.emissive}
+          emissiveIntensity={7}
+        />
       </Torus>
     );
   },
 );
 
-SmallTorus.displayName = 'SmallTorus';
+SmallTorus.displayName = "SmallTorus";
 
 const Player = forwardRef((props, ref: React.Ref<THREE.PerspectiveCamera>) => {
   return (
-    <PerspectiveCamera ref={ref} fov={95} makeDefault position={[0, 100, 0]} near={1} far={10000} />
+    <PerspectiveCamera
+      ref={ref}
+      fov={95}
+      makeDefault
+      position={[0, 100, 0]}
+      near={1}
+      far={10000}
+    />
   );
 });
-Player.displayName = 'Player';
+Player.displayName = "Player";
 
-const Floor = (props: { rotation: [number, number, number]; color: string }) => {
-  const [ref] = usePlane<THREE.Mesh>(() => ({ type: 'Static', mass: 0, ...props }));
+const Floor = (props: {
+  rotation: [number, number, number];
+  color: string;
+}) => {
+  const [ref] = usePlane<THREE.Mesh>(() => ({
+    type: "Static",
+    mass: 0,
+    ...props,
+  }));
 
   return (
     <mesh receiveShadow rotation={props.rotation} ref={ref}>
@@ -58,11 +80,15 @@ interface CircleSceneProps {
 // 토러스 매터리얼 컬러 #e303fc #2f0742 #2c0240 에미시브 #ff87f1 #5b0b80 바닥 #c7b6de #ffffff
 // direction 라이트 인텐시티 6 밝을때
 function CircleScene({ audio, joysticRef }: CircleSceneProps) {
-  const [previousPosition, setPreviousPosition] = useState(new THREE.Vector3(0, 3, 80));
-  const [circleColor, setCircleColor] = useState('#e303fc');
-  const [circleEmissive, setCircleEmissive] = useState('#ff87f1');
+  const [previousPosition, setPreviousPosition] = useState(
+    new THREE.Vector3(0, 3, 80),
+  );
+  const [circleColor, setCircleColor] = useState("#e303fc");
+  const [circleEmissive, setCircleEmissive] = useState("#ff87f1");
   const [isColliding, setIsColliding] = useState(false);
-  const [moveDirections, setMoveDirections] = useState<THREE.Vector3 | null>(null);
+  const [moveDirections, setMoveDirections] = useState<THREE.Vector3 | null>(
+    null,
+  );
   const [startMoving, setStartMoving] = useState<boolean | null>(null);
   const [startSeq, setStartSeq] = useState(true);
 
@@ -79,7 +105,11 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
   const targetPosition = useMemo(() => new THREE.Vector3(0, 3, 80), []);
   const lookAtPosition = useMemo(() => new THREE.Vector3(0, 20, 0), []);
 
-  useHelper(smallTorusRef_1 as React.MutableRefObject<THREE.Object3D>, THREE.BoxHelper, 'blue');
+  useHelper(
+    smallTorusRef_1 as React.MutableRefObject<THREE.Object3D>,
+    THREE.BoxHelper,
+    "blue",
+  );
 
   useFrame(({ clock }) => {
     if (!torusRef.current) return;
@@ -103,7 +133,10 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
     );
 
     camera.getWorldPosition(cameraWorldPosition);
-    playerBoundingBox.setFromCenterAndSize(cameraWorldPosition, new THREE.Vector3(2.5, 2.5, 2.5));
+    playerBoundingBox.setFromCenterAndSize(
+      cameraWorldPosition,
+      new THREE.Vector3(2.5, 2.5, 2.5),
+    );
 
     // 충돌 감지 로직...
     if (playerBoundingBox.intersectsBox(torusBoundingBox)) {
@@ -138,12 +171,12 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
 
     if (playerBoundingBox.intersectsBox(torusBoundingBox_2)) {
       audio.playbackRate = 0.2;
-      setCircleColor('#fac90a');
-      setCircleEmissive('#ffe78a');
+      setCircleColor("#fac90a");
+      setCircleEmissive("#ffe78a");
     } else {
       audio.playbackRate = 1;
-      setCircleColor('#e303fc');
-      setCircleEmissive('#ff87f1');
+      setCircleColor("#e303fc");
+      setCircleEmissive("#ff87f1");
     }
 
     if (startMoving && camera) {
@@ -174,11 +207,11 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
 
   useEffect(() => {
     if (!camera) return;
-    const nipplejs = require('nipplejs');
+    const nipplejs = require("nipplejs");
     const options = {
       zone: joysticRef.current as HTMLElement,
-      mode: 'static' as const,
-      position: { right: '50%', bottom: '50%' },
+      mode: "static" as const,
+      position: { right: "50%", bottom: "50%" },
       threshold: 0.1,
       size: 100,
     };
@@ -186,15 +219,19 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
     const manager = nipplejs.create(options);
 
     if (startSeq) {
-      ((manager as unknown as Joystick).options?.zone as HTMLElement).style.opacity = '0';
+      (
+        (manager as unknown as Joystick).options?.zone as HTMLElement
+      ).style.opacity = "0";
     } else {
-      ((manager as unknown as Joystick).options?.zone as HTMLElement).style.opacity = '1';
+      (
+        (manager as unknown as Joystick).options?.zone as HTMLElement
+      ).style.opacity = "1";
     }
 
-    manager.on('move', (event: any, data: any) => {
+    manager.on("move", (event: any, data: any) => {
       // 조이스틱의 움직임에 따른 방향 벡터를 계산합니다.
       const moveDirection = new THREE.Vector3();
-      if (data.direction && data.direction.angle) {
+      if (data.direction?.angle) {
         const radian = data.angle.radian; // radian 판단
         if (!isColliding && startMoving === false) {
           // 충돌 상태가 아닐 때만 움직임을 처리
@@ -229,7 +266,7 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
           }
 
           // 2) 카메라의 yaw 추출
-          const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+          const euler = new THREE.Euler(0, 0, 0, "YXZ");
           euler.setFromQuaternion(camera.quaternion);
           // yaw only
           const yaw = euler.y;
@@ -249,7 +286,7 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
       }
     });
 
-    manager.on('end', () => {
+    manager.on("end", () => {
       // console.log('end')
       setMoveDirections(null);
     });
@@ -272,7 +309,11 @@ function CircleScene({ audio, joysticRef }: CircleSceneProps) {
         <Player ref={cameraRef} />
         <mesh ref={torusRef} position={[0, 50, 0]} scale={[1, 1, 1]}>
           <torusGeometry args={[15, 0.7, 16, 100]} />
-          <meshPhongMaterial color={circleColor} emissive={circleEmissive} emissiveIntensity={7} />
+          <meshPhongMaterial
+            color={circleColor}
+            emissive={circleEmissive}
+            emissiveIntensity={7}
+          />
         </mesh>
         <mesh ref={smallTorusRef_1} position={[0, 3, 70]}>
           <torusGeometry
@@ -315,25 +356,25 @@ export default function Circles({ ready, audio }: CirclesProps) {
     /** ============ set screensize =============== */
     function setScreenSize() {
       const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     }
 
     /** ====== Generate a resize event if the device doesn't do it ====== */
     window.addEventListener(
-      'orientationchange',
-      () => window.dispatchEvent(new Event('resize')),
+      "orientationchange",
+      () => window.dispatchEvent(new Event("resize")),
       false,
     );
-    window.addEventListener('resize', setScreenSize);
-    window.dispatchEvent(new Event('resize'));
+    window.addEventListener("resize", setScreenSize);
+    window.dispatchEvent(new Event("resize"));
 
     return () => {
       window.removeEventListener(
-        'orientationchange',
-        () => window.dispatchEvent(new Event('resize')),
+        "orientationchange",
+        () => window.dispatchEvent(new Event("resize")),
         false,
       );
-      window.removeEventListener('resize', setScreenSize);
+      window.removeEventListener("resize", setScreenSize);
     };
   }, []);
 
@@ -341,24 +382,24 @@ export default function Circles({ ready, audio }: CirclesProps) {
     <>
       <div
         style={{
-          position: 'absolute',
-          height: 'calc(var(--vh, 1vh) * 100)',
-          width: '100vw',
-          margin: '0px',
-          opacity: ready ? '1' : '0',
+          position: "absolute",
+          height: "calc(var(--vh, 1vh) * 100)",
+          width: "100vw",
+          margin: "0px",
+          opacity: ready ? "1" : "0",
         }}
       >
-        <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+        <div style={{ width: "100%", height: "100%", position: "absolute" }}>
           <div
             ref={joysticRef}
             style={{
-              width: '100px',
-              height: '100px',
-              position: 'absolute',
-              right: '3%',
-              bottom: '3%',
+              width: "100px",
+              height: "100px",
+              position: "absolute",
+              right: "3%",
+              bottom: "3%",
             }}
-          ></div>
+          />
         </div>
 
         <Canvas
@@ -372,7 +413,7 @@ export default function Circles({ ready, audio }: CirclesProps) {
             }
           }}
         >
-          <color attach="background" args={['#a293c9']} />
+          <color attach="background" args={["#a293c9"]} />
           <fog args={[0xffffff, 10, 300]} attach="fog" />
 
           {ready && <CircleScene audio={audio} joysticRef={joysticRef} />}

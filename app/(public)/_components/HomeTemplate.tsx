@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Hello from './Hello';
+import Hello from "./Hello";
 
 function HomeTemplate() {
   return <Hello />;

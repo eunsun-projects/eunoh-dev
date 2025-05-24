@@ -1,8 +1,8 @@
-import QueryProvider from '@/providers/QueryProvider';
-import { Analytics } from '@vercel/analytics/react';
-import type { Metadata } from 'next';
-import { d2coding } from './fonts';
-import './globals.css';
+import QueryProvider from "@/providers/QueryProvider";
+import { Analytics } from "@vercel/analytics/react";
+import type { Metadata } from "next";
+import { d2coding } from "./fonts";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "EunOh's Portfolio",

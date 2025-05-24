@@ -1,6 +1,6 @@
-import { useThree } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
-import { CustomCameraRotationControls as CRC } from './CustomCameraRotation';
+import { useThree } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import { CustomCameraRotationControls as CRC } from "./CustomCameraRotation";
 
 export default function CustomCameraRotationControls() {
   const { camera, gl } = useThree();
@@ -12,7 +12,7 @@ export default function CustomCameraRotationControls() {
     controls.current = new CRC(camera, gl.domElement);
 
     const handleMouseDown = (e: MouseEvent) => {
-      console.log('mousedown');
+      console.log("mousedown");
       isDragging.current = true;
     };
     const handleMouseMove = (e: MouseEvent) => {
@@ -26,14 +26,14 @@ export default function CustomCameraRotationControls() {
       }
     };
 
-    gl.domElement.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    gl.domElement.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      gl.domElement.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      gl.domElement.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
       controls.current?.dispose();
     };
   }, [camera, gl]);

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
 
 // three/examples
-import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 // or: import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { VignetteShader } from 'three/examples/jsm/shaders/VignetteShader.js';
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { VignetteShader } from "three/examples/jsm/shaders/VignetteShader.js";
 
 export default function ManualComposer() {
   const { gl, scene, camera, size } = useThree();
@@ -37,8 +37,8 @@ export default function ManualComposer() {
 
     // Vignette ShaderPass
     const vignettePass = new ShaderPass(VignetteShader);
-    vignettePass.material.uniforms['darkness'].value = 0.7; // 어둡기
-    vignettePass.material.uniforms['offset'].value = 0.2; // 얼마나 빛바램을 줄지
+    vignettePass.material.uniforms.darkness.value = 0.7; // 어둡기
+    vignettePass.material.uniforms.offset.value = 0.2; // 얼마나 빛바램을 줄지
     composer.addPass(vignettePass);
 
     composerRef.current = composer;

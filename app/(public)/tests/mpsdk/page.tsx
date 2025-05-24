@@ -1,4 +1,4 @@
-import MpSdkTemplate from './_components/MpSdkTemplate';
+import MpSdkTemplate from "./_components/MpSdkTemplate";
 
 async function MpSdkPage() {
   return <MpSdkTemplate />;

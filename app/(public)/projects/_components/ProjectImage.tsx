@@ -1,21 +1,28 @@
-import type { ProjectImage } from '@/types/project.types';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import type { ProjectImage } from "@/types/project.types";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface ProjectImageProps {
   image: ProjectImage;
   onClick?: () => void;
-  type?: 'normal' | 'modal';
+  type?: "normal" | "modal";
 }
 
-function ProjectNextImage({ image, onClick, type = 'normal' }: ProjectImageProps) {
-  const [widthHeight, setWidthHeight] = useState<{ width: string; height: string }>({
-    width: type === 'normal' ? `${image.width / 2}px` : '100%',
-    height: type === 'normal' ? `${image.height / 2}px` : '100%',
+function ProjectNextImage({
+  image,
+  onClick,
+  type = "normal",
+}: ProjectImageProps) {
+  const [widthHeight, setWidthHeight] = useState<{
+    width: string;
+    height: string;
+  }>({
+    width: type === "normal" ? `${image.width / 2}px` : "100%",
+    height: type === "normal" ? `${image.height / 2}px` : "100%",
   });
 
   useEffect(() => {
-    if (type === 'normal') return;
+    if (type === "normal") return;
     const innerWidth = window.innerWidth;
     if (innerWidth < 768) {
       setWidthHeight({
@@ -42,7 +49,7 @@ function ProjectNextImage({ image, onClick, type = 'normal' }: ProjectImageProps
     >
       <Image
         src={image.image}
-        alt={'detail image'}
+        alt={"detail image"}
         priority
         fill
         unoptimized

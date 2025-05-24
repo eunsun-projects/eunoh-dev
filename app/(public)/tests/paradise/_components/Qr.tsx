@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import useClickSound from '../_hooks/useClickSound';
-import styles from '../_styles/tutorial.module.css';
-import { SinistreBold } from './paradiseFonts';
+import Image from "next/image";
+import useClickSound from "../_hooks/useClickSound";
+import styles from "../_styles/tutorial.module.css";
+import { SinistreBold } from "./paradiseFonts";
 
 const text = [
   `각진 턱선이 특징인 얼굴형.
@@ -26,7 +26,7 @@ function Qr({ setFunnel }: QrProps) {
     <>
       <div className={styles.backdiv}>
         <div className={styles.maindiv}>
-          <div className={styles.leftdiv}></div>
+          <div className={styles.leftdiv} />
 
           <div className={styles.qrmiddiv}>
             {/* <div className={styles.fullmonitorvideos}>
@@ -47,28 +47,38 @@ function Qr({ setFunnel }: QrProps) {
             <div className={styles.qrimgbox}>
               <Image
                 priority
-                src={'/assets/paradise/3.webp'}
+                src={"/assets/paradise/3.webp"}
                 alt="elements"
                 fill
                 sizes="(max-width: 1920px) 100%, 100%"
-              ></Image>
+              />
             </div>
 
             <div className={styles.qrcontents}>
               <p>인상착의 및 특징</p>
               <p>{text}</p>
               <p>* XX년 X월 X일경 택시를 타러 나갔으나 그 뒤로 돌아오지 않음</p>
-              <p>{`위 사람을 본적이 있거나\n아시는 분이 있다면 바로 연락 부탁드립니다.`}</p>
+              <p>
+                위 사람을 본적이 있거나\n아시는 분이 있다면 바로 연락
+                부탁드립니다.
+              </p>
             </div>
 
-            <div className={styles.qrbtnbox} style={{ position: 'fixed', bottom: '0%' }}>
-              <div className={`${styles.qrbtncon} ${SinistreBold.className}`} onClick={handleModal}>
+            <div
+              className={styles.qrbtnbox}
+              style={{ position: "fixed", bottom: "0%" }}
+            >
+              <div
+                className={`${styles.qrbtncon} ${SinistreBold.className}`}
+                onKeyDown={handleModal}
+                onClick={handleModal}
+              >
                 next
               </div>
             </div>
           </div>
 
-          <div className={styles.rightdiv}></div>
+          <div className={styles.rightdiv} />
         </div>
       </div>
     </>

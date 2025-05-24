@@ -1,4 +1,4 @@
-import { Scene } from '../../../../../public/matterport-assets/sdk';
+import type { Scene } from "../../../../../public/matterport-assets/sdk";
 
 export type ObjectToLoad = {
   id: string;

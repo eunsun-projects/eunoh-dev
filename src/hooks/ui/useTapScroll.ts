@@ -1,5 +1,6 @@
-'use client';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+"use client";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type UseTapScrollProps = {
   ref: React.RefObject<HTMLDivElement | null>;
@@ -12,11 +13,11 @@ export function useTapScroll({ ref }: UseTapScrollProps) {
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1280);
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize(); // Initial check on mount
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -33,15 +34,18 @@ export function useTapScroll({ ref }: UseTapScrollProps) {
 
   // Handlers for arrow buttons on desktop, with specific ref
   const createScrollHandler = useCallback(
-    (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
+    (
+      ref: React.RefObject<HTMLDivElement | null>,
+      direction: "left" | "right",
+    ) => {
       if (!isDesktop) return () => {};
 
       return () => {
         if (ref.current) {
-          const scrollAmount = direction === 'left' ? -500 : 500;
+          const scrollAmount = direction === "left" ? -500 : 500;
           ref.current.scrollBy({
             left: scrollAmount,
-            behavior: 'smooth',
+            behavior: "smooth",
           });
         }
       };
@@ -53,8 +57,8 @@ export function useTapScroll({ ref }: UseTapScrollProps) {
     if (!isDesktop || !isOverflowing) return null;
 
     return {
-      createScrollLeft: () => createScrollHandler(ref, 'left'),
-      createScrollRight: () => createScrollHandler(ref, 'right'),
+      createScrollLeft: () => createScrollHandler(ref, "left"),
+      createScrollRight: () => createScrollHandler(ref, "right"),
     };
   }, [isDesktop, isOverflowing, ref, createScrollHandler]);
 

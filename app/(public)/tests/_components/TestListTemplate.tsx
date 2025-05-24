@@ -1,50 +1,50 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { DarkLightModeButton } from '../../_components/ui';
+import Link from "next/link";
+import { DarkLightModeButton } from "../../_components/ui";
 
 const testLists = [
   {
     id: 1,
-    title: '3D Viewer',
-    description: '웹 GLB, FBX, OBJ 파일 뷰어',
-    href: '/tests/3dviewer',
+    title: "3D Viewer",
+    description: "웹 GLB, FBX, OBJ 파일 뷰어",
+    href: "/tests/3dviewer",
   },
   {
     id: 2,
-    title: 'Circles',
-    description: '조이스틱으로 가상 공간 탐험',
-    href: '/tests/circles',
+    title: "Circles",
+    description: "조이스틱으로 가상 공간 탐험",
+    href: "/tests/circles",
   },
   {
     id: 3,
-    title: 'Modernmove',
-    description: 'vaporwave 디스플레이',
-    href: '/tests/modernmove',
+    title: "Modernmove",
+    description: "vaporwave 디스플레이",
+    href: "/tests/modernmove",
   },
   {
     id: 4,
-    title: 'Scrolling-wave',
-    description: '간단한 유저 트리거 애니메이션',
-    href: '/tests/scrolling-wave',
+    title: "Scrolling-wave",
+    description: "간단한 유저 트리거 애니메이션",
+    href: "/tests/scrolling-wave",
   },
   {
     id: 5,
-    title: 'Sound FX',
-    description: 'Web Audio API 테스트',
-    href: '/tests/soundfx',
+    title: "Sound FX",
+    description: "Web Audio API 테스트",
+    href: "/tests/soundfx",
   },
   {
     id: 6,
-    title: 'Paradise',
-    description: '위치기반 군중 게임 프로토타입',
-    href: '/tests/paradise',
+    title: "Paradise",
+    description: "위치기반 군중 게임 프로토타입",
+    href: "/tests/paradise",
   },
   {
     id: 7,
-    title: 'Matterport SDK',
-    description: 'Matterport SDK 테스트',
-    href: '/tests/mpsdk',
+    title: "Matterport SDK",
+    description: "Matterport SDK 테스트",
+    href: "/tests/mpsdk",
   },
   {
     id: 8,
@@ -66,7 +66,7 @@ function TestListTemplate() {
       <div className="w-full flex flex-col justify-start gap-8">
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
-            {'🧪 Tests 🧪'}
+            {"🧪 Tests 🧪"}
           </h2>
           <DarkLightModeButton />
         </div>
@@ -88,7 +88,7 @@ function TestListTemplate() {
                   </Link>
                 )}
                 <p className="flex flex-row gap-1 text-[10px] xl:text-xs">
-                  <span>{'- '}</span>
+                  <span>{"- "}</span>
                   <span className="m-0">{test.description}</span>
                 </p>
               </div>

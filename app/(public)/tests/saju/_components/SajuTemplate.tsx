@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useSajuImageMutation } from '@/hooks/queries/tests/useSajuImageMutation';
-import { useSajuMutation } from '@/hooks/queries/tests/useSajuMutation';
-import { SajuMessage } from '@/types/tests.type';
-import Image from 'next/image';
-import { useState } from 'react';
+import { useSajuImageMutation } from "@/hooks/queries/tests/useSajuImageMutation";
+import { useSajuMutation } from "@/hooks/queries/tests/useSajuMutation";
+import type { SajuMessage } from "@/types/tests.type";
+import Image from "next/image";
+import { useState } from "react";
 
 // const imageMutationResult = await mutateImage({ name: formData.name });
 // if (imageMutationResult.imageUrl) {
@@ -12,13 +12,17 @@ import { useState } from 'react';
 // }
 
 function SajuTemplate() {
-  const [name, setName] = useState('');
-  const [birth, setBirth] = useState('');
+  const [name, setName] = useState("");
+  const [birth, setBirth] = useState("");
   const [sajuResult, setSajuResult] = useState<SajuMessage | null>(null);
 
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  const { mutateAsync: postSaju, isPending: isPendingSaju, error: sajuError } = useSajuMutation();
+  const {
+    mutateAsync: postSaju,
+    isPending: isPendingSaju,
+    error: sajuError,
+  } = useSajuMutation();
   const {
     mutateAsync: mutateImage,
     isPending: isPendingImage,
@@ -37,7 +41,7 @@ function SajuTemplate() {
         setSajuResult(sajuData.message as SajuMessage);
       })
       .catch((error) => {
-        console.error('Saju Error:', error);
+        console.error("Saju Error:", error);
       });
 
     // 이미지 Mutation 요청
@@ -49,7 +53,7 @@ function SajuTemplate() {
         }
       })
       .catch((error) => {
-        console.error('Image Error:', error);
+        console.error("Image Error:", error);
       });
 
     // 둘 다 끝난 시점을 구하고 싶으면 Promise.all 사용
@@ -86,19 +90,25 @@ function SajuTemplate() {
           제출
         </button>
       </form>
-      {sajuError || imageError ? <div className="text-red-500">error</div> : null}
-      {isPendingSaju && <div className="text-red-500 animate-pulse">Saju Loading...</div>}
+      {sajuError || imageError ? (
+        <div className="text-red-500">error</div>
+      ) : null}
+      {isPendingSaju && (
+        <div className="text-red-500 animate-pulse">Saju Loading...</div>
+      )}
       <div className="mt-4 w-[70%]">
         {sajuResult && (
           <div className="text-sm text-gray-500 w-full">
-            <div>사주해석: {sajuResult['사주해석']}</div>
-            <div>운세: {sajuResult['운세']}</div>
-            <div>권고사항: {sajuResult['권고사항']}</div>
-            <div>번영을 위한 조언: {sajuResult['번영을 위한 조언']}</div>
+            <div>사주해석: {sajuResult.사주해석}</div>
+            <div>운세: {sajuResult.운세}</div>
+            <div>권고사항: {sajuResult.권고사항}</div>
+            <div>번영을 위한 조언: {sajuResult["번영을 위한 조언"]}</div>
           </div>
         )}
       </div>
-      {isPendingImage && <div className="text-red-500 animate-pulse">ImageLoading...</div>}
+      {isPendingImage && (
+        <div className="text-red-500 animate-pulse">ImageLoading...</div>
+      )}
       {imageUrl && (
         <div className="w-1/2 h-1/2 relative overflow-hidden min-h-[512px]">
           <Image
@@ -110,7 +120,7 @@ function SajuTemplate() {
             className="object-cover h-full w-full"
           />
         </div>
-      )}{' '}
+      )}{" "}
       <div className="text-sm text-gray-500 w-[70%]">
         {/** 소요시간 초로 변환할것 */}
         <p className="font-bold text-red-500 animate-bounce">

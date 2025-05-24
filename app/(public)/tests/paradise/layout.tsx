@@ -1,13 +1,13 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { PropsWithChildren } from 'react';
-import { RiArrowGoBackFill } from 'react-icons/ri';
-import { AudioProvider } from './_components/AudioProvider';
-import CheckLandscape from './_components/CheckLandscape';
+import type { Metadata } from "next";
+import Link from "next/link";
+import type { PropsWithChildren } from "react";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { AudioProvider } from "./_components/AudioProvider";
+import CheckLandscape from "./_components/CheckLandscape";
 
 export const metadata: Metadata = {
-  title: 'Paradise',
-  description: 'Paradise',
+  title: "Paradise",
+  description: "Paradise",
 };
 
 function ParadiseLayout({ children }: PropsWithChildren) {

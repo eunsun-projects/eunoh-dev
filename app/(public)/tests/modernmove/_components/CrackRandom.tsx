@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import styles from '../_styles/modern-move.module.css';
+import { useEffect, useRef } from "react";
+import styles from "../_styles/modern-move.module.css";
 
 interface CrackRandomProps {
   width: number;
@@ -12,13 +12,17 @@ interface CrackRandomProps {
   };
 }
 
-export default function CrackRandom({ width, height, crack }: CrackRandomProps) {
+export default function CrackRandom({
+  width,
+  height,
+  crack,
+}: CrackRandomProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     function drawComplexCrack(x: number, y: number) {
       if (!canvasRef.current) return;
-      const ctx = canvasRef.current.getContext('2d');
+      const ctx = canvasRef.current.getContext("2d");
       const length = Math.random() * 50 + 10; //20
       const angle = Math.random() * 2 * Math.PI;
 
@@ -66,13 +70,14 @@ export default function CrackRandom({ width, height, crack }: CrackRandomProps) 
         if (Math.random() > 0.7) {
           // 30% 확률로 균열 분기
           const branchLength = Math.random() * 30 + 10;
-          const branchAngle = currentAngle + (Math.random() - 0.5) * (Math.PI / 2); // 현재 각도를 기준으로 최대 90도 편차
+          const branchAngle =
+            currentAngle + (Math.random() - 0.5) * (Math.PI / 2); // 현재 각도를 기준으로 최대 90도 편차
 
           drawBranchCrack(currentX, currentY, branchLength, branchAngle, ctx);
         }
       }
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.strokeStyle = "rgba(255,255,255,0.6)";
       ctx.lineWidth = 2;
       ctx.stroke();
     }
@@ -85,14 +90,21 @@ export default function CrackRandom({ width, height, crack }: CrackRandomProps) 
   }, [crack]);
 
   return (
-    <div style={{ position: 'absolute', width: width, height: height, zIndex: '10' }}>
+    <div
+      style={{
+        position: "absolute",
+        width: width,
+        height: height,
+        zIndex: "10",
+      }}
+    >
       <div className={styles.drawing}>
         <canvas
           ref={canvasRef}
-          style={{ position: 'relative', width: width, height: height }}
+          style={{ position: "relative", width: width, height: height }}
           width={width}
           height={height}
-        ></canvas>
+        />
       </div>
     </div>
   );

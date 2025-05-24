@@ -247,7 +247,9 @@
   }
 } */
 
-@media screen and (min-width: 1023px) and (max-width: 1137px) and (orientation: portrait) {
+@media screen and (min-width: 1023px) and (max-width: 1137px) and (
+    orientation: portrait
+  ) {
   /* 인트로 */
   .maindiv {
     overflow: hidden;
@@ -276,7 +278,9 @@
   }
 }
 
-@media screen and (min-width: 711px) and (max-width: 1023px) and (orientation: portrait) {
+@media screen and (min-width: 711px) and (max-width: 1023px) and (
+    orientation: portrait
+  ) {
   /* 인트로 */
   .maindiv {
     overflow: hidden;

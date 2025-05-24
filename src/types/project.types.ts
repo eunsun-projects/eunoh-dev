@@ -1,6 +1,6 @@
-import { Tables } from './supabase';
+import type { Tables } from "./supabase";
 
-export type Project = Tables<'projects'>;
+export type Project = Tables<"projects">;
 
 export type ProjectWithImages = Project & { newImages: ProjectImage[] };
 

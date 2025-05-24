@@ -14,7 +14,7 @@
   position: absolute;
   width: 100%;
   display: inline-block;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 80pt;
   text-align: center;
   user-select: none;
@@ -39,13 +39,17 @@
     font-size: 50pt;
   }
 }
-@media screen and (min-width: 1138px) and (max-width: 1140px) and (orientation: landscape) {
+@media screen and (min-width: 1138px) and (max-width: 1140px) and (
+    orientation: landscape
+  ) {
   .text1,
   .text2 {
     font-size: 38pt;
   }
 }
-@media screen and (min-width: 658px) and (max-width: 1137px) and (orientation: landscape) {
+@media screen and (min-width: 658px) and (max-width: 1137px) and (
+    orientation: landscape
+  ) {
   .text1,
   .text2 {
     font-size: 38pt;

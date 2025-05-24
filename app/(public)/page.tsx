@@ -1,4 +1,4 @@
-import HomeTemplate from './_components/HomeTemplate';
+import HomeTemplate from "./_components/HomeTemplate";
 
 function MainPage() {
   return <HomeTemplate />;

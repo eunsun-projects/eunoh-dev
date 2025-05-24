@@ -1,21 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import useClickSound from '../_hooks/useClickSound';
-import styles from '../_styles/tutorial.module.css';
-import { Hankyoreh, SinistreBold, YuniverseBold } from './paradiseFonts';
-import Smoke from './Smoke';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import useClickSound from "../_hooks/useClickSound";
+import styles from "../_styles/tutorial.module.css";
+import Smoke from "./Smoke";
+import { Hankyoreh, SinistreBold, YuniverseBold } from "./paradiseFonts";
 
 interface NarrationProps {
   setFunnel: (funnel: number) => void;
 }
 
-const fullText = `장충단공원이라.\n여기서 멀지 않은 곳인데.\n무슨 사연이 있어서\n이런 아름다운 시를 적어놓은 걸까.\n맞아.\n장충동에 명산물이 없는 것이 아니지.\n나는 그걸 알고 있지.\n그건 안개였어.`;
+const fullText =
+  "장충단공원이라.\n여기서 멀지 않은 곳인데.\n무슨 사연이 있어서\n이런 아름다운 시를 적어놓은 걸까.\n맞아.\n장충동에 명산물이 없는 것이 아니지.\n나는 그걸 알고 있지.\n그건 안개였어.";
 
 export default function Narration({ setFunnel }: NarrationProps) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
   const playClickSound = useClickSound();
 
@@ -23,9 +24,10 @@ export default function Narration({ setFunnel }: NarrationProps) {
 
   const handleModal = () => {
     playClickSound();
-    router.push('/tests/paradise');
+    router.push("/tests/paradise");
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (index < fullText.length) {
       setTimeout(() => {
@@ -39,7 +41,7 @@ export default function Narration({ setFunnel }: NarrationProps) {
     <>
       <div className={styles.backdiv}>
         <div className={styles.maindiv}>
-          <div className={styles.leftdiv}></div>
+          <div className={styles.leftdiv} />
 
           <div className={`${styles.middiv} ${Hankyoreh.className}`}>
             <div className={styles.narrationmid}>
@@ -61,13 +63,16 @@ export default function Narration({ setFunnel }: NarrationProps) {
                 ></video>
               </div> */}
 
-              <div className={`${styles.lastnarration} ${YuniverseBold.className}`}>
+              <div
+                className={`${styles.lastnarration} ${YuniverseBold.className}`}
+              >
                 <p>{text}</p>
               </div>
 
               <div className={styles.narrabtnbox}>
                 <div
                   className={`${styles.narrabtncon} ${SinistreBold.className}`}
+                  onKeyDown={handleModal}
                   onClick={handleModal}
                 >
                   next
@@ -76,7 +81,7 @@ export default function Narration({ setFunnel }: NarrationProps) {
             </div>
           </div>
 
-          <div className={styles.rightdiv}></div>
+          <div className={styles.rightdiv} />
         </div>
       </div>
     </>

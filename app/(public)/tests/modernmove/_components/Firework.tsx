@@ -1,17 +1,29 @@
-'use client';
+"use client";
 
-import { useFrame } from '@react-three/fiber';
-import { useEffect, useState } from 'react';
-import * as THREE from 'three';
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useState } from "react";
+import * as THREE from "three";
 
 interface FireworkProps {
   position: [number, number, number];
 }
-const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+const colors = [
+  "#ff0000",
+  "#00ff00",
+  "#0000ff",
+  "#ffff00",
+  "#ff00ff",
+  "#00ffff",
+];
 
 export default function Firework({ position }: FireworkProps) {
   const [sparks, setSparks] = useState<
-    { direction: THREE.Vector3; speed: number; color: string; mesh: THREE.Mesh | null }[]
+    {
+      direction: THREE.Vector3;
+      speed: number;
+      color: string;
+      mesh: THREE.Mesh | null;
+    }[]
   >([]);
 
   useEffect(() => {
@@ -33,7 +45,9 @@ export default function Firework({ position }: FireworkProps) {
 
   useFrame((state, delta) => {
     sparks.forEach((spark) => {
-      spark.mesh?.position.add(spark.direction.clone().multiplyScalar(spark.speed));
+      spark.mesh?.position.add(
+        spark.direction.clone().multiplyScalar(spark.speed),
+      );
     });
   });
 
@@ -42,6 +56,7 @@ export default function Firework({ position }: FireworkProps) {
       {sparks.length > 0 &&
         sparks.map((spark, index) => (
           <mesh
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={index}
             position={position}
             ref={(mesh) => {
@@ -49,7 +64,11 @@ export default function Firework({ position }: FireworkProps) {
             }}
           >
             <sphereGeometry args={[0.1, 8, 8]} />
-            <meshPhongMaterial color={spark.color} emissive={spark.color} emissiveIntensity={1} />
+            <meshPhongMaterial
+              color={spark.color}
+              emissive={spark.color}
+              emissiveIntensity={1}
+            />
           </mesh>
         ))}
     </>

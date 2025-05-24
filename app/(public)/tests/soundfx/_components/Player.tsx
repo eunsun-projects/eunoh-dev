@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import dayjs from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
-import { FaPause, FaPlay, FaStop, FaVolumeUp } from 'react-icons/fa';
-import styles from '../_styles/soundfx.module.css';
-import Filter from './Filter';
-import { CustomAudioBuffer, FxObj, musicUrlArr } from './Fxsample';
-import Reverb from './Reverb';
-import Visualizer from './Visualizer';
+import dayjs from "dayjs";
+import { useEffect, useRef, useState } from "react";
+import { FaPause, FaPlay, FaStop, FaVolumeUp } from "react-icons/fa";
+import styles from "../_styles/soundfx.module.css";
+import Filter from "./Filter";
+import { type CustomAudioBuffer, type FxObj, musicUrlArr } from "./Fxsample";
+import Reverb from "./Reverb";
+import Visualizer from "./Visualizer";
 
 interface PlayerProps {
   context: AudioContext;
@@ -16,7 +16,12 @@ interface PlayerProps {
   fxObj: FxObj;
 }
 
-export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: PlayerProps) {
+export default function Player({
+  context,
+  audioBuffer,
+  impulseBuffer,
+  fxObj,
+}: PlayerProps) {
   const [value, setValue] = useState<number>(0.5);
   const [playing, setPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState(0);
@@ -35,7 +40,7 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
       try {
         fxObjRef.current.currSource.stop();
       } catch (error) {
-        console.error('Audio source stop error during play:', error);
+        console.error("Audio source stop error during play:", error);
       }
     }
 
@@ -72,7 +77,7 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
     };
 
     // 곡 길이 표시
-    const max = dayjs(buffer.buffer.duration * 1000).format('mm:ss');
+    const max = dayjs(buffer.buffer.duration * 1000).format("mm:ss");
     setMaxM(max);
 
     // 실제 재생 UI 갱신
@@ -89,12 +94,14 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
     try {
       fxObjRef.current.currSource.stop();
     } catch (error) {
-      console.error('Audio source stop error:', error);
+      console.error("Audio source stop error:", error);
     }
 
     // 현재까지 플레이된 시간 계산
     const currentTime =
-      context.currentTime - fxObjRef.current.startTime + fxObjRef.current.offsetTime;
+      context.currentTime -
+      fxObjRef.current.startTime +
+      fxObjRef.current.offsetTime;
     fxObjRef.current.offsetTime = currentTime;
     fxObjRef.current.isPlaying = false;
 
@@ -125,7 +132,7 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
     try {
       fxObjRef.current.currSource.stop();
     } catch (error) {
-      console.error('Audio source stop error:', error);
+      console.error("Audio source stop error:", error);
     }
 
     // 모든 상태 초기화
@@ -157,7 +164,9 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
   const handleVolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (fxObjRef.current.volControlGainNode) {
       setValue(Number(e.currentTarget.value));
-      fxObjRef.current.volControlGainNode.gain.value = Number(e.currentTarget.value);
+      fxObjRef.current.volControlGainNode.gain.value = Number(
+        e.currentTarget.value,
+      );
     }
   };
 
@@ -174,7 +183,9 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
       fxObjRef.current.offsetTime = 0;
       fxObjRef.current.currIndex = index;
 
-      const max = dayjs(audioBuffer[index].buffer.duration * 1000).format('mm:ss');
+      const max = dayjs(audioBuffer[index].buffer.duration * 1000).format(
+        "mm:ss",
+      );
       setMaxM(max);
 
       play(index);
@@ -193,9 +204,9 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
       // (Optional) 만약 초기 상태에서 표시할 정보가 필요하다면
       // 첫 번째 트랙의 길이를 표시해놓기
       const firstTrack = audioBuffer[0];
-      const max = dayjs(firstTrack.buffer.duration * 1000).format('mm:ss');
+      const max = dayjs(firstTrack.buffer.duration * 1000).format("mm:ss");
       setMaxM(max);
-      setNowM(dayjs(0).format('mm:ss'));
+      setNowM(dayjs(0).format("mm:ss"));
     }
   }, [audioBuffer, context]);
 
@@ -213,10 +224,12 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
 
       // 재생 시간 및 퍼센트
       const currentTime =
-        context.currentTime - fxObjRef.current.startTime + fxObjRef.current.offsetTime;
+        context.currentTime -
+        fxObjRef.current.startTime +
+        fxObjRef.current.offsetTime;
       const duration = fxObjRef.current.currSource.buffer.duration;
       const newProgress = (currentTime / duration) * 100;
-      const now = dayjs(currentTime * 1000).format('mm:ss');
+      const now = dayjs(currentTime * 1000).format("mm:ss");
 
       setProgress(newProgress);
       setNowM(now);
@@ -236,33 +249,33 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
         rafRef.current = null;
       }
     };
-  }, [audioBuffer, context, playing]);
+  }, [context, playing]);
 
   return (
     <>
       {maxM === null ? (
         <div className={styles.webaploadingback}>
           <div className={styles.webapload}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div />
+            <div />
+            <div />
+            <div />
           </div>
         </div>
       ) : (
         <>
           <p>FX sample</p>
           <div className={styles.webapbox}>
-            <p style={{ fontSize: '1.2rem' }}>player</p>
+            <p style={{ fontSize: "1.2rem" }}>player</p>
             <div className={styles.webapprogress}>
               <progress
                 id="webapprogbar"
                 className={styles.webapprogressbar}
                 value={progress}
                 max={100}
-              ></progress>
+              />
             </div>
-            <div className={styles.webapplaybtn} style={{ cursor: 'pointer' }}>
+            <div className={styles.webapplaybtn} style={{ cursor: "pointer" }}>
               <div className="flex gap-2">
                 {playing ? (
                   <FaPause onClick={handlePlayClick} />
@@ -281,16 +294,18 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
                 value={value}
                 onChange={handleVolChange}
               />
-              <p style={{ fontSize: '13px' }} className="min-w-[100px]">
+              <p style={{ fontSize: "13px" }} className="min-w-[100px]">
                 {nowM} / {maxM}
               </p>
             </div>
-            <div className={styles.webaplist} style={{ cursor: 'pointer' }}>
+            <div className={styles.webaplist} style={{ cursor: "pointer" }}>
               {musicUrlArr.map((item, i) => (
+                // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                 <p
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={i}
                   data-num={i}
-                  style={{ color: select === i ? '#000' : '#fff' }}
+                  style={{ color: select === i ? "#000" : "#fff" }}
                   onClick={handleListClick}
                 >
                   {item.name}
@@ -299,9 +314,18 @@ export default function Player({ context, audioBuffer, impulseBuffer, fxObj }: P
             </div>
           </div>
           {/* 리버브, 필터, 비주얼라이저 등 (필요한 노드에 fxObj.volControlGainNode 등을 연결해 사용) */}
-          <Reverb context={context} impulseBuffer={impulseBuffer} fxObj={fxObjRef.current} />
+          <Reverb
+            context={context}
+            impulseBuffer={impulseBuffer}
+            fxObj={fxObjRef.current}
+          />
           <Filter context={context} fxObj={fxObjRef.current} />
-          <Visualizer context={context} fxObj={fxObjRef.current} index={select} playing={playing} />
+          <Visualizer
+            context={context}
+            fxObj={fxObjRef.current}
+            index={select}
+            playing={playing}
+          />
         </>
       )}
     </>

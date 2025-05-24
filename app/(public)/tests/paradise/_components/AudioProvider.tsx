@@ -1,6 +1,11 @@
-'use client';
+"use client";
 
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useState,
+} from "react";
 
 const initialState = {
   isPlaying: false,
@@ -13,7 +18,9 @@ export const AudioProvider = ({ children }: PropsWithChildren) => {
   const [isPlaying, setPlaying] = useState(false);
 
   return (
-    <AudioContext.Provider value={{ isPlaying, setPlaying }}>{children}</AudioContext.Provider>
+    <AudioContext.Provider value={{ isPlaying, setPlaying }}>
+      {children}
+    </AudioContext.Provider>
   );
 };
 

@@ -1,32 +1,37 @@
-'use client';
+"use client";
 
-import { Cloud, PerspectiveCamera, Stars, useAnimations } from '@react-three/drei';
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  Cloud,
+  PerspectiveCamera,
+  Stars,
+  useAnimations,
+} from "@react-three/drei";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import type {
   Group,
   Mesh,
   MeshStandardMaterial,
   Object3D,
   Object3DEventMap,
   SphereGeometry,
-} from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import MovingStars from '../_class/MovingStars';
-import styles from '../_styles/modern-move.module.css';
-import CustomAudio from './CustomAudio';
-import Earth from './Earth';
-import Firework from './Firework';
-import generateBuildings from './GenerateBuildings';
-import { useModernMoveContext } from './ModernMoveContext';
-import MoonLoaderBlack from './MoonLoaderBlack';
-import MoonLoaderDrei from './MoonLoaderDrei';
-import CustomMovingGrid from './MovingGrid';
-import StarTrail from './Startrail';
-import sun from './sun';
-import VaporwaveScene2d from './VaporScene2d';
+} from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import MovingStars from "../_class/MovingStars";
+import styles from "../_styles/modern-move.module.css";
+import CustomAudio from "./CustomAudio";
+import Earth from "./Earth";
+import Firework from "./Firework";
+import generateBuildings from "./GenerateBuildings";
+import { useModernMoveContext } from "./ModernMoveContext";
+import MoonLoaderBlack from "./MoonLoaderBlack";
+import MoonLoaderDrei from "./MoonLoaderDrei";
+import CustomMovingGrid from "./MovingGrid";
+import StarTrail from "./Startrail";
+import VaporwaveScene2d from "./VaporScene2d";
+import sun from "./sun";
 
-const folder = '/assets/modernmove/glbs/';
+const folder = "/assets/modernmove/glbs/";
 const modelUrl = [
   `${folder}marble.glb`,
   `${folder}stonetower_low.glb`,
@@ -52,147 +57,147 @@ const modelUrl = [
 ];
 const modelData = [
   {
-    name: 'caligula',
+    name: "caligula",
     model: undefined,
     position: [0, 1, 0.2], //17
     rotation: [0, 5, 0],
     scale: [0.36, 0.36, 0.36],
   },
   {
-    name: 'stonetower',
+    name: "stonetower",
     model: undefined,
     position: [0, 1, 1], // -8, 0, 22
     rotation: [0, 1, 0],
     scale: [19, 19, 19], //9,9,9
   },
   {
-    name: 'budha',
+    name: "budha",
     model: undefined,
     position: [0, 0, 3], //-0.5, 0, 23.5
     rotation: [0, -2, 0],
     scale: [29, 29, 29], // 15,15,15
   },
   {
-    name: 'fish_shaped_bun',
+    name: "fish_shaped_bun",
     model: undefined,
     position: [0, 3, 0], //11, -2, 23
     rotation: [0, 0, 0], // 3.8
     scale: [0.1, 0.1, 0.1], // 3 3 3
   },
   {
-    name: 'maxwell',
+    name: "maxwell",
     model: undefined,
     position: [0, 3, 0], //5.8, 15, 4
     rotation: [0, -1, 0],
     scale: [0.35, 0.35, 0.35], //0.15
   },
   {
-    name: 'thinking',
+    name: "thinking",
     model: undefined,
     position: [0, 8, 2], // -8, 7, 24
     rotation: [0, 0.7, 0],
     scale: [3, 3, 3],
   },
   {
-    name: 'cat_box',
+    name: "cat_box",
     model: undefined,
     position: [2, 2, 2], //5, 0, 26
     rotation: [0, -1.8, 0],
     scale: [1.5, 1.5, 1.5], // 0.4
   },
   {
-    name: 'cat_face',
+    name: "cat_face",
     model: undefined,
     position: [0, 5, 2], // -9.5, 2.7, 24
     rotation: [0, 0.6, 0],
     scale: [3, 3, 3], // 0.8
   },
   {
-    name: 'tunnel',
+    name: "tunnel",
     model: undefined,
     position: [0, 6, -80], // -9.5, 2.7, 24
     rotation: [0, -1.57, 0],
     scale: [8, 8, 8], // 0.8
   },
   {
-    name: 'gwa_gwa_cat',
+    name: "gwa_gwa_cat",
     model: undefined,
     position: [0, 3.5, 0],
     rotation: [0, -1.57, 0.3],
     scale: [13, 13, 13],
   },
   {
-    name: 'dancing_stormtrooper',
+    name: "dancing_stormtrooper",
     model: undefined,
     position: [-17, 0, 5],
     rotation: [0, 0, 0],
     scale: [3.5, 3.5, 3.5],
   },
   {
-    name: 'dancing_stormtrooper2',
+    name: "dancing_stormtrooper2",
     model: undefined,
     position: [17, 0, 5],
     rotation: [0, 0, 0],
     scale: [3.5, 3.5, 3.5],
   },
   {
-    name: 'spam',
+    name: "spam",
     model: undefined,
     position: [0, 3, 0],
     rotation: [0, 0, 0],
     scale: [1, 1, 1],
   },
   {
-    name: 'coupang_box',
+    name: "coupang_box",
     model: undefined,
     position: [0, 3, 0],
     rotation: [-0.1, 0, 0],
     scale: [0.3, 0.3, 0.3],
   },
   {
-    name: 'slipwarning',
+    name: "slipwarning",
     model: undefined,
     position: [0, 3, 0],
     rotation: [0, 0, 0],
     scale: [70, 70, 70],
   },
   {
-    name: 'lamp',
+    name: "lamp",
     model: undefined,
     position: [17, 0, 5],
     rotation: [0, 3, 0],
     scale: [0.8, 0.8, 0.8],
   },
   {
-    name: 'lamp2',
+    name: "lamp2",
     model: undefined,
     position: [-17, 0, 5],
     rotation: [0, 0, 0],
     scale: [0.8, 0.8, 0.8],
   },
   {
-    name: 'dancing_stormtrooper3',
+    name: "dancing_stormtrooper3",
     model: undefined,
     position: [-15, 0, 19],
     rotation: [0, 0, 0],
     scale: [3.5, 3.5, 3.5],
   },
   {
-    name: 'dancing_stormtrooper4',
+    name: "dancing_stormtrooper4",
     model: undefined,
     position: [15, 0, 19],
     rotation: [0, 0, 0],
     scale: [3.5, 3.5, 3.5],
   },
   {
-    name: 'dancing_stormtrooper5',
+    name: "dancing_stormtrooper5",
     model: undefined,
     position: [-5, 0, 15],
     rotation: [0, 0, 0],
     scale: [3.5, 3.5, 3.5],
   },
   {
-    name: 'dancing_stormtrooper6',
+    name: "dancing_stormtrooper6",
     model: undefined,
     position: [5, 0, 15],
     rotation: [0, 0, 0],
@@ -200,8 +205,11 @@ const modelData = [
   },
 ];
 
-function setSceneName(obj: Group<Object3DEventMap> | Object3D<Object3DEventMap>, name: string) {
-  if (obj.hasOwnProperty('name')) {
+function setSceneName(
+  obj: Group<Object3DEventMap> | Object3D<Object3DEventMap>,
+  name: string,
+) {
+  if (Object.prototype.hasOwnProperty.call(obj, "name")) {
     obj.name = name;
   }
   // 객체에 children 프로퍼티가 있고, children 배열에 요소가 있는 경우 각 요소를 재귀적으로 탐색합니다.
@@ -214,14 +222,38 @@ function setSceneName(obj: Group<Object3DEventMap> | Object3D<Object3DEventMap>,
 
 function Model() {
   const loadedArr = useLoader(GLTFLoader, modelUrl);
-  const maxwellAction = useAnimations(loadedArr[4].animations, loadedArr[4].scene);
-  const catfaceAction = useAnimations(loadedArr[7].animations, loadedArr[7].scene);
-  const stormTrooperAction = useAnimations(loadedArr[10].animations, loadedArr[10].scene);
-  const stormTrooperAction2 = useAnimations(loadedArr[11].animations, loadedArr[11].scene);
-  const stormTrooperAction3 = useAnimations(loadedArr[17].animations, loadedArr[17].scene);
-  const stormTrooperAction4 = useAnimations(loadedArr[18].animations, loadedArr[18].scene);
-  const stormTrooperAction5 = useAnimations(loadedArr[19].animations, loadedArr[19].scene);
-  const stormTrooperAction6 = useAnimations(loadedArr[20].animations, loadedArr[20].scene);
+  const maxwellAction = useAnimations(
+    loadedArr[4].animations,
+    loadedArr[4].scene,
+  );
+  const catfaceAction = useAnimations(
+    loadedArr[7].animations,
+    loadedArr[7].scene,
+  );
+  const stormTrooperAction = useAnimations(
+    loadedArr[10].animations,
+    loadedArr[10].scene,
+  );
+  const stormTrooperAction2 = useAnimations(
+    loadedArr[11].animations,
+    loadedArr[11].scene,
+  );
+  const stormTrooperAction3 = useAnimations(
+    loadedArr[17].animations,
+    loadedArr[17].scene,
+  );
+  const stormTrooperAction4 = useAnimations(
+    loadedArr[18].animations,
+    loadedArr[18].scene,
+  );
+  const stormTrooperAction5 = useAnimations(
+    loadedArr[19].animations,
+    loadedArr[19].scene,
+  );
+  const stormTrooperAction6 = useAnimations(
+    loadedArr[20].animations,
+    loadedArr[20].scene,
+  );
   const [objects, setObjects] = useState<number | null>(null);
   const [tunnel, setTunnel] = useState(false);
   const [lamp, setLamp] = useState(false);
@@ -236,7 +268,9 @@ function Model() {
   const { play, objet, audio } = useModernMoveContext();
 
   const refs = useRef<{ [key: string]: Object3D<Object3DEventMap> }>({});
-  const earthRef = useRef<Mesh<SphereGeometry, MeshStandardMaterial> | null>(null);
+  const earthRef = useRef<Mesh<SphereGeometry, MeshStandardMaterial> | null>(
+    null,
+  );
   const lastUpdateSecond = useRef(-1);
 
   const buildings = useMemo(() => {
@@ -378,23 +412,23 @@ function Model() {
     }
 
     if (audio) {
-      audio.addEventListener('timeupdate', recieve);
+      audio.addEventListener("timeupdate", recieve);
     }
 
     return () => {
-      audio?.removeEventListener('timeupdate', recieve);
+      audio?.removeEventListener("timeupdate", recieve);
     };
   }, [audio, play, objet, deem]);
 
   useEffect(() => {
-    if (stormTrooperAction) stormTrooperAction.actions['mixamo.com']?.play();
-    if (stormTrooperAction2) stormTrooperAction2.actions['mixamo.com']?.play();
-    if (stormTrooperAction3) stormTrooperAction3.actions['mixamo.com']?.play();
-    if (stormTrooperAction4) stormTrooperAction4.actions['mixamo.com']?.play();
-    if (stormTrooperAction5) stormTrooperAction5.actions['mixamo.com']?.play();
-    if (stormTrooperAction6) stormTrooperAction6.actions['mixamo.com']?.play();
-    if (maxwellAction) maxwellAction.actions['Action']?.play();
-    if (catfaceAction) catfaceAction.actions['GltfAnimation 0']?.play();
+    if (stormTrooperAction) stormTrooperAction.actions["mixamo.com"]?.play();
+    if (stormTrooperAction2) stormTrooperAction2.actions["mixamo.com"]?.play();
+    if (stormTrooperAction3) stormTrooperAction3.actions["mixamo.com"]?.play();
+    if (stormTrooperAction4) stormTrooperAction4.actions["mixamo.com"]?.play();
+    if (stormTrooperAction5) stormTrooperAction5.actions["mixamo.com"]?.play();
+    if (stormTrooperAction6) stormTrooperAction6.actions["mixamo.com"]?.play();
+    if (maxwellAction) maxwellAction.actions.Action?.play();
+    if (catfaceAction) catfaceAction.actions["GltfAnimation 0"]?.play();
   }, [
     maxwellAction,
     stormTrooperAction,
@@ -427,7 +461,9 @@ function Model() {
       {firework2 && <Firework position={[13, 15, 15]} />}
       {firework3 && <Firework position={[-15, 17, 15]} />}
       {firework4 && <Firework position={[-2, 15, 15]} />}
-      {tunnel && <directionalLight color="#fff" position={[0, 8, 30]} intensity={1} />}
+      {tunnel && (
+        <directionalLight color="#fff" position={[0, 8, 30]} intensity={1} />
+      )}
       {buildings}
 
       {objects === 0 && <Earth ref={earthRef} />}
@@ -435,6 +471,7 @@ function Model() {
         <primitive
           name={modelData[0].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[0].name] = element)
           }
           object={loadedArr[0].scene}
@@ -447,6 +484,7 @@ function Model() {
         <primitive
           name={modelData[1].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[1].name] = element)
           }
           object={loadedArr[1].scene}
@@ -459,6 +497,7 @@ function Model() {
         <primitive
           name={modelData[2].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[2].name] = element)
           }
           object={loadedArr[2].scene}
@@ -472,24 +511,26 @@ function Model() {
           <primitive
             name={modelData[3].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[3].name] = element)
             }
             object={loadedArr[3].scene}
             position={modelData[3].position}
             rotation={modelData[3].rotation}
             scale={modelData[3].scale}
-            visible={objects === 4 ? true : false}
+            visible={objects === 4}
           />
           <primitive
             name={modelData[4].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[4].name] = element)
             }
             object={loadedArr[4].scene}
             position={modelData[4].position}
             rotation={modelData[4].rotation}
             scale={modelData[4].scale}
-            visible={objects === 5 ? true : false}
+            visible={objects === 5}
           />
         </>
       )}
@@ -497,6 +538,7 @@ function Model() {
         <primitive
           name={modelData[5].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[5].name] = element)
           }
           object={loadedArr[5].scene}
@@ -508,18 +550,20 @@ function Model() {
       <primitive
         name={modelData[7].name}
         ref={(element: Object3D<Object3DEventMap>) =>
+          // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
           element && (refs.current[modelData[7].name] = element)
         }
         object={loadedArr[7].scene}
         position={modelData[7].position}
         rotation={modelData[7].rotation}
         scale={modelData[7].scale}
-        visible={objects === 7 ? true : false}
+        visible={objects === 7}
       />
       {objects === 8 && (
         <primitive
           name={modelData[9].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[9].name] = element)
           }
           object={loadedArr[9].scene}
@@ -532,6 +576,7 @@ function Model() {
         <primitive
           name={modelData[12].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[12].name] = element)
           }
           object={loadedArr[12].scene}
@@ -544,6 +589,7 @@ function Model() {
         <primitive
           name={modelData[14].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[14].name] = element)
           }
           object={loadedArr[14].scene}
@@ -556,6 +602,7 @@ function Model() {
         <primitive
           name={modelData[8].name}
           ref={(element: Object3D<Object3DEventMap>) =>
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
             element && (refs.current[modelData[8].name] = element)
           }
           object={loadedArr[8].scene}
@@ -569,68 +616,74 @@ function Model() {
           <primitive
             name={modelData[10].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[10].name] = element)
             }
             object={loadedArr[10].scene}
             position={modelData[10].position}
             rotation={modelData[10].rotation}
             scale={modelData[10].scale}
-            visible={deem2 ? true : false}
+            visible={!!deem2}
           />
           <primitive
             name={modelData[11].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[11].name] = element)
             }
             object={loadedArr[11].scene}
             position={modelData[11].position}
             rotation={modelData[11].rotation}
             scale={modelData[11].scale}
-            visible={deem2 ? true : false}
+            visible={!!deem2}
           />
           <primitive
             name={modelData[17].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[17].name] = element)
             }
             object={loadedArr[17].scene}
             position={modelData[17].position}
             rotation={modelData[17].rotation}
             scale={modelData[17].scale}
-            visible={deem ? true : false}
+            visible={!!deem}
           />
           <primitive
             name={modelData[18].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[18].name] = element)
             }
             object={loadedArr[18].scene}
             position={modelData[18].position}
             rotation={modelData[18].rotation}
             scale={modelData[18].scale}
-            visible={deem ? true : false}
+            visible={!!deem}
           />
           <primitive
             name={modelData[19].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[19].name] = element)
             }
             object={loadedArr[19].scene}
             position={modelData[19].position}
             rotation={modelData[19].rotation}
             scale={modelData[19].scale}
-            visible={deem ? true : false}
+            visible={!!deem}
           />
           <primitive
             name={modelData[20].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[20].name] = element)
             }
             object={loadedArr[20].scene}
             position={modelData[20].position}
             rotation={modelData[20].rotation}
             scale={modelData[20].scale}
-            visible={deem ? true : false}
+            visible={!!deem}
           />
         </>
       )}
@@ -639,6 +692,7 @@ function Model() {
           <primitive
             name={modelData[15].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[15].name] = element)
             }
             object={loadedArr[15].scene}
@@ -649,6 +703,7 @@ function Model() {
           <primitive
             name={modelData[16].name}
             ref={(element: Object3D<Object3DEventMap>) =>
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
               element && (refs.current[modelData[16].name] = element)
             }
             object={loadedArr[16].scene}
@@ -703,11 +758,11 @@ export default function VaporwaveScene() {
     }
 
     if (audio) {
-      audio.addEventListener('timeupdate', recieve);
+      audio.addEventListener("timeupdate", recieve);
     }
 
     return () => {
-      audio?.removeEventListener('timeupdate', recieve);
+      audio?.removeEventListener("timeupdate", recieve);
     };
   }, [audio]);
 
@@ -727,13 +782,19 @@ export default function VaporwaveScene() {
               <VaporwaveScene2d ready={ready} />
 
               <div className={styles.customaudiobox}>
-                <div style={{ position: 'relative', boxSizing: 'border-box', padding: '1rem' }}>
+                <div
+                  style={{
+                    position: "relative",
+                    boxSizing: "border-box",
+                    padding: "1rem",
+                  }}
+                >
                   <CustomAudio />
                 </div>
               </div>
             </>
           )}
-          <div style={{ width: '100%', height: '100%' }}>
+          <div style={{ width: "100%", height: "100%" }}>
             <Canvas
               ref={canvasRef}
               linear
@@ -744,11 +805,22 @@ export default function VaporwaveScene() {
                 setReady(true);
               }}
             >
-              <color attach="background" args={['#1d1052']} />
+              <color attach="background" args={["#1d1052"]} />
               <Suspense fallback={<MoonLoaderDrei />}>
                 <ambientLight />
-                <directionalLight color="#fff" position={[0, 5, 10]} intensity={5} />
-                <Stars count={1300} depth={60} radius={1} saturation={0.5} factor={0.3} speed={3} />
+                <directionalLight
+                  color="#fff"
+                  position={[0, 5, 10]}
+                  intensity={5}
+                />
+                <Stars
+                  count={1300}
+                  depth={60}
+                  radius={1}
+                  saturation={0.5}
+                  factor={0.3}
+                  speed={3}
+                />
                 <Model />
                 <Cloud
                   position={[0, 0, -30]}
@@ -780,7 +852,13 @@ export default function VaporwaveScene() {
                   <Vignette eskil={false} offset={0.05} darkness={0.8} />
                 </EffectComposer>
               )} */}
-                <PerspectiveCamera makeDefault position={[0, 8, 30]} near={1} far={90} zoom={0.2} />
+                <PerspectiveCamera
+                  makeDefault
+                  position={[0, 8, 30]}
+                  near={1}
+                  far={90}
+                  zoom={0.2}
+                />
               </Suspense>
             </Canvas>
           </div>

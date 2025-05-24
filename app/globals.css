@@ -5,9 +5,7 @@
 @layer base {
   /* Define light and dark mode colors */
   :root {
-    --text-color--high: rgb(
-      23 23 23 / var(--tw-text-opacity, 1)
-    ); /* Default text color for light mode */
+    --text-color--high: rgb(23 23 23 / var(--tw-text-opacity, 1)); /* Default text color for light mode */
     --text-color--low: rgb(100 100 100 / var(--tw-text-opacity, 1));
   }
 }

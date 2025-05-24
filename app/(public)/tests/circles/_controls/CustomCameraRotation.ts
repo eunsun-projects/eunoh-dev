@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Euler, EventDispatcher, Vector3 } from 'three';
+import { Euler, EventDispatcher, Vector3 } from "three";
 
-const changeEvent = { type: 'change' };
+const changeEvent = { type: "change" };
 const PI_2 = Math.PI / 2;
 
 class CustomCameraRotationControls extends EventDispatcher {
@@ -9,7 +9,7 @@ class CustomCameraRotationControls extends EventDispatcher {
   maxPolarAngle = Math.PI; // radians
 
   vector = new Vector3();
-  euler = new Euler(0, 0, 0, 'YXZ');
+  euler = new Euler(0, 0, 0, "YXZ");
 
   onMouseMoveBind = this.onMouseMove.bind(this);
   onTouchMoveBind = this.onTouchMove.bind(this);
@@ -19,16 +19,17 @@ class CustomCameraRotationControls extends EventDispatcher {
   domElement: any;
   previousTouch: any;
 
-  constructor(camera: any, domElement: any) {
+  constructor(camera: any, domElementInput: any) {
     super();
-    if (domElement === undefined) {
+    let currentDomElement = domElementInput;
+    if (currentDomElement === undefined) {
       console.warn(
         'THREE.PointerLockControls: The second parameter "domElement" is now mandatory.',
       );
-      domElement = document.body;
+      currentDomElement = document.body;
     }
     this.camera = camera;
-    this.domElement = domElement;
+    this.domElement = currentDomElement;
     this.connect();
   }
   onTouchMove(e: any) {
@@ -45,8 +46,12 @@ class CustomCameraRotationControls extends EventDispatcher {
     }
     if (!touch) return;
 
-    const movementX = this.previousTouch ? touch.pageX - this.previousTouch.pageX : 0;
-    const movementY = this.previousTouch ? touch.pageY - this.previousTouch.pageY : 0;
+    const movementX = this.previousTouch
+      ? touch.pageX - this.previousTouch.pageX
+      : 0;
+    const movementY = this.previousTouch
+      ? touch.pageY - this.previousTouch.pageY
+      : 0;
 
     this.updatePosition(movementX, movementY, 0.004);
     this.previousTouch = touch;
@@ -55,8 +60,10 @@ class CustomCameraRotationControls extends EventDispatcher {
     this.previousTouch = undefined;
   }
   onMouseMove(event: any) {
-    const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-    const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+    const movementX =
+      event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+    const movementY =
+      event.movementY || event.mozMovementY || event.webkitMovementY || 0;
     this.updatePosition(movementX, movementY, 0.002);
   }
   updatePosition(movementX: any, movementY: any, multiplier: any) {
@@ -71,21 +78,40 @@ class CustomCameraRotationControls extends EventDispatcher {
     this.dispatchEvent(changeEvent as never);
   }
   connect() {
-    this.domElement.addEventListener('touchmove', this.onTouchMoveBind, false);
-    this.domElement.addEventListener('touchend', this.onTouchEndBind, false);
-    this.domElement.addEventListener('mousedown', this.addMouseMoveListener.bind(this));
-    this.domElement.addEventListener('mouseup', this.removeMouseMoveListener.bind(this));
+    this.domElement.addEventListener("touchmove", this.onTouchMoveBind, false);
+    this.domElement.addEventListener("touchend", this.onTouchEndBind, false);
+    this.domElement.addEventListener(
+      "mousedown",
+      this.addMouseMoveListener.bind(this),
+    );
+    this.domElement.addEventListener(
+      "mouseup",
+      this.removeMouseMoveListener.bind(this),
+    );
   }
   addMouseMoveListener() {
-    this.domElement.ownerDocument.addEventListener('mousemove', this.onMouseMoveBind);
+    this.domElement.ownerDocument.addEventListener(
+      "mousemove",
+      this.onMouseMoveBind,
+    );
   }
   removeMouseMoveListener() {
-    this.domElement.ownerDocument.removeEventListener('mousemove', this.onMouseMoveBind);
+    this.domElement.ownerDocument.removeEventListener(
+      "mousemove",
+      this.onMouseMoveBind,
+    );
   }
   disconnect() {
-    this.domElement.removeEventListener('touchmove', this.onTouchMoveBind, false);
-    this.domElement.removeEventListener('touchend', this.onTouchEndBind, false);
-    this.domElement.ownerDocument.removeEventListener('mousemove', this.onMouseMoveBind);
+    this.domElement.removeEventListener(
+      "touchmove",
+      this.onTouchMoveBind,
+      false,
+    );
+    this.domElement.removeEventListener("touchend", this.onTouchEndBind, false);
+    this.domElement.ownerDocument.removeEventListener(
+      "mousemove",
+      this.onMouseMoveBind,
+    );
   }
   dispose() {
     this.disconnect();

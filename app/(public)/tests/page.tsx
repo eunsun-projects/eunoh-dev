@@ -1,4 +1,4 @@
-import TestListTemplate from './_components/TestListTemplate';
+import TestListTemplate from "./_components/TestListTemplate";
 
 function TestsPage() {
   return <TestListTemplate />;

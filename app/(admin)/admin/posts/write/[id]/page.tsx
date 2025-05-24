@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { usePostQuery } from '@/hooks/queries/post/usePostQuery';
-import { use, useEffect } from 'react';
-import PostsWriteTemplate from '../../_components/PostsWriteTemplate';
+import { usePostQuery } from "@/hooks/queries/post/usePostQuery";
+import { use, useEffect } from "react";
+import PostsWriteTemplate from "../../_components/PostsWriteTemplate";
 
 function EditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);

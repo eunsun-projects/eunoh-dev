@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import styles from '../_styles/soundfx.module.css';
-import { CustomAudioBuffer, FxObj } from './Fxsample';
+import { useEffect, useState } from "react";
+import styles from "../_styles/soundfx.module.css";
+import type { CustomAudioBuffer, FxObj } from "./Fxsample";
 
 interface CustomConvolverNode extends ConvolverNode {
   sel: number;
@@ -76,42 +76,46 @@ export default function Reverb({ context, impulseBuffer, fxObj }: ReverbProps) {
     if (convolverArr.length > 0 && fxObj.isPlaying) {
       convolverArr.forEach((e) => fxObj.currSource?.connect(e));
     }
-  }, [convolverArr, fxObj.currBuffer, fxObj.currSource, fxObj.isPlaying]);
+  }, [convolverArr, fxObj.currSource, fxObj.isPlaying]);
 
   return (
     <div className={styles.webapbox}>
-      <p style={{ fontSize: '1.2rem' }}>reverb</p>
+      <p style={{ fontSize: "1.2rem" }}>reverb</p>
       <div className={styles.webapreverbbox}>
-        <div className={styles.webaptel} style={{ cursor: 'pointer' }}>
+        <div className={styles.webaptel} style={{ cursor: "pointer" }}>
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
           <div
             data-value={0}
             onClick={handleClick}
             className={click.includes(0) ? styles.reverbclick : styles.reverb}
-          ></div>
+          />
           <p>Telephone</p>
         </div>
-        <div className={styles.webaptel} style={{ cursor: 'pointer' }}>
+        <div className={styles.webaptel} style={{ cursor: "pointer" }}>
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
           <div
             data-value={1}
             onClick={handleClick}
             className={click.includes(1) ? styles.reverbclick : styles.reverb}
-          ></div>
+          />
           <p>lowpass</p>
         </div>
-        <div className={styles.webaptel} style={{ cursor: 'pointer' }}>
+        <div className={styles.webaptel} style={{ cursor: "pointer" }}>
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
           <div
             data-value={2}
             onClick={handleClick}
             className={click.includes(2) ? styles.reverbclick : styles.reverb}
-          ></div>
+          />
           <p>Spring</p>
         </div>
-        <div className={styles.webaptel} style={{ cursor: 'pointer' }}>
+        <div className={styles.webaptel} style={{ cursor: "pointer" }}>
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
           <div
             data-value={3}
             onClick={handleClick}
             className={click.includes(3) ? styles.reverbclick : styles.reverb}
-          ></div>
+          />
           <p>Echo</p>
         </div>
       </div>

@@ -6,10 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --cache .",
+    "lint": "pnpm biome lint",
     "genTypes": "supabase gen types typescript --project-id \"urtfszkmtgmcqrnchihz\" --schema public > src/types/supabase.ts",
     "prepare": "husky",
-    "format": "prettier --cache --write ."
+    "format": "pnpm biome format"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.0.11",
@@ -43,8 +43,6 @@
     "nipplejs": "^0.10.2",
     "openai": "^4.77.0",
     "postprocessing": "^6.36.4",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.0",
@@ -64,22 +62,12 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^20",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.0",
-    "lint-staged": "^15.2.11",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.4"
-  },
-  "lint-staged": {
-    "!(public)/**/*.{ts,tsx,json,yaml,yml}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add ."
-    ]
   }
 }

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createContext, PropsWithChildren, useState } from 'react';
+import { createContext, type PropsWithChildren, useState } from "react";
 
 export type UiStateContextType = {
   isMainReady: boolean;
@@ -22,5 +22,7 @@ export function UiStateProvider({ children }: PropsWithChildren) {
     setIsMainReady,
   };
 
-  return <UiStateContext.Provider value={value}>{children}</UiStateContext.Provider>;
+  return (
+    <UiStateContext.Provider value={value}>{children}</UiStateContext.Provider>
+  );
 }

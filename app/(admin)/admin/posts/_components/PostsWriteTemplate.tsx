@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks/auth/useAuth';
-import { usePostMutation } from '@/hooks/queries/posts';
-import { PartialPost } from '@/types/post.types';
-import cn from '@/utils/common/cn';
-import { format } from 'date-fns';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useId, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import PostsEditor from './PostsEditor';
-const inputStyle = 'w-[180px] border border-gray-300 rounded-md p-2';
+import { useAuth } from "@/hooks/auth/useAuth";
+import { usePostMutation } from "@/hooks/queries/posts";
+import type { PartialPost } from "@/types/post.types";
+import cn from "@/utils/common/cn";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useId, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import PostsEditor from "./PostsEditor";
+const inputStyle = "w-[180px] border border-gray-300 rounded-md p-2";
 
 type FormValues = {
   title?: string;
@@ -24,15 +24,21 @@ type FormValues = {
 };
 
 interface PostsWriteTemplateProps {
-  mode?: 'write' | 'edit';
+  mode?: "write" | "edit";
   post?: PartialPost;
 }
 
-function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
+function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
   const { user } = useAuth();
-  const [markdown, setMarkdown] = useState(post?.markdown || '**Hello world!!!**');
+  const [markdown, setMarkdown] = useState(
+    post?.markdown || "**Hello world!!!**",
+  );
   const { register, handleSubmit } = useForm<FormValues>();
-  const { mutate, isPending: mutationPending, error: mutationError } = usePostMutation();
+  const {
+    mutate,
+    isPending: mutationPending,
+    error: mutationError,
+  } = usePostMutation();
   const router = useRouter();
 
   const titleId = useId();
@@ -44,32 +50,40 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
   const posted_atId = useId();
 
   const handleChange = useCallback((value: string | undefined) => {
-    setMarkdown(value || '');
+    setMarkdown(value || "");
   }, []);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const newPost: PartialPost = {
-      title: mode === 'edit' && !data.title ? post?.title : data.title,
-      markdown: mode === 'edit' && !post?.markdown ? post?.markdown : markdown,
-      isView: mode === 'edit' && data.isView === undefined ? post?.isView : data.isView,
-      category: mode === 'edit' && !data.category ? post?.category : data.category,
+      title: mode === "edit" && !data.title ? post?.title : data.title,
+      markdown: mode === "edit" && !post?.markdown ? post?.markdown : markdown,
+      isView:
+        mode === "edit" && data.isView === undefined
+          ? post?.isView
+          : data.isView,
+      category:
+        mode === "edit" && !data.category ? post?.category : data.category,
       keywords:
-        mode === 'edit' && !data.keywords1 && !data.keywords2 && !data.keywords3
+        mode === "edit" && !data.keywords1 && !data.keywords2 && !data.keywords3
           ? post?.keywords
-          : ([data.keywords1, data.keywords2, data.keywords3].filter(Boolean) as string[]),
-      engTitle: mode === 'edit' && !data.engTitle ? post?.engTitle : data.engTitle,
-      posted_at: mode === 'edit' && !data.posted_at ? post?.posted_at : data.posted_at,
-      summary: mode === 'edit' && !data.summary ? post?.summary : data.summary,
+          : ([data.keywords1, data.keywords2, data.keywords3].filter(
+              Boolean,
+            ) as string[]),
+      engTitle:
+        mode === "edit" && !data.engTitle ? post?.engTitle : data.engTitle,
+      posted_at:
+        mode === "edit" && !data.posted_at ? post?.posted_at : data.posted_at,
+      summary: mode === "edit" && !data.summary ? post?.summary : data.summary,
     };
 
-    if (mode === 'edit') {
+    if (mode === "edit") {
       newPost.id = post?.id;
     }
 
     console.log(newPost);
 
     mutate(newPost);
-    router.push('/admin/posts');
+    router.push("/admin/posts");
   };
 
   useEffect(() => {
@@ -94,8 +108,8 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
             type="checkbox"
             className={inputStyle}
             id={isViewId}
-            {...register('isView')}
-            defaultChecked={mode === 'edit' ? post?.isView || false : false}
+            {...register("isView")}
+            defaultChecked={mode === "edit" ? post?.isView || false : false}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
@@ -105,39 +119,41 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
             className={inputStyle}
             id={posted_atId}
             defaultValue={
-              mode === 'edit' ? format(new Date(post?.posted_at as string), 'yyyy-MM-dd') : ''
+              mode === "edit"
+                ? format(new Date(post?.posted_at as string), "yyyy-MM-dd")
+                : ""
             }
-            {...register('posted_at')}
+            {...register("posted_at")}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
           <label htmlFor={titleId}>타이틀</label>
           <input
             type="text"
-            className={cn(inputStyle, 'w-[300px]')}
+            className={cn(inputStyle, "w-[300px]")}
             id={titleId}
-            defaultValue={mode === 'edit' ? post?.title || '' : ''}
-            {...register('title')}
+            defaultValue={mode === "edit" ? post?.title || "" : ""}
+            {...register("title")}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
           <label htmlFor={engTitleId}>영어타이틀</label>
           <input
             type="text"
-            className={cn(inputStyle, 'w-[300px]')}
+            className={cn(inputStyle, "w-[300px]")}
             id={engTitleId}
-            defaultValue={mode === 'edit' ? post?.engTitle || '' : ''}
-            {...register('engTitle')}
+            defaultValue={mode === "edit" ? post?.engTitle || "" : ""}
+            {...register("engTitle")}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
           <label htmlFor={summaryId}>요약</label>
           <input
             type="text"
-            className={cn(inputStyle, 'w-[700px]')}
+            className={cn(inputStyle, "w-[700px]")}
             id={summaryId}
-            defaultValue={mode === 'edit' ? post?.summary || '' : ''}
-            {...register('summary')}
+            defaultValue={mode === "edit" ? post?.summary || "" : ""}
+            {...register("summary")}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
@@ -146,36 +162,39 @@ function PostsWriteTemplate({ mode = 'write', post }: PostsWriteTemplateProps) {
             type="text"
             className={inputStyle}
             id={categoryId}
-            defaultValue={mode === 'edit' ? post?.category || '' : ''}
-            {...register('category')}
+            defaultValue={mode === "edit" ? post?.category || "" : ""}
+            {...register("category")}
           />
         </div>
         <div className="flex flex-row gap-2 items-center">
           <label htmlFor={keywordsId}>키워드</label>
           <input
             type="text"
-            className={cn(inputStyle, 'w-[120px]')}
+            className={cn(inputStyle, "w-[120px]")}
             id={keywordsId}
-            defaultValue={mode === 'edit' ? post?.keywords?.[0] || '' : ''}
-            {...register('keywords1')}
+            defaultValue={mode === "edit" ? post?.keywords?.[0] || "" : ""}
+            {...register("keywords1")}
           />
           <input
             type="text"
-            className={cn(inputStyle, 'w-[120px]')}
+            className={cn(inputStyle, "w-[120px]")}
             id={keywordsId}
-            defaultValue={mode === 'edit' ? post?.keywords?.[1] || '' : ''}
-            {...register('keywords2')}
+            defaultValue={mode === "edit" ? post?.keywords?.[1] || "" : ""}
+            {...register("keywords2")}
           />
           <input
             type="text"
-            className={cn(inputStyle, 'w-[120px]')}
+            className={cn(inputStyle, "w-[120px]")}
             id={keywordsId}
-            defaultValue={mode === 'edit' ? post?.keywords?.[2] || '' : ''}
-            {...register('keywords3')}
+            defaultValue={mode === "edit" ? post?.keywords?.[2] || "" : ""}
+            {...register("keywords3")}
           />
         </div>
         <PostsEditor value={markdown} onChange={handleChange} />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
           저장
         </button>
       </form>

@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -6,26 +6,26 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'urtfszkmtgmcqrnchihz.supabase.co',
+        protocol: "https",
+        hostname: "urtfszkmtgmcqrnchihz.supabase.co",
       },
       {
-        protocol: 'https',
-        hostname: 'oaidalleapiprodscus.blob.core.windows.net',
+        protocol: "https",
+        hostname: "oaidalleapiprodscus.blob.core.windows.net",
       },
     ],
   },
   experimental: {
     turbo: {
       rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js', // React 컴포넌트로 처리
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js", // React 컴포넌트로 처리
         },
       },
     },
   },
-  transpilePackages: ['three'],
+  transpilePackages: ["three"],
 };
 
 export default nextConfig;

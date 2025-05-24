@@ -1,6 +1,6 @@
-import * as THREE from 'three';
-import { Scene } from '../../../../../public/matterport-assets/sdk';
-import { ObjectToLoad } from '../_types/object.type';
+import type * as THREE from "three";
+import type { Scene } from "../../../../../public/matterport-assets/sdk";
+import type { ObjectToLoad } from "../_types/object.type";
 
 interface Node extends Scene.INode {
   obj3D?: THREE.Object3D;
@@ -9,7 +9,7 @@ interface Node extends Scene.INode {
 async function loadScene(
   sceneObject: Scene.IObject,
   objects: ObjectToLoad[],
-  axis?: 'x' | 'y' | 'z' | undefined,
+  axis?: "x" | "y" | "z" | undefined,
 ) {
   const lookup: Record<string, Scene.IComponent> = {};
   const toBind = [];
@@ -49,18 +49,18 @@ async function loadScene(
 
     function tick() {
       requestAnimationFrame(tick);
-      if (axis === 'x') {
+      if (axis === "x") {
         node.obj3D!.rotation.x += 0.004;
-      } else if (axis === 'y') {
+      } else if (axis === "y") {
         node.obj3D!.rotation.y += 0.003;
-      } else if (axis === 'z') {
+      } else if (axis === "z") {
         node.obj3D!.rotation.z += 0.004;
       }
     }
     if (axis) {
       tick();
     } else {
-      console.log('animate == false');
+      console.log("animate == false");
     }
   }
   return toBind;

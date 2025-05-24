@@ -1,17 +1,17 @@
-import { Metadata, Viewport } from 'next';
-import ViewerTemplate from './_components/ViewerTemplate';
+import type { Metadata, Viewport } from "next";
+import ViewerTemplate from "./_components/ViewerTemplate";
 
 export const metadata: Metadata = {
-  title: '3D Viewer',
-  description: '3D Viewer',
+  title: "3D Viewer",
+  description: "3D Viewer",
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: 'cover',
+  viewportFit: "cover",
 };
 
 export default function ViewerPage() {
