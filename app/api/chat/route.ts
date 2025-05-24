@@ -5,10 +5,12 @@ import { streamText } from "ai";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, model } = await req.json();
+
+  const modelInstance = openai(model);
 
   const result = streamText({
-    model: openai("gpt-4o-mini"),
+    model: modelInstance,
     messages,
   });
 
