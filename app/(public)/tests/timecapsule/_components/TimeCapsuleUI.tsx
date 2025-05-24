@@ -147,7 +147,9 @@ function TimeCapsuleUI() {
             <div className="absolute right-1/2 top-1/2 translate-x-1/2 -translate-y-1/2 bg-neutral-800/50 text-neutral-200 border border-neutral-700 pointer-events-auto p-2 rounded-md hover:bg-neutral-800/70 active:bg-neutral-800/90">
               <button
                 type="button"
-                onClick={() => loginWithProvider("/timecapsule")}
+                onClick={() =>
+                  loginWithProvider("google", "/tests/timecapsule")
+                }
               >
                 구글로 로그인
               </button>
