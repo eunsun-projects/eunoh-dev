@@ -19,6 +19,21 @@ function ChatTemplate() {
     }
   }, [messages]);
 
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    handleSubmit(
+      {
+        preventDefault: () => {
+          e.preventDefault();
+        },
+      },
+      {
+        body: {
+          model: "gpt-4o-mini",
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch gap-4">
       {messages.map((m) => (
@@ -37,7 +52,7 @@ function ChatTemplate() {
 
       <div ref={messagesEndRef} />
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <input
           className="fixed bottom-0 w-full max-w-md p-2 mb-8 bg-neutral-300 border border-neutral-300 shadow-xl focus:outline-none focus-visible:outline-none"
           value={input}
