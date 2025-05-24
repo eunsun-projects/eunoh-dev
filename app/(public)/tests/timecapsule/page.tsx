@@ -1,24 +1,29 @@
-import { postUserServer } from '@/apis/auth/server/post.user';
-import { getTimeCapsules } from '@/apis/tests/api.tests';
-import Loading from '@/app/loading';
-import { QUERY_KEY_TIME_CAPSULES, QUERY_KEY_USER } from '@/constants/query.constants';
-import { getUserFromHeaders } from '@/utils/common/getUserFromHeaders';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import type { Metadata, Viewport } from 'next';
-import { Suspense } from 'react';
-import TimeCapsuleTemplate from './_components/TimeCapsuleTemplate';
+import { postUserServer } from "@/apis/auth/server/post.user";
+import { getTimeCapsules } from "@/apis/tests/api.tests";
+import {
+  QUERY_KEY_TIME_CAPSULES,
+  QUERY_KEY_USER,
+} from "@/constants/query.constants";
+import { getUserFromHeaders } from "@/utils/common/getUserFromHeaders";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import type { Metadata, Viewport } from "next";
+import TimeCapsuleTemplate from "./_components/TimeCapsuleTemplate";
 
 export const metadata: Metadata = {
-  title: 'TimeCapsule',
-  description: 'TimeCapsule',
+  title: "TimeCapsule",
+  description: "TimeCapsule",
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: 'cover',
+  viewportFit: "cover",
 };
 
 async function TimeCapsulePage() {
@@ -38,11 +43,11 @@ async function TimeCapsulePage() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<Loading />}>
-      <HydrationBoundary state={dehydratedState}>
-        <TimeCapsuleTemplate />
-      </HydrationBoundary>
-    </Suspense>
+    // <Suspense fallback={<Loading />}>
+    <HydrationBoundary state={dehydratedState}>
+      <TimeCapsuleTemplate />
+    </HydrationBoundary>
+    // </Suspense>
   );
 }
 
