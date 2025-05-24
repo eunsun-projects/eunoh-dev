@@ -4,13 +4,20 @@ import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef } from "react";
 
 function ChatTemplate() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    onFinish: (message, options) => {
+      // console.log("finished message", message);
+      console.log("usage ===>", options.usage);
+    },
+  });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch gap-4">
