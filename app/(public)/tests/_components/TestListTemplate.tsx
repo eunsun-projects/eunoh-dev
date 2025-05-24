@@ -48,15 +48,21 @@ const testLists = [
   },
   {
     id: 8,
-    title: 'Time Capsule',
-    description: '별 타임캡슐 테스트',
-    href: '/tests/timecapsule',
+    title: "Time Capsule",
+    description: "별 타임캡슐 테스트",
+    href: "/tests/timecapsule",
   },
   {
     id: 9,
-    title: 'Chat',
-    description: 'Chat Stream 테스트',
-    href: '/tests/chat',
+    title: "Chat",
+    description: "Chat Stream 테스트",
+    href: "/tests/chat",
+  },
+  {
+    id: 10,
+    title: "API 가격 계산기",
+    description: "LLM API 사용량 계산기",
+    href: "/tests/usage-calculator",
   },
 ];
 
