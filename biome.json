@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["node_modules", "dist", "build", "public", ".next"]
+    "ignore": [
+      "node_modules",
+      "dist",
+      "build",
+      "public",
+      ".next",
+      "src/components/ui"
+    ]
   },
   "formatter": {
     "enabled": true,
