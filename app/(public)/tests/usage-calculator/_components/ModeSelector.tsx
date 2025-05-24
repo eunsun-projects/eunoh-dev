@@ -14,12 +14,20 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
-import { MODES } from "../_libs/zustand";
+import { useEffect, useState } from "react";
+import { MODES, type Mode, useUsageCalculatorStore } from "../_libs/zustand";
 
 function ModeSelector() {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<Mode | null>(null);
+
+  const { setMode } = useUsageCalculatorStore();
+
+  useEffect(() => {
+    if (value) {
+      setMode(value);
+    }
+  }, [value, setMode]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -33,26 +41,26 @@ function ModeSelector() {
           aria-haspopup="listbox"
           className="w-[500px] justify-between"
         >
-          {value
-            ? MODES[value as keyof typeof MODES]
-            : "동작 모드 선택, 기본 txt-to-txt"}
+          {value ? value : "모드 선택, 기본 txt-to-txt"}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[500px] p-0">
-        <Command>
+        <Command defaultValue={value ?? undefined}>
           {/* <CommandInput placeholder="모드 검색" className="h-9" /> */}
           <CommandList id="mode-selector">
             {/* <CommandEmpty>모드 못 찾음</CommandEmpty> */}
             <CommandGroup>
-              {Object.entries(MODES).map(([key, mode]) => (
+              {Object.entries(MODES).map(([key, mode]: [string, Mode]) => (
                 <CommandItem
                   key={key}
                   value={mode}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
+                  onSelect={(currentValue: string) => {
+                    const selectedMode = currentValue as Mode;
+                    setValue(selectedMode === value ? null : selectedMode);
                     setOpen(false);
                   }}
+                  className="cursor-pointer"
                 >
                   {mode}
                   <Check
