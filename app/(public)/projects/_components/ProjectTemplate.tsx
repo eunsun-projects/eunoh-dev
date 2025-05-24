@@ -1,13 +1,22 @@
-'use client';
+"use client";
 
-import { useTapScroll } from '@/hooks/ui/useTapScroll';
-import { Desc, ProjectImage, ProjectWithImages } from '@/types/project.types';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useRef, useState } from 'react';
-import { RiArrowGoBackFill } from 'react-icons/ri';
-import { DarkLightModeButton, Description, Modal, Navigate } from '../../_components/ui';
-import ProjectNextImage from './ProjectImage';
+import { useTapScroll } from "@/hooks/ui/useTapScroll";
+import type {
+  Desc,
+  ProjectImage,
+  ProjectWithImages,
+} from "@/types/project.types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import {
+  DarkLightModeButton,
+  Description,
+  Modal,
+  Navigate,
+} from "../../_components/ui";
+import ProjectNextImage from "./ProjectImage";
 
 interface ProjectTemplateProps {
   project: ProjectWithImages;
@@ -15,7 +24,9 @@ interface ProjectTemplateProps {
 
 const setStateFunction = (prev: number[] | null, index: number) => {
   if (prev === null) return [index];
-  return prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index];
+  return prev.includes(index)
+    ? prev.filter((i) => i !== index)
+    : [...prev, index];
 };
 
 function ProjectTemplate({ project }: ProjectTemplateProps) {
@@ -32,12 +43,12 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
       setSelectedImage(image);
       setIsOpen(true);
     },
-    [setIsOpen],
+    []
   );
 
   const handleCloseModal = useCallback(() => {
     setIsOpen(false);
-  }, [setIsOpen]);
+  }, []);
 
   const { scrollHandlers } =
     useTapScroll({
@@ -45,13 +56,14 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
     }) ?? {};
 
   const handleDecisionClick = useCallback(
-    (index: number) => setDecisionIndex((prev) => setStateFunction(prev, index)),
-    [setDecisionIndex],
+    (index: number) =>
+      setDecisionIndex((prev) => setStateFunction(prev, index)),
+    []
   );
 
   const handleTroubleClick = useCallback(
     (index: number) => setTroubleIndex((prev) => setStateFunction(prev, index)),
-    [setTroubleIndex],
+    []
   );
 
   return (
@@ -71,14 +83,17 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <RiArrowGoBackFill className="text-lg cursor-pointer" onClick={() => router.back()} />
+            <RiArrowGoBackFill
+              className="text-lg cursor-pointer"
+              onClick={() => router.back()}
+            />
             <DarkLightModeButton />
           </div>
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-sm">
-            {project.started_at?.split('T')[0].split('-').join('.')} ~{' '}
-            {project.ended_at?.split('T')[0].split('-').join('.')}
+            {project.started_at?.split("T")[0].split("-").join(".")} ~{" "}
+            {project.ended_at?.split("T")[0].split("-").join(".")}
           </p>
           <div className="flex flex-row gap-2">
             {project.keywords?.map((keyword) => (
@@ -104,20 +119,21 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
                 />
               ))}
             </div>
-            {scrollHandlers?.createScrollLeft && scrollHandlers?.createScrollRight && (
-              <div className="absolute flex w-full top-[50%]">
-                <Navigate
-                  mode="before"
-                  onClick={scrollHandlers.createScrollLeft()}
-                  className="top-[50%]"
-                />
-                <Navigate
-                  mode="after"
-                  onClick={scrollHandlers.createScrollRight()}
-                  className="top-[50%]"
-                />
-              </div>
-            )}
+            {scrollHandlers?.createScrollLeft &&
+              scrollHandlers?.createScrollRight && (
+                <div className="absolute flex w-full top-[50%]">
+                  <Navigate
+                    mode="before"
+                    onClick={scrollHandlers.createScrollLeft()}
+                    className="top-[50%]"
+                  />
+                  <Navigate
+                    mode="after"
+                    onClick={scrollHandlers.createScrollRight()}
+                    className="top-[50%]"
+                  />
+                </div>
+              )}
           </div>
 
           {/** 주요 기능 및 특징 */}
@@ -128,7 +144,7 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
             <ul className="flex flex-col gap-1">
               {project.features?.map((feature) => (
                 <li key={feature} className="text-xs">
-                  {'- ' + feature}
+                  {`- ${feature}`}
                 </li>
               ))}
             </ul>

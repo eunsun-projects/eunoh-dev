@@ -1,6 +1,6 @@
-import { TimeCapsule } from '@/types/tests.type';
+import type { TimeCapsule } from '@/types/tests.type';
 import { createClient } from '@/utils/supabase/server';
-import { PostgrestError } from '@supabase/supabase-js';
+import type { PostgrestError } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

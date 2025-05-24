@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { TimeCapsule } from '@/types/tests.type';
-import { Dispatch, SetStateAction } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { IoClose } from 'react-icons/io5';
-import { TimeCapsuleUIState } from './TimeCapsuleUI';
+import type { TimeCapsule } from "@/types/tests.type";
+import type { Dispatch, SetStateAction } from "react";
+import { useFormContext } from "react-hook-form";
+import { IoClose } from "react-icons/io5";
+import type { TimeCapsuleUIState } from "./TimeCapsuleUI";
 
 interface TimeCapsuleUIErrorProps {
   setIsOpen: Dispatch<SetStateAction<TimeCapsuleUIState>>;
@@ -17,7 +17,7 @@ function TimeCapsuleUIError({ setIsOpen }: TimeCapsuleUIErrorProps) {
   } = useFormContext<TimeCapsule>();
 
   const handleClose = () => {
-    clearErrors('password');
+    clearErrors("password");
     setIsOpen((prev) => ({
       ...prev,
       isPasswordOpen: true,

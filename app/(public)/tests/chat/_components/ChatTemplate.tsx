@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useChat } from '@ai-sdk/react';
-import { useEffect, useRef } from 'react';
+import { useChat } from "@ai-sdk/react";
+import { useEffect, useRef } from "react";
 
 function ChatTemplate() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
@@ -9,14 +9,14 @@ function ChatTemplate() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch gap-4">
       {messages.map((m) => (
         <div key={m.id} className="w-full whitespace-pre-wrap break-keep">
-          {m.role === 'user' ? (
+          {m.role === "user" ? (
             <div className="flex w-full justify-end min-h-8">
               <p className="flex w-[70%] items-center bg-black/30 text-cyan-400 text-stroke-green">
                 <span className="leading-2">{`🍀 User: ${m.content}`}</span>

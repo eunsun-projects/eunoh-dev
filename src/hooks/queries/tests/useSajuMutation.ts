@@ -1,5 +1,5 @@
 import { postSajuTest } from '@/apis/tests/api.tests';
-import { SajuTestResponse } from '@/types/tests.type';
+import type { SajuTestResponse } from '@/types/tests.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useSajuMutation() {

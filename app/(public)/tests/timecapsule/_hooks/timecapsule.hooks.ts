@@ -5,7 +5,7 @@ import {
   postTimeCapsule,
 } from '@/apis/tests/api.tests';
 import { QUERY_KEY_TIME_CAPSULES } from '@/constants/query.constants';
-import { TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
+import type { TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useTimeCapsulesQuery() {

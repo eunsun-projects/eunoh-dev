@@ -4,7 +4,7 @@ import Loading from '@/app/loading';
 import { QUERY_KEY_TIME_CAPSULES, QUERY_KEY_USER } from '@/constants/query.constants';
 import { getUserFromHeaders } from '@/utils/common/getUserFromHeaders';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { Metadata, Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import TimeCapsuleTemplate from './_components/TimeCapsuleTemplate';
 

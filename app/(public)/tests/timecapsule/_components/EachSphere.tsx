@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
-import { TimeCapsuleFromSupabase } from '@/types/tests.type';
-import { Sphere } from '@react-three/drei';
-import { ThreeEvent } from '@react-three/fiber';
-import { forwardRef, useMemo } from 'react';
-import * as THREE from 'three';
-import { useTimeCapsuleStore } from '../_libs/zustand';
+import type { TimeCapsuleFromSupabase } from "@/types/tests.type";
+import { Sphere } from "@react-three/drei";
+import type { ThreeEvent } from "@react-three/fiber";
+import { forwardRef, useMemo } from "react";
+import * as THREE from "three";
+import { useTimeCapsuleStore } from "../_libs/zustand";
 
 interface EachSphereProps {
   timeCapsule: TimeCapsuleFromSupabase;
   onClick: (e: ThreeEvent<MouseEvent>) => void;
 }
 
-function SphereStar({ timeCapsule, onClick }: EachSphereProps, ref: React.Ref<THREE.Mesh>) {
+function SphereStar(
+  { timeCapsule, onClick }: EachSphereProps,
+  ref: React.Ref<THREE.Mesh>
+) {
   const { focusedObject } = useTimeCapsuleStore();
 
   const color = useMemo(() => {
@@ -25,14 +28,26 @@ function SphereStar({ timeCapsule, onClick }: EachSphereProps, ref: React.Ref<TH
       name={timeCapsule.id}
       scale={focusedObject?.timeCapsule?.id === timeCapsule.id ? 0.4 : 0.25}
       position={
-        new THREE.Vector3(timeCapsule.position[0], timeCapsule.position[1], timeCapsule.position[2])
+        new THREE.Vector3(
+          timeCapsule.position[0],
+          timeCapsule.position[1],
+          timeCapsule.position[2]
+        )
       }
       onClick={onClick}
-      onPointerOver={() => (document.body.style.cursor = 'pointer')}
-      onPointerOut={() => (document.body.style.cursor = 'default')}
+      onPointerOver={() => {
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "default";
+      }}
     >
       <Sphere scale={0.8} position={[0, 0, 0]}>
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.01} />
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={0.01}
+        />
       </Sphere>
       <meshStandardMaterial
         color={color}

@@ -1,5 +1,5 @@
-import { FocusedObject, TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
-import * as THREE from 'three';
+import type { FocusedObject, TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
+import type * as THREE from 'three';
 import { create } from 'zustand';
 
 export interface TimeCapsuleState {

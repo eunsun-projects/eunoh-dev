@@ -1,10 +1,10 @@
 'use client';
 
-import { TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
-import { ThreeEvent, useFrame } from '@react-three/fiber';
+import type { TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
+import { type ThreeEvent, useFrame } from '@react-three/fiber';
 import { useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useShallow } from 'zustand/react/shallow';
 import { useTimeCapsuleStore } from '../_libs/zustand';
 import EachSphere from './EachSphere';

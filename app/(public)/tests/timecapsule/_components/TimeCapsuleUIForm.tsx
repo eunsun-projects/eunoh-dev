@@ -1,17 +1,26 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks/auth/useAuth';
-import { TimeCapsule } from '@/types/tests.type';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
-import { useShallow } from 'zustand/react/shallow';
-import { useEditTimeCapsulesMutation, useTimeCapsulesMutation } from '../_hooks/timecapsule.hooks';
-import { generateColor } from '../_libs/generateColor';
-import { generateRandomPosition } from '../_libs/generatePosition';
-import { useTimeCapsuleStore } from '../_libs/zustand';
-import { TimeCapsuleUIState } from './TimeCapsuleUI';
+import { useAuth } from "@/hooks/auth/useAuth";
+import type { TimeCapsule } from "@/types/tests.type";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useFormContext } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+import { useShallow } from "zustand/react/shallow";
+import {
+  useEditTimeCapsulesMutation,
+  useTimeCapsulesMutation,
+} from "../_hooks/timecapsule.hooks";
+import { generateColor } from "../_libs/generateColor";
+import { generateRandomPosition } from "../_libs/generatePosition";
+import { useTimeCapsuleStore } from "../_libs/zustand";
+import type { TimeCapsuleUIState } from "./TimeCapsuleUI";
 
 interface TimeCapsuleUIFormProps {
   isOpen: TimeCapsuleUIState;
@@ -19,14 +28,15 @@ interface TimeCapsuleUIFormProps {
 }
 
 function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
-  const { setFocusedObject, addTimeCapsule, timeCapsules, focusedObject } = useTimeCapsuleStore(
-    useShallow((state) => ({
-      setFocusedObject: state.setFocusedObject,
-      addTimeCapsule: state.addTimeCapsule,
-      timeCapsules: state.timeCapsules,
-      focusedObject: state.focusedObject,
-    })),
-  );
+  const { setFocusedObject, addTimeCapsule, timeCapsules, focusedObject } =
+    useTimeCapsuleStore(
+      useShallow((state) => ({
+        setFocusedObject: state.setFocusedObject,
+        addTimeCapsule: state.addTimeCapsule,
+        timeCapsules: state.timeCapsules,
+        focusedObject: state.focusedObject,
+      }))
+    );
   const { register, handleSubmit, reset } = useFormContext<TimeCapsule>();
   const { user } = useAuth();
   const { mutateAsync: mutateAddTimeCapsule } = useTimeCapsulesMutation();
@@ -34,7 +44,8 @@ function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const addedTimeCapsule = useRef<TimeCapsule | null>(null);
 
-  const togglePasswordVisibility = () => setShowPassword((prevShowPassword) => !prevShowPassword);
+  const togglePasswordVisibility = () =>
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   const handleClose = () => {
     setIsOpen((prev) => ({
       ...prev,
@@ -44,7 +55,10 @@ function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
       isListOpen: false,
       isLogInOpen: false,
     }));
-    setFocusedObject({ isIdle: isOpen.isEditNow ? true : null, timeCapsule: null });
+    setFocusedObject({
+      isIdle: isOpen.isEditNow ? true : null,
+      timeCapsule: null,
+    });
   };
 
   const onSubmit = async (data: TimeCapsule) => {
@@ -54,7 +68,11 @@ function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
       title: data.title,
       description: data.description,
       password: data.password,
-      position: [generateRandomPosition(), generateRandomPosition(), generateRandomPosition()],
+      position: [
+        generateRandomPosition(),
+        generateRandomPosition(),
+        generateRandomPosition(),
+      ],
       color: generateColor(),
     };
     let response: TimeCapsule;
@@ -71,7 +89,7 @@ function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
   useEffect(() => {
     if (!addedTimeCapsule.current) return;
     const timeCapsule = timeCapsules.find(
-      (timeCapsule) => timeCapsule.object?.name === addedTimeCapsule.current?.id,
+      (timeCapsule) => timeCapsule.object?.name === addedTimeCapsule.current?.id
     );
     if (timeCapsule?.object) {
       setFocusedObject({ isIdle: false, timeCapsule });
@@ -99,25 +117,33 @@ function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
         className="bg-neutral-700 text-neutral-200"
         type="text"
         placeholder="제목"
-        {...register('title')}
+        {...register("title")}
       />
       <textarea
         className="bg-neutral-700 text-neutral-200"
         placeholder="내용"
-        {...register('description')}
+        {...register("description")}
       />
       <div className="w-full flex items-center">
         <input
           className="w-full bg-neutral-700 text-neutral-200"
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           placeholder="비밀번호"
-          {...register('password')}
+          {...register("password")}
         />
-        <div className="absolute right-3 cursor-pointer" onClick={togglePasswordVisibility}>
-          {showPassword ? <FaEye className="text-xs" /> : <FaEyeSlash className="text-xs" />}
+        <div
+          className="absolute right-3 cursor-pointer"
+          onClick={togglePasswordVisibility}
+          onKeyUp={togglePasswordVisibility}
+        >
+          {showPassword ? (
+            <FaEye className="text-xs" />
+          ) : (
+            <FaEyeSlash className="text-xs" />
+          )}
         </div>
       </div>
-      <button type="submit">{isOpen.isEditNow ? '수정' : '보관'}</button>
+      <button type="submit">{isOpen.isEditNow ? "수정" : "보관"}</button>
     </form>
   );
 }

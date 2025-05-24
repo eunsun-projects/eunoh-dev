@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks/auth/useAuth';
-import { TimeCapsule } from '@/types/tests.type';
-import { format } from 'date-fns';
-import { Dispatch, SetStateAction } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { IoClose } from 'react-icons/io5';
-import { useDeleteTimeCapsulesMutation } from '../_hooks/timecapsule.hooks';
-import { useTimeCapsuleStore } from '../_libs/zustand';
-import { TimeCapsuleUIState } from './TimeCapsuleUI';
+import { useAuth } from "@/hooks/auth/useAuth";
+import type { TimeCapsule } from "@/types/tests.type";
+import { format } from "date-fns";
+import type { Dispatch, SetStateAction } from "react";
+import { useFormContext } from "react-hook-form";
+import { IoClose } from "react-icons/io5";
+import { useDeleteTimeCapsulesMutation } from "../_hooks/timecapsule.hooks";
+import { useTimeCapsuleStore } from "../_libs/zustand";
+import type { TimeCapsuleUIState } from "./TimeCapsuleUI";
 
 interface TimeCapsuleUIListProps {
   setIsOpen: Dispatch<SetStateAction<TimeCapsuleUIState>>;
@@ -18,11 +18,12 @@ function TimeCapsuleUIList({ setIsOpen }: TimeCapsuleUIListProps) {
   const { setValue } = useFormContext();
   const { timeCapsules, setFocusedObject } = useTimeCapsuleStore();
   const { user } = useAuth();
-  const { mutateAsync: mutateDeleteTimeCapsule } = useDeleteTimeCapsulesMutation();
+  const { mutateAsync: mutateDeleteTimeCapsule } =
+    useDeleteTimeCapsulesMutation();
 
   const handleClickList = (timeCapsule: TimeCapsule) => () => {
     setFocusedObject({ isIdle: false, timeCapsule });
-    setIsOpen((prev) => ({
+    setIsOpen((prev: TimeCapsuleUIState) => ({
       ...prev,
       isPasswordOpen: true,
       isModalOpen: false,
@@ -32,7 +33,7 @@ function TimeCapsuleUIList({ setIsOpen }: TimeCapsuleUIListProps) {
   };
 
   const handleClickEdit = (timeCapsule: TimeCapsule) => () => {
-    setIsOpen((prev) => ({
+    setIsOpen((prev: TimeCapsuleUIState) => ({
       ...prev,
       isPasswordOpen: false,
       isModalOpen: false,
@@ -41,13 +42,13 @@ function TimeCapsuleUIList({ setIsOpen }: TimeCapsuleUIListProps) {
       isEditNow: true,
     }));
     setFocusedObject({ isIdle: false, timeCapsule });
-    setValue('title', timeCapsule.title);
-    setValue('description', timeCapsule.description);
-    setValue('password', timeCapsule.password);
+    setValue("title", timeCapsule.title);
+    setValue("description", timeCapsule.description);
+    setValue("password", timeCapsule.password);
   };
 
   const handleClickDelete = (timeCapsule: TimeCapsule) => () => {
-    if (confirm('정말 삭제하시겠습니까?')) {
+    if (confirm("정말 삭제하시겠습니까?")) {
       const payload = {
         id: timeCapsule.id,
       };
@@ -56,7 +57,7 @@ function TimeCapsuleUIList({ setIsOpen }: TimeCapsuleUIListProps) {
   };
 
   const handleClose = () => {
-    setIsOpen((prev) => ({
+    setIsOpen((prev: TimeCapsuleUIState) => ({
       ...prev,
       isListOpen: false,
       isFormOpen: false,
@@ -78,21 +79,33 @@ function TimeCapsuleUIList({ setIsOpen }: TimeCapsuleUIListProps) {
           <div key={timeCapsule.created_at} className="text-xs">
             <ul className="min-w-[372px]">
               <li className="flex gap-2 items-center justify-between">
-                <span>{'✔ '}</span>
+                <span>{"✔ "}</span>
                 <span
+                  onKeyUp={handleClickList(timeCapsule)}
                   className="w-24 md:w-28 truncate cursor-pointer"
                   onClick={handleClickList(timeCapsule)}
                 >
                   {timeCapsule.title}
                 </span>
-                <span>{' - '}</span>
+                <span>{" - "}</span>
                 <span className="w-36 md:w-44 text-xs">
-                  {format(new Date(timeCapsule.created_at), 'yy-MM-dd HH:mm:ss')}
+                  {format(
+                    new Date(timeCapsule.created_at),
+                    "yy-MM-dd HH:mm:ss"
+                  )}
                 </span>
-                <span className="cursor-pointer" onClick={handleClickEdit(timeCapsule)}>
+                <span
+                  onKeyUp={handleClickEdit(timeCapsule)}
+                  className="cursor-pointer"
+                  onClick={handleClickEdit(timeCapsule)}
+                >
                   수정
                 </span>
-                <span className="cursor-pointer" onClick={handleClickDelete(timeCapsule)}>
+                <span
+                  onKeyUp={handleClickDelete(timeCapsule)}
+                  className="cursor-pointer"
+                  onClick={handleClickDelete(timeCapsule)}
+                >
                   삭제
                 </span>
               </li>

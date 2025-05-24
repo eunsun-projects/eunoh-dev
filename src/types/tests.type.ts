@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import { Tables } from './supabase';
+import type * as THREE from 'three';
+import type { Tables } from './supabase';
 
 export type SajuImageTestResponse = {
   error?: string;

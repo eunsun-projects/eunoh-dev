@@ -1,9 +1,9 @@
 'use client';
 
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useTimeCapsuleStore } from '../_libs/zustand';
-import { TimeCapsuleUIState } from './TimeCapsuleUI';
+import type { TimeCapsuleUIState } from './TimeCapsuleUI';
 
 interface TimeCapsuleUIModalProps {
   setIsOpen: Dispatch<SetStateAction<TimeCapsuleUIState>>;

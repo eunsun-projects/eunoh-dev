@@ -1,23 +1,27 @@
-'use client';
+"use client";
 
-import { TimeCapsule } from '@/types/tests.type';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
-import { useTimeCapsuleStore } from '../_libs/zustand';
-import { TimeCapsuleUIState } from './TimeCapsuleUI';
+import type { TimeCapsule } from "@/types/tests.type";
+import { type Dispatch, type SetStateAction, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+import { useTimeCapsuleStore } from "../_libs/zustand";
+import type { TimeCapsuleUIState } from "./TimeCapsuleUI";
 
 interface TimeCapsuleUIPasswordFormProps {
   setIsOpen: Dispatch<SetStateAction<TimeCapsuleUIState>>;
 }
 
-function TimeCapsuleUIPasswordForm({ setIsOpen }: TimeCapsuleUIPasswordFormProps) {
+function TimeCapsuleUIPasswordForm({
+  setIsOpen,
+}: TimeCapsuleUIPasswordFormProps) {
   const { setFocusedObject, focusedObject } = useTimeCapsuleStore();
-  const { register, handleSubmit, setError, reset } = useFormContext<TimeCapsule>();
+  const { register, handleSubmit, setError, reset } =
+    useFormContext<TimeCapsule>();
   const [showPassword, setShowPassword] = useState(false);
 
-  const togglePasswordVisibility = () => setShowPassword((prevShowPassword) => !prevShowPassword);
+  const togglePasswordVisibility = () =>
+    setShowPassword((prevShowPassword) => !prevShowPassword);
 
   const onPasswordSubmit = (data: TimeCapsule) => {
     if (data.password === focusedObject?.timeCapsule?.password) {
@@ -28,7 +32,7 @@ function TimeCapsuleUIPasswordForm({ setIsOpen }: TimeCapsuleUIPasswordFormProps
       }));
       reset();
     } else {
-      setError('password', { message: '비밀번호가 틀렸습니다.' });
+      setError("password", { message: "비밀번호가 틀렸습니다." });
     }
   };
 
@@ -51,12 +55,20 @@ function TimeCapsuleUIPasswordForm({ setIsOpen }: TimeCapsuleUIPasswordFormProps
       <div className="w-full flex items-center">
         <input
           className="bg-neutral-700 text-neutral-200"
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           placeholder="비밀번호"
-          {...register('password')}
+          {...register("password")}
         />
-        <div className="absolute right-3 cursor-pointer" onClick={togglePasswordVisibility}>
-          {showPassword ? <FaEye className="text-xs" /> : <FaEyeSlash className="text-xs" />}
+        <div
+          className="absolute right-3 cursor-pointer"
+          onClick={togglePasswordVisibility}
+          onKeyUp={togglePasswordVisibility}
+        >
+          {showPassword ? (
+            <FaEye className="text-xs" />
+          ) : (
+            <FaEyeSlash className="text-xs" />
+          )}
         </div>
       </div>
       <button type="submit">확인</button>
