@@ -7,8 +7,8 @@ import type { User } from "@/types/user.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
-  createContext,
   type PropsWithChildren,
+  createContext,
   useCallback,
   useEffect,
   useState,
@@ -17,7 +17,7 @@ import {
 export type AuthContextType = {
   user: User | null;
   isPending: boolean;
-  loginWithProvider: (provider: string) => void;
+  loginWithProvider: (provider: string, next?: string) => void;
   logOut: () => void;
 };
 
@@ -40,9 +40,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
 
   const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
-    async (provider) => {
+    async (provider: string, next = "/admin") => {
+      // console.log("loginWithProvider", provider);
       try {
-        const data = await getLogInWithProvider(provider);
+        const data = await getLogInWithProvider(provider, next);
 
         if (!data.url) console.error("로그인 실패, redirect url 없음");
 
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         console.error(errorMessage);
       }
     },
-    [router],
+    [router]
   );
 
   const logOut: AuthContextType["logOut"] = useCallback(async () => {
