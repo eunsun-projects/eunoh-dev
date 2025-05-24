@@ -5,7 +5,9 @@
 @layer base {
   /* Define light and dark mode colors */
   :root {
-    --text-color--high: rgb(23 23 23 / var(--tw-text-opacity, 1)); /* Default text color for light mode */
+    --text-color--high: rgb(
+      23 23 23 / var(--tw-text-opacity, 1)
+    ); /* Default text color for light mode */
     --text-color--low: rgb(100 100 100 / var(--tw-text-opacity, 1));
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -74,6 +76,10 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --text-color--high: rgb(
+      230 230 230 / var(--tw-text-opacity, 1)
+    ); /* Text color for dark mode */
+    --text-color--low: rgb(186 186 186 / var(--tw-text-opacity, 1));
   }
 }
 
@@ -84,11 +90,6 @@
 
   .opacity-animate {
     animation: opacity-animate 2s ease-in-out;
-  }
-
-  .dark {
-    --text-color--high: rgb(230 230 230 / var(--tw-text-opacity, 1)); /* Text color for dark mode */
-    --text-color--low: rgb(186 186 186 / var(--tw-text-opacity, 1));
   }
 }
 
@@ -110,8 +111,6 @@
     opacity: 1;
   }
 }
-
-
 
 @layer base {
   * {
