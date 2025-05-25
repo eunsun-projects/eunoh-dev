@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/auth/useAuth";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import pricing from "../_data/pricing";
 import {
   MODELS_WITHOUT_IMAGE,
@@ -15,21 +16,27 @@ import {
 
 function CalculatorHeader() {
   const { loginWithProvider } = useAuth();
-  const { mode, model } = useUsageCalculatorStore();
+  const {
+    mode,
+    inputModel,
+    exchangeRate,
+    setExchangeRate,
+    setBasePricingNumber,
+  } = useUsageCalculatorStore(
+    useShallow((state) => ({
+      mode: state.mode,
+      inputModel: state.inputModel,
+      exchangeRate: state.exchangeRate,
+      setExchangeRate: state.setExchangeRate,
+      setBasePricingNumber: state.setBasePricingNumber,
+    }))
+  );
   const [selectedModels, setSelectedModels] = useState<{
     inputModel: string;
     outputModel: string;
   }>({
     inputModel: MODELS_WITHOUT_IMAGE.GPT_4O_MINI,
     outputModel: MODELS_WITHOUT_IMAGE.GPT_4O_MINI,
-  });
-
-  const [exchangeRate, setExchangeRate] = useState<{
-    won_number: number;
-    won_string: string;
-  }>({
-    won_number: 0,
-    won_string: "",
   });
 
   const [basePricing, setBasePricing] = useState<{
@@ -39,8 +46,6 @@ function CalculatorHeader() {
     input_base: "",
     output_base: "",
   });
-
-  console.log(basePricing);
 
   useEffect(() => {
     const url =
@@ -57,34 +62,33 @@ function CalculatorHeader() {
         won_string: wonRateObj.value,
       });
     });
-  }, []);
+  }, [setExchangeRate]);
 
   useEffect(() => {
     if (mode === MODES.TXT_TO_TXT) {
       setSelectedModels({
-        inputModel: model,
-        outputModel: model,
+        inputModel: inputModel,
+        outputModel: inputModel,
       });
     } else if (mode === MODES.TXT_TO_IMAGE) {
       setSelectedModels({
-        inputModel: model,
+        inputModel: inputModel,
         outputModel: MODELS_WITH_IMAGE.GPT_IMAGE_1,
       });
     } else if (mode === MODES.TXT_IMAGE_TO_TXT) {
       setSelectedModels({
-        inputModel: `${model} + ${MODELS_WITH_IMAGE.GPT_IMAGE_1}`,
-        outputModel: model,
+        inputModel: `${inputModel} + ${MODELS_WITH_IMAGE.GPT_IMAGE_1}`,
+        outputModel: inputModel,
       });
     } else if (mode === MODES.TXT_IMAGE_TO_IMAGE) {
       setSelectedModels({
-        inputModel: `${model} + ${MODELS_WITH_IMAGE.GPT_IMAGE_1}`,
+        inputModel: `${inputModel} + ${MODELS_WITH_IMAGE.GPT_IMAGE_1}`,
         outputModel: MODELS_WITH_IMAGE.GPT_IMAGE_1,
       });
     }
-  }, [model, mode]);
+  }, [inputModel, mode]);
 
   useEffect(() => {
-    console.log("selectedModels ===>", selectedModels);
     const isOutputModelImage =
       mode === MODES.TXT_TO_IMAGE || mode === MODES.TXT_IMAGE_TO_IMAGE;
 
@@ -104,20 +108,27 @@ function CalculatorHeader() {
           (model) => model.model === selectedModels.inputModel
         );
 
-    let inputBasePricingString = inputBaseModelSingle
-      ? `${String(
+    const inputBasePrice = inputBaseModelSingle
+      ? Number(
           (
             inputBaseModelSingle.input_per_token * exchangeRate.won_number
           ).toFixed(5)
-        )} 원`
-      : "";
+        )
+      : 0;
+
+    let inputBasePricingNumber = {
+      input_txt_base: inputBasePrice,
+      input_image_base: 0,
+      output_base: 0,
+    };
+
+    let inputBasePricingString =
+      inputBasePrice > 0 ? `${String(inputBasePrice)} 원` : "";
 
     if (isInputModelDouble) {
       const inputModelNames = selectedModels.inputModel
         .split("+")
         .map((name) => name.trim());
-
-      console.log(inputModelNames);
 
       const firstInputModel = pricing.txt_model.find(
         (model) => model.model === inputModelNames[0]
@@ -127,11 +138,22 @@ function CalculatorHeader() {
         (model) => model.model === `${inputModelNames[1]}-vision`
       )!;
 
-      inputBasePricingString = `${String(
+      const firstInputModelPrice = Number(
         (firstInputModel.input_per_token * exchangeRate.won_number).toFixed(5)
-      )} 원 + ${String(
+      );
+      const secondInputModelPrice = Number(
         (secondInputModel.input_per_token * exchangeRate.won_number).toFixed(5)
+      );
+
+      inputBasePricingString = `${String(firstInputModelPrice)} 원 + ${String(
+        secondInputModelPrice
       )} 원`;
+
+      inputBasePricingNumber = {
+        input_txt_base: firstInputModelPrice,
+        input_image_base: secondInputModelPrice,
+        output_base: 0,
+      };
     }
 
     const outputBaseModel = outputModelsPricingBase.find(
@@ -139,16 +161,23 @@ function CalculatorHeader() {
     );
 
     if (exchangeRate.won_number > 0 && outputBaseModel) {
+      const outputBasePrice = Number(
+        (outputBaseModel.output_per_token * exchangeRate.won_number).toFixed(5)
+      );
+
+      inputBasePricingNumber = {
+        ...inputBasePricingNumber,
+        output_base: outputBasePrice,
+      };
+
       setBasePricing({
         input_base: inputBasePricingString,
-        output_base: `${String(
-          (outputBaseModel.output_per_token * exchangeRate.won_number).toFixed(
-            5
-          )
-        )} 원`,
+        output_base: `${String(outputBasePrice)} 원`,
       });
+
+      setBasePricingNumber(inputBasePricingNumber);
     }
-  }, [exchangeRate, selectedModels, mode]);
+  }, [exchangeRate, selectedModels, mode, setBasePricingNumber]);
 
   return (
     <div className="flex flex-col gap-2 justify-center items-center">
