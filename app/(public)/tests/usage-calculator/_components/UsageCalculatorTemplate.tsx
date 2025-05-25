@@ -1,5 +1,6 @@
 "use client";
 
+import CalculateResult from "./CalculateResult";
 import CalculatorHeader from "./CalculatorHeader";
 import Chat from "./Chat";
 import ModeSelector from "./ModeSelector";
@@ -11,6 +12,7 @@ function UsageCalculatorTemplate() {
       <CalculatorHeader />
       <ModeSelector />
       <ModelSelector />
+      <CalculateResult />
       <Chat />
     </div>
   );
