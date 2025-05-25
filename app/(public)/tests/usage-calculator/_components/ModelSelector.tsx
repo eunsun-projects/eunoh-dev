@@ -25,13 +25,13 @@ function ModelSelector() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<ModelWithoutImage | null>(null);
 
-  const { setModel } = useUsageCalculatorStore();
+  const { setInputModel } = useUsageCalculatorStore();
 
   useEffect(() => {
     if (value) {
-      setModel(value);
+      setInputModel(value);
     }
-  }, [value, setModel]);
+  }, [value, setInputModel]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,7 +45,7 @@ function ModelSelector() {
           aria-haspopup="listbox"
           className="w-[500px] justify-between"
         >
-          {value ? value : "모델 선택, 기본 gpt-4o-mini"}
+          {value ? value : "인풋모델 선택, 기본 gpt-4o-mini"}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
