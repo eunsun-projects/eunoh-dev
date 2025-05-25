@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAuth } from "@/hooks/auth/useAuth";
 import { useChat } from "@ai-sdk/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
@@ -17,6 +18,7 @@ import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { toast } from "sonner";
 import { z } from "zod";
 import { useUsageCalculatorStore } from "../_libs/zustand";
 import ChatTextArea from "./ChatTextArea";
@@ -33,6 +35,7 @@ const formSchema = z.object({
 });
 
 function Chat() {
+  const { user } = useAuth();
   const { inputModel: model, setUsage } = useUsageCalculatorStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,6 +61,14 @@ function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    if (!user) {
+      toast.error("Please login to use the chat");
+      return;
+    }
+    if (!user.isAdmin) {
+      toast.error("Please login as an admin to use the chat");
+      return;
+    }
     handleChatSubmit(
       {},
       {
@@ -76,7 +87,7 @@ function Chat() {
 
   return (
     <>
-      <div className="w-full h-[360px] flex flex-col gap-2 text-xs overflow-y-auto">
+      <div className="w-full h-[440px] flex flex-col gap-2 text-xs overflow-y-auto">
         {messages.map((m) => (
           <div key={m.id} className="w-full break-keep">
             {m.role === "user" ? (
