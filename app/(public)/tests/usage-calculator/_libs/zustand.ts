@@ -1,3 +1,4 @@
+import type { LanguageModelUsage } from "ai";
 import { create } from "zustand";
 
 export const MODES = {
@@ -22,17 +23,46 @@ export type ModelWithoutImage =
 export type ModelWithImage =
   (typeof MODELS_WITH_IMAGE)[keyof typeof MODELS_WITH_IMAGE];
 export type Model = ModelWithoutImage | ModelWithImage;
+export type ExchangeRate = {
+  won_number: number;
+  won_string: string;
+};
+export type BasePricingNumber = {
+  input_txt_base: number;
+  input_image_base: number;
+  output_base: number;
+};
 
 export interface UsageCalculatorState {
   mode: Mode;
   setMode: (mode: Mode) => void;
-  model: ModelWithoutImage;
-  setModel: (model: ModelWithoutImage) => void;
+  inputModel: ModelWithoutImage;
+  setInputModel: (model: ModelWithoutImage) => void;
+  usage: LanguageModelUsage | null;
+  setUsage: (usage: LanguageModelUsage | null) => void;
+  exchangeRate: ExchangeRate;
+  setExchangeRate: (exchangeRate: ExchangeRate) => void;
+  basePricingNumber: BasePricingNumber;
+  setBasePricingNumber: (basePricing: BasePricingNumber) => void;
 }
 
 export const useUsageCalculatorStore = create<UsageCalculatorState>((set) => ({
   mode: "txt-to-txt",
   setMode: (mode: Mode) => set({ mode }),
-  model: "gpt-4o-mini",
-  setModel: (model: ModelWithoutImage) => set({ model }),
+  inputModel: "gpt-4o-mini",
+  setInputModel: (model: ModelWithoutImage) => set({ inputModel: model }),
+  usage: null,
+  setUsage: (usage: LanguageModelUsage | null) => set({ usage }),
+  exchangeRate: {
+    won_number: 0,
+    won_string: "",
+  },
+  setExchangeRate: (exchangeRate: ExchangeRate) => set({ exchangeRate }),
+  basePricingNumber: {
+    input_txt_base: 0,
+    input_image_base: 0,
+    output_base: 0,
+  },
+  setBasePricingNumber: (basePricing: BasePricingNumber) =>
+    set({ basePricingNumber: basePricing }),
 }));
