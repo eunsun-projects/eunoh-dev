@@ -4,13 +4,35 @@ import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef } from "react";
 
 function ChatTemplate() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    onFinish: (message, options) => {
+      // console.log("finished message", message);
+      console.log("usage ===>", options.usage);
+    },
+  });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    handleSubmit(
+      {
+        preventDefault: () => {
+          e.preventDefault();
+        },
+      },
+      {
+        body: {
+          model: "gpt-4o-mini",
+        },
+      }
+    );
+  };
 
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch gap-4">
@@ -30,7 +52,7 @@ function ChatTemplate() {
 
       <div ref={messagesEndRef} />
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <input
           className="fixed bottom-0 w-full max-w-md p-2 mb-8 bg-neutral-300 border border-neutral-300 shadow-xl focus:outline-none focus-visible:outline-none"
           value={input}

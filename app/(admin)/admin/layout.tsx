@@ -9,11 +9,11 @@ import {
 import { AuthProvider } from "@/contexts/auth.context";
 import { getUserFromHeader } from "@/utils/auth/getUserFromHeader";
 import {
-  dehydrate,
   HydrationBoundary,
   QueryClient,
+  dehydrate,
 } from "@tanstack/react-query";
-import { type PropsWithChildren, Suspense } from "react";
+import type { PropsWithChildren } from "react";
 import AdminHeader from "./_components/AdminHeader";
 
 type AdminLayoutProps = PropsWithChildren;
@@ -37,14 +37,14 @@ async function AdminLayout({ children }: AdminLayoutProps) {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HydrationBoundary state={dehydratedState}>
-        <AuthProvider>
-          <AdminHeader />
-          {children}
-        </AuthProvider>
-      </HydrationBoundary>
-    </Suspense>
+    // <Suspense fallback={<div>Loading...</div>}>
+    <HydrationBoundary state={dehydratedState}>
+      <AuthProvider>
+        <AdminHeader />
+        {children}
+      </AuthProvider>
+    </HydrationBoundary>
+    // </Suspense>
   );
 }
 

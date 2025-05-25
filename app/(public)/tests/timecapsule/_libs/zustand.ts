@@ -1,6 +1,10 @@
-import type { FocusedObject, TimeCapsule, TimeCapsuleFromSupabase } from '@/types/tests.type';
-import type * as THREE from 'three';
-import { create } from 'zustand';
+import type {
+  FocusedObject,
+  TimeCapsule,
+  TimeCapsuleFromSupabase,
+} from "@/types/tests.type";
+import type * as THREE from "three";
+import { create } from "zustand";
 
 export interface TimeCapsuleState {
   focusedObject: FocusedObject;
@@ -10,14 +14,16 @@ export interface TimeCapsuleState {
   setQueryStringTimeCapsuleId: (queryStringTimeCapsuleId: string) => void;
   setFocusedObject: (focusedObject: FocusedObject) => void;
   setTimeCapsules: (timeCapsules: TimeCapsule[]) => void;
-  setTimeCapsulesWithoutObject: (timeCapsulesWithoutObject: TimeCapsuleFromSupabase[]) => void;
+  setTimeCapsulesWithoutObject: (
+    timeCapsulesWithoutObject: TimeCapsuleFromSupabase[]
+  ) => void;
   updateTimeCapsuleObject: (object: THREE.Mesh) => void;
   addTimeCapsule: (timeCapsule: TimeCapsule) => void;
   editTimeCapsule: (timeCapsule: TimeCapsule) => void;
   deleteTimeCapsule: (timeCapsule: TimeCapsule) => void;
 }
 
-console.log('zustand restarted??');
+// console.log('zustand restarted??');
 export const useTimeCapsuleStore = create<TimeCapsuleState>((set) => ({
   focusedObject: {
     isIdle: null,
@@ -25,13 +31,14 @@ export const useTimeCapsuleStore = create<TimeCapsuleState>((set) => ({
   },
   timeCapsules: [],
   timeCapsulesWithoutObject: [],
-  queryStringTimeCapsuleId: '',
+  queryStringTimeCapsuleId: "",
   setQueryStringTimeCapsuleId: (queryStringTimeCapsuleId: string) =>
     set({ queryStringTimeCapsuleId }),
   setFocusedObject: (focusedObject: FocusedObject) => set({ focusedObject }),
   setTimeCapsules: (timeCapsules: TimeCapsule[]) => set({ timeCapsules }),
-  setTimeCapsulesWithoutObject: (timeCapsulesWithoutObject: TimeCapsuleFromSupabase[]) =>
-    set({ timeCapsulesWithoutObject }),
+  setTimeCapsulesWithoutObject: (
+    timeCapsulesWithoutObject: TimeCapsuleFromSupabase[]
+  ) => set({ timeCapsulesWithoutObject }),
   addTimeCapsule: (timeCapsule: TimeCapsule) =>
     set((state) => ({
       timeCapsules: [...(state.timeCapsules || []), timeCapsule],
@@ -39,13 +46,17 @@ export const useTimeCapsuleStore = create<TimeCapsuleState>((set) => ({
   updateTimeCapsuleObject: (object: THREE.Mesh) =>
     set((state) => ({
       timeCapsules: state.timeCapsules.map((timeCapsule) =>
-        timeCapsule.id === object.name ? { ...timeCapsule, object } : timeCapsule,
+        timeCapsule.id === object.name
+          ? { ...timeCapsule, object }
+          : timeCapsule
       ),
     })),
   editTimeCapsule: (newTimeCapsule: TimeCapsule) =>
     set((state) => ({
       timeCapsules: state.timeCapsules.map((timeCapsule) =>
-        timeCapsule.id === newTimeCapsule.id ? { ...timeCapsule, ...newTimeCapsule } : timeCapsule,
+        timeCapsule.id === newTimeCapsule.id
+          ? { ...timeCapsule, ...newTimeCapsule }
+          : timeCapsule
       ),
     })),
   deleteTimeCapsule: (timeCapsule: TimeCapsule) =>

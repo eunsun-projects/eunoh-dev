@@ -1,12 +1,10 @@
 import { getProjects } from "@/apis/projects";
-import Loading from "@/app/loading";
 import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
 import {
-  dehydrate,
   HydrationBoundary,
   QueryClient,
+  dehydrate,
 } from "@tanstack/react-query";
-import { Suspense } from "react";
 import ProjectsListTemplate from "./_components/ProjectsListTemplate";
 
 async function ProjectsPage() {
@@ -20,11 +18,11 @@ async function ProjectsPage() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<Loading />}>
-      <HydrationBoundary state={dehydratedState}>
-        <ProjectsListTemplate />
-      </HydrationBoundary>
-    </Suspense>
+    // <Suspense fallback={<Loading />}>
+    <HydrationBoundary state={dehydratedState}>
+      <ProjectsListTemplate />
+    </HydrationBoundary>
+    // </Suspense>
   );
 }
 
