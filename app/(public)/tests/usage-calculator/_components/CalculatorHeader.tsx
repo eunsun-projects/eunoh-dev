@@ -4,48 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/auth/useAuth";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import pricing from "../_data/pricing";
-import {
-  MODELS_WITHOUT_IMAGE,
-  MODELS_WITH_IMAGE,
-  MODES,
-  useUsageCalculatorStore,
-} from "../_libs/zustand";
+import { type Base, useUsageCalculatorStore } from "../_libs/zustand";
 
 function CalculatorHeader() {
   const { loginWithProvider } = useAuth();
-  const {
-    mode,
-    inputModel,
-    exchangeRate,
-    setExchangeRate,
-    setBasePricingNumber,
-  } = useUsageCalculatorStore(
-    useShallow((state) => ({
-      mode: state.mode,
-      inputModel: state.inputModel,
-      exchangeRate: state.exchangeRate,
-      setExchangeRate: state.setExchangeRate,
-      setBasePricingNumber: state.setBasePricingNumber,
-    }))
-  );
-  const [selectedModels, setSelectedModels] = useState<{
-    inputModel: string;
-    outputModel: string;
-  }>({
-    inputModel: MODELS_WITHOUT_IMAGE.GPT_4O_MINI,
-    outputModel: MODELS_WITHOUT_IMAGE.GPT_4O_MINI,
-  });
-
-  const [basePricing, setBasePricing] = useState<{
-    input_base: string | "";
-    output_base: string | "";
-  }>({
-    input_base: "",
-    output_base: "",
-  });
+  const { mode, model, exchangeRate, base, setExchangeRate, setBase } =
+    useUsageCalculatorStore(
+      useShallow((state) => ({
+        mode: state.mode,
+        model: state.model,
+        exchangeRate: state.exchangeRate,
+        base: state.base,
+        setExchangeRate: state.setExchangeRate,
+        setBase: state.setBase,
+      }))
+    );
 
   useEffect(() => {
     const url =
@@ -65,119 +41,97 @@ function CalculatorHeader() {
   }, [setExchangeRate]);
 
   useEffect(() => {
-    if (mode === MODES.TXT_TO_TXT) {
-      setSelectedModels({
-        inputModel: inputModel,
-        outputModel: inputModel,
-      });
-    } else if (mode === MODES.TXT_TO_IMAGE) {
-      setSelectedModels({
-        inputModel: inputModel,
-        outputModel: MODELS_WITH_IMAGE.GPT_IMAGE_1,
-      });
-    } else if (mode === MODES.TXT_IMAGE_TO_TXT) {
-      setSelectedModels({
-        inputModel: `${inputModel} + ${MODELS_WITH_IMAGE.GPT_IMAGE_1}`,
-        outputModel: inputModel,
-      });
-    } else if (mode === MODES.TXT_IMAGE_TO_IMAGE) {
-      setSelectedModels({
-        inputModel: `${inputModel} + ${MODELS_WITH_IMAGE.GPT_IMAGE_1}`,
-        outputModel: MODELS_WITH_IMAGE.GPT_IMAGE_1,
-      });
-    }
-  }, [inputModel, mode]);
-
-  useEffect(() => {
-    const isOutputModelImage =
-      mode === MODES.TXT_TO_IMAGE || mode === MODES.TXT_IMAGE_TO_IMAGE;
-
-    const outputModelsPricingBase = isOutputModelImage
-      ? pricing.image_model
-      : pricing.txt_model;
-
-    const outputModelName = isOutputModelImage
-      ? `${selectedModels.outputModel}-images`
-      : selectedModels.outputModel;
-
-    const isInputModelDouble = selectedModels.inputModel.includes("+");
-
-    const inputBaseModelSingle = isInputModelDouble
-      ? null
-      : pricing.txt_model.find(
-          (model) => model.model === selectedModels.inputModel
-        );
-
-    const inputBasePrice = inputBaseModelSingle
-      ? Number(
-          (
-            inputBaseModelSingle.input_per_token * exchangeRate.won_number
-          ).toFixed(5)
-        )
-      : 0;
-
-    let inputBasePricingNumber = {
-      input_txt_base: inputBasePrice,
-      input_image_base: 0,
-      output_base: 0,
-    };
-
-    let inputBasePricingString =
-      inputBasePrice > 0 ? `${String(inputBasePrice)} 원` : "";
-
-    if (isInputModelDouble) {
-      const inputModelNames = selectedModels.inputModel
-        .split("+")
-        .map((name) => name.trim());
-
-      const firstInputModel = pricing.txt_model.find(
-        (model) => model.model === inputModelNames[0]
-      )!;
-
-      const secondInputModel = pricing.image_model.find(
-        (model) => model.model === `${inputModelNames[1]}-vision`
-      )!;
-
-      const firstInputModelPrice = Number(
-        (firstInputModel.input_per_token * exchangeRate.won_number).toFixed(5)
-      );
-      const secondInputModelPrice = Number(
-        (secondInputModel.input_per_token * exchangeRate.won_number).toFixed(5)
-      );
-
-      inputBasePricingString = `${String(firstInputModelPrice)} 원 + ${String(
-        secondInputModelPrice
-      )} 원`;
-
-      inputBasePricingNumber = {
-        input_txt_base: firstInputModelPrice,
-        input_image_base: secondInputModelPrice,
-        output_base: 0,
+    if (model && mode && exchangeRate.won_number > 0) {
+      const newBase: Base = {
+        input_txt_base: {
+          model: model,
+          basePrice: 0,
+        },
+        input_image_base: {
+          model: model,
+          basePrice: 0,
+        },
+        output_txt_base: {
+          model: model,
+          basePrice: 0,
+        },
+        output_image_base: {
+          model: model,
+          basePrice: 0,
+        },
       };
-    }
+      if (mode === "txt-to-txt") {
+        newBase.input_txt_base.model = model;
+        newBase.input_image_base.model = null;
+        newBase.output_txt_base.model = model;
+        newBase.output_image_base.model = null;
+      } else if (mode === "txt-to-image") {
+        newBase.input_txt_base.model = "gpt-image-1";
+        newBase.input_image_base.model = null;
+        newBase.output_txt_base.model = null;
+        newBase.output_image_base.model = "gpt-image-1";
+      } else if (mode === "txt+image-to-txt") {
+        newBase.input_txt_base.model = model;
+        newBase.input_image_base.model = "gpt-image-1";
+        newBase.output_txt_base.model = model;
+        newBase.output_image_base.model = null;
+      } else if (mode === "txt+image-to-image") {
+        newBase.input_txt_base.model = model;
+        newBase.input_image_base.model = "gpt-image-1";
+        newBase.output_txt_base.model = null;
+        newBase.output_image_base.model = "gpt-image-1";
+      }
 
-    const outputBaseModel = outputModelsPricingBase.find(
-      (model) => model.model === outputModelName
-    );
-
-    if (exchangeRate.won_number > 0 && outputBaseModel) {
-      const outputBasePrice = Number(
-        (outputBaseModel.output_per_token * exchangeRate.won_number).toFixed(5)
+      const txtInputModelPricing = pricing.txt_model.find(
+        (model) => model.model === newBase.input_txt_base.model
+      );
+      const imageInputModelPricing = pricing.image_model.find(
+        (model) => model.model === newBase.input_image_base.model
+      );
+      const txtOutputModelPricing = pricing.txt_model.find(
+        (model) => model.model === newBase.output_txt_base.model
+      );
+      const imageOutputModelPricing = pricing.image_model.find(
+        (model) => model.model === newBase.output_image_base.model
       );
 
-      inputBasePricingNumber = {
-        ...inputBasePricingNumber,
-        output_base: outputBasePrice,
-      };
+      const txtInputModelPricingPrice = txtInputModelPricing
+        ? Number(
+            (
+              txtInputModelPricing.input_per_token * exchangeRate.won_number
+            ).toFixed(5)
+          )
+        : 0;
+      const imageInputModelPricingPrice = imageInputModelPricing
+        ? Number(
+            (
+              imageInputModelPricing.input_per_token * exchangeRate.won_number
+            ).toFixed(5)
+          )
+        : 0;
+      const txtOutputModelPricingPrice = txtOutputModelPricing
+        ? Number(
+            (
+              txtOutputModelPricing.output_per_token * exchangeRate.won_number
+            ).toFixed(5)
+          )
+        : 0;
+      const imageOutputModelPricingPrice = imageOutputModelPricing
+        ? Number(
+            (
+              imageOutputModelPricing.output_per_token * exchangeRate.won_number
+            ).toFixed(5)
+          )
+        : 0;
 
-      setBasePricing({
-        input_base: inputBasePricingString,
-        output_base: `${String(outputBasePrice)} 원`,
-      });
+      newBase.input_txt_base.basePrice = txtInputModelPricingPrice;
+      newBase.input_image_base.basePrice = imageInputModelPricingPrice;
+      newBase.output_txt_base.basePrice = txtOutputModelPricingPrice;
+      newBase.output_image_base.basePrice = imageOutputModelPricingPrice;
 
-      setBasePricingNumber(inputBasePricingNumber);
+      setBase(newBase);
     }
-  }, [exchangeRate, selectedModels, mode, setBasePricingNumber]);
+  }, [model, setBase, mode, exchangeRate]);
 
   return (
     <div className="flex flex-col gap-2 justify-center items-center">
@@ -204,24 +158,66 @@ function CalculatorHeader() {
       <div className="flex flex-row gap-2 items-center">
         <span className="text-sm text-gray-400">모드: {mode}</span>
         <Separator orientation="vertical" className="h-4 bg-neutral-400" />
-        <span className="text-sm text-gray-400">
-          인풋모델: {selectedModels.inputModel}
-        </span>
+        <span className="text-sm text-gray-400">인풋모델:</span>
+        {base.input_txt_base.model ? (
+          <span className="text-sm text-gray-400">
+            {base.input_txt_base.model}
+          </span>
+        ) : null}
+        {base.input_image_base.model ? (
+          <span className="text-sm text-gray-400">
+            {base.input_image_base.model}
+          </span>
+        ) : null}
         <Separator orientation="vertical" className="h-4 bg-neutral-400" />
-        <span className="text-sm text-gray-400">
-          아웃풋모델: {selectedModels.outputModel}
-        </span>
+        <span className="text-sm text-gray-400">아웃풋모델:</span>
+        {base.output_txt_base.model ? (
+          <span className="text-sm text-gray-400">
+            {base.output_txt_base.model}
+          </span>
+        ) : null}
+        {base.output_image_base.model ? (
+          <span className="text-sm text-gray-400">
+            {base.output_image_base.model}
+          </span>
+        ) : null}
       </div>
-      <div className="flex flex-row gap-2 items-center">
-        <span className="text-sm text-gray-400">
-          인풋가격기준: {basePricing.input_base}
-        </span>
-        <Separator orientation="vertical" className="h-4 bg-neutral-400" />
-        <span className="text-sm text-gray-400">
-          아웃풋가격기준: {basePricing.output_base}
-        </span>
-        <Separator orientation="vertical" className="h-4 bg-neutral-400" />
-        <span className="text-sm text-gray-400">토큰당 가격임</span>
+      <div className="flex flex-col gap-2 items-center">
+        <span className="text-sm text-gray-400">인풋가격기준: </span>
+        <div className="flex flex-row gap-2 items-center">
+          {base.input_txt_base.basePrice ? (
+            <span className="text-sm text-gray-400">
+              텍스트 {base.input_txt_base.basePrice} 원
+            </span>
+          ) : null}
+          {base.input_txt_base.basePrice && base.input_image_base.basePrice ? (
+            <Separator orientation="vertical" className="h-4 bg-neutral-400" />
+          ) : null}
+          {base.input_image_base.basePrice ? (
+            <span className="text-sm text-gray-400">
+              이미지 {base.input_image_base.basePrice} 원
+            </span>
+          ) : null}
+          <span className="text-xs text-gray-400">(토큰당 가격)</span>
+        </div>
+        <span className="text-sm text-gray-400">아웃풋가격기준: </span>
+        <div className="flex flex-row gap-2 items-center">
+          {base.output_txt_base.basePrice ? (
+            <span className="text-sm text-gray-400">
+              텍스트 {base.output_txt_base.basePrice} 원
+            </span>
+          ) : null}
+          {base.output_txt_base.basePrice &&
+          base.output_image_base.basePrice ? (
+            <Separator orientation="vertical" className="h-4 bg-neutral-400" />
+          ) : null}
+          {base.output_image_base.basePrice ? (
+            <span className="text-sm text-gray-400">
+              이미지 {base.output_image_base.basePrice} 원
+            </span>
+          ) : null}
+          <span className="text-xs text-gray-400">(토큰당 가격)</span>
+        </div>
       </div>
     </div>
   );
