@@ -15,23 +15,33 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  MODELS_WITHOUT_IMAGE,
-  type ModelWithoutImage,
-  useUsageCalculatorStore,
-} from "../_libs/zustand";
+import { useShallow } from "zustand/react/shallow";
+import { MODELS, type Model, useUsageCalculatorStore } from "../_libs/zustand";
 
 function ModelSelector() {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<ModelWithoutImage | null>(null);
+  const [value, setValue] = useState<Model | null>(null);
 
-  const { setInputModel } = useUsageCalculatorStore();
+  const { mode, setBase, exchangeRate, model, setModel } =
+    useUsageCalculatorStore(
+      useShallow((state) => ({
+        mode: state.mode,
+        setBase: state.setBase,
+        exchangeRate: state.exchangeRate,
+        model: state.model,
+        setModel: state.setModel,
+      }))
+    );
 
   useEffect(() => {
     if (value) {
-      setInputModel(value);
+      setModel(value);
     }
-  }, [value, setInputModel]);
+  }, [value, setModel]);
+
+  const modelList = Object.values(MODELS).filter(
+    (model) => model !== "gpt-image-1"
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -55,28 +65,26 @@ function ModelSelector() {
           <CommandList id="model-selector">
             {/* <CommandEmpty>모델 못 찾음</CommandEmpty> */}
             <CommandGroup>
-              {Object.entries(MODELS_WITHOUT_IMAGE).map(
-                ([key, model]: [string, ModelWithoutImage]) => (
-                  <CommandItem
-                    key={key}
-                    value={model}
-                    onSelect={(currentValue: string) => {
-                      const selectedModel = currentValue as ModelWithoutImage;
-                      setValue(selectedModel === value ? null : selectedModel);
-                      setOpen(false);
-                    }}
-                    className="cursor-pointer"
-                  >
-                    {model}
-                    <Check
-                      className={cn(
-                        "ml-auto",
-                        value === model ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                )
-              )}
+              {modelList.map((model) => (
+                <CommandItem
+                  key={model}
+                  value={model}
+                  onSelect={(currentValue: string) => {
+                    const selectedModel = currentValue as Model;
+                    setValue(selectedModel === value ? null : selectedModel);
+                    setOpen(false);
+                  }}
+                  className="cursor-pointer"
+                >
+                  {model}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      value === model ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
             </CommandGroup>
           </CommandList>
         </Command>

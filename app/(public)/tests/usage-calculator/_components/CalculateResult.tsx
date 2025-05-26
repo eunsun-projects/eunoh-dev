@@ -7,19 +7,19 @@ import { useShallow } from "zustand/react/shallow";
 import { useUsageCalculatorStore } from "../_libs/zustand";
 
 function CalculateResult() {
-  const { usage, basePricingNumber } = useUsageCalculatorStore(
+  const { usage, base } = useUsageCalculatorStore(
     useShallow((state) => ({
       usage: state.usage,
-      basePricingNumber: state.basePricingNumber,
+      base: state.base,
     }))
   );
 
   const prices = useMemo(() => {
     const input = usage?.promptTokens
-      ? basePricingNumber.input_txt_base * usage.promptTokens
+      ? base.input_txt_base.basePrice * usage.promptTokens
       : 0;
     const output = usage?.completionTokens
-      ? basePricingNumber.output_base * usage.completionTokens
+      ? base.output_txt_base.basePrice * usage.completionTokens
       : 0;
     const total = input + output;
 
@@ -28,7 +28,7 @@ function CalculateResult() {
       outputPrice: Math.floor(output * 100000) / 100000,
       totalPrice: Math.floor(total * 100000) / 100000,
     };
-  }, [usage, basePricingNumber]);
+  }, [usage, base]);
 
   return (
     <div className="w-full h-full flex gap-2 items-center justify-center text-neutral-200">
