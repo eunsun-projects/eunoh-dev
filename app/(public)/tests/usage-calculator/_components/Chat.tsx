@@ -20,7 +20,8 @@ import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useUsageCalculatorStore } from "../_libs/zustand";
+import { useShallow } from "zustand/react/shallow";
+import { type Model, useUsageCalculatorStore } from "../_libs/zustand";
 import ChatTextArea from "./ChatTextArea";
 
 interface MarkdownProps {
@@ -29,14 +30,17 @@ interface MarkdownProps {
 }
 
 const formSchema = z.object({
-  message: z.string().min(2, {
-    message: "Message must be at least 2 characters.",
-  }),
+  message: z.string(),
 });
 
 function Chat() {
   const { user } = useAuth();
-  const { inputModel: model, setUsage } = useUsageCalculatorStore();
+  const { base, setUsage } = useUsageCalculatorStore(
+    useShallow((state) => ({
+      base: state.base,
+      setUsage: state.setUsage,
+    }))
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,6 +65,11 @@ function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    if (data.message.length < 5) {
+      toast.error("메시지는 5자 이상이어야 합니다.");
+      return;
+    }
+
     if (!user) {
       toast.error("Please login to use the chat");
       return;
@@ -69,14 +78,23 @@ function Chat() {
       toast.error("Please login as an admin to use the chat");
       return;
     }
+
+    const selectedModel: Model = base.input_txt_base.model
+      ? base.input_txt_base.model
+      : base.input_image_base.model!;
+
     handleChatSubmit(
       {},
       {
         body: {
-          model: model,
+          model: selectedModel,
         },
       }
     );
+
+    form.reset({ message: "" });
+    form.clearErrors("message");
+    setInput("");
   };
 
   useEffect(() => {
@@ -87,7 +105,7 @@ function Chat() {
 
   return (
     <>
-      <div className="w-full h-[440px] flex flex-col gap-2 text-xs overflow-y-auto">
+      <div className="w-full h-[380px] flex flex-col gap-2 text-xs overflow-y-auto">
         {messages.map((m) => (
           <div key={m.id} className="w-full break-keep">
             {m.role === "user" ? (
@@ -129,8 +147,6 @@ function Chat() {
                       if (e.key === "Enter") {
                         e.preventDefault();
                         e.currentTarget.form?.requestSubmit();
-                        form.reset({ message: "" });
-                        setInput("");
                       }
                     }}
                     onChange={(e) => {
@@ -142,7 +158,7 @@ function Chat() {
                 <FormDescription className="hidden">
                   This is your message.
                 </FormDescription>
-                <FormMessage className="text-xs text-red-400" />
+                <FormMessage className="absolute bottom-0 left-2 text-[10px] text-red-400" />
               </FormItem>
             )}
           />
