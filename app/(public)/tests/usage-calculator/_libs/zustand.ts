@@ -31,13 +31,26 @@ export type Base = {
   output_image_base: ModelAndBasePrice;
 };
 
+// 스트림으로 전달되는 데이터 구조에 대한 인터페이스 정의
+export interface IOpenAIResponseUsage {
+  input_tokens: number;
+  input_tokens_details?: {
+    cached_tokens: number;
+  };
+  output_tokens: number;
+  output_tokens_details?: {
+    reasoning_tokens: number;
+  };
+  total_tokens: number;
+}
+
 export interface UsageCalculatorState {
   mode: Mode;
   setMode: (mode: Mode) => void;
   model: Model;
   setModel: (model: Model) => void;
-  usage: LanguageModelUsage | null;
-  setUsage: (usage: LanguageModelUsage | null) => void;
+  usage: LanguageModelUsage | IOpenAIResponseUsage | null;
+  setUsage: (usage: LanguageModelUsage | IOpenAIResponseUsage | null) => void;
   exchangeRate: ExchangeRate;
   setExchangeRate: (exchangeRate: ExchangeRate) => void;
   base: Base;
@@ -50,7 +63,8 @@ export const useUsageCalculatorStore = create<UsageCalculatorState>((set) => ({
   model: "gpt-4o-mini",
   setModel: (model: Model) => set({ model }),
   usage: null,
-  setUsage: (usage: LanguageModelUsage | null) => set({ usage }),
+  setUsage: (usage: LanguageModelUsage | IOpenAIResponseUsage | null) =>
+    set({ usage }),
   exchangeRate: {
     won_number: 0,
     won_string: "",

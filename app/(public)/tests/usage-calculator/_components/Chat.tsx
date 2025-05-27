@@ -13,14 +13,15 @@ import {
 import { useAuth } from "@/hooks/auth/useAuth";
 import { useChat } from "@ai-sdk/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Image, Send } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
+import { useGenTxtToImgQuery } from "../_hooks/query.hooks";
 import { type Model, useUsageCalculatorStore } from "../_libs/zustand";
 import ChatTextArea from "./ChatTextArea";
 
@@ -34,10 +35,15 @@ const formSchema = z.object({
 });
 
 function Chat() {
+  const [isComposing, setIsComposing] = useState(false);
+  const [prompt, setPrompt] = useState<string | null>(null);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const { user } = useAuth();
-  const { base, setUsage } = useUsageCalculatorStore(
+  const { mode, model, base, setUsage } = useUsageCalculatorStore(
     useShallow((state) => ({
       base: state.base,
+      mode: state.mode,
+      model: state.model,
       setUsage: state.setUsage,
     }))
   );
@@ -57,19 +63,36 @@ function Chat() {
   } = useChat({
     onFinish: (message, options) => {
       // console.log("finished message", message);
-      console.log("usage ===>", options.usage);
+      console.log("chat usage ===>", options.usage);
       setUsage(options.usage);
     },
   });
 
+  const {
+    data: txtToImgData,
+    status: txtToImgImagesStatus,
+    fetchStatus: txtToImgImagesFetchStatus,
+    error: txtToImgImagesError,
+    refetch: imagesRefetch,
+  } = useGenTxtToImgQuery({
+    prompt,
+    model,
+  });
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const countRef = useRef<number>(0);
+
+  const resetAll = () => {
+    setInput("");
+    form.reset({ message: "" });
+    form.clearErrors("message");
+  };
 
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
     if (data.message.length < 5) {
       toast.error("메시지는 5자 이상이어야 합니다.");
       return;
     }
-
     if (!user) {
       toast.error("Please login to use the chat");
       return;
@@ -83,6 +106,12 @@ function Chat() {
       ? base.input_txt_base.model
       : base.input_image_base.model!;
 
+    if (mode === "txt-to-image") {
+      setPrompt(data.message);
+      resetAll();
+      return;
+    }
+
     handleChatSubmit(
       {},
       {
@@ -92,9 +121,25 @@ function Chat() {
       }
     );
 
-    form.reset({ message: "" });
-    form.clearErrors("message");
-    setInput("");
+    resetAll();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.nativeEvent.isComposing || isComposing) return;
+    if (e.key === "Enter") {
+      e.preventDefault();
+      e.currentTarget.form?.requestSubmit();
+    }
+  };
+
+  const handleComposition = (
+    e: React.CompositionEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.type === "compositionstart") {
+      setIsComposing(true);
+    } else if (e.type === "compositionend") {
+      setIsComposing(false);
+    }
   };
 
   useEffect(() => {
@@ -103,9 +148,41 @@ function Chat() {
     }
   }, [messages]);
 
+  useEffect(() => {
+    // console.log("txtToImgData ===>", txtToImgData);
+    if (!txtToImgData || txtToImgData.length === 0) return;
+    if (countRef.current < txtToImgData.length) {
+      setGeneratedImage(txtToImgData[countRef.current].partial_image_b64s[0]);
+      countRef.current++;
+      if (txtToImgData.length === 5) {
+        setUsage(txtToImgData[txtToImgData.length - 1].usage ?? null);
+        console.log(
+          "image usage ===>",
+          txtToImgData[txtToImgData.length - 1].usage
+        );
+        countRef.current = 0;
+      }
+    }
+
+    // if (txtToImgData.length === 5) {
+    //   setUsage(txtToImgData[txtToImgData.length - 1].usage ?? null);
+    //   console.log(
+    //     "image usage ===>",
+    //     txtToImgData[txtToImgData.length - 1].usage
+    //   );
+    //   countRef.current = 0;
+    //   return;
+    // }
+    // if (countRef.current < txtToImgData.length) {
+    //   setGeneratedImage(txtToImgData[countRef.current].partial_image_b64s[0]);
+    //   countRef.current++;
+    // }
+    // }
+  }, [txtToImgData, setUsage]);
+
   return (
     <>
-      <div className="w-full h-[380px] flex flex-col gap-2 text-xs overflow-y-auto">
+      <div className="w-full h-[380px] flex flex-col gap-2 text-xs overflow-y-auto justify-center items-center">
         {messages.map((m) => (
           <div key={m.id} className="w-full break-keep">
             {m.role === "user" ? (
@@ -127,6 +204,16 @@ function Chat() {
           </div>
         ))}
 
+        {txtToImgData && txtToImgData.length > 0 && (
+          <div className="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <img
+              src={`data:image/png;base64,${generatedImage}`}
+              alt={"Generated content"}
+              className="w-[256px] h-[256px] object-cover aspect-square rounded-lg"
+            />
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
       <Form {...form}>
@@ -143,12 +230,9 @@ function Chat() {
                 <FormControl>
                   <ChatTextArea
                     value={input}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        e.currentTarget.form?.requestSubmit();
-                      }
-                    }}
+                    onKeyDown={handleKeyDown}
+                    onCompositionStart={handleComposition}
+                    onCompositionEnd={handleComposition}
                     onChange={(e) => {
                       handleInputChange(e);
                       field.onChange(e);
@@ -164,6 +248,15 @@ function Chat() {
           />
           <div className="absolute top-0 right-2 w-fll h-[60px] flex justify-center items-center">
             <div className="w-fit h-9 flex justify-center items-center">
+              {mode === "txt+image-to-image" ? (
+                <Button
+                  variant="secondary"
+                  type="button"
+                  className="h-full w-9 p-0 hover:bg-neutral-900 animate-bounce"
+                >
+                  <Image className="!size=5" />
+                </Button>
+              ) : null}
               <Button
                 variant="secondary"
                 type="submit"
