@@ -37,12 +37,15 @@ export async function GET(request: NextRequest) {
     const readableStream = new ReadableStream({
       async start(controller) {
         for await (const event of imageStream) {
+          let outputIndex = 0;
           if (event.type === "response.image_generation_call.partial_image") {
             const imageBase64 = event.partial_image_b64;
+            outputIndex = event.partial_image_index;
             const responseObject = {
               output_index: event.partial_image_index,
               partial_image_b64s: [imageBase64],
               usage: null,
+              status: "partial",
             };
             controller.enqueue(
               encoder.encode(`${JSON.stringify(responseObject)}\n`)
@@ -58,9 +61,10 @@ export async function GET(request: NextRequest) {
             // console.log("completedObj ===>", completedObj);
             const imageBase64 = completedObj ? completedObj.result : null;
             const responseObject = {
-              output_index: 4, // 위에서 3단계로 나눴고 0부터 시작하므로 마지막 단계는 4번 인덱스
+              output_index: outputIndex + 1,
               partial_image_b64s: imageBase64 ? [imageBase64] : [],
               usage: event.response.usage || null,
+              status: "completed",
             };
             controller.enqueue(
               encoder.encode(`${JSON.stringify(responseObject)}\n`)

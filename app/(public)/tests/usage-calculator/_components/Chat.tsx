@@ -149,35 +149,24 @@ function Chat() {
   }, [messages]);
 
   useEffect(() => {
-    // console.log("txtToImgData ===>", txtToImgData);
+    console.log("txtToImgData ===>", txtToImgData);
     if (!txtToImgData || txtToImgData.length === 0) return;
     if (countRef.current < txtToImgData.length) {
       setGeneratedImage(txtToImgData[countRef.current].partial_image_b64s[0]);
-      countRef.current++;
-      if (txtToImgData.length === 5) {
+      if (txtToImgData[countRef.current].status === "partial") {
+        countRef.current++;
+        return;
+      }
+      if (txtToImgData[countRef.current].status === "completed") {
         setUsage(txtToImgData[txtToImgData.length - 1].usage ?? null);
         console.log(
           "image usage ===>",
           txtToImgData[txtToImgData.length - 1].usage
         );
         countRef.current = 0;
+        return;
       }
     }
-
-    // if (txtToImgData.length === 5) {
-    //   setUsage(txtToImgData[txtToImgData.length - 1].usage ?? null);
-    //   console.log(
-    //     "image usage ===>",
-    //     txtToImgData[txtToImgData.length - 1].usage
-    //   );
-    //   countRef.current = 0;
-    //   return;
-    // }
-    // if (countRef.current < txtToImgData.length) {
-    //   setGeneratedImage(txtToImgData[countRef.current].partial_image_b64s[0]);
-    //   countRef.current++;
-    // }
-    // }
   }, [txtToImgData, setUsage]);
 
   return (
