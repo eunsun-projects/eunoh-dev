@@ -72,7 +72,7 @@ function CalculatorHeader() {
         newBase.output_image_base.model = "gpt-image-1";
       } else if (mode === "txt+image-to-txt") {
         newBase.input_txt_base.model = model;
-        newBase.input_image_base.model = "gpt-image-1";
+        newBase.input_image_base.model = null; // 역시나 최종 모델이 gpt-image-1 이 아님. 그래서 그냥 null로 넣어줌.
         newBase.output_txt_base.model = model;
         newBase.output_image_base.model = null;
       } else if (mode === "txt+image-to-image") {
