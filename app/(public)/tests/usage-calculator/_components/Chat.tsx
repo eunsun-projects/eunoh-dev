@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { useChat } from "@ai-sdk/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -192,13 +193,17 @@ function Chat() {
             )}
           </div>
         ))}
-
+        {txtToImgImagesFetchStatus === "fetching" ? (
+          <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
+            <Skeleton className="w-full h-full" />
+          </div>
+        ) : null}
         {txtToImgData && txtToImgData.length > 0 && (
-          <div className="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
             <img
               src={`data:image/png;base64,${generatedImage}`}
               alt={"Generated content"}
-              className="w-[256px] h-[256px] object-cover aspect-square rounded-lg"
+              className="object-cover aspect-square"
             />
           </div>
         )}
