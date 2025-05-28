@@ -66,7 +66,7 @@ function CalculatorHeader() {
         newBase.output_txt_base.model = model;
         newBase.output_image_base.model = null;
       } else if (mode === "txt-to-image") {
-        newBase.input_txt_base.model = "gpt-image-1";
+        newBase.input_txt_base.model = model; // "gpt-image-1"; 최종 모델이 gpt-image-1 이 아님. 그래서 그냥 model로 넣어줌.
         newBase.input_image_base.model = null;
         newBase.output_txt_base.model = null;
         newBase.output_image_base.model = "gpt-image-1";
@@ -183,11 +183,10 @@ function CalculatorHeader() {
         ) : null}
       </div>
       <div className="flex flex-col gap-2 items-center">
-        <span className="text-sm text-gray-400">인풋가격기준: </span>
         <div className="flex flex-row gap-2 items-center">
           {base.input_txt_base.basePrice ? (
             <span className="text-sm text-gray-400">
-              텍스트 {base.input_txt_base.basePrice} 원
+              인풋가격기준: 텍스트 {base.input_txt_base.basePrice} 원
             </span>
           ) : null}
           {base.input_txt_base.basePrice && base.input_image_base.basePrice ? (
@@ -195,16 +194,16 @@ function CalculatorHeader() {
           ) : null}
           {base.input_image_base.basePrice ? (
             <span className="text-sm text-gray-400">
-              이미지 {base.input_image_base.basePrice} 원
+              인풋가격기준: 이미지 {base.input_image_base.basePrice} 원
             </span>
           ) : null}
           <span className="text-xs text-gray-400">(토큰당 가격)</span>
         </div>
-        <span className="text-sm text-gray-400">아웃풋가격기준: </span>
         <div className="flex flex-row gap-2 items-center">
           {base.output_txt_base.basePrice ? (
             <span className="text-sm text-gray-400">
-              텍스트 {base.output_txt_base.basePrice} 원
+              아웃풋가격기준: 텍스트 {base.output_txt_base.basePrice} 원 텍스트{" "}
+              {base.output_txt_base.basePrice} 원
             </span>
           ) : null}
           {base.output_txt_base.basePrice &&
@@ -213,7 +212,7 @@ function CalculatorHeader() {
           ) : null}
           {base.output_image_base.basePrice ? (
             <span className="text-sm text-gray-400">
-              이미지 {base.output_image_base.basePrice} 원
+              아웃풋가격기준: 이미지 {base.output_image_base.basePrice} 원
             </span>
           ) : null}
           <span className="text-xs text-gray-400">(토큰당 가격)</span>
