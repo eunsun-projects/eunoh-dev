@@ -12,6 +12,7 @@ export interface IGenTxtToImgStreamData {
   partial_image_b64s: string[];
   usage: IOpenAIResponseUsage | null;
   status: "partial" | "completed";
+  final_model: string | null;
 }
 
 interface IGenTxtToImgQueryProps {
