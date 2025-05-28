@@ -46,6 +46,7 @@ export async function GET(request: NextRequest) {
               partial_image_b64s: [imageBase64],
               usage: null,
               status: "partial",
+              final_model: null,
             };
             controller.enqueue(
               encoder.encode(`${JSON.stringify(responseObject)}\n`)
@@ -55,6 +56,7 @@ export async function GET(request: NextRequest) {
           ) {
             // do nothing
           } else if (event.type === "response.completed") {
+            // console.log("event.response ===>", event.response);
             const completedObj = event.response.output.find(
               (item) => item.type === "image_generation_call"
             );
@@ -65,6 +67,7 @@ export async function GET(request: NextRequest) {
               partial_image_b64s: imageBase64 ? [imageBase64] : [],
               usage: event.response.usage || null,
               status: "completed",
+              final_model: event.response.model,
             };
             controller.enqueue(
               encoder.encode(`${JSON.stringify(responseObject)}\n`)
