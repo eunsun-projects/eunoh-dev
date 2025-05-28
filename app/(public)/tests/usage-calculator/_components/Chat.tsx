@@ -170,8 +170,8 @@ function Chat() {
   }, [txtToImgData, setUsage]);
 
   return (
-    <>
-      <div className="w-full h-[380px] flex flex-col gap-2 text-xs overflow-y-auto justify-center items-center">
+    <div className="w-full h-full flex flex-col gap-2">
+      <div className="w-full h-auto min-h-[calc(100%-74px)] flex flex-col gap-2 text-xs overflow-y-auto justify-center items-center">
         {messages.map((m) => (
           <div key={m.id} className="w-full break-keep">
             {m.role === "user" ? (
@@ -208,7 +208,7 @@ function Chat() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="min-w-[680px] w-[90svw] lg:w-1/2 fixed bottom-3 left-1/2 -translate-x-1/2"
+          className="min-w-[680px] w-[90svw] h-[60px] lg:w-1/2 relative left-1/2 -translate-x-1/2"
         >
           <FormField
             control={form.control}
@@ -257,7 +257,7 @@ function Chat() {
           </div>
         </form>
       </Form>
-    </>
+    </div>
   );
 }
 
