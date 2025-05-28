@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { useChat } from "@ai-sdk/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +22,10 @@ import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
-import { useGenTxtToImgQuery } from "../_hooks/query.hooks";
+import {
+  useGenTxtImgToTxtQuery,
+  useGenTxtToImgQuery,
+} from "../_hooks/query.hooks";
 import { type Model, useUsageCalculatorStore } from "../_libs/zustand";
 import ChatTextArea from "./ChatTextArea";
 
@@ -38,6 +42,8 @@ function Chat() {
   const [isComposing, setIsComposing] = useState(false);
   const [prompt, setPrompt] = useState<string | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [formData, setFormData] = useState<FormData | null>(null);
+  const [accumulatedText, setAccumulatedText] = useState<string>("");
   const { user } = useAuth();
   const { mode, model, base, setUsage } = useUsageCalculatorStore(
     useShallow((state) => ({
@@ -73,19 +79,34 @@ function Chat() {
     status: txtToImgImagesStatus,
     fetchStatus: txtToImgImagesFetchStatus,
     error: txtToImgImagesError,
-    refetch: imagesRefetch,
   } = useGenTxtToImgQuery({
     prompt,
     model,
+    mode,
+  });
+
+  const {
+    data: txtImgToTxtData,
+    status: txtImgToTxtStatus,
+    fetchStatus: txtImgToTxtFetchStatus,
+    error: txtImgToTxtError,
+  } = useGenTxtImgToTxtQuery({
+    prompt,
+    model,
+    formData,
+    mode,
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<number>(0);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const imageURLRef = useRef<string | null>(null);
 
   const resetAll = () => {
     setInput("");
     form.reset({ message: "" });
     form.clearErrors("message");
+    setAccumulatedText("");
   };
 
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
@@ -110,16 +131,26 @@ function Chat() {
       setPrompt(data.message);
       resetAll();
       return;
-    }
-
-    handleChatSubmit(
-      {},
-      {
-        body: {
-          model: selectedModel,
-        },
+      // biome-ignore lint/style/noUselessElse: <explanation>
+    } else if (mode === "txt+image-to-txt") {
+      if (!formData) {
+        toast.error("Please select an image");
+        return;
       }
-    );
+      setPrompt(data.message);
+      setAccumulatedText("");
+      return;
+      // biome-ignore lint/style/noUselessElse: <explanation>
+    } else {
+      handleChatSubmit(
+        {},
+        {
+          body: {
+            model: selectedModel,
+          },
+        }
+      );
+    }
 
     resetAll();
   };
@@ -141,6 +172,31 @@ function Chat() {
       setIsComposing(false);
     }
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newFormData = new FormData();
+      const file = e.target.files[0];
+      const fileURL = URL.createObjectURL(file);
+      console.log("fileURL ===>", fileURL);
+      imageURLRef.current = fileURL;
+      newFormData.append("file", e.target.files[0]);
+      setFormData(newFormData);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (imageURLRef.current) {
+        URL.revokeObjectURL(imageURLRef.current);
+        setFormData(null);
+        setPrompt(null);
+        setGeneratedImage(null);
+        setAccumulatedText("");
+        setUsage(null);
+      }
+    };
+  }, [setUsage]);
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -169,9 +225,33 @@ function Chat() {
     }
   }, [txtToImgData, setUsage]);
 
+  useEffect(() => {
+    console.log("txtImgToTxtData ===>", txtImgToTxtData);
+    if (!txtImgToTxtData || txtImgToTxtData.length === 0) {
+      if (mode !== "txt+image-to-txt") {
+        setAccumulatedText("");
+      }
+      return;
+    }
+
+    const lastChunk = txtImgToTxtData[txtImgToTxtData.length - 1];
+
+    if (lastChunk.status === "partial") {
+      const currentAccumulatedText = txtImgToTxtData.reduce((acc, chunk) => {
+        if (chunk.status === "completed") return chunk.text;
+        return acc + chunk.text;
+      }, "");
+      setAccumulatedText(currentAccumulatedText);
+    } else if (lastChunk.status === "completed") {
+      setAccumulatedText(lastChunk.text);
+      setUsage(lastChunk.usage ?? null);
+      console.log("image+text to text usage ===>", lastChunk.usage);
+    }
+  }, [txtImgToTxtData, setUsage, mode]);
+
   return (
-    <>
-      <div className="w-full h-[380px] flex flex-col gap-2 text-xs overflow-y-auto justify-center items-center">
+    <div className="w-full h-full flex flex-col gap-2">
+      <div className="w-full h-auto min-h-[calc(100%-74px)] flex flex-col gap-2 text-xs overflow-y-auto justify-center items-center">
         {messages.map((m) => (
           <div key={m.id} className="w-full break-keep">
             {m.role === "user" ? (
@@ -193,12 +273,50 @@ function Chat() {
           </div>
         ))}
 
+        {(txtImgToTxtFetchStatus === "fetching" ||
+          txtImgToTxtStatus === "success" ||
+          (mode === "txt+image-to-txt" && accumulatedText)) && (
+          <div className="w-full break-keep">
+            <div className="flex w-full justify-end items-center gap-2">
+              {imageURLRef.current && mode === "txt+image-to-txt" && (
+                <img
+                  src={imageURLRef.current}
+                  alt="for vision model input"
+                  className="w-[64px] h-[64px] rounded-lg overflow-hidden transition-shadow duration-300 justify-end"
+                />
+              )}
+              {prompt && mode === "txt+image-to-txt" && (
+                <div className="flex justify-end min-h-6 rounded-md whitespace-pre-wrap">
+                  <p className="flex items-center bg-black/30 text-cyan-400 text-stroke-green rounded-md px-2">
+                    <span className="leading-2">{`🍀 User: ${prompt}`}</span>
+                  </p>
+                </div>
+              )}
+            </div>
+            {mode === "txt+image-to-txt" && accumulatedText && (
+              <div className="flex w-full justify-start min-h-8 flex-col gap-2">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={components}
+                >
+                  {accumulatedText}
+                </ReactMarkdown>
+              </div>
+            )}
+          </div>
+        )}
+
+        {txtToImgImagesFetchStatus === "fetching" ? (
+          <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
+            <Skeleton className="w-full h-full" />
+          </div>
+        ) : null}
         {txtToImgData && txtToImgData.length > 0 && (
-          <div className="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
             <img
               src={`data:image/png;base64,${generatedImage}`}
               alt={"Generated content"}
-              className="w-[256px] h-[256px] object-cover aspect-square rounded-lg"
+              className="object-cover aspect-square"
             />
           </div>
         )}
@@ -208,7 +326,7 @@ function Chat() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="min-w-[680px] w-[90svw] lg:w-1/2 fixed bottom-3 left-1/2 -translate-x-1/2"
+          className="min-w-[680px] w-[90svw] h-[60px] lg:w-1/2 relative left-1/2 -translate-x-1/2"
         >
           <FormField
             control={form.control}
@@ -235,13 +353,27 @@ function Chat() {
               </FormItem>
             )}
           />
+          {mode === "txt+image-to-image" || mode === "txt+image-to-txt" ? (
+            <input
+              type="file"
+              ref={imageInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          ) : null}
           <div className="absolute top-0 right-2 w-fll h-[60px] flex justify-center items-center">
             <div className="w-fit h-9 flex justify-center items-center">
-              {mode === "txt+image-to-image" ? (
+              {mode === "txt+image-to-image" || mode === "txt+image-to-txt" ? (
                 <Button
                   variant="secondary"
                   type="button"
                   className="h-full w-9 p-0 hover:bg-neutral-900 animate-bounce"
+                  onClick={() => {
+                    if (imageInputRef.current) {
+                      imageInputRef.current.click();
+                    }
+                  }}
                 >
                   <Image className="!size=5" />
                 </Button>
@@ -257,7 +389,7 @@ function Chat() {
           </div>
         </form>
       </Form>
-    </>
+    </div>
   );
 }
 

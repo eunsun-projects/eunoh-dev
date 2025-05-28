@@ -50,7 +50,7 @@ function CalculateResult() {
   }, [usage, base]);
 
   return (
-    <div className="w-full h-full flex gap-2 items-center justify-center text-neutral-200">
+    <div className="w-full h-fit flex gap-2 items-center justify-center text-neutral-200">
       {/** vercel ai sdk 안쓴 api 호출시 */}
       {usage ? (
         <p>인풋가격: {prices.inputPrice} 원</p>

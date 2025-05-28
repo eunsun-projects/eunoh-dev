@@ -8,7 +8,7 @@ import ModelSelector from "./ModelSelector";
 
 function UsageCalculatorTemplate() {
   return (
-    <div className="flex flex-col gap-2 justify-center items-center">
+    <div className="flex flex-col gap-2 justify-start items-center h-dvh min-h-dvh">
       <CalculatorHeader />
       <ModeSelector />
       <ModelSelector />

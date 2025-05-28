@@ -15,23 +15,13 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { MODELS, type Model, useUsageCalculatorStore } from "../_libs/zustand";
 
 function ModelSelector() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<Model | null>(null);
 
-  const { mode, setBase, exchangeRate, model, setModel } =
-    useUsageCalculatorStore(
-      useShallow((state) => ({
-        mode: state.mode,
-        setBase: state.setBase,
-        exchangeRate: state.exchangeRate,
-        model: state.model,
-        setModel: state.setModel,
-      }))
-    );
+  const { setModel } = useUsageCalculatorStore();
 
   useEffect(() => {
     if (value) {

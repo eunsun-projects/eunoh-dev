@@ -8,66 +8,68 @@ if (!openaiApiKey) {
 
 const openai = new OpenAI({ apiKey: openaiApiKey });
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
+export async function POST(req: NextRequest) {
+  const formData = await req.formData();
+  const { searchParams } = new URL(req.url);
   const prompt = searchParams.get("prompt");
   const model = searchParams.get("model");
+  const file = formData.get("file") as File;
 
-  if (!prompt) {
-    return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
+  if (!file || !prompt) {
+    return new Response("Missing file or prompt", { status: 400 });
   }
 
+  const arrayBuffer = await file.arrayBuffer();
+  const base64 = Buffer.from(arrayBuffer).toString("base64");
+
   try {
-    const imageStream = await openai.responses.create({
+    const stream = await openai.responses.create({
       model: model || "gpt-4o-mini",
-      input: prompt,
       stream: true,
-      tools: [
+      input: [
         {
-          type: "image_generation",
-          partial_images: 3,
-          size: "1024x1024",
-          quality: "medium",
+          role: "user",
+          content: [
+            { type: "input_text", text: prompt },
+            {
+              type: "input_image",
+              image_url: `data:image/webp;base64,${base64}`,
+              detail: "auto",
+            },
+          ],
         },
       ],
     });
 
     const encoder = new TextEncoder();
 
-    const readableStream = new ReadableStream({
+    const readable = new ReadableStream({
       async start(controller) {
-        for await (const event of imageStream) {
-          let outputIndex = 0;
-          if (event.type === "response.image_generation_call.partial_image") {
-            const imageBase64 = event.partial_image_b64;
-            outputIndex = event.partial_image_index;
-            const responseObject = {
-              output_index: event.partial_image_index,
-              partial_image_b64s: [imageBase64],
-              usage: null,
-              status: "partial",
-              final_model: null,
-            };
-            controller.enqueue(
-              encoder.encode(`${JSON.stringify(responseObject)}\n`)
-            );
-          } else if (
-            event.type === "response.image_generation_call.completed"
-          ) {
+        let accumulated = "";
+        for await (const event of stream) {
+          if (event.type === "response.output_text.delta") {
+            const delta = event.delta;
+            if (delta) {
+              accumulated += delta;
+              const responseObject = {
+                text: delta,
+                status: "partial",
+                final_model: null,
+                usage: null,
+              };
+              controller.enqueue(
+                encoder.encode(`${JSON.stringify(responseObject)}\n`)
+              );
+            }
+          } else if (event.type === "response.output_text.done") {
             // do nothing
           } else if (event.type === "response.completed") {
             // console.log("event.response ===>", event.response);
-            const completedObj = event.response.output.find(
-              (item) => item.type === "image_generation_call"
-            );
-            // console.log("completedObj ===>", completedObj);
-            const imageBase64 = completedObj ? completedObj.result : null;
             const responseObject = {
-              output_index: outputIndex + 1,
-              partial_image_b64s: imageBase64 ? [imageBase64] : [],
-              usage: event.response.usage || null,
+              text: accumulated,
               status: "completed",
               final_model: event.response.model,
+              usage: event.response.usage,
             };
             controller.enqueue(
               encoder.encode(`${JSON.stringify(responseObject)}\n`)
@@ -96,16 +98,13 @@ export async function GET(request: NextRequest) {
         }
         controller.close();
       },
-      cancel() {
-        console.log("Stream cancelled by client.");
-      },
     });
 
-    return new Response(readableStream, {
+    return new Response(readable, {
       headers: {
         "Content-Type": "application/jsonl; charset=utf-8",
-        "X-Content-Type-Options": "nosniff",
         "Cache-Control": "no-cache",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error) {
