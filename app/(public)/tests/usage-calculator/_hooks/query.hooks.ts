@@ -3,9 +3,15 @@ import {
   experimental_streamedQuery as streamedQuery,
   useQuery,
 } from "@tanstack/react-query";
-import { getGentxttoimgStream } from "../_apis/gen.apis";
-import { QUERY_KEY_GEN_TXT_TO_IMG } from "../_constants/gen.const";
-import type { IOpenAIResponseUsage } from "../_libs/zustand";
+import {
+  getGenTxtImgToTxtStream,
+  getGenTxtToImgStream,
+} from "../_apis/gen.apis";
+import {
+  QUERY_KEY_GEN_TXT_IMG_TO_TXT,
+  QUERY_KEY_GEN_TXT_TO_IMG,
+} from "../_constants/gen.const";
+import type { IOpenAIResponseUsage, Mode } from "../_libs/zustand";
 
 export interface IGenTxtToImgStreamData {
   output_index: number;
@@ -18,14 +24,17 @@ export interface IGenTxtToImgStreamData {
 interface IGenTxtToImgQueryProps {
   prompt: string | null;
   model: string;
+  mode: Mode;
 }
+
+type TQueryKey = readonly (string | null)[];
 
 export const useGenTxtToImgQuery = ({
   prompt,
   model,
+  mode,
 }: IGenTxtToImgQueryProps) => {
   // TQueryKey의 타입을 readonly (string | null)[] 로 명시적으로 지정합니다.
-  type TQueryKey = readonly (string | null)[];
 
   // useQuery의 반환 데이터 타입을 IGenTxtToImgStreamData[]로 변경
   return useQuery<
@@ -47,7 +56,7 @@ export const useGenTxtToImgQuery = ({
           // gen.apis.ts에서 반환 타입을 이미 <any>로 수정했으므로, 여기서 타입 단언을 사용하거나
           // gen.apis.ts의 반환 타입을 더 구체적으로 명시할 수 있습니다.
           // 여기서는 실제 반환되는 객체 타입이므로 호환됩니다.
-          return getGentxttoimgStream(
+          return getGenTxtToImgStream(
             currentModel || "gpt-4o-mini",
             currentPrompt
           ) as AsyncIterable<IGenTxtToImgStreamData>; // 타입 단언 추가
@@ -57,6 +66,51 @@ export const useGenTxtToImgQuery = ({
         return (async function* () {})();
       },
     }),
-    enabled: !!prompt && !!model,
+    enabled: !!prompt && !!model && mode === "txt-to-image",
+  });
+};
+
+export interface IGenTxtImgToTxtStreamData {
+  text: string;
+  status: "partial" | "completed";
+  final_model: string | null;
+  usage: IOpenAIResponseUsage | null;
+}
+
+interface IGenTxtImgToTxtQueryProps {
+  formData: FormData | null;
+  model: string;
+  prompt: string | null;
+  mode: Mode;
+}
+
+export const useGenTxtImgToTxtQuery = ({
+  formData,
+  model,
+  prompt,
+  mode,
+}: IGenTxtImgToTxtQueryProps) => {
+  return useQuery<
+    IGenTxtImgToTxtStreamData[],
+    Error,
+    IGenTxtImgToTxtStreamData[],
+    TQueryKey
+  >({
+    queryKey: [QUERY_KEY_GEN_TXT_IMG_TO_TXT, model, prompt],
+    queryFn: streamedQuery({
+      queryFn: (context: QueryFunctionContext<TQueryKey>) => {
+        const [, currentModel, currentPrompt] = context.queryKey;
+        if (typeof currentPrompt === "string" && currentPrompt) {
+          if (!formData) return (async function* () {})();
+          return getGenTxtImgToTxtStream(
+            currentModel || "gpt-4o-mini",
+            currentPrompt,
+            formData
+          ) as AsyncIterable<IGenTxtImgToTxtStreamData>;
+        }
+        return (async function* () {})();
+      },
+    }),
+    enabled: !!formData && !!model && !!prompt && mode === "txt+image-to-txt",
   });
 };
