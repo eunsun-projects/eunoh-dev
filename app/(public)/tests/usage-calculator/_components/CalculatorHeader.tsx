@@ -134,7 +134,7 @@ function CalculatorHeader() {
   }, [model, setBase, mode, exchangeRate]);
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center">
+    <div className="flex flex-col gap-1 justify-center items-center pt-1">
       <h1 className="text-2xl font-bold text-neutral-50">
         써보고 알려준다!! API 가격 계산기!!
       </h1>
