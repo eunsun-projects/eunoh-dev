@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
 import {
+  useGenTxtImgToImgQuery,
   useGenTxtImgToTxtQuery,
   useGenTxtToImgQuery,
 } from "../_hooks/query.hooks";
@@ -97,6 +98,18 @@ function Chat() {
     mode,
   });
 
+  const {
+    data: txtImgToImgData,
+    status: txtImgToImgStatus,
+    fetchStatus: txtImgToImgFetchStatus,
+    error: txtImgToImgError,
+  } = useGenTxtImgToImgQuery({
+    formData,
+    model,
+    prompt,
+    mode,
+  });
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<number>(0);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -139,8 +152,17 @@ function Chat() {
       }
       setPrompt(data.message);
       setAccumulatedText("");
+      resetAll();
       return;
       // biome-ignore lint/style/noUselessElse: <explanation>
+    } else if (mode === "txt+image-to-image") {
+      if (!formData) {
+        toast.error("Please select an image");
+        return;
+      }
+      setPrompt(data.message);
+      setAccumulatedText("");
+      resetAll();
     } else {
       handleChatSubmit(
         {},
@@ -249,6 +271,25 @@ function Chat() {
     }
   }, [txtImgToTxtData, setUsage, mode]);
 
+  useEffect(() => {
+    console.log("txtImgToImgData ===>", txtImgToImgData);
+    if (!txtImgToImgData || txtImgToImgData.length === 0) return;
+    if (countRef.current < txtImgToImgData.length) {
+      setGeneratedImage(
+        txtImgToImgData[countRef.current].partial_image_b64s[0]
+      );
+      if (txtImgToImgData[countRef.current].status === "partial") {
+        countRef.current++;
+        return;
+      }
+      if (txtImgToImgData[countRef.current].status === "completed") {
+        setUsage(txtImgToImgData[txtImgToImgData.length - 1].usage ?? null);
+        countRef.current = 0;
+        return;
+      }
+    }
+  }, [txtImgToImgData, setUsage]);
+
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full h-auto min-h-[calc(100%-74px)] flex flex-col gap-2 text-xs overflow-y-auto justify-center items-center">
@@ -306,12 +347,27 @@ function Chat() {
           </div>
         )}
 
-        {txtToImgImagesFetchStatus === "fetching" ? (
+        {txtToImgImagesFetchStatus === "fetching" && !txtToImgData ? (
           <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
             <Skeleton className="w-full h-full" />
           </div>
         ) : null}
         {txtToImgData && txtToImgData.length > 0 && (
+          <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
+            <img
+              src={`data:image/png;base64,${generatedImage}`}
+              alt={"Generated content"}
+              className="object-cover aspect-square"
+            />
+          </div>
+        )}
+        {txtImgToImgFetchStatus === "fetching" && !txtImgToImgData ? (
+          <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
+            <Skeleton className="w-full h-full" />
+          </div>
+        ) : null}
+
+        {txtImgToImgData && txtImgToImgData.length > 0 && (
           <div className="w-[256px] h-[256px] rounded-lg overflow-hidden transition-shadow duration-300">
             <img
               src={`data:image/png;base64,${generatedImage}`}
