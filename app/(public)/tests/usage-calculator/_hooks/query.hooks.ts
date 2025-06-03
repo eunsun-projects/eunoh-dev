@@ -4,10 +4,12 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import {
+  getGenTxtImgToImgStream,
   getGenTxtImgToTxtStream,
   getGenTxtToImgStream,
 } from "../_apis/gen.apis";
 import {
+  QUERY_KEY_GEN_TXT_IMG_TO_IMG,
   QUERY_KEY_GEN_TXT_IMG_TO_TXT,
   QUERY_KEY_GEN_TXT_TO_IMG,
 } from "../_constants/gen.const";
@@ -112,5 +114,51 @@ export const useGenTxtImgToTxtQuery = ({
       },
     }),
     enabled: !!formData && !!model && !!prompt && mode === "txt+image-to-txt",
+  });
+};
+
+export interface IGenTxtImgToImgStreamData {
+  output_index: number;
+  partial_image_b64s: string[];
+  usage: IOpenAIResponseUsage | null;
+  status: "partial" | "completed";
+  final_model: string | null;
+}
+
+interface IGenTxtImgToImgQueryProps {
+  formData: FormData | null;
+  model: string;
+  prompt: string | null;
+  mode: Mode;
+}
+
+export const useGenTxtImgToImgQuery = ({
+  formData,
+  model,
+  prompt,
+  mode,
+}: IGenTxtImgToImgQueryProps) => {
+  return useQuery<
+    IGenTxtImgToImgStreamData[],
+    Error,
+    IGenTxtImgToImgStreamData[],
+    TQueryKey
+  >({
+    queryKey: [QUERY_KEY_GEN_TXT_IMG_TO_IMG, model, prompt],
+    queryFn: streamedQuery({
+      queryFn: (context: QueryFunctionContext<TQueryKey>) => {
+        const [, currentModel, currentPrompt] = context.queryKey;
+        if (typeof currentPrompt === "string" && currentPrompt) {
+          if (!formData) return (async function* () {})();
+          return getGenTxtImgToImgStream(
+            currentModel || "gpt-4o-mini",
+            currentPrompt,
+            formData
+          ) as AsyncIterable<IGenTxtImgToImgStreamData>;
+        }
+        return (async function* () {})();
+      },
+    }),
+    enabled: !!formData && !!model && !!prompt && mode === "txt+image-to-image",
   });
 };
