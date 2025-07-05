@@ -9,13 +9,7 @@ import type {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import { RiArrowGoBackFill } from "react-icons/ri";
-import {
-  DarkLightModeButton,
-  Description,
-  Modal,
-  Navigate,
-} from "../../_components/ui";
+import { Back, Description, Modal, Navigate } from "../../_components/ui";
 import ProjectNextImage from "./ProjectImage";
 
 interface ProjectTemplateProps {
@@ -82,13 +76,7 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
               </h2>
             </Link>
           </div>
-          <div className="flex items-center gap-2">
-            <RiArrowGoBackFill
-              className="text-lg cursor-pointer"
-              onClick={() => router.back()}
-            />
-            <DarkLightModeButton />
-          </div>
+          <Back isDarkLightModeButton />
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-sm">

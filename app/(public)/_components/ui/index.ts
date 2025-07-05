@@ -1,3 +1,4 @@
+export { default as Back } from "./Back";
 export { default as DarkLightModeButton } from "./DarkLightModeButton";
 export { default as Description } from "./Description";
 export { default as Footer } from "./Footer";

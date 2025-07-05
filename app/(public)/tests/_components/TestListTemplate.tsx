@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { DarkLightModeButton } from "../../_components/ui";
+import { Back } from "../../_components/ui";
 
 const testLists = [
   {
@@ -74,7 +74,7 @@ function TestListTemplate() {
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
             {"🧪 Tests 🧪"}
           </h2>
-          <DarkLightModeButton />
+          <Back isDarkLightModeButton />
         </div>
         <div className="flex flex-col gap-3 w-full">
           {testLists.map((test, index) => (
