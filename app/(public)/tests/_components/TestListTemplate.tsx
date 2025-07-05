@@ -64,6 +64,12 @@ const testLists = [
     description: "LLM API 사용량 계산기",
     href: "/tests/usage-calculator",
   },
+  {
+    id: 11,
+    title: "애매한이날",
+    description: "어린이날 선물 받아도 될까?",
+    href: "https://iffygiftyday.vercel.app/",
+  },
 ];
 
 function TestListTemplate() {
