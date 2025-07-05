@@ -5,7 +5,7 @@ import { usePostsQuery } from "@/hooks/queries/posts";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useEffect } from "react";
-import { DarkLightModeButton } from "../../_components/ui";
+import { Back } from "../../_components/ui";
 
 function PublicPostsListTemplate() {
   const { data: posts, isLoading, error } = usePostsQuery();
@@ -25,7 +25,7 @@ function PublicPostsListTemplate() {
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
             {"📝 Posts 📝"}
           </h2>
-          <DarkLightModeButton />
+          <Back isDarkLightModeButton />
         </div>
         <div className="flex flex-col gap-3 w-full">
           {filteredPosts?.map((post) => (

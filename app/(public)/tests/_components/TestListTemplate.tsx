@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { DarkLightModeButton } from "../../_components/ui";
+import { Back } from "../../_components/ui";
 
 const testLists = [
   {
@@ -64,6 +64,12 @@ const testLists = [
     description: "LLM API 사용량 계산기",
     href: "/tests/usage-calculator",
   },
+  {
+    id: 11,
+    title: "애매한이날",
+    description: "어린이날 선물 받아도 될까?",
+    href: "https://iffygiftyday.vercel.app/",
+  },
 ];
 
 function TestListTemplate() {
@@ -74,7 +80,7 @@ function TestListTemplate() {
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
             {"🧪 Tests 🧪"}
           </h2>
-          <DarkLightModeButton />
+          <Back isDarkLightModeButton />
         </div>
         <div className="flex flex-col gap-3 w-full">
           {testLists.map((test, index) => (

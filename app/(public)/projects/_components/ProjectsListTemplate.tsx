@@ -4,7 +4,7 @@ import { useProjectsQuery } from "@/hooks/queries/projects";
 import Link from "next/link";
 import { useEffect } from "react";
 import { FaGithub, FaLink } from "react-icons/fa";
-import { DarkLightModeButton } from "../../_components/ui";
+import { Back } from "../../_components/ui";
 
 function ProjectsListTemplate() {
   const { data: projects, error } = useProjectsQuery();
@@ -20,7 +20,7 @@ function ProjectsListTemplate() {
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
             {"💻 Projects 💻"}
           </h2>
-          <DarkLightModeButton />
+          <Back isDarkLightModeButton />
         </div>
         <div className="flex flex-col gap-2 w-full">
           {projects?.map((project) => (

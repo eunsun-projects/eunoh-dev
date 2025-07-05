@@ -1,11 +1,13 @@
 "use client";
 
 import { useReadyState } from "@/hooks/ui/useReadyState";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ReactTyped } from "react-typed";
 import { DarkLightModeButton, Links, Nav } from "./ui";
 
 function Hello() {
   const { isMainReady, setIsMainReady } = useReadyState();
+  const isMobile = useIsMobile();
 
   return (
     <section className="flex flex-col">
@@ -20,7 +22,9 @@ function Hello() {
           <p>
             <ReactTyped
               strings={[
-                "사용자의 경험을 세심하게 다듬고, 탐구와 기록을 이어가며 성장합니다.",
+                isMobile
+                  ? "사용자의 경험을 세심하게 다듬고,\n탐구와 기록을 이어가며 성장합니다."
+                  : "사용자의 경험을 세심하게 다듬고, 탐구와 기록을 이어가며 성장합니다.",
               ]}
               typeSpeed={10}
               className="text-balance break-keep whitespace-pre-wrap"
@@ -29,7 +33,9 @@ function Hello() {
           <p>
             <ReactTyped
               strings={[
-                "팀의 동기부여를 이끌며 협업 속에서 만들어지는 성과에 열정을 가지고 있습니다.",
+                isMobile
+                  ? "팀의 동기부여를 이끌며 협업 속에서\n만들어지는 성과에 열정을 가지고 있습니다."
+                  : "팀의 동기부여를 이끌며 협업 속에서 만들어지는 성과에 열정을 가지고 있습니다.",
               ]}
               typeSpeed={9}
               onComplete={() => setIsMainReady(true)}

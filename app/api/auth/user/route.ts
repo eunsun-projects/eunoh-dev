@@ -13,23 +13,23 @@ export async function GET() {
     if (error.message === "Auth session missing!")
       return NextResponse.json(
         { user: null, error: "Auth session missing!" },
-        { status: 200 }, // 여기가 문제 200을 리턴해야 에러가 안나긴 하는데...
+        { status: 200 } // 여기가 문제 200을 리턴해야 에러가 안나긴 하는데...
       );
 
     if (error.message === "Unauthorized")
       return NextResponse.json(
         { user: null, error: "인증되지 않은 사용자입니다." },
-        { status: 401 },
+        { status: 401 }
       );
     return NextResponse.json(
       { user: null, error: error?.message },
-      { status: 401 },
+      { status: 401 }
     );
   }
   if (!user) {
     return NextResponse.json(
       { error: "Logged in user not found" },
-      { status: 404 },
+      { status: 404 }
     );
   }
 
@@ -44,7 +44,7 @@ export async function GET() {
     return NextResponse.json({ error: userError?.message }, { status: 401 });
   }
 
-  console.log("userData", userData);
+  // console.log("userData", userData);
 
   return NextResponse.json(userData, { status: 200 });
 }
@@ -73,8 +73,8 @@ export async function DELETE() {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    return NextResponse.json('Logout failed', { status: 500 });
+    return NextResponse.json("Logout failed", { status: 500 });
   }
 
-  return NextResponse.json('Logout successful', { status: 200 });
+  return NextResponse.json("Logout successful", { status: 200 });
 }

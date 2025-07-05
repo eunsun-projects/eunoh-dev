@@ -38,7 +38,7 @@ import {
 } from "react-icons/si";
 import { TbBrandRedux, TbBrandThreejs } from "react-icons/tb";
 import { Zustand } from "../../_components/svgs";
-import { DarkLightModeButton } from "../../_components/ui";
+import { Back } from "../../_components/ui";
 
 function SkillsAndTools() {
   return (
@@ -48,7 +48,7 @@ function SkillsAndTools() {
           <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg">
             {"🛠️ Skills & Tools 🛠️"}
           </h2>
-          <DarkLightModeButton />
+          <Back isDarkLightModeButton />
         </div>
         <div className="flex flex-col gap-6 w-full">
           <div className="flex flex-col gap-2 w-full">
