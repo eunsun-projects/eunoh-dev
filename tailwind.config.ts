@@ -1,6 +1,7 @@
-import type { Config } from "tailwindcss";
+const { Config } = require("tailwindcss");
 
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+const config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -97,4 +98,4 @@ const config: Config = {
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
   darkMode: "class",
 };
-export default config;
+module.exports = config;
