@@ -10,7 +10,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from("posts")
     .select(
-      "id, title, engTitle, created_at, category, keywords, summary, isView, posted_at",
+      "id, title, engTitle, created_at, category, keywords, summary, isView, posted_at"
     )
     .order("created_at", { ascending: false });
 
@@ -39,6 +39,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  // 🔥 전략적 revalidation
+  // 1. 메인 포스트 목록 페이지
   revalidatePath("/", "layout");
+
+  // 2. 새로 생성/수정된 포스트 상세 페이지
+  revalidatePath(`/posts/${data.engTitle}`, "page");
+
+  // 3. 전체 포스트 목록 (필요시)
+  revalidatePath("/posts", "page");
   return NextResponse.json(data, { status: 201 });
 }

@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-query";
 import ProjectsListTemplate from "./_components/ProjectsListTemplate";
 
+export const dynamic = "force-static";
+
 async function ProjectsPage() {
   const queryClient = new QueryClient();
 

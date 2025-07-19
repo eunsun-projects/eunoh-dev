@@ -1,15 +1,18 @@
 import { getProjects } from "@/apis/projects";
 import Loading from "@/app/loading";
 import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
-import type { Project, ProjectWithImages } from "@/types/project.types";
-import getImageSizeServer from "@/utils/image/getImageSizeServer";
+import type { Project } from "@/types/project.types";
+import { processProjectImages } from "@/utils/image/processProjectImages";
 import {
-  dehydrate,
   HydrationBoundary,
   QueryClient,
+  dehydrate,
 } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ProjectTemplate from "../_components/ProjectTemplate";
+
+export const dynamic = "force-static";
 
 async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
@@ -22,30 +25,17 @@ async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
 
   const dehydratedState = dehydrate(queryClient);
 
-  const projects = (await queryClient.getQueryData<Project[]>([
-    QUERY_KEY_PROJECTS,
-  ])) as Project[];
+  const projects = queryClient.getQueryData<Project[]>([QUERY_KEY_PROJECTS]);
 
-  const promises = projects.map(async (project) => {
-    const sizes = await Promise.all(
-      project.images?.map(getImageSizeServer) ?? [],
-    );
-    const newImages =
-      project.images?.map((image, i) => ({
-        image,
-        width: sizes[i]?.width ?? 0,
-        height: sizes[i]?.height ?? 0,
-      })) ?? [];
-    return {
-      ...project,
-      newImages,
-    };
-  });
-  const projectPromises = await Promise.all(promises);
-  const filteredProjects = projectPromises.filter((project) => project.isView);
-  const project = filteredProjects.find(
-    (project) => project.id === id,
-  ) as ProjectWithImages;
+  if (!projects || projects.length === 0) notFound();
+
+  const currentProject = projects.find(
+    (project) => project.id === id && project.isView
+  );
+
+  if (!currentProject) notFound();
+
+  const project = await processProjectImages(currentProject);
 
   return (
     <Suspense fallback={<Loading />}>

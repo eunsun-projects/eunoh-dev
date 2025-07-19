@@ -1,5 +1,5 @@
-import type * as THREE from 'three';
-import type { Tables } from './supabase';
+import type * as THREE from "three";
+import type { Tables } from "./supabase";
 
 export type SajuImageTestResponse = {
   error?: string;
@@ -19,7 +19,7 @@ export type SajuTestResponse = {
   imageUrl?: string;
 };
 
-export type TimeCapsuleFromSupabase = Tables<'timecapsules'>;
+export type TimeCapsuleFromSupabase = Tables<"timecapsules">;
 
 export interface TimeCapsule extends TimeCapsuleFromSupabase {
   object: THREE.Mesh | null;

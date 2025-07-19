@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-query";
 import PublicPostsListTemplate from "./_components/PublicPostsListTemplate";
 
+export const dynamic = "force-static";
+
 async function PostsPage() {
   const queryClient = new QueryClient();
 
