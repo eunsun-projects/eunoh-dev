@@ -1,18 +1,14 @@
-import type { TimeCapsule } from '@/types/tests.type';
-import { createClient } from '@/utils/supabase/server';
-import type { PostgrestError } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
+import type { TimeCapsule } from "@/types/tests.type";
+import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   const supabase = await createClient();
 
-  const {
-    data: timeCapsules,
-    error,
-  }: { data: TimeCapsule[] | null; error: PostgrestError | null } = await supabase
-    .from('timecapsules')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const { data: timeCapsules, error } = await supabase
+    .from("timecapsules")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -25,9 +21,9 @@ export async function POST(request: Request) {
   const timeCapsule: TimeCapsule = await request.json();
   const supabase = await createClient();
 
-  const { data, error }: { data: TimeCapsule | null; error: PostgrestError | null } = await supabase
-    .from('timecapsules')
-    .upsert(timeCapsule, { onConflict: 'id' })
+  const { data, error } = await supabase
+    .from("timecapsules")
+    .upsert(timeCapsule, { onConflict: "id" })
     .select()
     .single();
 
@@ -42,10 +38,10 @@ export async function PUT(request: Request) {
   const timeCapsule: TimeCapsule = await request.json();
   const supabase = await createClient();
 
-  const { data, error }: { data: TimeCapsule | null; error: PostgrestError | null } = await supabase
-    .from('timecapsules')
+  const { data, error } = await supabase
+    .from("timecapsules")
     .update(timeCapsule)
-    .eq('id', timeCapsule.id)
+    .eq("id", timeCapsule.id)
     .select()
     .single();
 
@@ -60,10 +56,10 @@ export async function DELETE(request: Request) {
   const timeCapsule: TimeCapsule = await request.json();
   const supabase = await createClient();
 
-  const { data, error }: { data: TimeCapsule | null; error: PostgrestError | null } = await supabase
-    .from('timecapsules')
+  const { data, error } = await supabase
+    .from("timecapsules")
     .delete()
-    .eq('id', timeCapsule.id)
+    .eq("id", timeCapsule.id)
     .select()
     .single();
 
