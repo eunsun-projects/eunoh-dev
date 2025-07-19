@@ -1,9 +1,8 @@
+import { cache } from "react";
 import sharp from "sharp";
 
-async function getImageSizeServer(
-  url: string,
-): Promise<{ width: number; height: number }> {
-  const response = await fetch(url);
+const getImageSizeServer = cache(async (imageUrl: string) => {
+  const response = await fetch(imageUrl);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`);
@@ -20,6 +19,6 @@ async function getImageSizeServer(
     width: metadata.width,
     height: metadata.height,
   };
-}
+});
 
 export default getImageSizeServer;
