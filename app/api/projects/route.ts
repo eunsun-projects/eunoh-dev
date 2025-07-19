@@ -6,18 +6,30 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("isView", true)
-    .order("number", { ascending: true });
 
-  if (error) {
-    revalidatePath("/", "layout");
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("isView", true)
+      .order("number", { ascending: true });
+
+    if (error) {
+      console.error("Supabase error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data, {
+      status: 200,
+      headers: {
+        // ISR과 잘 맞는 캐시 헤더
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+      },
+    });
+  } catch (error) {
+    console.error("API error:", error);
+    return NextResponse.json({ error: "서버 오류" }, { status: 500 });
   }
-
-  return NextResponse.json(data, { status: 200 });
 }
 
 export async function POST(req: Request) {
@@ -32,7 +44,7 @@ export async function POST(req: Request) {
 
   if (typeof images === "object" && images.length > 0) {
     const imageBufferPromises = images.map(async (image) =>
-      convertToWebP(image, 720),
+      convertToWebP(image, 720)
     );
 
     const imageBuffers = await Promise.all(imageBufferPromises);
@@ -66,16 +78,23 @@ export async function POST(req: Request) {
     } catch (error: unknown) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : "알 수 없는 오류" },
-        { status: 500 },
+        { status: 500 }
       );
     }
+  }
+
+  let uploadImages: string[] = [];
+
+  if (uploadResults.length === 0) uploadImages = newProject.images ?? [];
+  else {
+    uploadImages = uploadResults.filter((image) => image !== null) as string[];
   }
 
   const { data, error } = await supabase
     .from("projects")
     .upsert({
       ...newProject,
-      images: uploadResults.length === 0 ? newProject.images : uploadResults,
+      images: uploadImages,
     })
     .select()
     .single();
@@ -84,6 +103,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  // 🔥 전략적 revalidation
+  // 1. 메인 프로젝트 목록 페이지
   revalidatePath("/", "layout");
+
+  // 2. 새로 생성/수정된 프로젝트 상세 페이지
+  revalidatePath(`/projects/${data.id}`, "page");
+
+  // 3. 전체 프로젝트 목록 (필요시)
+  revalidatePath("/projects", "page");
   return NextResponse.json(data, { status: 201 });
 }
