@@ -13,6 +13,7 @@ interface PublicPostPageProps {
 }
 
 export const dynamic = "force-static";
+export const dynamicParams = true; // 🔥 새 프로젝트 자동 처리
 
 async function PublicPostPage({ params }: PublicPostPageProps) {
   const engTitle = (await params).engTitle;
