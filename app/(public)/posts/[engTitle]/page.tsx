@@ -1,13 +1,10 @@
 import { getPost } from "@/apis/post";
-import { getPosts } from "@/apis/posts";
 import Loading from "@/app/loading";
-import NotFound from "@/app/not-found";
 import { QUERY_KEY_POSTS } from "@/constants/query.constants";
-import type { Post } from "@/types/post.types";
 import {
-  dehydrate,
   HydrationBoundary,
   QueryClient,
+  dehydrate,
 } from "@tanstack/react-query";
 import { Suspense } from "react";
 import PublicPostTemplate from "../_components/PublicPostTemplate";
@@ -15,26 +12,16 @@ interface PublicPostPageProps {
   params: Promise<{ engTitle: string }>;
 }
 
+export const dynamic = "force-static";
+
 async function PublicPostPage({ params }: PublicPostPageProps) {
   const engTitle = (await params).engTitle;
 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEY_POSTS],
-    queryFn: () => getPosts(),
-  });
-
-  const posts = await queryClient.getQueryData<Post[]>([QUERY_KEY_POSTS]);
-  const post = posts?.find((post) => post.engTitle === engTitle);
-
-  if (!post) {
-    return <NotFound />;
-  }
-
-  await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEY_POSTS, post.id],
-    queryFn: () => getPost(post.id),
+    queryKey: [QUERY_KEY_POSTS, engTitle],
+    queryFn: () => getPost(engTitle),
   });
 
   const dehydratedState = dehydrate(queryClient);
@@ -42,7 +29,7 @@ async function PublicPostPage({ params }: PublicPostPageProps) {
   return (
     <Suspense fallback={<Loading />}>
       <HydrationBoundary state={dehydratedState}>
-        <PublicPostTemplate id={post.id} />
+        <PublicPostTemplate engTitle={engTitle} />
       </HydrationBoundary>
     </Suspense>
   );
