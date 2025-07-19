@@ -11,12 +11,12 @@ import remarkGfm from "remark-gfm";
 import { Back } from "../../_components/ui";
 import styles from "./markdown-style.module.css";
 interface PublicPostTemplateProps {
-  id: string;
+  engTitle: string;
 }
 
-function PublicPostTemplate({ id }: PublicPostTemplateProps) {
+function PublicPostTemplate({ engTitle }: PublicPostTemplateProps) {
   const router = useRouter();
-  const { data: post, isLoading, error } = usePostQuery(id);
+  const { data: post, isLoading, error } = usePostQuery(engTitle);
 
   useEffect(() => {
     if (error) console.error(error.message);
