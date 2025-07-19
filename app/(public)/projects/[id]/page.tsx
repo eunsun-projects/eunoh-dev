@@ -13,6 +13,7 @@ import { Suspense } from "react";
 import ProjectTemplate from "../_components/ProjectTemplate";
 
 export const dynamic = "force-static";
+export const dynamicParams = true; // 🔥 새 프로젝트 자동 처리
 
 async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
