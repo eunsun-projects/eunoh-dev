@@ -49,7 +49,7 @@ function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
         pathname === "/" && "transition-all duration-1000"
       )}
     >
-      <button type="button" onClick={toggleTheme}>
+      <button type="button" onClick={toggleTheme} className="cursor-pointer">
         {theme === "dark" ? <MdOutlineDarkMode /> : <MdDarkMode />}
       </button>
     </div>
