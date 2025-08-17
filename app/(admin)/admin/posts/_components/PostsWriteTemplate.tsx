@@ -31,7 +31,7 @@ interface PostsWriteTemplateProps {
 function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
   const { user } = useAuth();
   const [markdown, setMarkdown] = useState(
-    post?.markdown || "**Hello world!!!**",
+    post?.markdown || "**Hello world!!!**"
   );
   const { register, handleSubmit } = useForm<FormValues>();
   const {
@@ -67,7 +67,7 @@ function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
         mode === "edit" && !data.keywords1 && !data.keywords2 && !data.keywords3
           ? post?.keywords
           : ([data.keywords1, data.keywords2, data.keywords3].filter(
-              Boolean,
+              Boolean
             ) as string[]),
       engTitle:
         mode === "edit" && !data.engTitle ? post?.engTitle : data.engTitle,
@@ -193,7 +193,7 @@ function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
         <PostsEditor value={markdown} onChange={handleChange} />
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer"
         >
           저장
         </button>
