@@ -1,3 +1,4 @@
+import { isUUID } from "@/utils/common/isUUID";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -7,11 +8,17 @@ export async function GET(
 ) {
   const supabase = await createClient();
   const slug = (await params).slug;
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("engTitle", slug)
-    .single();
+
+  const isUuid = isUUID(slug);
+
+  const query = supabase.from("posts").select("*");
+
+  if (isUuid) {
+    query.eq("id", slug);
+  } else {
+    query.eq("engTitle", slug);
+  }
+  const { data, error } = await query.single();
 
   if (error) {
     console.error("Supabase error:", error);
