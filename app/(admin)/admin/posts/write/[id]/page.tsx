@@ -6,7 +6,7 @@ import PostsWriteTemplate from "../../_components/PostsWriteTemplate";
 
 function EditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { data: post, isPending, error } = usePostQuery(id);
+  const { data: post, isPending, error } = usePostQuery({ id });
 
   useEffect(() => {
     if (error) console.error(error.message);
