@@ -16,7 +16,7 @@ interface PublicPostTemplateProps {
 
 function PublicPostTemplate({ engTitle }: PublicPostTemplateProps) {
   const router = useRouter();
-  const { data: post, isLoading, error } = usePostQuery(engTitle);
+  const { data: post, isLoading, error } = usePostQuery({ engTitle });
 
   useEffect(() => {
     if (error) console.error(error.message);
