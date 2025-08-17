@@ -22,7 +22,7 @@ async function PublicPostPage({ params }: PublicPostPageProps) {
 
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEY_POSTS, engTitle],
-    queryFn: () => getPost(engTitle),
+    queryFn: () => getPost({ engTitle }),
   });
 
   const dehydratedState = dehydrate(queryClient);
