@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   {
     title: "projects",
     href: "/projects",
-    description: "- 진행한 프로젝트",
+    description: "- 프로젝트",
   },
   {
     title: "posts",
@@ -38,7 +38,7 @@ function Nav({ ready }: NavProps) {
     <section
       className={cn(
         "opacity-0 w-full flex items-center justify-between my-6 xl:my-14 transition-all duration-1000",
-        ready && "opacity-100",
+        ready && "opacity-100"
       )}
     >
       <div className="flex flex-col gap-0.5 xl:gap-1 text-sm xl:text-base">
