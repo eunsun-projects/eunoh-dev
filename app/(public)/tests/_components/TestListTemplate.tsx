@@ -85,13 +85,13 @@ const testLists = [
   {
     id: 14,
     title: "fluids",
-    description: "원샷 프롬프트 - 플루이드 시뮬레이션",
+    description: "원샷 프롬프트 - 연기",
     href: "/tests/fluids",
   },
   {
     id: 15,
     title: "candle",
-    description: "원샷 프롬프트 - 캔들 시뮬레이션",
+    description: "원샷 프롬프트 - 촛불",
     href: "/tests/candle",
   },
 ];
