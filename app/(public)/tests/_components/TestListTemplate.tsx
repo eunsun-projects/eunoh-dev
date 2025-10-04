@@ -82,6 +82,18 @@ const testLists = [
     description: "토스트 잘되나~?",
     href: "https://toast-study.vercel.app/",
   },
+  {
+    id: 14,
+    title: "fluids",
+    description: "원샷 프롬프트 - 플루이드 시뮬레이션",
+    href: "/tests/fluids",
+  },
+  {
+    id: 15,
+    title: "candle",
+    description: "원샷 프롬프트 - 캔들 시뮬레이션",
+    href: "/tests/candle",
+  },
 ];
 
 function TestListTemplate() {
