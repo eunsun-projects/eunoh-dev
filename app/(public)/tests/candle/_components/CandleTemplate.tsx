@@ -1,5 +1,6 @@
 "use client";
 
+import { Back } from "@/app/(public)/_components/ui";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useEffect, useState } from "react";
@@ -48,6 +49,7 @@ export default function CandleTemplate() {
         zIndex: 1000,
       }}
     >
+      <Back className="absolute top-4 right-4 z-[1001]" />
       <Canvas
         camera={{ position: [0, 7, 5], fov: 50 }}
         style={{ width: dimensions.width, height: dimensions.height }}

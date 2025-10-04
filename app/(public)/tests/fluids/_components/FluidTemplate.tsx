@@ -1,5 +1,6 @@
 "use client";
 
+import { Back } from "@/app/(public)/_components/ui";
 import { useEffect } from "react";
 import FluidCanvas from "./FluidCanvas";
 
@@ -27,6 +28,7 @@ export default function FluidTemplate() {
         zIndex: 1000,
       }}
     >
+      <Back className="absolute top-4 right-4" />
       <FluidCanvas />
     </div>
   );
