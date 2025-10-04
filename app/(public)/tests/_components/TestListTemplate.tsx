@@ -70,6 +70,18 @@ const testLists = [
     description: "어린이날 선물 받아도 될까?",
     href: "https://iffygiftyday.vercel.app/",
   },
+  {
+    id: 12,
+    title: "memomemo",
+    description: "맥 메모앱 클론 테스트",
+    href: "https://memoapp-study.vercel.app/",
+  },
+  {
+    id: 13,
+    title: "toaster",
+    description: "토스트 잘되나~?",
+    href: "https://toast-study.vercel.app/",
+  },
 ];
 
 function TestListTemplate() {
