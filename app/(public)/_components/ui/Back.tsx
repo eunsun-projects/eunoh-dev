@@ -1,7 +1,7 @@
 "use client";
 
 import cn from "@/utils/common/cn";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import DarkLightModeButton from "./DarkLightModeButton";
 
@@ -12,6 +12,12 @@ interface BackProps {
 
 function Back({ className, isDarkLightModeButton }: BackProps) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const handleBack = () => {
+    if (pathname === "/tests") router.push("/");
+    router.back();
+  };
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
