@@ -25,9 +25,10 @@ function ProjectNextImage({
     if (type === "normal") return;
     const innerWidth = window.innerWidth;
     if (innerWidth < 768) {
+      const isWide = image.width > image.height;
       setWidthHeight({
-        width: `${image.width / 2}px`,
-        height: `${image.height / 2}px`,
+        width: `${isWide ? image.width / 2 : image.width / 1.3}px`,
+        height: `${isWide ? image.height / 2 : image.height / 1.3}px`,
       });
       return;
     }
