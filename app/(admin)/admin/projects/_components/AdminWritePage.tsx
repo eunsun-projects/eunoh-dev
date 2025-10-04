@@ -110,12 +110,10 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
     }
 
     const formData = new FormData();
-    if (data.images) {
+    if (data.images && data.images.length > 0) {
       for (let i = 0; i < data.images.length; i++) {
         formData.append("images", data.images[i]);
       }
-    } else {
-      formData.append("images", "");
     }
     formData.append("project", JSON.stringify(newProject));
 
