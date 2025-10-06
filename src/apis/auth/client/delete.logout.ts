@@ -5,7 +5,7 @@ export async function deleteLogOut(): Promise<void> {
   try {
     await fetchWrapper<void>(url, {
       method: "DELETE",
-      next: { tags: ["user"] },
+      // next: { tags: ["user"] },
     });
   } catch (error: unknown) {
     // biome-ignore lint/complexity/noUselessCatch: <explanation>
