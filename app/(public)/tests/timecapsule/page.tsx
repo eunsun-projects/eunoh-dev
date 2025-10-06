@@ -4,7 +4,8 @@ import {
   QUERY_KEY_TIME_CAPSULES,
   QUERY_KEY_USER,
 } from "@/constants/query.constants";
-import { getUserFromHeaders } from "@/utils/common/getUserFromHeaders";
+import { AuthProvider } from "@/contexts/auth.context";
+// import { getUserFromHeaders } from "@/utils/common/getUserFromHeaders";
 import {
   HydrationBoundary,
   QueryClient,
@@ -27,12 +28,12 @@ export const viewport: Viewport = {
 };
 
 async function TimeCapsulePage() {
-  const userId = await getUserFromHeaders();
+  // const userId = await getUserFromHeaders();
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEY_USER],
-    queryFn: () => postUserServer(userId),
+    queryFn: () => postUserServer(),
   });
 
   await queryClient.prefetchQuery({
@@ -45,7 +46,9 @@ async function TimeCapsulePage() {
   return (
     // <Suspense fallback={<Loading />}>
     <HydrationBoundary state={dehydratedState}>
-      <TimeCapsuleTemplate />
+      <AuthProvider>
+        <TimeCapsuleTemplate />
+      </AuthProvider>
     </HydrationBoundary>
     // </Suspense>
   );
