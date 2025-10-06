@@ -1,4 +1,4 @@
-import { getSupabaseCookies } from "@/utils/supabase/get-supbase-cookies";
+import { getSupabaseCookies } from "@/utils/supabase/get-supabase-cookies";
 import { createClient } from "@/utils/supabase/server";
 import { type NextRequest, NextResponse } from "next/server";
 
