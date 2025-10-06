@@ -10,7 +10,7 @@ import pricing from "../_data/pricing";
 import { type Base, useUsageCalculatorStore } from "../_libs/zustand";
 
 function CalculatorHeader() {
-  const { loginWithProvider } = useAuth();
+  const { user, loginWithProvider } = useAuth();
   const { mode, model, exchangeRate, base, setExchangeRate, setBase } =
     useUsageCalculatorStore(
       useShallow((state) => ({
@@ -20,7 +20,7 @@ function CalculatorHeader() {
         base: state.base,
         setExchangeRate: state.setExchangeRate,
         setBase: state.setBase,
-      }))
+      })),
     );
 
   useEffect(() => {
@@ -83,44 +83,44 @@ function CalculatorHeader() {
       }
 
       const txtInputModelPricing = pricing.txt_model.find(
-        (model) => model.model === newBase.input_txt_base.model
+        (model) => model.model === newBase.input_txt_base.model,
       );
       const imageInputModelPricing = pricing.image_model.find(
-        (model) => model.model === newBase.input_image_base.model
+        (model) => model.model === newBase.input_image_base.model,
       );
       const txtOutputModelPricing = pricing.txt_model.find(
-        (model) => model.model === newBase.output_txt_base.model
+        (model) => model.model === newBase.output_txt_base.model,
       );
       const imageOutputModelPricing = pricing.image_model.find(
-        (model) => model.model === newBase.output_image_base.model
+        (model) => model.model === newBase.output_image_base.model,
       );
 
       const txtInputModelPricingPrice = txtInputModelPricing
         ? Number(
             (
               txtInputModelPricing.input_per_token * exchangeRate.won_number
-            ).toFixed(5)
+            ).toFixed(5),
           )
         : 0;
       const imageInputModelPricingPrice = imageInputModelPricing
         ? Number(
             (
               imageInputModelPricing.input_per_token * exchangeRate.won_number
-            ).toFixed(5)
+            ).toFixed(5),
           )
         : 0;
       const txtOutputModelPricingPrice = txtOutputModelPricing
         ? Number(
             (
               txtOutputModelPricing.output_per_token * exchangeRate.won_number
-            ).toFixed(5)
+            ).toFixed(5),
           )
         : 0;
       const imageOutputModelPricingPrice = imageOutputModelPricing
         ? Number(
             (
               imageOutputModelPricing.output_per_token * exchangeRate.won_number
-            ).toFixed(5)
+            ).toFixed(5),
           )
         : 0;
 
@@ -143,12 +143,16 @@ function CalculatorHeader() {
         호출함. 돈은 내가 냄.
       </h2>
       <div className="flex flex-row gap-4">
-        <Button
-          className="w-fit bg-neutral-500 text-neutral-50 hover:bg-neutral-600"
-          onClick={() => loginWithProvider("google", "/tests/usage-calculator")}
-        >
-          로그인해야될걸?
-        </Button>
+        {!user && (
+          <Button
+            className="w-fit bg-neutral-500 text-neutral-50 hover:bg-neutral-600"
+            onClick={() =>
+              loginWithProvider("google", "/tests/usage-calculator")
+            }
+          >
+            로그인해야될걸?
+          </Button>
+        )}
         <div className="flex flex-row gap-2 items-center">
           <span className="text-sm text-gray-400 animate-pulse">
             오늘의 환율: {exchangeRate.won_string} 원/달러
