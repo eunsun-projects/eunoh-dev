@@ -2,6 +2,7 @@
 
 import { BiLogoTypescript } from "react-icons/bi";
 import {
+  FaConfluence,
   FaCss3Alt,
   FaDiscord,
   FaGithub,
@@ -11,8 +12,8 @@ import {
   FaSass,
   FaSlack,
 } from "react-icons/fa";
-import { GiZeppelin } from "react-icons/gi";
 import { IoLogoFigma, IoLogoFirebase } from "react-icons/io5";
+import { LiaNode } from "react-icons/lia";
 import { PiFramerLogoFill } from "react-icons/pi";
 import {
   RiNextjsFill,
@@ -25,8 +26,11 @@ import {
   SiAdobephotoshop,
   SiAdobepremierepro,
   SiBlender,
+  SiFastapi,
   SiGraphql,
+  SiHasura,
   SiJira,
+  SiNestjs,
   SiNotion,
   SiOpenai,
   SiReacthookform,
@@ -118,16 +122,14 @@ function SkillsAndTools() {
                 <span className="text-neutral-900 dark:text-neutral-50">
                   {"react"}
                 </span>
-                <span>{"- react 19 스터디 중 입니다."}</span>
+                <span>{"- react 19 신문법에 익숙합니다."}</span>
               </div>
               <div className="flex items-center gap-1">
                 <SiSvelte className="text-neutral-900 dark:text-neutral-50 text-lg" />
                 <span className="text-neutral-900 dark:text-neutral-50">
                   {"svelte"}
                 </span>
-                <span>
-                  {"- svelte-kit 을 사용한 프로젝트 경험이 있습니다."}
-                </span>
+                <span>{"- svelte-kit을 사용한 프로젝트 경험이 있습니다."}</span>
               </div>
               <div className="flex items-center gap-1">
                 <RiNextjsFill className="text-neutral-900 dark:text-neutral-50 text-lg" />
@@ -135,7 +137,7 @@ function SkillsAndTools() {
                   {"next"}
                 </span>
                 <span>
-                  {"- SSG, ISR, SSR, CSR 을 최적화하여 사용할 수 있습니다."}
+                  {"- SSG, ISR, SSR, CSR을 최적화하여 사용할 수 있습니다."}
                 </span>
               </div>
               <div className="flex items-center gap-1 ">
@@ -143,7 +145,7 @@ function SkillsAndTools() {
                 <span className="text-neutral-900 dark:text-neutral-50">
                   {"vue"}
                 </span>
-                <span>{"- vue3 를 사용한 프로젝트 경험이 있습니다."}</span>
+                <span>{"- vue3를 사용한 프로젝트 경험이 있습니다."}</span>
               </div>
               <div className="flex items-center gap-1">
                 <SiReactquery className="text-neutral-900 dark:text-neutral-50 text-lg" />
@@ -225,7 +227,43 @@ function SkillsAndTools() {
                 <span className="text-neutral-900 dark:text-neutral-50">
                   {"graphql"}
                 </span>
-                <span>{"- graphql 을 사용한 프로젝트 경험이 있습니다."}</span>
+                <span>{"- graphql을 사용한 프로젝트 경험이 있습니다."}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <SiHasura className="text-neutral-900 dark:text-neutral-50 text-lg" />
+                <span className="text-neutral-900 dark:text-neutral-50">
+                  {"hasura"}
+                </span>
+                <span>{"- hasura를 사용한 프로젝트 경험이 있습니다."}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 w-full">
+            <p className="flex flex-col font-bold">{"> backend : "}</p>
+            <div className="flex flex-col gap-2 text-[9px] xl:text-xs">
+              <div className="flex items-center gap-1">
+                <LiaNode className="text-neutral-900 dark:text-neutral-50 text-lg" />
+                <span className="text-neutral-900 dark:text-neutral-50">
+                  {"node.js"}
+                </span>
+                <span>
+                  {"- node.js, express를 사용하여 REST를 구축할 수 있습니다."}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <SiNestjs className="text-neutral-900 dark:text-neutral-50 text-lg" />
+                <span className="text-neutral-900 dark:text-neutral-50">
+                  {"nest.js"}
+                </span>
+                <span>{"- nest.js를 사용하여 REST를 구축할 수 있습니다."}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <SiFastapi className="text-neutral-900 dark:text-neutral-50 text-lg" />
+                <span className="text-neutral-900 dark:text-neutral-50">
+                  {"fastapi"}
+                </span>
+                <span>{"- fastapi를 사용하여 REST를 구축할 수 있습니다."}</span>
               </div>
             </div>
           </div>
@@ -239,8 +277,8 @@ function SkillsAndTools() {
                   <span className="text-xs">{"slack"}</span>
                 </div>
                 <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
-                  <GiZeppelin />
-                  <span className="text-xs">{"zeppelin"}</span>
+                  <FaConfluence />
+                  <span className="text-xs">{"confluence"}</span>
                 </div>
                 <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50 text-base">
                   <SiNotion />
@@ -293,10 +331,10 @@ function SkillsAndTools() {
                   <SiBlender />
                   <span className="text-xs">{"blender"}</span>
                 </div>
-                <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
+                {/* <div className="flex items-center gap-1 text-neutral-900 dark:text-neutral-50">
                   <SiOpenai />
                   <span className="text-xs">{"openai"}</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
