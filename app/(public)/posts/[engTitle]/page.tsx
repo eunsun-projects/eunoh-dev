@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { Suspense } from "react";
 import PublicPostTemplate from "../_components/PublicPostTemplate";
+
 interface PublicPostPageProps {
   params: Promise<{ engTitle: string }>;
 }

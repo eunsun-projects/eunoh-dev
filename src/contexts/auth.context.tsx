@@ -5,12 +5,13 @@ import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { useUserQuery } from "@/hooks/queries/auth";
 import type { User } from "@/types/user.types";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   type PropsWithChildren,
   createContext,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -31,16 +32,35 @@ const initialValue: AuthContextType = {
 export const AuthContext = createContext<AuthContextType>(initialValue);
 
 export function AuthProvider({ children }: PropsWithChildren) {
+  const pathname = usePathname();
   const [isPending, setIsPending] = useState<boolean>(false);
+  const isAdminPage = useMemo(
+    () => pathname.startsWith("/admin/authed"),
+    [pathname],
+  );
 
-  const { data: user, isPending: isUserPending, error } = useUserQuery();
+  const isQueryEnabled = useMemo(() => {
+    const isUsageCalculatorPage = pathname.startsWith(
+      "/tests/usage-calculator",
+    );
+    const isTimeCapsulePage = pathname.startsWith("/tests/timecapsule");
+    return isAdminPage || isUsageCalculatorPage || isTimeCapsulePage;
+  }, [pathname, isAdminPage]);
+
+  const {
+    data: user,
+    isPending: isUserPending,
+    error,
+  } = useUserQuery({
+    enabled: isQueryEnabled,
+  });
 
   const queryClient = useQueryClient();
 
   const router = useRouter();
 
   const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
-    async (provider: string, next = "/admin") => {
+    async (provider: string, next = "/admin/authed") => {
       // console.log("loginWithProvider", provider);
       try {
         const data = await getLogInWithProvider(provider, next);
@@ -54,7 +74,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         console.error(errorMessage);
       }
     },
-    [router]
+    [router],
   );
 
   const logOut: AuthContextType["logOut"] = useCallback(async () => {
@@ -62,13 +82,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     try {
       await deleteLogOut();
+      router.push("/admin");
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
       return alert(errorMessage);
     }
     queryClient.invalidateQueries({ queryKey: [QUERY_KEY_USER] });
-  }, [user, queryClient]);
+  }, [user, queryClient, router]);
 
   useEffect(() => {
     if (isUserPending) {
@@ -77,14 +98,16 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [isUserPending]);
 
   useEffect(() => {
-    if (error) {
-      console.error(error);
+    if (error) console.error(error);
+    if (error?.message === "Cookie not found" && isAdminPage) {
+      router.push("/admin");
     }
-  }, [error]);
+  }, [error, router, isAdminPage]);
 
   useEffect(() => {
+    if (!isQueryEnabled) return;
     console.log("user ======>", user);
-  }, [user]);
+  }, [user, isQueryEnabled]);
 
   const value = {
     user: user ?? null,

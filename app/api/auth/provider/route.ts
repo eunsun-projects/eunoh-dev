@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   if (!PUBLIC_URL) {
     return NextResponse.json(
       { error: "PUBLIC_URL is not set" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -43,9 +43,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error?.message }, { status: 401 });
   }
 
-  queryClient.invalidateQueries({
-    queryKey: [QUERY_KEY_USER],
-  });
+  // queryClient.invalidateQueries({
+  //   queryKey: [QUERY_KEY_USER],
+  // });
 
   return NextResponse.json(data, { status: 200 });
 }

@@ -27,7 +27,7 @@ function ProjectsListTemplate() {
             <div key={project.id} className="w-full flex justify-between">
               <div className="flex flex-row gap-0 w-[90%] xl:gap-2">
                 <Link
-                  href={`/projects/${project.id}`}
+                  href={`/projects/${project.engTitle}`}
                   className="min-w-40 xl:min-w-44"
                 >
                   <h3 className="w-fit text-neutral-900 dark:text-neutral-50 text-xs m-0 p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 hover:rounded-sm transition-all duration-200">

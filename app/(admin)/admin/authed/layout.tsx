@@ -7,25 +7,23 @@ import {
   QUERY_KEY_USER,
 } from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
-import { getUserFromHeader } from "@/utils/auth/getUserFromHeader";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
 import AdminHeader from "./_components/AdminHeader";
 
-type AdminLayoutProps = PropsWithChildren;
-
-async function AdminLayout({ children }: AdminLayoutProps) {
-  const userId = await getUserFromHeader();
-
+async function AdminLayout({ children }: PropsWithChildren) {
   const queryClient = new QueryClient();
+
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEY_USER],
-    queryFn: () => postUserServer(userId),
+    queryFn: () => postUserServer(),
   });
+
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEY_PROJECTS],
     queryFn: () => getProjects(),
@@ -34,6 +32,10 @@ async function AdminLayout({ children }: AdminLayoutProps) {
     queryKey: [QUERY_KEY_POSTS],
     queryFn: () => getPosts(),
   });
+
+  const user = await queryClient.getQueryData([QUERY_KEY_USER]);
+  if (!user) return redirect("/admin");
+
   const dehydratedState = dehydrate(queryClient);
 
   return (

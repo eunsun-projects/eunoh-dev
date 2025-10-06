@@ -4,13 +4,16 @@ import Loading from "@/app/loading";
 import { usePostsQuery } from "@/hooks/queries/posts";
 import { format } from "date-fns";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Back } from "../../_components/ui";
 
 function PublicPostsListTemplate() {
   const { data: posts, isLoading, error } = usePostsQuery();
 
-  const filteredPosts = posts?.filter((post) => post.isView);
+  const filteredPosts = useMemo(
+    () => posts?.filter((post) => post.isView),
+    [posts],
+  );
 
   useEffect(() => {
     if (error) console.error(error.message);

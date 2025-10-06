@@ -1,4 +1,4 @@
-import { getProjects } from "@/apis/projects";
+import { getProject } from "@/apis/projects";
 import Loading from "@/app/loading";
 import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
 import type { Project } from "@/types/project.types";
@@ -12,36 +12,43 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ProjectTemplate from "../_components/ProjectTemplate";
 
+interface ProjectPageProps {
+  params: Promise<{ engTitle: string }>;
+}
+
 export const dynamic = "force-static";
 export const dynamicParams = true; // 🔥 새 프로젝트 자동 처리
 
-async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
+async function ProjectPage({ params }: ProjectPageProps) {
+  const engTitle = (await params).engTitle;
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEY_PROJECTS],
-    queryFn: () => getProjects(),
+    queryKey: [QUERY_KEY_PROJECTS, engTitle],
+    queryFn: () => getProject({ engTitle }),
   });
 
   const dehydratedState = dehydrate(queryClient);
 
-  const projects = queryClient.getQueryData<Project[]>([QUERY_KEY_PROJECTS]);
+  const project = queryClient.getQueryData<Project>([
+    QUERY_KEY_PROJECTS,
+    engTitle,
+  ]);
 
-  if (!projects || projects.length === 0) notFound();
+  // if (!projects || projects.length === 0) notFound();
 
-  const currentProject = projects.find(
-    (project) => project.id === id && project.isView
-  );
+  // const currentProject = projects.find(
+  //   (project) => project.id === id && project.isView,
+  // );
 
-  if (!currentProject) notFound();
+  if (!project) notFound();
 
-  const project = await processProjectImages(currentProject);
+  const processedProject = await processProjectImages(project);
 
   return (
     <Suspense fallback={<Loading />}>
       <HydrationBoundary state={dehydratedState}>
-        <ProjectTemplate project={project} />
+        <ProjectTemplate project={processedProject} />
       </HydrationBoundary>
     </Suspense>
   );
