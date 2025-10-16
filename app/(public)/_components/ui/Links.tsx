@@ -1,6 +1,6 @@
 "use client";
 
-import cn from "@/utils/common/cn";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { FaAt, FaGithub } from "react-icons/fa";
 import { SiTistory } from "react-icons/si";

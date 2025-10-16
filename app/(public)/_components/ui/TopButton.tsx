@@ -1,7 +1,7 @@
 "use client";
 
 import { useReadyState } from "@/hooks/ui/useReadyState";
-import cn from "@/utils/common/cn";
+import { cn } from "@/lib/utils";
 import { FaAngleUp } from "react-icons/fa";
 // import { IoChatboxEllipses, IoMail } from "react-icons/io5";
 

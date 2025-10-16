@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/hooks/auth/useAuth";
+import { cn } from "@/lib/utils";
 import type { TimeCapsule } from "@/types/tests.type";
-import cn from "@/utils/common/cn";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useShallow } from "zustand/react/shallow";
@@ -34,7 +34,7 @@ function TimeCapsuleUI() {
       timeCapsules: state.timeCapsules,
       queryStringTimeCapsuleId: state.queryStringTimeCapsuleId,
       setFocusedObject: state.setFocusedObject,
-    }))
+    })),
   );
   const { user, loginWithProvider, logOut } = useAuth();
   const [isOpen, setIsOpen] = useState<TimeCapsuleUIState>({
@@ -91,7 +91,7 @@ function TimeCapsuleUI() {
   useEffect(() => {
     if (!timeCapsules || !queryStringTimeCapsuleId) return;
     const timeCapsule = timeCapsules.find(
-      (timeCapsule) => timeCapsule.id === queryStringTimeCapsuleId
+      (timeCapsule) => timeCapsule.id === queryStringTimeCapsuleId,
     );
     if (timeCapsule) setFocusedObject({ isIdle: true, timeCapsule });
   }, [queryStringTimeCapsuleId, setFocusedObject, timeCapsules]);
@@ -111,9 +111,9 @@ function TimeCapsuleUI() {
               {
                 "opacity-100":
                   timeCapsules.filter(
-                    (timeCapsule) => timeCapsule.user_email === user?.email
+                    (timeCapsule) => timeCapsule.user_email === user?.email,
                   ).length > 0,
-              }
+              },
             )}
             onClick={handleClickListOpen}
           >

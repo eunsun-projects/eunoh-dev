@@ -1,7 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import type { Desc } from "@/types/project.types";
-import cn from "@/utils/common/cn";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
 type DescriptionProps = {
