@@ -1,8 +1,8 @@
 "use client";
 
 import { useProjectMutation, useProjectsQuery } from "@/hooks/queries/projects";
+import { cn } from "@/lib/utils";
 import type { Project } from "@/types/project.types";
-import cn from "@/utils/common/cn";
 import Link from "next/link";
 import { useEffect } from "react";
 

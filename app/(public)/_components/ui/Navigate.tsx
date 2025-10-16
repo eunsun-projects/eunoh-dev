@@ -1,6 +1,6 @@
 "use client";
 
-import cn from "@/utils/common/cn";
+import { cn } from "@/lib/utils";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 
 type NavigateProps = {

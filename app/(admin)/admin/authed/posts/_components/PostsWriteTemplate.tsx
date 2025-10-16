@@ -2,8 +2,8 @@
 
 import { useAuth } from "@/hooks/auth/useAuth";
 import { usePostMutation } from "@/hooks/queries/posts";
+import { cn } from "@/lib/utils";
 import type { PartialPost } from "@/types/post.types";
-import cn from "@/utils/common/cn";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useState } from "react";
@@ -31,7 +31,7 @@ interface PostsWriteTemplateProps {
 function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
   const { user } = useAuth();
   const [markdown, setMarkdown] = useState(
-    post?.markdown || "**Hello world!!!**"
+    post?.markdown || "**Hello world!!!**",
   );
   const { register, handleSubmit } = useForm<FormValues>();
   const {
@@ -67,7 +67,7 @@ function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
         mode === "edit" && !data.keywords1 && !data.keywords2 && !data.keywords3
           ? post?.keywords
           : ([data.keywords1, data.keywords2, data.keywords3].filter(
-              Boolean
+              Boolean,
             ) as string[]),
       engTitle:
         mode === "edit" && !data.engTitle ? post?.engTitle : data.engTitle,

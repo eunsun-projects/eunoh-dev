@@ -2,8 +2,8 @@
 
 import { useAuth } from "@/hooks/auth/useAuth";
 import { useProjectMutation } from "@/hooks/queries/projects";
+import { cn } from "@/lib/utils";
 import type { PartialProject } from "@/types/project.types";
-import cn from "@/utils/common/cn";
 import parseTextToObjects from "@/utils/common/parseTextToObjects";
 import { useRouter } from "next/navigation";
 import { useEffect, useId } from "react";

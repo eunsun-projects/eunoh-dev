@@ -1,8 +1,8 @@
 "use client";
 
 import { usePostMutation, usePostsQuery } from "@/hooks/queries/posts";
+import { cn } from "@/lib/utils";
 import type { Post } from "@/types/post.types";
-import cn from "@/utils/common/cn";
 import Link from "next/link";
 
 function PostsListTemplate() {

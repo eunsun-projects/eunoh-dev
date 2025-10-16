@@ -1,6 +1,6 @@
 "use client";
 
-import cn from "@/utils/common/cn";
+import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
@@ -46,7 +46,7 @@ function DarkLightModeButton({ ready = true }: DarkLightModeButtonProps) {
       className={cn(
         "opacity-0 flex items-center justify-center text-xl",
         ready && theme !== null && "opacity-100",
-        pathname === "/" && "transition-all duration-1000"
+        pathname === "/" && "transition-all duration-1000",
       )}
     >
       <button type="button" onClick={toggleTheme} className="cursor-pointer">

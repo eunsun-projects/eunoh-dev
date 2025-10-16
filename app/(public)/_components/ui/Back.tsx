@@ -1,6 +1,6 @@
 "use client";
 
-import cn from "@/utils/common/cn";
+import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import DarkLightModeButton from "./DarkLightModeButton";
