@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { FaAt, FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { SiTistory } from "react-icons/si";
+import Mails from "./Mails";
 
 interface LinksProps {
   ready: boolean;
@@ -17,12 +18,7 @@ function Links({ ready }: LinksProps) {
         ready && "opacity-100",
       )}
     >
-      <Link
-        href="mailto:bdohhhhh@gmail.com"
-        className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 text-neutral-900 dark:text-neutral-50 hover:rounded-sm transition-all duration-200"
-      >
-        <FaAt />
-      </Link>
+      <Mails />
       <Link
         href="https://github.com/eunohhh"
         className="p-0.5 dark:hover:bg-neutral-500 hover:bg-neutral-300 text-neutral-900 dark:text-neutral-50 hover:rounded-sm transition-all duration-200"
