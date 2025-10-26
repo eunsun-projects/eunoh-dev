@@ -38,13 +38,13 @@ function ModeSelector() {
 					aria-controls="mode-selector"
 					aria-expanded={open}
 					aria-haspopup="listbox"
-					className="w-[500px] justify-between"
+					className="w-full max-w-[500px] justify-between"
 				>
 					{value ? value : "모드 선택, 기본 txt-to-txt"}
 					<ChevronsUpDown className="opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[500px] p-0">
+			<PopoverContent className="w-[90vw] max-w-[500px] p-0">
 				<Command defaultValue={value ?? undefined}>
 					{/* <CommandInput placeholder="모드 검색" className="h-9" /> */}
 					<CommandList id="mode-selector">

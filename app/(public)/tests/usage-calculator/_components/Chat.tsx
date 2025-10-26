@@ -382,7 +382,7 @@ function Chat() {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(handleSubmit)}
-					className="-translate-x-1/2 relative left-1/2 h-[60px] w-[90svw] min-w-[680px] lg:w-1/2"
+					className="-translate-x-1/2 relative bottom-4 left-1/2 h-[60px] w-[90svw] md:min-w-[680px] lg:w-1/2"
 				>
 					<FormField
 						control={form.control}

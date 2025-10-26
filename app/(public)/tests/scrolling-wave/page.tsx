@@ -7,7 +7,7 @@ import {
 	useSpring,
 	useTransform,
 } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const X_LINES = 40;
 
@@ -39,12 +39,14 @@ function ScrollingWavePage() {
 		[],
 	);
 
-	const [leftVarWidths, setLeftVarWidths] = useState<number[]>(
-		calculateWidth("left", 0),
-	);
-	const [rightVarWidths, setRightVarWidths] = useState<number[]>(
-		calculateWidth("right", 0),
-	);
+	const [leftVarWidths, setLeftVarWidths] = useState<number[]>([]);
+	const [rightVarWidths, setRightVarWidths] = useState<number[]>([]);
+
+	// 새로고침시 하이드레이션 문제(width값 불일치)가 되기 때문에 useEffect를 사용하여 초기값을 설정합니다.
+	useEffect(() => {
+		setLeftVarWidths(calculateWidth("left", 0));
+		setRightVarWidths(calculateWidth("right", 0));
+	}, [calculateWidth]);
 
 	useMotionValueEvent(scrollYProgress, "change", (scrollP) => {
 		setLeftVarWidths(calculateWidth("left", scrollP));
@@ -60,28 +62,30 @@ function ScrollingWavePage() {
 		<>
 			<div className="pointer-events-none fixed inset-0 z-10 flex h-full w-full">
 				<motion.div className="z-10 flex h-full w-full flex-col items-start justify-between">
-					{leftVarWidths.map((width, i) => (
-						<motion.div
-							// biome-ignore lint/suspicious/noArrayIndexKey: for i
-							key={i}
-							className="h-[1vh] bg-slate-300"
-							style={{
-								width,
-							}}
-						/>
-					))}
+					{leftVarWidths.length > 0 &&
+						leftVarWidths.map((width, i) => (
+							<motion.div
+								// biome-ignore lint/suspicious/noArrayIndexKey: for i
+								key={i}
+								className="h-[1vh] bg-slate-300"
+								style={{
+									width: `${width}px`,
+								}}
+							/>
+						))}
 				</motion.div>
 				<motion.div className="z-10 flex h-full w-full flex-col items-end justify-between">
-					{rightVarWidths.map((width, i) => (
-						<motion.div
-							// biome-ignore lint/suspicious/noArrayIndexKey: for i
-							key={i}
-							className="h-[1vh] bg-slate-300"
-							style={{
-								width,
-							}}
-						/>
-					))}
+					{rightVarWidths.length > 0 &&
+						rightVarWidths.map((width, i) => (
+							<motion.div
+								// biome-ignore lint/suspicious/noArrayIndexKey: for i
+								key={i}
+								className="h-[1vh] bg-slate-300"
+								style={{
+									width: `${width}px`,
+								}}
+							/>
+						))}
 				</motion.div>
 			</div>
 			<motion.div
