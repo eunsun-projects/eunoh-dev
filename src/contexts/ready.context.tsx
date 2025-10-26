@@ -3,26 +3,26 @@
 import { createContext, type PropsWithChildren, useState } from "react";
 
 export type UiStateContextType = {
-  isMainReady: boolean;
-  setIsMainReady: (ready: boolean) => void;
+	isMainReady: boolean;
+	setIsMainReady: (ready: boolean) => void;
 };
 
 const initialState: UiStateContextType = {
-  isMainReady: false,
-  setIsMainReady: () => {},
+	isMainReady: false,
+	setIsMainReady: () => {},
 };
 
 export const UiStateContext = createContext<UiStateContextType>(initialState);
 
 export function UiStateProvider({ children }: PropsWithChildren) {
-  const [isMainReady, setIsMainReady] = useState(false);
+	const [isMainReady, setIsMainReady] = useState(false);
 
-  const value = {
-    isMainReady,
-    setIsMainReady,
-  };
+	const value = {
+		isMainReady,
+		setIsMainReady,
+	};
 
-  return (
-    <UiStateContext.Provider value={value}>{children}</UiStateContext.Provider>
-  );
+	return (
+		<UiStateContext.Provider value={value}>{children}</UiStateContext.Provider>
+	);
 }

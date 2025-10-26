@@ -5,14 +5,14 @@ export type Project = Tables<"projects">;
 export type ProjectWithImages = Project & { newImages: ProjectImage[] };
 
 export type ProjectImage = {
-  image: string;
-  width: number;
-  height: number;
+	image: string;
+	width: number;
+	height: number;
 };
 
 export type PartialProject = Partial<Project>;
 
 export type Desc = {
-  subContent: string;
-  subTitle: string;
+	subContent: string;
+	subTitle: string;
 };

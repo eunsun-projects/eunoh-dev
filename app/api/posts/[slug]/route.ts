@@ -1,34 +1,34 @@
+import { NextResponse } from "next/server";
 import { isUUID } from "@/utils/common/isUUID";
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ slug: string }> }
+	_req: Request,
+	{ params }: { params: Promise<{ slug: string }> },
 ) {
-  const supabase = await createClient();
-  const slug = (await params).slug;
+	const supabase = await createClient();
+	const slug = (await params).slug;
 
-  const isUuid = isUUID(slug);
+	const isUuid = isUUID(slug);
 
-  const query = supabase.from("posts").select("*");
+	const query = supabase.from("posts").select("*");
 
-  if (isUuid) {
-    query.eq("id", slug);
-  } else {
-    query.eq("engTitle", slug);
-  }
-  const { data, error } = await query.single();
+	if (isUuid) {
+		query.eq("id", slug);
+	} else {
+		query.eq("engTitle", slug);
+	}
+	const { data, error } = await query.single();
 
-  if (error) {
-    console.error("Supabase error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+	if (error) {
+		console.error("Supabase error:", error);
+		return NextResponse.json({ error: error.message }, { status: 500 });
+	}
 
-  return NextResponse.json(data, {
-    status: 200,
-    headers: {
-      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
-    },
-  });
+	return NextResponse.json(data, {
+		status: 200,
+		headers: {
+			"Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+		},
+	});
 }

@@ -1,120 +1,120 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { usePathname, useRouter } from "next/navigation";
+import {
+	createContext,
+	type PropsWithChildren,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { deleteLogOut, getLogInWithProvider } from "@/apis/auth/client";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { useUserQuery } from "@/hooks/queries/auth";
 import type { User } from "@/types/user.types";
-import { useQueryClient } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
-import {
-  type PropsWithChildren,
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
 
 export type AuthContextType = {
-  user: User | null;
-  isPending: boolean;
-  loginWithProvider: (provider: string, next?: string) => void;
-  logOut: () => void;
+	user: User | null;
+	isPending: boolean;
+	loginWithProvider: (provider: string, next?: string) => void;
+	logOut: () => void;
 };
 
 const initialValue: AuthContextType = {
-  user: null,
-  isPending: false,
-  loginWithProvider: () => {},
-  logOut: () => {},
+	user: null,
+	isPending: false,
+	loginWithProvider: () => {},
+	logOut: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(initialValue);
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const pathname = usePathname();
-  const [isPending, setIsPending] = useState<boolean>(false);
-  const isAdminPage = useMemo(
-    () => pathname.startsWith("/admin/authed"),
-    [pathname],
-  );
+	const pathname = usePathname();
+	const [isPending, setIsPending] = useState<boolean>(false);
+	const isAdminPage = useMemo(
+		() => pathname.startsWith("/admin/authed"),
+		[pathname],
+	);
 
-  const isQueryEnabled = useMemo(() => {
-    const isUsageCalculatorPage = pathname.startsWith(
-      "/tests/usage-calculator",
-    );
-    const isTimeCapsulePage = pathname.startsWith("/tests/timecapsule");
-    return isAdminPage || isUsageCalculatorPage || isTimeCapsulePage;
-  }, [pathname, isAdminPage]);
+	const isQueryEnabled = useMemo(() => {
+		const isUsageCalculatorPage = pathname.startsWith(
+			"/tests/usage-calculator",
+		);
+		const isTimeCapsulePage = pathname.startsWith("/tests/timecapsule");
+		return isAdminPage || isUsageCalculatorPage || isTimeCapsulePage;
+	}, [pathname, isAdminPage]);
 
-  const {
-    data: user,
-    isPending: isUserPending,
-    error,
-  } = useUserQuery({
-    enabled: isQueryEnabled,
-  });
+	const {
+		data: user,
+		isPending: isUserPending,
+		error,
+	} = useUserQuery({
+		enabled: isQueryEnabled,
+	});
 
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  const router = useRouter();
+	const router = useRouter();
 
-  const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
-    async (provider: string, next = "/admin/authed") => {
-      // console.log("loginWithProvider", provider);
-      try {
-        const data = await getLogInWithProvider(provider, next);
+	const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
+		async (provider: string, next = "/admin/authed") => {
+			// console.log("loginWithProvider", provider);
+			try {
+				const data = await getLogInWithProvider(provider, next);
 
-        if (!data.url) console.error("로그인 실패, redirect url 없음");
+				if (!data.url) console.error("로그인 실패, redirect url 없음");
 
-        if (data.url) router.push(data.url);
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Unknown error";
-        console.error(errorMessage);
-      }
-    },
-    [router],
-  );
+				if (data.url) router.push(data.url);
+			} catch (error) {
+				const errorMessage =
+					error instanceof Error ? error.message : "Unknown error";
+				console.error(errorMessage);
+			}
+		},
+		[router],
+	);
 
-  const logOut: AuthContextType["logOut"] = useCallback(async () => {
-    if (!user) return alert("로그인하고 눌러주세요");
+	const logOut: AuthContextType["logOut"] = useCallback(async () => {
+		if (!user) return alert("로그인하고 눌러주세요");
 
-    try {
-      await deleteLogOut();
-      router.push("/admin");
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
-      return alert(errorMessage);
-    }
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY_USER] });
-  }, [user, queryClient, router]);
+		try {
+			await deleteLogOut();
+			router.push("/admin");
+		} catch (error) {
+			const errorMessage =
+				error instanceof Error ? error.message : "Unknown error";
+			return alert(errorMessage);
+		}
+		queryClient.invalidateQueries({ queryKey: [QUERY_KEY_USER] });
+	}, [user, queryClient, router]);
 
-  useEffect(() => {
-    if (isUserPending) {
-      setIsPending(true);
-    }
-  }, [isUserPending]);
+	useEffect(() => {
+		if (isUserPending) {
+			setIsPending(true);
+		}
+	}, [isUserPending]);
 
-  useEffect(() => {
-    if (error) console.error(error);
-    if (error?.message === "Cookie not found" && isAdminPage) {
-      router.push("/admin");
-    }
-  }, [error, router, isAdminPage]);
+	useEffect(() => {
+		if (error) console.error(error);
+		if (error?.message === "Cookie not found" && isAdminPage) {
+			router.push("/admin");
+		}
+	}, [error, router, isAdminPage]);
 
-  useEffect(() => {
-    if (!isQueryEnabled) return;
-    console.log("user ======>", user);
-  }, [user, isQueryEnabled]);
+	useEffect(() => {
+		if (!isQueryEnabled) return;
+		console.log("user ======>", user);
+	}, [user, isQueryEnabled]);
 
-  const value = {
-    user: user ?? null,
-    isPending,
-    loginWithProvider,
-    logOut,
-  };
+	const value = {
+		user: user ?? null,
+		isPending,
+		loginWithProvider,
+		logOut,
+	};
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
