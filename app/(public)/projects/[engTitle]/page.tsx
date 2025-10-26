@@ -35,12 +35,6 @@ async function ProjectPage({ params }: ProjectPageProps) {
     engTitle,
   ]);
 
-  // if (!projects || projects.length === 0) notFound();
-
-  // const currentProject = projects.find(
-  //   (project) => project.id === id && project.isView,
-  // );
-
   if (!project) notFound();
 
   const processedProject = await processProjectImages(project);

@@ -3,6 +3,7 @@
 import Loading from "@/app/loading";
 import { usePostQuery } from "@/hooks/queries/post/usePostQuery";
 import "highlight.js/styles/a11y-dark.css";
+import type { Post } from "@/types/post.types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
@@ -11,24 +12,15 @@ import remarkGfm from "remark-gfm";
 import { Back } from "../../_components/ui";
 import styles from "./markdown-style.module.css";
 interface PublicPostTemplateProps {
-  engTitle: string;
+  post: Post;
 }
 
-function PublicPostTemplate({ engTitle }: PublicPostTemplateProps) {
-  const router = useRouter();
-  const { data: post, isLoading, error } = usePostQuery({ engTitle });
-
-  useEffect(() => {
-    if (error) console.error(error.message);
-  }, [error]);
-
-  if (isLoading) return <Loading />;
-
+function PublicPostTemplate({ post }: PublicPostTemplateProps) {
   return (
     <section className="flex flex-col gap-8">
       <div className="w-full flex justify-between">
         <h2 className="font-bold text-neutral-900 dark:text-neutral-50 text-lg m-0">
-          {post?.title}
+          {post.title}
         </h2>
         <Back isDarkLightModeButton />
       </div>
@@ -38,7 +30,7 @@ function PublicPostTemplate({ engTitle }: PublicPostTemplateProps) {
           rehypePlugins={[rehypeHighlight]}
           remarkPlugins={[remarkGfm]}
         >
-          {post?.markdown}
+          {post.markdown}
         </ReactMarkdown>
       </div>
     </section>

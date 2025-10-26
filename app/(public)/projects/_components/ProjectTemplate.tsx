@@ -24,8 +24,6 @@ const setStateFunction = (prev: number[] | null, index: number) => {
 };
 
 function ProjectTemplate({ project }: ProjectTemplateProps) {
-  const router = useRouter();
-
   const [decisionIndex, setDecisionIndex] = useState<number[] | null>(null);
   const [troubleIndex, setTroubleIndex] = useState<number[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +35,7 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
       setSelectedImage(image);
       setIsOpen(true);
     },
-    []
+    [],
   );
 
   const handleCloseModal = useCallback(() => {
@@ -52,12 +50,12 @@ function ProjectTemplate({ project }: ProjectTemplateProps) {
   const handleDecisionClick = useCallback(
     (index: number) =>
       setDecisionIndex((prev) => setStateFunction(prev, index)),
-    []
+    [],
   );
 
   const handleTroubleClick = useCallback(
     (index: number) => setTroubleIndex((prev) => setStateFunction(prev, index)),
-    []
+    [],
   );
 
   return (
