@@ -16,7 +16,7 @@ function Back({ className, isDarkLightModeButton }: BackProps) {
 
 	const handleBack = () => {
 		if (pathname === "/tests") router.push("/");
-		router.back();
+		else router.back();
 	};
 
 	return (
