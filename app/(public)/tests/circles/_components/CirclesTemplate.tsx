@@ -12,184 +12,187 @@ const morphTime = 1.5;
 const cooldownTime = 0.5;
 
 export default function CirclesTemplate() {
-  const text1 = useRef<HTMLSpanElement>(null);
-  const text2 = useRef<HTMLSpanElement>(null);
-  const circle = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const rAFRef = useRef<number | null>(null);
-  const [circleVisible, setCircleVisible] = useState(false);
-  const [ready, setReady] = useState(false);
+	const text1 = useRef<HTMLSpanElement>(null);
+	const text2 = useRef<HTMLSpanElement>(null);
+	const circle = useRef<HTMLDivElement>(null);
+	const audioRef = useRef<HTMLAudioElement>(null);
+	const rAFRef = useRef<number | null>(null);
+	const [circleVisible, setCircleVisible] = useState(false);
+	const [ready, setReady] = useState(false);
 
-  function handleCircleClick() {
-    // 원형 div를 클릭했을 때 원하는 로직을 여기에 추가
-    console.log("Circle clicked!");
-    if (!audioRef.current) return;
-    audioRef.current.play();
-    audioRef.current.volume = 0.4;
-    setReady(true);
-  }
+	function handleCircleClick() {
+		// 원형 div를 클릭했을 때 원하는 로직을 여기에 추가
+		console.log("Circle clicked!");
+		if (!audioRef.current) return;
+		audioRef.current.play();
+		audioRef.current.volume = 0.4;
+		setReady(true);
+	}
 
-  useEffect(() => {
-    let textIndex = texts.length - 1;
-    let time = new Date().getTime();
-    let morph = 0;
-    let cooldown = cooldownTime;
-    if (!text1.current || !text2.current) return;
-    const elts = {
-      text1: text1.current,
-      text2: text2.current,
-    };
+	useEffect(() => {
+		let textIndex = texts.length - 1;
+		let time = Date.now();
+		let morph = 0;
+		let cooldown = cooldownTime;
+		if (!text1.current || !text2.current) return;
+		const elts = {
+			text1: text1.current,
+			text2: text2.current,
+		};
 
-    elts.text1.innerText = texts[textIndex % texts.length];
-    elts.text2.innerText = texts[(textIndex + 1) % texts.length];
+		elts.text1.innerText = texts[textIndex % texts.length];
+		elts.text2.innerText = texts[(textIndex + 1) % texts.length];
 
-    function doMorph() {
-      morph -= cooldown;
-      cooldown = 0;
+		function doMorph() {
+			morph -= cooldown;
+			cooldown = 0;
 
-      let fraction = morph / morphTime;
+			let fraction = morph / morphTime;
 
-      if (fraction > 1) {
-        cooldown = cooldownTime;
-        fraction = 1;
-      }
+			if (fraction > 1) {
+				cooldown = cooldownTime;
+				fraction = 1;
+			}
 
-      setMorph(fraction);
-    }
+			setMorph(fraction);
+		}
 
-    function setMorph(fraction: number) {
-      if (elts.text1 && elts.text2) {
-        elts.text2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-        elts.text2.style.opacity = `${
-          // biome-ignore lint/style/useExponentiationOperator: <explanation>
-          Math.pow(fraction, 0.4) * 100
-        }%`;
+		function setMorph(fraction: number) {
+			if (elts.text1 && elts.text2) {
+				elts.text2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+				elts.text2.style.opacity = `${fraction ** 0.4 * 100}%`;
 
-        // biome-ignore lint/style/noParameterAssign: <explanation>
-        fraction = 1 - fraction;
-        elts.text1.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-        elts.text1.style.opacity = `${
-          // biome-ignore lint/style/useExponentiationOperator: <explanation>
-          Math.pow(fraction, 0.4) * 100
-        }%`;
+				const fraction2 = 1 - fraction;
+				elts.text1.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+				elts.text1.style.opacity = `${fraction2 ** 0.4 * 100}%`;
 
-        elts.text1.textContent = texts[textIndex % texts.length];
-        elts.text2.textContent = texts[(textIndex + 1) % texts.length];
-      }
+				elts.text1.textContent = texts[textIndex % texts.length];
+				elts.text2.textContent = texts[(textIndex + 1) % texts.length];
+			}
 
-      if (circle.current) {
-        // 이 부분을 추가
-        circle.current.style.width = `${Math.min(38 / fraction, 90)}px`;
-        circle.current.style.height = `${Math.min(38 / fraction, 90)}px`;
-      }
-    }
+			if (circle.current) {
+				// 이 부분을 추가
+				circle.current.style.width = `${Math.min(38 / fraction, 90)}px`;
+				circle.current.style.height = `${Math.min(38 / fraction, 90)}px`;
+			}
+		}
 
-    function doCooldown() {
-      morph = 0;
-      if (elts.text2 && elts.text1) {
-        elts.text2.style.filter = "";
-        elts.text2.style.opacity = "100%";
+		function doCooldown() {
+			morph = 0;
+			if (elts.text2 && elts.text1) {
+				elts.text2.style.filter = "";
+				elts.text2.style.opacity = "100%";
 
-        elts.text1.style.filter = "";
-        elts.text1.style.opacity = "0%";
-      }
-    }
+				elts.text1.style.filter = "";
+				elts.text1.style.opacity = "0%";
+			}
+		}
 
-    function animate() {
-      rAFRef.current = requestAnimationFrame(animate);
+		function animate() {
+			rAFRef.current = requestAnimationFrame(animate);
 
-      const newTime = new Date().getTime();
-      const shouldIncrementIndex = cooldown > 0;
-      const dt = ((newTime as number) - (time as number)) / 1000;
-      time = newTime as number;
+			const newTime = Date.now();
+			const shouldIncrementIndex = cooldown > 0;
+			const dt = ((newTime as number) - (time as number)) / 1000;
+			time = newTime as number;
 
-      cooldown -= dt;
+			cooldown -= dt;
 
-      if (cooldown <= 0) {
-        if (shouldIncrementIndex) {
-          textIndex++;
-        }
-        doMorph();
-        // "Ready"가 출력되면 원형 div를 보이게 함
-        if (texts[textIndex % texts.length] === "Ready") {
-          setCircleVisible(true);
-        }
-      } else {
-        doCooldown();
-      }
-    }
+			if (cooldown <= 0) {
+				if (shouldIncrementIndex) {
+					textIndex++;
+				}
+				doMorph();
+				// "Ready"가 출력되면 원형 div를 보이게 함
+				if (texts[textIndex % texts.length] === "Ready") {
+					setCircleVisible(true);
+				}
+			} else {
+				doCooldown();
+			}
+		}
 
-    if (!ready) {
-      animate();
-    } else {
-      cancelAnimationFrame(rAFRef.current as number);
-    }
+		if (!ready) {
+			animate();
+		} else {
+			cancelAnimationFrame(rAFRef.current as number);
+		}
 
-    // 클린업 함수를 반환합니다.
-    return () => {
-      // 애니메이션 프레임을 취소합니다.
-      cancelAnimationFrame(rAFRef.current as number);
-    };
-  }, [ready]);
+		// 클린업 함수를 반환합니다.
+		return () => {
+			// 애니메이션 프레임을 취소합니다.
+			cancelAnimationFrame(rAFRef.current as number);
+		};
+	}, [ready]);
 
-  return (
-    <div className={raleway.className}>
-      {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
-      <audio
-        ref={audioRef}
-        src="/assets/circles/circles.mp3"
-        preload="metadata"
-      />
-      {!ready && (
-        <div
-          style={{
-            position: "absolute",
-            width: "100vw",
-            height: "calc(var(--vh, 1vh) * 100)",
-            zIndex: "1000",
-          }}
-        >
-          <div
-            onKeyDown={handleCircleClick}
-            ref={circle}
-            className={styles.circle}
-            onClick={handleCircleClick}
-            style={{
-              opacity: circleVisible ? "1" : "0",
-              pointerEvents: circleVisible ? "all" : "none",
-            }}
-          />
-          <div
-            className={styles.container}
-            style={{ display: circleVisible ? "none" : "flex" }}
-          >
-            <span ref={text1} className={styles.text1} />
-            <span ref={text2} className={styles.text2} />
-          </div>
+	return (
+		<div className={raleway.className}>
+			<audio
+				ref={audioRef}
+				src="/assets/circles/circles.mp3"
+				preload="metadata"
+			>
+				<track kind="captions" />
+			</audio>
+			{!ready && (
+				<div
+					style={{
+						position: "absolute",
+						width: "100vw",
+						height: "calc(var(--vh, 1vh) * 100)",
+						zIndex: "1000",
+					}}
+				>
+					<div
+						onKeyDown={handleCircleClick}
+						tabIndex={0}
+						role="button"
+						aria-label="Circle"
+						aria-pressed="false"
+						aria-expanded="false"
+						aria-haspopup="dialog"
+						aria-describedby="circle-description"
+						aria-labelledby="circle-title"
+						aria-controls="circle-content"
+						ref={circle}
+						className={styles.circle}
+						onClick={handleCircleClick}
+						style={{
+							opacity: circleVisible ? "1" : "0",
+							pointerEvents: circleVisible ? "all" : "none",
+						}}
+					/>
+					<div
+						className={styles.container}
+						style={{ display: circleVisible ? "none" : "flex" }}
+					>
+						<span ref={text1} className={styles.text1} />
+						<span ref={text2} className={styles.text2} />
+					</div>
 
-          {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
-          <svg id="filters" aria-label="Filters">
-            <defs>
-              <filter id="threshold">
-                <feColorMatrix
-                  in="SourceGraphic"
-                  type="matrix"
-                  values="1 0 0 0 0
-                                    0 1 0 0 0
-                                    0 0 1 0 0
-                                    0 0 0 255 -140"
-                />
-              </filter>
-            </defs>
-          </svg>
-        </div>
-      )}
-      {ready && (
-        <div style={{ position: "absolute" }}>
-          <CustomAudio audio={audioRef.current as HTMLAudioElement} />
-        </div>
-      )}
-      <Circles ready={ready} audio={audioRef.current as HTMLAudioElement} />
-    </div>
-  );
+					<svg id="filters" aria-label="Filters">
+						<title>Filters</title>
+						<defs>
+							<filter id="threshold">
+								<feColorMatrix
+									in="SourceGraphic"
+									type="matrix"
+									values="1 0 0 0 0
+													0 1 0 0 0
+													0 0 1 0 0
+													0 0 0 255 -140"
+								/>
+							</filter>
+						</defs>
+					</svg>
+				</div>
+			)}
+			{ready && (
+				<div style={{ position: "absolute" }}>
+					<CustomAudio audio={audioRef.current as HTMLAudioElement} />
+				</div>
+			)}
+			<Circles ready={ready} audio={audioRef.current as HTMLAudioElement} />
+		</div>
+	);
 }

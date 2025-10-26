@@ -2,91 +2,91 @@ import type { LanguageModelUsage } from "ai";
 import { create } from "zustand";
 
 export const MODES = {
-  TXT_TO_TXT: "txt-to-txt",
-  TXT_TO_IMAGE: "txt-to-image",
-  TXT_IMAGE_TO_TXT: "txt+image-to-txt",
-  TXT_IMAGE_TO_IMAGE: "txt+image-to-image",
+	TXT_TO_TXT: "txt-to-txt",
+	TXT_TO_IMAGE: "txt-to-image",
+	TXT_IMAGE_TO_TXT: "txt+image-to-txt",
+	TXT_IMAGE_TO_IMAGE: "txt+image-to-image",
 } as const;
 
 export const MODELS = {
-  GPT_4O_MINI: "gpt-4o-mini",
-  GPT_4O: "gpt-4o",
-  GPT_IMAGE_1: "gpt-image-1",
+	GPT_4O_MINI: "gpt-4o-mini",
+	GPT_4O: "gpt-4o",
+	GPT_IMAGE_1: "gpt-image-1",
 } as const;
 
 export type Mode = (typeof MODES)[keyof typeof MODES];
 export type Model = (typeof MODELS)[keyof typeof MODELS];
 export type ExchangeRate = {
-  won_number: number;
-  won_string: string;
+	won_number: number;
+	won_string: string;
 };
 export type ModelAndBasePrice = {
-  model: Model | null;
-  basePrice: number | 0;
+	model: Model | null;
+	basePrice: number | 0;
 };
 export type Base = {
-  input_txt_base: ModelAndBasePrice;
-  input_image_base: ModelAndBasePrice;
-  output_txt_base: ModelAndBasePrice;
-  output_image_base: ModelAndBasePrice;
+	input_txt_base: ModelAndBasePrice;
+	input_image_base: ModelAndBasePrice;
+	output_txt_base: ModelAndBasePrice;
+	output_image_base: ModelAndBasePrice;
 };
 
 // 스트림으로 전달되는 데이터 구조에 대한 인터페이스 정의
 export interface IOpenAIResponseUsage {
-  input_tokens: number;
-  input_tokens_details?: {
-    cached_tokens: number;
-  };
-  output_tokens: number;
-  output_tokens_details?: {
-    reasoning_tokens: number;
-  };
-  total_tokens: number;
+	input_tokens: number;
+	input_tokens_details?: {
+		cached_tokens: number;
+	};
+	output_tokens: number;
+	output_tokens_details?: {
+		reasoning_tokens: number;
+	};
+	total_tokens: number;
 }
 
 export interface UsageCalculatorState {
-  mode: Mode;
-  setMode: (mode: Mode) => void;
-  model: Model;
-  setModel: (model: Model) => void;
-  usage: LanguageModelUsage | IOpenAIResponseUsage | null;
-  setUsage: (usage: LanguageModelUsage | IOpenAIResponseUsage | null) => void;
-  exchangeRate: ExchangeRate;
-  setExchangeRate: (exchangeRate: ExchangeRate) => void;
-  base: Base;
-  setBase: (base: Base) => void;
+	mode: Mode;
+	setMode: (mode: Mode) => void;
+	model: Model;
+	setModel: (model: Model) => void;
+	usage: LanguageModelUsage | IOpenAIResponseUsage | null;
+	setUsage: (usage: LanguageModelUsage | IOpenAIResponseUsage | null) => void;
+	exchangeRate: ExchangeRate;
+	setExchangeRate: (exchangeRate: ExchangeRate) => void;
+	base: Base;
+	setBase: (base: Base) => void;
 }
 
 export const useUsageCalculatorStore = create<UsageCalculatorState>((set) => ({
-  mode: "txt-to-txt",
-  setMode: (mode: Mode) => set({ mode }),
-  model: "gpt-4o-mini",
-  setModel: (model: Model) => set({ model }),
-  usage: null,
-  setUsage: (usage: LanguageModelUsage | IOpenAIResponseUsage | null) =>
-    set({ usage }),
-  exchangeRate: {
-    won_number: 0,
-    won_string: "",
-  },
-  setExchangeRate: (exchangeRate: ExchangeRate) => set({ exchangeRate }),
-  base: {
-    input_txt_base: {
-      model: "gpt-4o-mini",
-      basePrice: 0,
-    },
-    input_image_base: {
-      model: null,
-      basePrice: 0,
-    },
-    output_txt_base: {
-      model: "gpt-4o-mini",
-      basePrice: 0,
-    },
-    output_image_base: {
-      model: null,
-      basePrice: 0,
-    },
-  },
-  setBase: (base: Base) => set({ base }),
+	mode: "txt-to-txt",
+	setMode: (mode: Mode) => set({ mode }),
+	model: "gpt-4o-mini",
+	setModel: (model: Model) => set({ model }),
+	usage: null,
+	setUsage: (usage: LanguageModelUsage | IOpenAIResponseUsage | null) =>
+		set({ usage }),
+	exchangeRate: {
+		won_number: 0,
+		won_string: "",
+	},
+	setExchangeRate: (exchangeRate: ExchangeRate) => set({ exchangeRate }),
+	base: {
+		input_txt_base: {
+			model: "gpt-4o-mini",
+			basePrice: 0,
+		},
+		input_image_base: {
+			model: null,
+			basePrice: 0,
+		},
+		output_txt_base: {
+			model: "gpt-4o-mini",
+			basePrice: 0,
+		},
+		output_image_base: {
+			model: null,
+			basePrice: 0,
+		},
+	},
+	setBase: (base: Base) => set({ base }),
 }));

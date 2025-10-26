@@ -1,7 +1,7 @@
 import { SkillsAndTools } from "./_components";
 
 function SkillsPage() {
-  return <SkillsAndTools />;
+	return <SkillsAndTools />;
 }
 
 export default SkillsPage;

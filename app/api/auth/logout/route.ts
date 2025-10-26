@@ -1,19 +1,19 @@
-import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
 
 export async function DELETE() {
-  const supabase = await createClient();
+	const supabase = await createClient();
 
-  const { error } = await supabase.auth.signOut();
+	const { error } = await supabase.auth.signOut();
 
-  await supabase.auth.setSession({
-    access_token: "",
-    refresh_token: "",
-  });
+	await supabase.auth.setSession({
+		access_token: "",
+		refresh_token: "",
+	});
 
-  if (error) {
-    return NextResponse.json("Logout failed", { status: 500 });
-  }
+	if (error) {
+		return NextResponse.json("Logout failed", { status: 500 });
+	}
 
-  return NextResponse.json("Logout successful", { status: 200 });
+	return NextResponse.json("Logout successful", { status: 200 });
 }

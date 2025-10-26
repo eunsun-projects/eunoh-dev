@@ -1,7 +1,7 @@
 import TestListTemplate from "./_components/TestListTemplate";
 
 function TestsPage() {
-  return <TestListTemplate />;
+	return <TestListTemplate />;
 }
 
 export default TestsPage;

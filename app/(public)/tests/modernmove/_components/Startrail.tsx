@@ -7,101 +7,101 @@ import { MeshLine, MeshLineMaterial } from "three.meshline";
 import { useModernMoveContext } from "./ModernMoveContext";
 
 interface CustomTrailProps {
-  /** 초기 위치 */
-  position: [number, number, number];
+	/** 초기 위치 */
+	position: [number, number, number];
 }
 
 export default function CustomTrail({ position }: CustomTrailProps) {
-  const { meteor } = useModernMoveContext();
+	const { meteor } = useModernMoveContext();
 
-  const memoizedPosition = useMemo(() => position, [position]);
+	const memoizedPosition = useMemo(() => position, [position]);
 
-  // 별(원) Mesh
-  const starRef = useRef<THREE.Mesh>(null);
+	// 별(원) Mesh
+	const starRef = useRef<THREE.Mesh>(null);
 
-  // linePoints: 라인(꼬리)를 구성하는 좌표들(x,y,z)
-  const pointsRef = useRef<number[]>([]);
-  const lineLength = 40; // Trail 길이
+	// linePoints: 라인(꼬리)를 구성하는 좌표들(x,y,z)
+	const pointsRef = useRef<number[]>([]);
+	const lineLength = 40; // Trail 길이
 
-  // MeshLine 인스턴스
-  const [meshLine] = useState(() => new MeshLine());
+	// MeshLine 인스턴스
+	const [meshLine] = useState(() => new MeshLine());
 
-  useEffect(() => {
-    // lineLength * 3개의 공간(x,y,z)을 준비
-    pointsRef.current = new Array(lineLength * 3);
+	useEffect(() => {
+		// lineLength * 3개의 공간(x,y,z)을 준비
+		pointsRef.current = new Array(lineLength * 3);
 
-    // "별의 초기 위치"로 전부 채워넣기
-    for (let i = 0; i < lineLength; i++) {
-      pointsRef.current[i * 3 + 0] = memoizedPosition[0];
-      pointsRef.current[i * 3 + 1] = memoizedPosition[1];
-      pointsRef.current[i * 3 + 2] = memoizedPosition[2];
-    }
+		// "별의 초기 위치"로 전부 채워넣기
+		for (let i = 0; i < lineLength; i++) {
+			pointsRef.current[i * 3 + 0] = memoizedPosition[0];
+			pointsRef.current[i * 3 + 1] = memoizedPosition[1];
+			pointsRef.current[i * 3 + 2] = memoizedPosition[2];
+		}
 
-    // 이 초기 포인트를 meshLine에 설정
-    meshLine.setPoints(pointsRef.current);
-  }, [meshLine, memoizedPosition]);
+		// 이 초기 포인트를 meshLine에 설정
+		meshLine.setPoints(pointsRef.current);
+	}, [meshLine, memoizedPosition]);
 
-  useFrame((state, delta) => {
-    if (!starRef.current) return;
-    // 별의 월드 좌표 구하기
-    const starPos = new THREE.Vector3();
-    starRef.current.getWorldPosition(starPos);
-    // Trail 갱신: 새 위치를 배열 맨 앞에 넣고, 오래된 것 지우기
-    pointsRef.current.unshift(starPos.x, starPos.y, starPos.z);
-    pointsRef.current.splice(-3, 3);
-    meshLine.setPoints(pointsRef.current);
+	useFrame((_state, delta) => {
+		if (!starRef.current) return;
+		// 별의 월드 좌표 구하기
+		const starPos = new THREE.Vector3();
+		starRef.current.getWorldPosition(starPos);
+		// Trail 갱신: 새 위치를 배열 맨 앞에 넣고, 오래된 것 지우기
+		pointsRef.current.unshift(starPos.x, starPos.y, starPos.z);
+		pointsRef.current.splice(-3, 3);
+		meshLine.setPoints(pointsRef.current);
 
-    // 사용자가 'meteor.current = true'면 별이 좌하단으로 이동
-    if (meteor.current) {
-      // 별 이동 로직 (대각선 이동)
-      starRef.current.position.x -= delta * 200;
-      starRef.current.position.y -= delta * 200;
-    } else {
-      // meteor.current가 false면 별은 원래 위치로
-      starRef.current.position.set(
-        memoizedPosition[0],
-        memoizedPosition[1],
-        memoizedPosition[2],
-      );
+		// 사용자가 'meteor.current = true'면 별이 좌하단으로 이동
+		if (meteor.current) {
+			// 별 이동 로직 (대각선 이동)
+			starRef.current.position.x -= delta * 200;
+			starRef.current.position.y -= delta * 200;
+		} else {
+			// meteor.current가 false면 별은 원래 위치로
+			starRef.current.position.set(
+				memoizedPosition[0],
+				memoizedPosition[1],
+				memoizedPosition[2],
+			);
 
-      // lineLength * 3개의 공간(x,y,z)을 준비
-      pointsRef.current = new Array(lineLength * 3);
+			// lineLength * 3개의 공간(x,y,z)을 준비
+			pointsRef.current = new Array(lineLength * 3);
 
-      // "별의 초기 위치"로 전부 채워넣기
-      for (let i = 0; i < lineLength; i++) {
-        pointsRef.current[i * 3 + 0] = memoizedPosition[0];
-        pointsRef.current[i * 3 + 1] = memoizedPosition[1];
-        pointsRef.current[i * 3 + 2] = memoizedPosition[2];
-      }
-    }
-  });
+			// "별의 초기 위치"로 전부 채워넣기
+			for (let i = 0; i < lineLength; i++) {
+				pointsRef.current[i * 3 + 0] = memoizedPosition[0];
+				pointsRef.current[i * 3 + 1] = memoizedPosition[1];
+				pointsRef.current[i * 3 + 2] = memoizedPosition[2];
+			}
+		}
+	});
 
-  return (
-    <>
-      {/* (1) 별(원) Mesh */}
-      <mesh ref={starRef} position={memoizedPosition}>
-        <circleGeometry args={[1, 10]} />
-        <meshBasicMaterial color="white" />
-      </mesh>
+	return (
+		<>
+			{/* (1) 별(원) Mesh */}
+			<mesh ref={starRef} position={memoizedPosition}>
+				<circleGeometry args={[1, 10]} />
+				<meshBasicMaterial color="white" />
+			</mesh>
 
-      {/* (2) 라인(꼬리) Mesh */}
-      <mesh>
-        <primitive object={meshLine} attach="geometry" />
-        <primitive
-          object={
-            new MeshLineMaterial({
-              color: "white",
-              lineWidth: 1,
-              transparent: true,
-              opacity: 0.8,
-              depthTest: false,
-            })
-          }
-          attach="material"
-        />
-      </mesh>
-    </>
-  );
+			{/* (2) 라인(꼬리) Mesh */}
+			<mesh>
+				<primitive object={meshLine} attach="geometry" />
+				<primitive
+					object={
+						new MeshLineMaterial({
+							color: "white",
+							lineWidth: 1,
+							transparent: true,
+							opacity: 0.8,
+							depthTest: false,
+						})
+					}
+					attach="material"
+				/>
+			</mesh>
+		</>
+	);
 }
 
 // 'use client';

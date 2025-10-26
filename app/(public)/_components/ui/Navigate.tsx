@@ -1,35 +1,35 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
+import { cn } from "@/lib/utils";
 
 type NavigateProps = {
-  mode: "before" | "after";
-  onClick: () => void;
-  className?: string;
+	mode: "before" | "after";
+	onClick: () => void;
+	className?: string;
 };
 
 const Navigate: React.FC<NavigateProps> = ({ mode, onClick, className }) => {
-  return (
-    <div
-      className={cn(
-        "absolute flex items-center justify-center w-6 h-6 text-black hover:text-primary-color-400 z-40",
-        mode === "before"
-          ? "-left-[15px] top-[60%] -translate-y-[50%]"
-          : "-right-[15px] top-[60%] -translate-y-[50%]",
-        className,
-      )}
-    >
-      <button
-        type="button"
-        id="navigate-button"
-        className="w-full h-full rounded-full bg-white flex items-center justify-center shadow-md"
-        onClick={onClick}
-      >
-        {mode === "before" ? <MdNavigateBefore /> : <MdNavigateNext />}
-      </button>
-    </div>
-  );
+	return (
+		<div
+			className={cn(
+				"absolute z-40 flex h-6 w-6 items-center justify-center text-black hover:text-primary-color-400",
+				mode === "before"
+					? "-left-[15px] -translate-y-[50%] top-[60%]"
+					: "-right-[15px] -translate-y-[50%] top-[60%]",
+				className,
+			)}
+		>
+			<button
+				type="button"
+				id="navigate-button"
+				className="flex h-full w-full items-center justify-center rounded-full bg-white shadow-md"
+				onClick={onClick}
+			>
+				{mode === "before" ? <MdNavigateBefore /> : <MdNavigateNext />}
+			</button>
+		</div>
+	);
 };
 
 export default Navigate;

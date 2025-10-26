@@ -3,19 +3,19 @@
 import CalculateResult from "./CalculateResult";
 import CalculatorHeader from "./CalculatorHeader";
 import Chat from "./Chat";
-import ModeSelector from "./ModeSelector";
 import ModelSelector from "./ModelSelector";
+import ModeSelector from "./ModeSelector";
 
 function UsageCalculatorTemplate() {
-  return (
-    <div className="flex flex-col gap-2 justify-start items-center h-dvh min-h-dvh">
-      <CalculatorHeader />
-      <ModeSelector />
-      <ModelSelector />
-      <CalculateResult />
-      <Chat />
-    </div>
-  );
+	return (
+		<div className="flex h-dvh min-h-dvh flex-col items-center justify-start gap-2">
+			<CalculatorHeader />
+			<ModeSelector />
+			<ModelSelector />
+			<CalculateResult />
+			<Chat />
+		</div>
+	);
 }
 
 export default UsageCalculatorTemplate;

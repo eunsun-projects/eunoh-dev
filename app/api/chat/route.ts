@@ -5,14 +5,14 @@ import { streamText } from "ai";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages, model } = await req.json();
+	const { messages, model } = await req.json();
 
-  const modelInstance = openai(model);
+	const modelInstance = openai(model);
 
-  const result = streamText({
-    model: modelInstance,
-    messages,
-  });
+	const result = streamText({
+		model: modelInstance,
+		messages,
+	});
 
-  return result.toDataStreamResponse();
+	return result.toDataStreamResponse();
 }

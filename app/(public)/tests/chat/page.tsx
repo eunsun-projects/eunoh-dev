@@ -1,7 +1,7 @@
-import ChatTemplate from './_components/ChatTemplate';
+import ChatTemplate from "./_components/ChatTemplate";
 
 function ChatPage() {
-  return <ChatTemplate />;
+	return <ChatTemplate />;
 }
 
 export default ChatPage;

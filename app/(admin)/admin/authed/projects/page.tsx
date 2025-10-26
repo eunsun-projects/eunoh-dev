@@ -1,74 +1,75 @@
 "use client";
 
+import Link from "next/link";
+import { useEffect } from "react";
 import { useProjectMutation, useProjectsQuery } from "@/hooks/queries/projects";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types/project.types";
-import Link from "next/link";
-import { useEffect } from "react";
 
 function AdminProjectsListPage() {
-  const { data: projects, isLoading, error } = useProjectsQuery();
-  const { mutate, isPending, error: mutationError } = useProjectMutation();
+	const { data: projects, isLoading, error } = useProjectsQuery();
+	const { mutate, isPending, error: mutationError } = useProjectMutation();
 
-  const handleDelete = (project: Project) => {
-    const newProject = {
-      ...project,
-      isView: false,
-    };
+	const handleDelete = (project: Project) => {
+		const newProject = {
+			...project,
+			isView: false,
+		};
 
-    const formData = new FormData();
-    formData.append("images", "");
-    formData.append("project", JSON.stringify(newProject));
+		const formData = new FormData();
+		formData.append("images", "");
+		formData.append("project", JSON.stringify(newProject));
 
-    mutate(formData);
-  };
+		mutate(formData);
+	};
 
-  useEffect(() => {
-    if (error || mutationError) console.error(error || mutationError);
-  }, [error, mutationError]);
+	useEffect(() => {
+		if (error || mutationError) console.error(error || mutationError);
+	}, [error, mutationError]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isPending) return <div>Pending...</div>;
+	if (isLoading) return <div>Loading...</div>;
+	if (isPending) return <div>Pending...</div>;
 
-  return (
-    <div className="flex flex-col gap-3 px-8">
-      <h2 className="text-2xl font-bold">Projects</h2>
-      <ul>
-        {projects?.map((project) => (
-          <li
-            key={project.id}
-            className={cn(
-              "flex flex-row items-center justify-between gap-2",
-              project.isView ? "bg-white" : "bg-gray-100 text-gray-400",
-            )}
-          >
-            <span>{project.title}</span>
-            <div className="flex items-center gap-2">
-              <span>이동</span>
-              <Link href={`/admin/projects/write/${project.id}`}>
-                <span>수정</span>
-              </Link>
-              <span
-                className="cursor-pointer"
-                onClick={() => handleDelete(project)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleDelete(project);
-                }}
-              >
-                삭제
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <Link
-        href="/admin/projects/write"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
-      >
-        <span>프로젝트 작성</span>
-      </Link>
-    </div>
-  );
+	return (
+		<div className="flex flex-col gap-3 px-8">
+			<h2 className="font-bold text-2xl">Projects</h2>
+			<ul>
+				{projects?.map((project) => (
+					<li
+						key={project.id}
+						className={cn(
+							"flex flex-row items-center justify-between gap-2",
+							project.isView ? "bg-white" : "bg-gray-100 text-gray-400",
+						)}
+					>
+						<span>{project.title}</span>
+						<div className="flex items-center gap-2">
+							<span>이동</span>
+							<Link href={`/admin/projects/write/${project.id}`}>
+								<span>수정</span>
+							</Link>
+							<button
+								type="button"
+								className="cursor-pointer"
+								onClick={() => handleDelete(project)}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") handleDelete(project);
+								}}
+							>
+								삭제
+							</button>
+						</div>
+					</li>
+				))}
+			</ul>
+			<Link
+				href="/admin/projects/write"
+				className="rounded-md bg-blue-500 px-4 py-2 text-white"
+			>
+				<span>프로젝트 작성</span>
+			</Link>
+		</div>
+	);
 }
 
 export default AdminProjectsListPage;

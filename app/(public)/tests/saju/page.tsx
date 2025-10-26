@@ -1,7 +1,7 @@
 import SajuTemplate from "./_components/SajuTemplate";
 
 function SajuPage() {
-  return <SajuTemplate />;
+	return <SajuTemplate />;
 }
 
 export default SajuPage;

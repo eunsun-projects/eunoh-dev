@@ -3,7 +3,7 @@
 import Hello from "./Hello";
 
 function HomeTemplate() {
-  return <Hello />;
+	return <Hello />;
 }
 
 export default HomeTemplate;
