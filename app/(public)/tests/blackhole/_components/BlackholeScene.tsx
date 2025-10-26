@@ -160,9 +160,10 @@ function DistantStars() {
 
 	return (
 		<group ref={starsRef}>
-			{stars.map((star, _i) => (
+			{stars.map((star, i) => (
 				<mesh
-					key={star.position.toString()}
+					// biome-ignore lint/suspicious/noArrayIndexKey: star is unique
+					key={i}
 					position={star.position as [number, number, number]}
 				>
 					<sphereGeometry args={[star.size, 16, 16]} />

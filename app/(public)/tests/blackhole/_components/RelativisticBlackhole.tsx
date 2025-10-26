@@ -290,7 +290,20 @@ const RelativisticBlackholeMaterial = shaderMaterial(
 extend({ RelativisticBlackholeMaterial });
 
 export function RelativisticBlackhole() {
-	const materialRef = useRef<any>(null);
+	const materialRef = useRef<
+		THREE.ShaderMaterial & {
+			uTime: number;
+			uResolution: THREE.Vector2;
+			uCamPos: THREE.Vector3;
+			uCamDir: THREE.Vector3;
+			uCamUp: THREE.Vector3;
+			uCamVel: THREE.Vector3;
+			uFov: number;
+			uAccretionDisk: boolean;
+			uDopplerShift: boolean;
+			uLorentzTransform: boolean;
+		}
+	>(null);
 	const { size, camera } = useThree();
 
 	useFrame((state) => {

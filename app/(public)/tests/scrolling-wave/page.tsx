@@ -42,6 +42,7 @@ function ScrollingWavePage() {
 	const [leftVarWidths, setLeftVarWidths] = useState<number[]>([]);
 	const [rightVarWidths, setRightVarWidths] = useState<number[]>([]);
 
+	// 새로고침시 하이드레이션 문제(width값 불일치)가 되기 때문에 useEffect를 사용하여 초기값을 설정합니다.
 	useEffect(() => {
 		setLeftVarWidths(calculateWidth("left", 0));
 		setRightVarWidths(calculateWidth("right", 0));

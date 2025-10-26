@@ -160,69 +160,92 @@ export function AccretionDisk() {
 	return (
 		<group>
 			{/* Horizontal static rings - multiple layers for thickness */}
-			{[-0.15, -0.05, 0].map((yOffset, _i) => (
-				<group key={yOffset.toString()}>
-					<mesh rotation={[0, Math.PI / 2, 0]} position={[0, yOffset, 0]}>
-						<torusGeometry args={[2.5, 0.6, 24, 100]} />
-						{/* @ts-ignore */}
-						<accretionDiskMaterial
-							color="#ffddaa"
-							transparent
-							opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
-							blending={THREE.AdditiveBlending}
-						/>
-					</mesh>
-					<mesh
-						ref={materialRef}
-						rotation={[Math.PI / 2, 0, 0]}
-						position={[0, yOffset, 0]}
-					>
-						<torusGeometry args={[2.5, 0.6, 24, 100]} />
-						{/* @ts-ignore */}
-						<accretionDiskMaterial
-							color="#ffddaa"
-							transparent
-							opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
-							blending={THREE.AdditiveBlending}
-						/>
-					</mesh>
-
-					<mesh
-						ref={diskRef}
-						rotation={[0, Math.PI / 2, 0]}
-						position={[0, yOffset, 0]}
-					>
-						<torusGeometry args={[3.6, 0.6, 24, 100]} />
-						<meshBasicMaterial
-							color="#ffddaa"
-							transparent
-							opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
-							blending={THREE.AdditiveBlending}
-						/>
-					</mesh>
-
-					<mesh rotation={[Math.PI / 2, 0, 0]} position={[0, yOffset, 0]}>
-						<torusGeometry args={[3.6, 0.6, 24, 100]} />
-						<meshBasicMaterial
-							color="#ffddaa"
-							transparent
-							opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
-							blending={THREE.AdditiveBlending}
-						/>
-					</mesh>
-
-					{/* Glow effect */}
-					<mesh position={[0, 0, 0]} scale={[1, 1, 1]}>
-						<sphereGeometry args={[2, 32, 32]} />
-						<meshBasicMaterial
-							color="#ff8800"
-							transparent
-							opacity={0.1 * (1 - Math.abs(yOffset) * 1)}
-							blending={THREE.AdditiveBlending}
-						/>
-					</mesh>
-				</group>
+			{[-0.15, -0.05, 0].map((yOffset, i) => (
+				<DiskLayer key={i.toString()} yOffset={yOffset} />
 			))}
+		</group>
+	);
+}
+
+function DiskLayer({ yOffset }: { yOffset: number }) {
+	const diskRef = useRef<THREE.Mesh>(null);
+	const materialRef = useRef<
+		THREE.ShaderMaterial & { uTime: number; uBrightness: number }
+	>(null);
+
+	useFrame((state) => {
+		const time = state.clock.getElapsedTime();
+		if (materialRef.current) {
+			materialRef.current.uTime = time;
+			materialRef.current.uBrightness = 2.0 + Math.sin(time * 0.5) * 0.3;
+		}
+		if (diskRef.current) {
+			diskRef.current.rotation.x = Math.sin(time * 0.3) * 0.02;
+			diskRef.current.rotation.z = Math.cos(time * 0.2) * 0.02;
+		}
+	});
+
+	return (
+		<group>
+			<mesh rotation={[0, Math.PI / 2, 0]} position={[0, yOffset, 0]}>
+				<torusGeometry args={[2.5, 0.6, 24, 100]} />
+				{/* @ts-ignore */}
+				<accretionDiskMaterial
+					color="#ffddaa"
+					transparent
+					opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
+					blending={THREE.AdditiveBlending}
+				/>
+			</mesh>
+			<mesh
+				ref={materialRef}
+				rotation={[Math.PI / 2, 0, 0]}
+				position={[0, yOffset, 0]}
+			>
+				<torusGeometry args={[2.5, 0.6, 24, 100]} />
+				{/* @ts-ignore */}
+				<accretionDiskMaterial
+					color="#ffddaa"
+					transparent
+					opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
+					blending={THREE.AdditiveBlending}
+				/>
+			</mesh>
+
+			<mesh
+				ref={diskRef}
+				rotation={[0, Math.PI / 2, 0]}
+				position={[0, yOffset, 0]}
+			>
+				<torusGeometry args={[3.6, 0.6, 24, 100]} />
+				<meshBasicMaterial
+					color="#ffddaa"
+					transparent
+					opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
+					blending={THREE.AdditiveBlending}
+				/>
+			</mesh>
+
+			<mesh rotation={[Math.PI / 2, 0, 0]} position={[0, yOffset, 0]}>
+				<torusGeometry args={[3.6, 0.6, 24, 100]} />
+				<meshBasicMaterial
+					color="#ffddaa"
+					transparent
+					opacity={0.3 * (1 - Math.abs(yOffset) * 2)}
+					blending={THREE.AdditiveBlending}
+				/>
+			</mesh>
+
+			{/* Glow effect */}
+			<mesh position={[0, 0, 0]} scale={[1, 1, 1]}>
+				<sphereGeometry args={[2, 32, 32]} />
+				<meshBasicMaterial
+					color="#ff8800"
+					transparent
+					opacity={0.1 * (1 - Math.abs(yOffset) * 1)}
+					blending={THREE.AdditiveBlending}
+				/>
+			</mesh>
 		</group>
 	);
 }

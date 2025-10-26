@@ -79,7 +79,9 @@ extend({ GravitationalLensingMaterial });
 
 export function GravitationalLensing() {
 	const lensRef = useRef<THREE.Mesh>(null);
-	const materialRef = useRef<any>(null);
+	const materialRef = useRef<
+		THREE.ShaderMaterial & { uTime: number; uDistortion: number }
+	>(null);
 	const photonRingRef = useRef<THREE.Mesh>(null);
 
 	useFrame((state) => {

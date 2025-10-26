@@ -8,62 +8,61 @@ export function BlackholeParticles() {
 	const particlesRef = useRef<THREE.Points>(null);
 	const particleCount = 1000;
 
-	const { positions, colors, velocities, radii, angles, speeds } =
-		useMemo(() => {
-			const positions = new Float32Array(particleCount * 3);
-			const colors = new Float32Array(particleCount * 3);
-			const velocities = new Float32Array(particleCount * 3);
-			const radii = new Float32Array(particleCount);
-			const angles = new Float32Array(particleCount);
-			const speeds = new Float32Array(particleCount);
+	const { positions, colors, radii, angles, speeds } = useMemo(() => {
+		const positions = new Float32Array(particleCount * 3);
+		const colors = new Float32Array(particleCount * 3);
+		const velocities = new Float32Array(particleCount * 3);
+		const radii = new Float32Array(particleCount);
+		const angles = new Float32Array(particleCount);
+		const speeds = new Float32Array(particleCount);
 
-			for (let i = 0; i < particleCount; i++) {
-				const i3 = i * 3;
+		for (let i = 0; i < particleCount; i++) {
+			const i3 = i * 3;
 
-				// Random radius from black hole (between inner and outer accretion disk)
-				const radius = 1.5 + Math.random() * 3.5;
-				radii[i] = radius;
+			// Random radius from black hole (between inner and outer accretion disk)
+			const radius = 1.5 + Math.random() * 3.5;
+			radii[i] = radius;
 
-				// Random angle
-				const angle = Math.random() * Math.PI * 2;
-				angles[i] = angle;
+			// Random angle
+			const angle = Math.random() * Math.PI * 2;
+			angles[i] = angle;
 
-				// Orbital speed (faster closer to black hole)
-				speeds[i] = 0.5 / radius + Math.random() * 0.2;
+			// Orbital speed (faster closer to black hole)
+			speeds[i] = 0.5 / radius + Math.random() * 0.2;
 
-				// Initial position
-				positions[i3] = Math.cos(angle) * radius;
-				positions[i3 + 1] = (Math.random() - 0.5) * 0.5; // Slight vertical spread
-				positions[i3 + 2] = Math.sin(angle) * radius;
+			// Initial position
+			positions[i3] = Math.cos(angle) * radius;
+			positions[i3 + 1] = (Math.random() - 0.5) * 0.5; // Slight vertical spread
+			positions[i3 + 2] = Math.sin(angle) * radius;
 
-				// Initial velocity (orbital)
-				const orbitalSpeed = speeds[i];
-				velocities[i3] = -Math.sin(angle) * orbitalSpeed;
-				velocities[i3 + 1] = 0;
-				velocities[i3 + 2] = Math.cos(angle) * orbitalSpeed;
+			// Initial velocity (orbital)
+			const orbitalSpeed = speeds[i];
+			velocities[i3] = -Math.sin(angle) * orbitalSpeed;
+			velocities[i3 + 1] = 0;
+			velocities[i3 + 2] = Math.cos(angle) * orbitalSpeed;
 
-				// Color based on temperature/distance
-				const temp = 1.0 - (radius - 1.5) / 3.5;
-				if (temp > 0.7) {
-					// Hot - bluish white
-					colors[i3] = 0.7 + Math.random() * 0.3;
-					colors[i3 + 1] = 0.8 + Math.random() * 0.2;
-					colors[i3 + 2] = 1.0;
-				} else if (temp > 0.4) {
-					// Medium - yellowish
-					colors[i3] = 1.0;
-					colors[i3 + 1] = 0.8 + Math.random() * 0.2;
-					colors[i3 + 2] = 0.3 + Math.random() * 0.3;
-				} else {
-					// Cool - reddish
-					colors[i3] = 1.0;
-					colors[i3 + 1] = 0.3 + Math.random() * 0.3;
-					colors[i3 + 2] = 0.1 + Math.random() * 0.2;
-				}
+			// Color based on temperature/distance
+			const temp = 1.0 - (radius - 1.5) / 3.5;
+			if (temp > 0.7) {
+				// Hot - bluish white
+				colors[i3] = 0.7 + Math.random() * 0.3;
+				colors[i3 + 1] = 0.8 + Math.random() * 0.2;
+				colors[i3 + 2] = 1.0;
+			} else if (temp > 0.4) {
+				// Medium - yellowish
+				colors[i3] = 1.0;
+				colors[i3 + 1] = 0.8 + Math.random() * 0.2;
+				colors[i3 + 2] = 0.3 + Math.random() * 0.3;
+			} else {
+				// Cool - reddish
+				colors[i3] = 1.0;
+				colors[i3 + 1] = 0.3 + Math.random() * 0.3;
+				colors[i3 + 2] = 0.1 + Math.random() * 0.2;
 			}
+		}
 
-			return { positions, colors, velocities, radii, angles, speeds };
-		}, []);
+		return { positions, colors, velocities, radii, angles, speeds };
+	}, []);
 
 	useFrame((state) => {
 		if (!particlesRef.current) return;
