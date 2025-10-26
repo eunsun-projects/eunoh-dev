@@ -94,6 +94,12 @@ const testLists = [
 		description: "원샷 프롬프트 - 촛불",
 		href: "/tests/candle",
 	},
+	{
+		id: 16,
+		title: "blackhole",
+		description: "원샷 프롬프트 - 블랙홀",
+		href: "/tests/blackhole",
+	},
 ];
 
 function TestListTemplate() {
