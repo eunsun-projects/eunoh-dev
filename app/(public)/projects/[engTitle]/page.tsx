@@ -37,6 +37,8 @@ async function ProjectPage({ params }: ProjectPageProps) {
 
 	const processedProject = await processProjectImages(project);
 
+	queryClient.setQueryData([QUERY_KEY_PROJECTS, engTitle], processedProject);
+
 	const dehydratedState = dehydrate(queryClient);
 
 	return (
