@@ -86,7 +86,7 @@ function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
 		console.log(newPost);
 
 		mutate(newPost);
-		router.push("/admin/posts");
+		router.push("/admin/authed/posts");
 	};
 
 	useEffect(() => {
