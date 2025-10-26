@@ -54,7 +54,8 @@ function ChatTemplate() {
 
 			<form onSubmit={handleFormSubmit}>
 				<input
-					className="fixed bottom-0 mb-8 w-full max-w-md border border-neutral-300 bg-neutral-300 p-2 shadow-xl focus:outline-none focus-visible:outline-none"
+					id="chat-input"
+					className="fixed bottom-4 w-full max-w-md border border-neutral-300 bg-neutral-300 p-2 shadow-xl placeholder:text-neutral-500 focus:outline-none focus-visible:outline-none"
 					value={input}
 					placeholder="Say something..."
 					onChange={handleInputChange}
