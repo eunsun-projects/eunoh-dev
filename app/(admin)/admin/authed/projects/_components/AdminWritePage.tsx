@@ -181,7 +181,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
 						/>
 					</div>
 					<div className="flex flex-row items-center gap-2">
-						<label htmlFor="keywords1">키워드</label>
+						<label htmlFor={keywords1Id}>키워드</label>
 						<input
 							type="text"
 							className={cn(inputStyle, "w-[120px]")}

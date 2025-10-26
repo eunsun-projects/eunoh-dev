@@ -44,7 +44,9 @@ function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
 
 	const titleId = useId();
 	const categoryId = useId();
-	const keywordsId = useId();
+	const keywords1Id = useId();
+	const keywords2Id = useId();
+	const keywords3Id = useId();
 	const isViewId = useId();
 	const engTitleId = useId();
 	const summaryId = useId();
@@ -168,25 +170,25 @@ function PostsWriteTemplate({ mode = "write", post }: PostsWriteTemplateProps) {
 					/>
 				</div>
 				<div className="flex flex-row items-center gap-2">
-					<label htmlFor={keywordsId}>키워드</label>
+					<label htmlFor={keywords1Id}>키워드</label>
 					<input
 						type="text"
 						className={cn(inputStyle, "w-[120px]")}
-						id={keywordsId}
+						id={keywords1Id}
 						defaultValue={mode === "edit" ? post?.keywords?.[0] || "" : ""}
 						{...register("keywords1")}
 					/>
 					<input
 						type="text"
 						className={cn(inputStyle, "w-[120px]")}
-						id={keywordsId}
+						id={keywords2Id}
 						defaultValue={mode === "edit" ? post?.keywords?.[1] || "" : ""}
 						{...register("keywords2")}
 					/>
 					<input
 						type="text"
 						className={cn(inputStyle, "w-[120px]")}
-						id={keywordsId}
+						id={keywords3Id}
 						defaultValue={mode === "edit" ? post?.keywords?.[2] || "" : ""}
 						{...register("keywords3")}
 					/>

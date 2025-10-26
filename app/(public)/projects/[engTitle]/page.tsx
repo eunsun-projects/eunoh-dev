@@ -28,8 +28,6 @@ async function ProjectPage({ params }: ProjectPageProps) {
 		queryFn: () => getProject({ engTitle }),
 	});
 
-	const dehydratedState = dehydrate(queryClient);
-
 	const project = queryClient.getQueryData<Project>([
 		QUERY_KEY_PROJECTS,
 		engTitle,
@@ -38,6 +36,8 @@ async function ProjectPage({ params }: ProjectPageProps) {
 	if (!project) notFound();
 
 	const processedProject = await processProjectImages(project);
+
+	const dehydratedState = dehydrate(queryClient);
 
 	return (
 		<Suspense fallback={<Loading />}>
