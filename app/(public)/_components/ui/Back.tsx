@@ -7,10 +7,11 @@ import DarkLightModeButton from "./DarkLightModeButton";
 
 interface BackProps {
 	className?: string;
+	iconClassName?: string;
 	isDarkLightModeButton?: boolean;
 }
 
-function Back({ className, isDarkLightModeButton }: BackProps) {
+function Back({ className, iconClassName, isDarkLightModeButton }: BackProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -31,7 +32,7 @@ function Back({ className, isDarkLightModeButton }: BackProps) {
 	return (
 		<div className={cn("flex items-center gap-2", className)}>
 			<RiArrowGoBackFill
-				className="cursor-pointer text-lg"
+				className={cn("cursor-pointer text-lg", iconClassName)}
 				onClick={handleBack}
 			/>
 			{isDarkLightModeButton && <DarkLightModeButton />}
