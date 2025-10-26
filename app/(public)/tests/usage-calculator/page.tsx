@@ -20,7 +20,7 @@ async function UsageCalculatorPage() {
 	return (
 		<HydrationBoundary state={dehydratedState}>
 			<AuthProvider>
-				<div className="mx-auto flex h-dvh min-h-dvh max-w-[684px] flex-col items-center justify-center">
+				<div className="mx-auto flex h-full w-full flex-col items-center justify-center px-4 sm:px-0 md:max-w-[684px]">
 					<UsageCalculatorTemplate />
 				</div>
 			</AuthProvider>

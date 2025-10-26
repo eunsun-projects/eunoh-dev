@@ -50,22 +50,27 @@ function CalculateResult() {
 	}, [usage, base]);
 
 	return (
-		<div className="flex h-fit w-full items-center justify-center gap-2 text-neutral-200">
-			{/** vercel ai sdk 안쓴 api 호출시 */}
+		<div className="flex w-full flex-col items-center justify-center gap-2 text-neutral-200 sm:flex-row">
 			{usage ? (
-				<p>인풋가격: {prices.inputPrice} 원</p>
+				<p className="text-sm">인풋: {prices.inputPrice}원</p>
 			) : (
 				<Skeleton className="h-4 w-full" />
 			)}
-			<Separator orientation="vertical" className="h-4 bg-neutral-200" />
+			<Separator
+				orientation="vertical"
+				className="hidden h-4 bg-neutral-200 sm:block"
+			/>
 			{usage ? (
-				<p>아웃풋가격: {prices.outputPrice} 원</p>
+				<p className="text-sm">아웃풋: {prices.outputPrice}원</p>
 			) : (
 				<Skeleton className="h-4 w-full" />
 			)}
-			<Separator orientation="vertical" className="h-4 bg-neutral-200" />
+			<Separator
+				orientation="vertical"
+				className="hidden h-4 bg-neutral-200 sm:block"
+			/>
 			{usage ? (
-				<p>총 가격: {prices.totalPrice} 원</p>
+				<p className="font-bold text-sm">총: {prices.totalPrice}원</p>
 			) : (
 				<Skeleton className="h-4 w-full" />
 			)}

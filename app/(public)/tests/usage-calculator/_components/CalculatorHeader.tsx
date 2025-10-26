@@ -134,15 +134,14 @@ function CalculatorHeader() {
 	}, [model, setBase, mode, exchangeRate]);
 
 	return (
-		<div className="flex flex-col items-center justify-center gap-1 pt-1">
-			<h1 className="font-bold text-2xl text-neutral-50">
-				써보고 알려준다!! API 가격 계산기!!
+		<div className="flex w-full flex-col items-center justify-center gap-1 pt-1">
+			<h1 className="font-bold text-lg text-neutral-50 sm:text-2xl">
+				API 가격 계산기
 			</h1>
-			<h2 className="text-gray-400 text-sm">
-				API별(모드), 모델별 실제 사용량을 계산 해준다. 모의 계산 아님. 진짜 API
-				호출함. 돈은 내가 냄.
+			<h2 className="hidden text-gray-400 text-xs sm:block">
+				실제 API 호출로 정확한 가격 계산
 			</h2>
-			<div className="flex flex-row gap-4">
+			<div className="flex flex-col items-center gap-2 sm:flex-row">
 				{!user && (
 					<Button
 						className="w-fit bg-neutral-500 text-neutral-50 hover:bg-neutral-600"
@@ -150,64 +149,62 @@ function CalculatorHeader() {
 							loginWithProvider("google", "/tests/usage-calculator")
 						}
 					>
-						로그인해야될걸?
+						로그인
 					</Button>
 				)}
 				<div className="flex flex-row items-center gap-2">
-					<span className="animate-pulse text-gray-400 text-sm">
-						오늘의 환율: {exchangeRate.won_string} 원/달러
+					<span className="animate-pulse text-gray-400 text-xs">
+						환율: {exchangeRate.won_string}원/달러
 					</span>
 				</div>
 			</div>
-			<div className="flex flex-row items-center gap-2">
-				<span className="text-gray-400 text-sm">모드: {mode}</span>
+			<div className="hidden flex-row items-center gap-2 sm:flex">
+				<span className="text-gray-400 text-xs">모드: {mode}</span>
 				<Separator orientation="vertical" className="h-4 bg-neutral-400" />
-				<span className="text-gray-400 text-sm">인풋모델:</span>
+				<span className="text-gray-400 text-xs">인풋:</span>
 				{base.input_txt_base.model ? (
-					<span className="text-gray-400 text-sm">
+					<span className="text-gray-400 text-xs">
 						{base.input_txt_base.model}
 					</span>
 				) : null}
 				{base.input_image_base.model ? (
-					<span className="text-gray-400 text-sm">
+					<span className="text-gray-400 text-xs">
 						{base.input_image_base.model}
 					</span>
 				) : null}
 				<Separator orientation="vertical" className="h-4 bg-neutral-400" />
-				<span className="text-gray-400 text-sm">아웃풋모델:</span>
+				<span className="text-gray-400 text-xs">아웃풋:</span>
 				{base.output_txt_base.model ? (
-					<span className="text-gray-400 text-sm">
+					<span className="text-gray-400 text-xs">
 						{base.output_txt_base.model}
 					</span>
 				) : null}
 				{base.output_image_base.model ? (
-					<span className="text-gray-400 text-sm">
+					<span className="text-gray-400 text-xs">
 						{base.output_image_base.model}
 					</span>
 				) : null}
 			</div>
-			<div className="flex flex-col items-center gap-2">
+			<div className="hidden flex-col items-center gap-2 sm:flex">
 				<div className="flex flex-row items-center gap-2">
 					{base.input_txt_base.basePrice ? (
-						<span className="text-gray-400 text-sm">
-							인풋가격기준: 텍스트 {base.input_txt_base.basePrice} 원
+						<span className="text-gray-400 text-xs">
+							인풋: {base.input_txt_base.basePrice}원
 						</span>
 					) : null}
 					{base.input_txt_base.basePrice && base.input_image_base.basePrice ? (
 						<Separator orientation="vertical" className="h-4 bg-neutral-400" />
 					) : null}
 					{base.input_image_base.basePrice ? (
-						<span className="text-gray-400 text-sm">
-							인풋가격기준: 이미지 {base.input_image_base.basePrice} 원
+						<span className="text-gray-400 text-xs">
+							이미지: {base.input_image_base.basePrice}원
 						</span>
 					) : null}
-					<span className="text-gray-400 text-xs">(토큰당 가격)</span>
 				</div>
 				<div className="flex flex-row items-center gap-2">
 					{base.output_txt_base.basePrice ? (
-						<span className="text-gray-400 text-sm">
-							아웃풋가격기준: 텍스트 {base.output_txt_base.basePrice} 원 텍스트{" "}
-							{base.output_txt_base.basePrice} 원
+						<span className="text-gray-400 text-xs">
+							아웃풋: {base.output_txt_base.basePrice}원
 						</span>
 					) : null}
 					{base.output_txt_base.basePrice &&
@@ -215,11 +212,10 @@ function CalculatorHeader() {
 						<Separator orientation="vertical" className="h-4 bg-neutral-400" />
 					) : null}
 					{base.output_image_base.basePrice ? (
-						<span className="text-gray-400 text-sm">
-							아웃풋가격기준: 이미지 {base.output_image_base.basePrice} 원
+						<span className="text-gray-400 text-xs">
+							이미지: {base.output_image_base.basePrice}원
 						</span>
 					) : null}
-					<span className="text-gray-400 text-xs">(토큰당 가격)</span>
 				</div>
 			</div>
 		</div>
