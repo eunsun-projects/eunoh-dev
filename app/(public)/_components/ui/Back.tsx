@@ -23,7 +23,7 @@ function Back({ className, isDarkLightModeButton }: BackProps) {
 		<div className={cn("flex items-center gap-2", className)}>
 			<RiArrowGoBackFill
 				className="cursor-pointer text-lg"
-				onClick={() => router.back()}
+				onClick={handleBack}
 			/>
 			{isDarkLightModeButton && <DarkLightModeButton />}
 		</div>

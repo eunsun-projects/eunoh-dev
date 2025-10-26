@@ -29,22 +29,13 @@ function TopButton() {
             <div className="rounded-full bg-white text-black flex justify-center items-center shadow-md p-1 lg:p-2">
                 <IoChatboxEllipses className="cursor-pointer" />
             </div> */}
-			<div
-				tabIndex={0}
-				role="button"
-				aria-label="Scroll to top"
-				aria-pressed="false"
-				aria-expanded="false"
-				aria-haspopup="dialog"
-				aria-describedby="scroll-to-top-description"
-				onKeyDown={(e) => {
-					if (e.key === "Enter") handleScrollToTop();
-				}}
+			<button
+				type="button"
 				className="flex items-center justify-center rounded-full bg-white p-1 text-black shadow-md lg:p-2"
 				onClick={handleScrollToTop}
 			>
 				<FaAngleUp className="cursor-pointer" />
-			</div>
+			</button>
 		</div>
 	);
 }
