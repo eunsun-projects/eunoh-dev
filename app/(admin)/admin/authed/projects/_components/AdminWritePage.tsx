@@ -118,7 +118,7 @@ function AdminWritePage({ mode = "write", project }: AdminWritePageProps) {
 		formData.append("project", JSON.stringify(newProject));
 
 		mutate(formData);
-		router.push("/admin/projects");
+		router.push("/admin/authed/projects");
 	};
 
 	useEffect(() => {

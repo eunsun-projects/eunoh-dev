@@ -39,7 +39,7 @@ function PostsListTemplate() {
 						<span>{post.title}</span>
 						<div className="flex items-center gap-2">
 							<span>이동</span>
-							<Link href={`/admin/posts/write/${post.id}`}>
+							<Link href={`/admin/authed/posts/write/${post.id}`}>
 								<span>수정</span>
 							</Link>
 							<button
@@ -57,7 +57,7 @@ function PostsListTemplate() {
 				))}
 			</ul>
 			<Link
-				href="/admin/posts/write"
+				href="/admin/authed/posts/write"
 				className="rounded-md bg-blue-500 px-4 py-2 text-white"
 			>
 				<span>글 작성</span>

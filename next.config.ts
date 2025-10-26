@@ -15,14 +15,6 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
-	turbopack: {
-		rules: {
-			"*.svg": {
-				loaders: ["@svgr/webpack"],
-				as: "*.js", // React 컴포넌트로 처리
-			},
-		},
-	},
 	transpilePackages: ["three"],
 };
 
