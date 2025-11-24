@@ -1,15 +1,11 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function ChatTemplate() {
-	const { messages, input, handleInputChange, handleSubmit } = useChat({
-		onFinish: (_message, options) => {
-			// console.log("finished message", message);
-			console.log("usage ===>", options.usage);
-		},
-	});
+	const [input, setInput] = useState("");
+	const { messages, sendMessage } = useChat();
 
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -20,32 +16,45 @@ function ChatTemplate() {
 	}, [messages]);
 
 	const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		handleSubmit(
-			{
-				preventDefault: () => {
-					e.preventDefault();
-				},
-			},
-			{
-				body: {
-					model: "gpt-4o-mini",
-				},
-			},
-		);
+		e.preventDefault();
+		sendMessage({
+			text: input,
+		});
+		setInput("");
 	};
 
 	return (
 		<div className="stretch mx-auto flex w-full max-w-md flex-col gap-4 py-24">
-			{messages.map((m) => (
-				<div key={m.id} className="w-full whitespace-pre-wrap break-keep">
-					{m.role === "user" ? (
+			{messages.map((message) => (
+				<div key={message.id} className="w-full whitespace-pre-wrap break-keep">
+					{message.role === "user" ? (
 						<div className="flex min-h-8 w-full justify-end">
-							<p className="flex w-[70%] items-center bg-black/30 text-cyan-400 text-stroke-green">
-								<span className="leading-2">{`🍀 User: ${m.content}`}</span>
+							<p className="flex w-[70%] flex-col items-center bg-black/30 text-end text-cyan-400 text-stroke-green">
+								<span className="w-full text-end">🍀 User: </span>
+								{message.parts.map((part, i) => {
+									switch (part.type) {
+										case "text":
+											return (
+												<span key={`${message.id}-${i}`}>{part.text}</span>
+											);
+										default:
+											return null;
+									}
+								})}
 							</p>
 						</div>
 					) : (
-						<p className="flex w-full text-left text-neutral-200 text-stroke">{`🧚 AI: ${m.content}`}</p>
+						<p className="flex w-full flex-col text-left text-neutral-200 text-stroke">
+							<span>🧚 AI: </span>
+							{message.parts.map((part, i) => {
+								switch (part.type) {
+									case "text":
+										return <span key={`${message.id}-${i}`}>{part.text}</span>;
+									default:
+										return null;
+								}
+							})}
+						</p>
 					)}
 				</div>
 			))}
@@ -58,7 +67,7 @@ function ChatTemplate() {
 					className="fixed bottom-4 w-full max-w-md border border-neutral-300 bg-neutral-300 p-2 shadow-xl placeholder:text-neutral-500 focus:outline-none focus-visible:outline-none"
 					value={input}
 					placeholder="Say something..."
-					onChange={handleInputChange}
+					onChange={(e) => setInput(e.target.value)}
 				/>
 			</form>
 		</div>
