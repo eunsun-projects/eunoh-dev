@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { DefaultChatTransport } from "ai";
 import { Image, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
+import type { MyUIMessage } from "@/app/api/chat/route";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -45,6 +46,7 @@ function Chat() {
 	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData | null>(null);
 	const [accumulatedText, setAccumulatedText] = useState<string>("");
+	const [currentModel, setCurrentModel] = useState<Model | null>(null);
 	const { user } = useAuth();
 	const { mode, model, base, setUsage } = useUsageCalculatorStore(
 		useShallow((state) => ({
@@ -55,23 +57,26 @@ function Chat() {
 		})),
 	);
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
 		defaultValues: {
 			message: "",
 		},
 	});
 
-	const {
-		messages,
-		input,
-		handleInputChange,
-		handleSubmit: handleChatSubmit,
-		setInput,
-	} = useChat({
-		onFinish: (_message, options) => {
-			// console.log("finished message", message);
-			console.log("chat usage ===>", options.usage);
-			setUsage(options.usage);
+	const { messages, sendMessage } = useChat<MyUIMessage>({
+		transport: new DefaultChatTransport({
+			body: {
+				model: currentModel,
+			},
+		}),
+		onFinish: ({ message }) => {
+			// Access message metadata via onFinish callback
+			if (message.metadata?.totalUsage) {
+				console.log(
+					"chat usage from finish event ===>",
+					message.metadata.totalUsage,
+				);
+				setUsage(message.metadata.totalUsage);
+			}
 		},
 	});
 
@@ -116,7 +121,6 @@ function Chat() {
 	const imageURLRef = useRef<string | null>(null);
 
 	const resetAll = () => {
-		setInput("");
 		form.reset({ message: "" });
 		form.clearErrors("message");
 		setAccumulatedText("");
@@ -164,14 +168,10 @@ function Chat() {
 			setAccumulatedText("");
 			resetAll();
 		} else {
-			handleChatSubmit(
-				{},
-				{
-					body: {
-						model: selectedModel,
-					},
-				},
-			);
+			setCurrentModel(selectedModel);
+			sendMessage({
+				text: data.message,
+			});
 		}
 
 		resetAll();
@@ -298,7 +298,17 @@ function Chat() {
 						{m.role === "user" ? (
 							<div className="flex min-h-6 w-full justify-end whitespace-pre-wrap rounded-md">
 								<p className="flex w-[70%] items-center rounded-md bg-black/30 px-2 text-cyan-400 text-stroke-green">
-									<span className="leading-2">{`🍀 User: ${m.content}`}</span>
+									<span className="leading-2">
+										🍀 User:{" "}
+										{m.parts.map((part, i) => {
+											switch (part.type) {
+												case "text":
+													return <span key={`${m.id}-${i}`}>{part.text}</span>;
+												default:
+													return null;
+											}
+										})}
+									</span>
 								</p>
 							</div>
 						) : (
@@ -307,7 +317,16 @@ function Chat() {
 									remarkPlugins={[remarkGfm]}
 									components={components}
 								>
-									{m.content}
+									{m.parts
+										.map((part) => {
+											switch (part.type) {
+												case "text":
+													return part.text;
+												default:
+													return "";
+											}
+										})
+										.join("")}
 								</ReactMarkdown>
 							</div>
 						)}
@@ -392,12 +411,11 @@ function Chat() {
 								<FormLabel className="hidden">Message</FormLabel>
 								<FormControl>
 									<ChatTextArea
-										value={input}
+										value={field.value}
 										onKeyDown={handleKeyDown}
 										onCompositionStart={handleComposition}
 										onCompositionEnd={handleComposition}
 										onChange={(e) => {
-											handleInputChange(e);
 											field.onChange(e);
 										}}
 									/>

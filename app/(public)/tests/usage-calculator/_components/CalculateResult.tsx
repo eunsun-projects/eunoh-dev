@@ -24,7 +24,13 @@ function CalculateResult() {
 			return price;
 		}
 
-		if ("input_tokens" in usage) {
+		// IOpenAIResponseUsage 형식 (input_tokens, output_tokens)
+		if (
+			"input_tokens" in usage &&
+			"output_tokens" in usage &&
+			typeof usage.input_tokens === "number" &&
+			typeof usage.output_tokens === "number"
+		) {
 			const input = base.input_txt_base.basePrice * usage.input_tokens;
 			const output = base.output_txt_base.basePrice * usage.output_tokens;
 			const total = input + output;
@@ -35,7 +41,30 @@ function CalculateResult() {
 			};
 		}
 
-		if ("promptTokens" in usage) {
+		// LanguageModelUsage 형식 (inputTokens, outputTokens) - AI SDK 5.0
+		if (
+			"inputTokens" in usage &&
+			"outputTokens" in usage &&
+			typeof usage.inputTokens === "number" &&
+			typeof usage.outputTokens === "number"
+		) {
+			const input = base.input_txt_base.basePrice * usage.inputTokens;
+			const output = base.output_txt_base.basePrice * usage.outputTokens;
+			const total = input + output;
+			return {
+				inputPrice: Math.floor(input * 100000) / 100000,
+				outputPrice: Math.floor(output * 100000) / 100000,
+				totalPrice: Math.floor(total * 100000) / 100000,
+			};
+		}
+
+		// 기타 형식 (promptTokens, completionTokens)
+		if (
+			"promptTokens" in usage &&
+			"completionTokens" in usage &&
+			typeof usage.promptTokens === "number" &&
+			typeof usage.completionTokens === "number"
+		) {
 			const input = base.input_txt_base.basePrice * usage.promptTokens;
 			const output = base.output_txt_base.basePrice * usage.completionTokens;
 			const total = input + output;
