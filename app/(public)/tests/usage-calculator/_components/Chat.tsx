@@ -167,6 +167,8 @@ function Chat() {
 			setPrompt(data.message);
 			setAccumulatedText("");
 			resetAll();
+			return;
+			// biome-ignore lint/style/noUselessElse: for mode
 		} else {
 			sendMessage({
 				text: data.message,
