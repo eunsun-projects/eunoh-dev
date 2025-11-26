@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DefaultChatTransport } from "ai";
 import { Image, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { type Resolver, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
