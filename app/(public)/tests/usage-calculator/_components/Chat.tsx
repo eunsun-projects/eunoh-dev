@@ -1,10 +1,11 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { DefaultChatTransport } from "ai";
 import { Image, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { type Resolver, useForm } from "react-hook-form";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
@@ -37,8 +38,10 @@ interface MarkdownProps {
 }
 
 const formSchema = z.object({
-	message: z.string(),
+	message: z.string().min(5, { message: "메시지는 5자 이상이어야 합니다." }),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 function Chat() {
 	const [isComposing, setIsComposing] = useState(false);
@@ -56,7 +59,8 @@ function Chat() {
 			setUsage: state.setUsage,
 		})),
 	);
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<FormValues>({
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			message: "",
 		},
@@ -130,11 +134,7 @@ function Chat() {
 		setAccumulatedText("");
 	};
 
-	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		if (data.message.length < 5) {
-			toast.error("메시지는 5자 이상이어야 합니다.");
-			return;
-		}
+	const handleSubmit = (data: FormValues) => {
 		if (!user) {
 			toast.error("Please login to use the chat");
 			return;
@@ -143,8 +143,6 @@ function Chat() {
 			toast.error("Please login as an admin to use the chat");
 			return;
 		}
-
-
 
 		if (mode === "txt-to-image") {
 			setPrompt(data.message);
