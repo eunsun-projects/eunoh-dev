@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { DefaultChatTransport } from "ai";
 import { Image, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,6 +11,7 @@ import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
+import type { MyUIMessage } from "@/app/api/chat/route";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -36,8 +38,10 @@ interface MarkdownProps {
 }
 
 const formSchema = z.object({
-	message: z.string(),
+	message: z.string().min(5, { message: "메시지는 5자 이상이어야 합니다." }),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 function Chat() {
 	const [isComposing, setIsComposing] = useState(false);
@@ -45,6 +49,7 @@ function Chat() {
 	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData | null>(null);
 	const [accumulatedText, setAccumulatedText] = useState<string>("");
+
 	const { user } = useAuth();
 	const { mode, model, base, setUsage } = useUsageCalculatorStore(
 		useShallow((state) => ({
@@ -54,24 +59,32 @@ function Chat() {
 			setUsage: state.setUsage,
 		})),
 	);
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			message: "",
 		},
 	});
 
-	const {
-		messages,
-		input,
-		handleInputChange,
-		handleSubmit: handleChatSubmit,
-		setInput,
-	} = useChat({
-		onFinish: (_message, options) => {
-			// console.log("finished message", message);
-			console.log("chat usage ===>", options.usage);
-			setUsage(options.usage);
+	const selectedModel: Model = base.input_txt_base.model
+		? base.input_txt_base.model
+		: base.input_image_base.model!;
+
+	const { messages, sendMessage } = useChat<MyUIMessage>({
+		transport: new DefaultChatTransport({
+			body: {
+				model: selectedModel,
+			},
+		}),
+		onFinish: ({ message }) => {
+			// Access message metadata via onFinish callback
+			if (message.metadata?.totalUsage) {
+				console.log(
+					"chat usage from finish event ===>",
+					message.metadata.totalUsage,
+				);
+				setUsage(message.metadata.totalUsage);
+			}
 		},
 	});
 
@@ -116,17 +129,12 @@ function Chat() {
 	const imageURLRef = useRef<string | null>(null);
 
 	const resetAll = () => {
-		setInput("");
 		form.reset({ message: "" });
 		form.clearErrors("message");
 		setAccumulatedText("");
 	};
 
-	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		if (data.message.length < 5) {
-			toast.error("메시지는 5자 이상이어야 합니다.");
-			return;
-		}
+	const handleSubmit = (data: FormValues) => {
 		if (!user) {
 			toast.error("Please login to use the chat");
 			return;
@@ -135,10 +143,6 @@ function Chat() {
 			toast.error("Please login as an admin to use the chat");
 			return;
 		}
-
-		const selectedModel: Model = base.input_txt_base.model
-			? base.input_txt_base.model
-			: base.input_image_base.model!;
 
 		if (mode === "txt-to-image") {
 			setPrompt(data.message);
@@ -163,15 +167,12 @@ function Chat() {
 			setPrompt(data.message);
 			setAccumulatedText("");
 			resetAll();
+			return;
+			// biome-ignore lint/style/noUselessElse: for mode
 		} else {
-			handleChatSubmit(
-				{},
-				{
-					body: {
-						model: selectedModel,
-					},
-				},
-			);
+			sendMessage({
+				text: data.message,
+			});
 		}
 
 		resetAll();
@@ -298,7 +299,17 @@ function Chat() {
 						{m.role === "user" ? (
 							<div className="flex min-h-6 w-full justify-end whitespace-pre-wrap rounded-md">
 								<p className="flex w-[70%] items-center rounded-md bg-black/30 px-2 text-cyan-400 text-stroke-green">
-									<span className="leading-2">{`🍀 User: ${m.content}`}</span>
+									<span className="leading-2">
+										🍀 User:{" "}
+										{m.parts.map((part, i) => {
+											switch (part.type) {
+												case "text":
+													return <span key={`${m.id}-${i}`}>{part.text}</span>;
+												default:
+													return null;
+											}
+										})}
+									</span>
 								</p>
 							</div>
 						) : (
@@ -307,7 +318,16 @@ function Chat() {
 									remarkPlugins={[remarkGfm]}
 									components={components}
 								>
-									{m.content}
+									{m.parts
+										.map((part) => {
+											switch (part.type) {
+												case "text":
+													return part.text;
+												default:
+													return "";
+											}
+										})
+										.join("")}
 								</ReactMarkdown>
 							</div>
 						)}
@@ -392,12 +412,11 @@ function Chat() {
 								<FormLabel className="hidden">Message</FormLabel>
 								<FormControl>
 									<ChatTextArea
-										value={input}
+										value={field.value}
 										onKeyDown={handleKeyDown}
 										onCompositionStart={handleComposition}
 										onCompositionEnd={handleComposition}
 										onChange={(e) => {
-											handleInputChange(e);
 											field.onChange(e);
 										}}
 									/>
