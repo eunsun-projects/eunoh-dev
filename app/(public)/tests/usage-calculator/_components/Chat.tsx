@@ -46,7 +46,7 @@ function Chat() {
 	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData | null>(null);
 	const [accumulatedText, setAccumulatedText] = useState<string>("");
-	const [currentModel, setCurrentModel] = useState<Model | null>(null);
+
 	const { user } = useAuth();
 	const { mode, model, base, setUsage } = useUsageCalculatorStore(
 		useShallow((state) => ({
@@ -62,10 +62,14 @@ function Chat() {
 		},
 	});
 
+	const selectedModel: Model = base.input_txt_base.model
+		? base.input_txt_base.model
+		: base.input_image_base.model!;
+
 	const { messages, sendMessage } = useChat<MyUIMessage>({
 		transport: new DefaultChatTransport({
 			body: {
-				model: currentModel,
+				model: selectedModel,
 			},
 		}),
 		onFinish: ({ message }) => {
@@ -140,9 +144,7 @@ function Chat() {
 			return;
 		}
 
-		const selectedModel: Model = base.input_txt_base.model
-			? base.input_txt_base.model
-			: base.input_image_base.model!;
+
 
 		if (mode === "txt-to-image") {
 			setPrompt(data.message);
@@ -168,7 +170,6 @@ function Chat() {
 			setAccumulatedText("");
 			resetAll();
 		} else {
-			setCurrentModel(selectedModel);
 			sendMessage({
 				text: data.message,
 			});

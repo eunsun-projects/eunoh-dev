@@ -16,9 +16,10 @@ type MyMetadata = {
 export type MyUIMessage = UIMessage<MyMetadata>;
 
 export async function POST(req: Request) {
-	const { messages }: { messages: MyUIMessage[] } = await req.json();
+	const { messages, model }: { messages: MyUIMessage[]; model?: string } =
+		await req.json();
 
-	const modelInstance = openai("gpt-4o-mini");
+	const modelInstance = openai(model || "gpt-4o-mini");
 
 	const result = streamText({
 		model: modelInstance,
