@@ -4,11 +4,8 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import { getPost } from "@/apis/post";
-import Loading from "@/app/loading";
+import { getPostServer, getPostsServer } from "@/apis/posts";
 import { QUERY_KEY_POSTS } from "@/constants/query.constants";
-import type { Post } from "@/types/post.types";
 import PublicPostTemplate from "../_components/PublicPostTemplate";
 
 interface PublicPostPageProps {
@@ -16,30 +13,37 @@ interface PublicPostPageProps {
 }
 
 export const dynamic = "force-static";
-export const dynamicParams = true; // 🔥 새 프로젝트 자동 처리
+export const dynamicParams = true; // 🔥 새 포스트 자동 처리
+
+/**
+ * 빌드 시점에 모든 포스트 페이지를 미리 생성
+ */
+export async function generateStaticParams() {
+	const posts = await getPostsServer();
+
+	return posts.map((post) => ({
+		engTitle: post.engTitle,
+	}));
+}
 
 async function PublicPostPage({ params }: PublicPostPageProps) {
 	const engTitle = (await params).engTitle;
 
 	const queryClient = new QueryClient();
 
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_POSTS, engTitle],
-		queryFn: () => getPost({ engTitle }),
-	});
-
-	const post = queryClient.getQueryData<Post>([QUERY_KEY_POSTS, engTitle]);
+	// API 라우트 대신 직접 DB 접근
+	const post = await getPostServer(engTitle);
 
 	if (!post) notFound();
+
+	queryClient.setQueryData([QUERY_KEY_POSTS, engTitle], post);
 
 	const dehydratedState = dehydrate(queryClient);
 
 	return (
-		<Suspense fallback={<Loading />}>
-			<HydrationBoundary state={dehydratedState}>
-				<PublicPostTemplate post={post} />
-			</HydrationBoundary>
-		</Suspense>
+		<HydrationBoundary state={dehydratedState}>
+			<PublicPostTemplate post={post} />
+		</HydrationBoundary>
 	);
 }
 
