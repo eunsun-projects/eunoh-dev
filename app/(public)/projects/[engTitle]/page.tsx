@@ -4,9 +4,7 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { getProjectServer, getProjectsServer } from "@/apis/projects";
-import Loading from "@/app/loading";
 import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
 import { processProjectImages } from "@/utils/image/processProjectImages";
 import ProjectTemplate from "../_components/ProjectTemplate";
@@ -45,11 +43,9 @@ async function ProjectPage({ params }: ProjectPageProps) {
 	const dehydratedState = dehydrate(queryClient);
 
 	return (
-		<Suspense fallback={<Loading />}>
-			<HydrationBoundary state={dehydratedState}>
-				<ProjectTemplate project={processedProject} />
-			</HydrationBoundary>
-		</Suspense>
+		<HydrationBoundary state={dehydratedState}>
+			<ProjectTemplate project={processedProject} />
+		</HydrationBoundary>
 	);
 }
 

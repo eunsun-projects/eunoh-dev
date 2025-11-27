@@ -4,9 +4,7 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { getPostServer, getPostsServer } from "@/apis/posts";
-import Loading from "@/app/loading";
 import { QUERY_KEY_POSTS } from "@/constants/query.constants";
 import PublicPostTemplate from "../_components/PublicPostTemplate";
 
@@ -43,11 +41,9 @@ async function PublicPostPage({ params }: PublicPostPageProps) {
 	const dehydratedState = dehydrate(queryClient);
 
 	return (
-		<Suspense fallback={<Loading />}>
-			<HydrationBoundary state={dehydratedState}>
-				<PublicPostTemplate post={post} />
-			</HydrationBoundary>
-		</Suspense>
+		<HydrationBoundary state={dehydratedState}>
+			<PublicPostTemplate post={post} />
+		</HydrationBoundary>
 	);
 }
 
