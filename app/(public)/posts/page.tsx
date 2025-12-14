@@ -20,11 +20,9 @@ async function PostsPage() {
 	const dehydratedState = dehydrate(queryClient);
 
 	return (
-		// <Suspense fallback={<Loading />}>
 		<HydrationBoundary state={dehydratedState}>
 			<PublicPostsListTemplate />
 		</HydrationBoundary>
-		// </Suspense>
 	);
 }
 

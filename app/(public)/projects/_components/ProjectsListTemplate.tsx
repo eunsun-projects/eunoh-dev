@@ -30,9 +30,9 @@ function ProjectsListTemplate() {
 									href={`/projects/${project.engTitle}`}
 									className="min-w-40 xl:min-w-44"
 								>
-									<h3 className="m-0 w-fit p-0.5 text-neutral-900 text-xs transition-all duration-200 hover:rounded-sm hover:bg-neutral-300 dark:text-neutral-50 dark:hover:bg-neutral-500">
+									<p className="m-0 w-fit p-0.5 text-neutral-900 text-xs transition-all duration-200 hover:rounded-sm hover:bg-neutral-300 dark:text-neutral-50 dark:hover:bg-neutral-500">
 										{project.title}
-									</h3>
+									</p>
 								</Link>
 								<div className="flex flex-row gap-1 text-[10px] xl:text-xs">
 									<span>{"- "}</span>

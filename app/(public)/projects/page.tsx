@@ -20,11 +20,9 @@ async function ProjectsPage() {
 	const dehydratedState = dehydrate(queryClient);
 
 	return (
-		// <Suspense fallback={<Loading />}>
 		<HydrationBoundary state={dehydratedState}>
 			<ProjectsListTemplate />
 		</HydrationBoundary>
-		// </Suspense>
 	);
 }
 
