@@ -17,8 +17,8 @@ function PublicPostTemplate({ post }: PublicPostTemplateProps) {
 	return (
 		<section className="flex flex-col gap-8">
 			<div className="flex w-full justify-between">
-				<div className="flex flex-row items-center gap-4">
-					<h2 className="m-0 font-bold text-lg text-neutral-900 dark:text-neutral-50">
+				<div className="flex flex-col items-start justify-start sm:flex-row sm:items-center sm:gap-4">
+					<h2 className="m-0 font-bold text-base text-neutral-900 sm:text-lg dark:text-neutral-50">
 						{post.title}
 					</h2>
 					{post.posted_at && (
