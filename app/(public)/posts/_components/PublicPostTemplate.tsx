@@ -21,9 +21,11 @@ function PublicPostTemplate({ post }: PublicPostTemplateProps) {
 					<h2 className="m-0 font-bold text-lg text-neutral-900 dark:text-neutral-50">
 						{post.title}
 					</h2>
-					<p className="m-0 text-sm">
-						{format(new Date(post.posted_at as string), "yyyy.MM.dd")}
-					</p>
+					{post.posted_at && (
+						<p className="m-0 text-sm">
+							{format(new Date(post.posted_at), "yyyy.MM.dd")}
+						</p>
+					)}
 				</div>
 				<Back isDarkLightModeButton />
 			</div>

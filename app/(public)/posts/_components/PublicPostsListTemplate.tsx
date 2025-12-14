@@ -48,9 +48,11 @@ function PublicPostsListTemplate() {
 								<p className="m-0 text-[10px]">{post.summary}</p>
 							</div>
 							<div className="flex">
-								<p className="m-0 text-sm">
-									{format(new Date(post.posted_at as string), "yyyy.MM")}
-								</p>
+								{post.posted_at && (
+									<p className="m-0 text-sm">
+										{format(new Date(post.posted_at), "yyyy.MM")}
+									</p>
+								)}
 							</div>
 						</div>
 					))}
