@@ -44,7 +44,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 			"/tests/usage-calculator",
 		);
 		const isTimeCapsulePage = pathname.startsWith("/tests/timecapsule");
-		return isAdminPage || isUsageCalculatorPage || isTimeCapsulePage;
+		const isFourPlayPage = pathname.startsWith("/fourplay");
+		return (
+			isAdminPage ||
+			isUsageCalculatorPage ||
+			isTimeCapsulePage ||
+			isFourPlayPage
+		);
 	}, [pathname, isAdminPage]);
 
 	const {
