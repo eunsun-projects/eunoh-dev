@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
-import { z } from "zod";
+import { z } from 'zod/v3';
 import { useShallow } from "zustand/react/shallow";
 import type { MyUIMessage } from "@/app/api/chat/route";
 import { Button } from "@/components/ui/button";

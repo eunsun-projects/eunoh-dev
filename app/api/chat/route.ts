@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
 	const result = streamText({
 		model: modelInstance,
-		messages: convertToModelMessages(messages),
+		messages: await convertToModelMessages(messages),
 		// onStepFinish: (step) => {
 		// 	// usage 정보는 자동으로 finish 이벤트에 포함됨
 		// 	console.log("Step finished with usage:", step.usage);
