@@ -14,6 +14,7 @@ import {
 	assistantPayloadSchema,
 	chatRequestSchema,
 	finalSummaryPayloadSchema,
+	minimalPayloadSchema,
 } from "@/app/(public)/fourplay/_libs/fourplay-schema";
 import { createClient } from "@/utils/supabase/server";
 
@@ -165,10 +166,37 @@ export async function POST(req: Request) {
 			});
 		}
 
-		// DB 업데이트 헬퍼 함수
+		// DB 업데이트 헬퍼 함수 (JSON 파싱 + 스키마 검증 + 복구 로직)
 		const updateTurnWithPayload = async (text: string) => {
+			// 1. JSON 파싱 시도
+			let parsedJson: unknown;
 			try {
-				const payload = JSON.parse(text);
+				parsedJson = JSON.parse(text);
+			} catch {
+				console.error("JSON parse failed, using minimal payload");
+				// JSON 파싱 실패 시 최소 구조 사용
+				const minimalPayload = minimalPayloadSchema.parse({
+					markdown: text,
+					nextModel: DEFAULT_MODEL,
+				});
+				await supabase
+					.from("fourplay_turns")
+					.update({
+						payload: minimalPayload,
+						raw_text: text,
+						next_model: minimalPayload.nextModel,
+					})
+					.eq("id", newTurn.id);
+				return;
+			}
+
+			// 2. 스키마 검증 시도
+			const schema = mode === "summary" ? finalSummaryPayloadSchema : assistantPayloadSchema;
+			const validationResult = schema.safeParse(parsedJson);
+
+			if (validationResult.success) {
+				// 검증 성공
+				const payload = validationResult.data;
 				const markdown =
 					"markdown" in payload
 						? (payload.markdown as string)
@@ -198,11 +226,29 @@ export async function POST(req: Request) {
 						})
 						.eq("id", threadId);
 				}
-			} catch (parseError) {
-				console.error("Failed to parse AI response:", parseError);
+			} else {
+				// 3. 스키마 검증 실패 시 최소 구조 사용
+				console.error("Schema validation failed:", validationResult.error);
+				const jsonObj = parsedJson as Record<string, unknown> | null;
+				const minimalPayload = minimalPayloadSchema.parse({
+					conclusion: jsonObj?.conclusion,
+					reasons: jsonObj?.reasons,
+					risks: jsonObj?.risks,
+					counterpoints: jsonObj?.counterpoints,
+					questions: jsonObj?.questions,
+					nextModel: jsonObj?.nextModel || DEFAULT_MODEL,
+					nextModelReason: jsonObj?.nextModelReason,
+					handoffContext: jsonObj?.handoffContext,
+					markdown: text,
+				});
+
 				await supabase
 					.from("fourplay_turns")
-					.update({ raw_text: text })
+					.update({
+						payload: minimalPayload,
+						raw_text: text,
+						next_model: minimalPayload.nextModel,
+					})
 					.eq("id", newTurn.id);
 			}
 		};
