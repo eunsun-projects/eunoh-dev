@@ -6,6 +6,7 @@ import {
 import { redirect } from "next/navigation";
 import { postUserServer } from "@/apis/auth/server/post.user";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
+import type { User } from "@/types/user.types";
 import AdminLoginTemplate from "./_components/login-page-template";
 
 async function AdminLoginPage() {
@@ -16,8 +17,10 @@ async function AdminLoginPage() {
 		queryFn: () => postUserServer(),
 	});
 
-	const user = await queryClient.getQueryData([QUERY_KEY_USER]);
-	if (user) return redirect("/admin/authed");
+	const user: User | undefined = await queryClient.getQueryData([
+		QUERY_KEY_USER,
+	]);
+	if (user?.isAdmin) return redirect("/admin/authed");
 
 	const dehydratedState = dehydrate(queryClient);
 

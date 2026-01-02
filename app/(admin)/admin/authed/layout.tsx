@@ -14,6 +14,7 @@ import {
 	QUERY_KEY_USER,
 } from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
+import type { User } from "@/types/user.types";
 import AdminHeader from "./_components/AdminHeader";
 
 async function AdminLayout({ children }: PropsWithChildren) {
@@ -33,7 +34,9 @@ async function AdminLayout({ children }: PropsWithChildren) {
 		queryFn: () => getPosts(),
 	});
 
-	const user = await queryClient.getQueryData([QUERY_KEY_USER]);
+	const user: User | undefined = await queryClient.getQueryData([
+		QUERY_KEY_USER,
+	]);
 	if (!user) return redirect("/admin");
 
 	const dehydratedState = dehydrate(queryClient);
