@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "pnpm biome lint",
-		"genTypes": "supabase gen types typescript --project-id \"urtfszkmtgmcqrnchihz\" --schema public > src/types/supabase.ts",
+		"gentypes": "supabase gen types typescript --project-id \"urtfszkmtgmcqrnchihz\" --schema public > src/types/supabase.ts",
 		"prepare": "husky",
 		"format": "pnpm biome format"
 	},
