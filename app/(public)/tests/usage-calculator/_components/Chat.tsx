@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
-import { z } from 'zod/v3';
+import { z } from "zod/v3";
 import { useShallow } from "zustand/react/shallow";
 import type { MyUIMessage } from "@/app/api/chat/route";
 import { Button } from "@/components/ui/button";
@@ -402,7 +402,7 @@ function Chat() {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(handleSubmit)}
-					className="-translate-x-1/2 relative bottom-4 left-1/2 h-[60px] w-[90svw] md:min-w-[680px] lg:w-1/2"
+					className="relative bottom-4 left-1/2 h-[60px] w-[90svw] -translate-x-1/2 md:min-w-[680px] lg:w-1/2"
 				>
 					<FormField
 						control={form.control}
