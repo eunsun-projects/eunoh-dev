@@ -339,9 +339,6 @@ export async function POST(req: Request) {
 			system: systemPrompt,
 			prompt: userQuestion,
 			output: Output.object({ schema: schema as FlexibleSchema }),
-			onFinish: async ({ text }) => {
-				await updateTurnWithPayload(text);
-			},
 		});
 
 		// 스트림을 수동으로 처리하여 클라이언트에 마크다운 스트리밍
@@ -351,37 +348,51 @@ export async function POST(req: Request) {
 			async start(controller) {
 				let lastMarkdown = "";
 
+				const sendChunk = (type: "append" | "replace", content: string) => {
+					controller.enqueue(
+						encoder.encode(`${JSON.stringify({ type, content })}\n`),
+					);
+				};
+
 				try {
 					for await (const partial of result.partialOutputStream) {
 						const markdown = (partial as { markdown?: string }).markdown;
 						if (typeof markdown !== "string") continue;
 
-						// 첫 메시지이면 그대로 내보내기
 						if (!lastMarkdown) {
 							lastMarkdown = markdown;
 							if (markdown) {
-								controller.enqueue(encoder.encode(markdown));
+								sendChunk("append", markdown);
 							}
 							continue;
 						}
 
-						// 이전 상태와 비교하여 delta만 전송
 						if (markdown.startsWith(lastMarkdown)) {
 							const delta = markdown.slice(lastMarkdown.length);
 							if (delta) {
-								controller.enqueue(encoder.encode(delta));
+								sendChunk("append", delta);
 							}
 							lastMarkdown = markdown;
 						} else {
-							// 예상과 다른 경우 전체 치환
-							controller.enqueue(encoder.encode(markdown));
+							sendChunk("replace", markdown);
 							lastMarkdown = markdown;
 						}
 					}
 
+					// DB 업데이트를 controller.close() 전에 수행해야 Edge 환경에서 누락 방지
+					const fullText = await result.text;
+					await updateTurnWithPayload(fullText);
+
 					controller.close();
 				} catch (error) {
 					console.error("Streaming error:", error);
+					if (lastMarkdown) {
+						try {
+							await updateTurnWithPayload(lastMarkdown);
+						} catch (saveError) {
+							console.error("Failed to save partial result:", saveError);
+						}
+					}
 					controller.error(error);
 				}
 			},

@@ -101,7 +101,9 @@ export function useInvalidateThread() {
 	const queryClient = useQueryClient();
 
 	return (threadId: string) => {
-		queryClient.invalidateQueries({ queryKey: fourplayKeys.thread(threadId) });
+		return queryClient.invalidateQueries({
+			queryKey: fourplayKeys.thread(threadId),
+		});
 	};
 }
 
