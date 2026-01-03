@@ -3,17 +3,15 @@ import {
 	HydrationBoundary,
 	QueryClient,
 } from "@tanstack/react-query";
-import { postUserServer } from "@/apis/auth/server/post.user";
-import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
+import { prefetchUser } from "@/lib/prefetch";
+import { createClient } from "@/utils/supabase/server";
 import UsageCalculatorTemplate from "./_components/UsageCalculatorTemplate";
 
 async function UsageCalculatorPage() {
 	const queryClient = new QueryClient();
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_USER],
-		queryFn: () => postUserServer(),
-	});
+	const supabase = await createClient();
+	await prefetchUser(supabase, queryClient);
 
 	const dehydratedState = dehydrate(queryClient);
 

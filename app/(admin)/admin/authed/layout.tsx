@@ -5,9 +5,9 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
-import { postUserServer } from "@/apis/auth/server/post.user";
-import { getPosts } from "@/apis/posts";
-import { getProjects } from "@/apis/projects";
+import { postUserServer } from "@/apis/apis-auth-server";
+import { getPosts } from "@/apis/apis-posts";
+import { getProjects } from "@/apis/apis-projects";
 import {
 	QUERY_KEY_POSTS,
 	QUERY_KEY_PROJECTS,

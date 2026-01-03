@@ -13,6 +13,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { Turn } from "../_apis/fourplay-api";
 import { FOURPLAY_MODELS } from "../_libs/fourplay-models";
+import {
+	assistantPayloadSchema,
+	finalSummaryPayloadSchema,
+} from "../_libs/fourplay-schema";
 
 interface MessageItemProps {
 	turn: Turn;
@@ -32,9 +36,24 @@ export default function MessageItem({
 		? FOURPLAY_MODELS[turn.model as keyof typeof FOURPLAY_MODELS]
 		: null;
 
-	// 표시할 텍스트 결정
-	const displayText =
-		(turn.payload as Record<string, unknown>)?.markdown ?? turn.raw_text ?? "";
+	// 표시할 텍스트 결정 (타입 안전하게)
+	const getDisplayText = () => {
+		if (!turn.payload) return turn.raw_text ?? "";
+
+		// assistantPayloadSchema로 검증 시도
+		const parseResult = assistantPayloadSchema
+			.partial()
+			.safeParse(turn.payload);
+		if (parseResult.success && parseResult.data.markdown) {
+			return parseResult.data.markdown;
+		}
+
+		// 검증 실패 시 fallback
+		const payload = turn.payload as Record<string, unknown>;
+		return (payload?.markdown as string | undefined) ?? turn.raw_text ?? "";
+	};
+
+	const displayText = getDisplayText();
 
 	return (
 		<div
@@ -93,24 +112,24 @@ export default function MessageItem({
 				)}
 
 				{turn.kind === "final_summary" && (
-					<FinalSummary payload={turn.payload as Record<string, unknown>} />
+					<FinalSummary payload={turn.payload} />
 				)}
 
 				{/* Assistant 메타 정보 (payload 요약) */}
 				{isAssistant && !isStreaming && turn.payload && (
-					<AssistantMeta payload={turn.payload as Record<string, unknown>} />
+					<AssistantMeta payload={turn.payload} />
 				)}
 			</div>
 		</div>
 	);
 }
 
-function AssistantMeta({ payload }: { payload: Record<string, unknown> }) {
-	const conclusion = payload.conclusion as string | undefined;
-	const reasons = payload.reasons as string[] | undefined;
-	const risks = payload.risks as string[] | undefined;
-	const nextModel = payload.nextModel as string | undefined;
-	const nextModelReason = payload.nextModelReason as string | undefined;
+function AssistantMeta({ payload }: { payload: unknown }) {
+	const parseResult = assistantPayloadSchema.partial().safeParse(payload);
+	if (!parseResult.success) return null;
+
+	const { conclusion, reasons, risks, nextModel, nextModelReason } =
+		parseResult.data;
 
 	if (!conclusion) return null;
 
@@ -167,12 +186,12 @@ function AssistantMeta({ payload }: { payload: Record<string, unknown> }) {
 	);
 }
 
-function FinalSummary({ payload }: { payload: Record<string, unknown> }) {
-	const decision = payload.decision as string | undefined;
-	const rationale = payload.rationale as string[] | undefined;
-	const checklist = payload.checklist as string[] | undefined;
-	const monitoring = payload.monitoring as string[] | undefined;
-	const nextQuestions = payload.nextQuestions as string[] | undefined;
+function FinalSummary({ payload }: { payload: unknown }) {
+	const parseResult = finalSummaryPayloadSchema.partial().safeParse(payload);
+	if (!parseResult.success) return null;
+
+	const { decision, rationale, checklist, monitoring, nextQuestions } =
+		parseResult.data;
 
 	return (
 		<Card className="mt-8 border-dashed">

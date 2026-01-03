@@ -1,7 +1,9 @@
-import api from "@/apis/axios";
-import type { ChatRequest } from "../_libs/fourplay-schema";
+import axios from "@/lib/axios";
+import type {
+	ChatRequest,
+	FinalSummaryPayload,
+} from "../_libs/fourplay-schema";
 
-// Thread 관련 API
 export interface CreateThreadRequest {
 	title?: string;
 	firstMessage: string;
@@ -16,7 +18,7 @@ export interface Thread {
 	user_id: string | null;
 	title: string | null;
 	status: string;
-	final_decision: Record<string, unknown> | null;
+	final_decision: FinalSummaryPayload | null;
 	created_at: string;
 	updated_at: string;
 }
@@ -44,46 +46,29 @@ export interface ThreadWithTurns {
 	turns: Turn[];
 }
 
-// Thread 생성
 export async function createThread(
 	data: CreateThreadRequest,
 ): Promise<CreateThreadResponse> {
-	const response = await api.post<CreateThreadResponse>(
-		"/api/fourplay/threads",
-		data,
-	);
-	return response.data;
+	return axios.post<CreateThreadResponse>("/api/fourplay/threads", data);
 }
 
-// Thread 목록 조회
 export async function getThreads(): Promise<Thread[]> {
-	const response = await api.get<Thread[]>("/api/fourplay/threads");
-	return response.data;
+	return axios.get<Thread[]>("/api/fourplay/threads");
 }
 
-// Thread + Turns 조회
 export async function getThreadWithTurns(
 	threadId: string,
 ): Promise<ThreadWithTurns> {
-	const response = await api.get<ThreadWithTurns>(
-		`/api/fourplay/threads/${threadId}`,
-	);
-	return response.data;
+	return axios.get<ThreadWithTurns>(`/api/fourplay/threads/${threadId}`);
 }
 
-// Thread 상태 업데이트
 export async function updateThread(
 	threadId: string,
 	data: { status?: string; final_decision?: Record<string, unknown> },
 ): Promise<Thread> {
-	const response = await api.patch<Thread>(
-		`/api/fourplay/threads/${threadId}`,
-		data,
-	);
-	return response.data;
+	return axios.patch<Thread>(`/api/fourplay/threads/${threadId}`, data);
 }
 
-// Turn 생성 (non-streaming)
 export async function createTurn(data: {
 	threadId: string;
 	role: "user" | "assistant" | "system" | "tool";
@@ -95,19 +80,13 @@ export async function createTurn(data: {
 	payload?: Record<string, unknown>;
 	rawText?: string;
 }): Promise<Turn> {
-	const response = await api.post<Turn>("/api/fourplay/turns", data);
-	return response.data;
+	return axios.post<Turn>("/api/fourplay/turns", data);
 }
 
-// Turns 조회
 export async function getTurns(threadId: string): Promise<Turn[]> {
-	const response = await api.get<Turn[]>(
-		`/api/fourplay/turns?threadId=${threadId}`,
-	);
-	return response.data;
+	return axios.get<Turn[]>(`/api/fourplay/turns?threadId=${threadId}`);
 }
 
-// Chat 스트리밍 요청 (fetch 사용)
 export async function streamChat(
 	data: ChatRequest,
 ): Promise<ReadableStream<Uint8Array>> {

@@ -10,7 +10,7 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { deleteLogOut, getLogInWithProvider } from "@/apis/auth/client";
+import { deleteLogOut, getLogInWithProvider } from "@/apis/apis-auth-client";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { useUserQuery } from "@/hooks/queries/auth";
 import type { User } from "@/types/user.types";
@@ -103,10 +103,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 	useEffect(() => {
 		if (error) console.error(error);
-		if (error?.message === "Cookie not found" && isQueryEnabled) {
+		if (
+			error?.message === "Cookie not found" &&
+			pathname.startsWith("/admin")
+		) {
 			router.push("/admin");
 		}
-	}, [error, router, isQueryEnabled]);
+	}, [error, router, pathname]);
 
 	useEffect(() => {
 		if (!isQueryEnabled) return;

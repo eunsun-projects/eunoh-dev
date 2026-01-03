@@ -60,7 +60,7 @@ export default function ChatShell({
 				const decoder = new TextDecoder();
 
 				// 임시 턴 ID 생성 (실제로는 서버에서 생성됨)
-				const tempTurnId = `streaming-${Date.now()}`;
+				const tempTurnId = `streaming-${crypto.randomUUID()}`;
 				setStreamingTurnId(tempTurnId);
 
 				let fullText = "";

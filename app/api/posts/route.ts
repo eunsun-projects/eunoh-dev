@@ -15,7 +15,6 @@ export async function GET() {
 		.order("created_at", { ascending: false });
 
 	if (error) {
-		revalidatePath("/", "layout");
 		return NextResponse.json({ error: error.message }, { status: 500 });
 	}
 

@@ -1,17 +1,12 @@
-// import { getUserFromHeaders } from "@/utils/common/getUserFromHeaders";
 import {
 	dehydrate,
 	HydrationBoundary,
 	QueryClient,
 } from "@tanstack/react-query";
 import type { Metadata, Viewport } from "next";
-import { postUserServer } from "@/apis/auth/server/post.user";
-import { getTimeCapsules } from "@/apis/tests/api.tests";
-import {
-	QUERY_KEY_TIME_CAPSULES,
-	QUERY_KEY_USER,
-} from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
+import { prefetchTimeCapsules, prefetchUser } from "@/lib/prefetch";
+import { createClient } from "@/utils/supabase/server";
 import TimeCapsuleTemplate from "./_components/TimeCapsuleTemplate";
 
 export const metadata: Metadata = {
@@ -28,18 +23,11 @@ export const viewport: Viewport = {
 };
 
 async function TimeCapsulePage() {
-	// const userId = await getUserFromHeaders();
-
 	const queryClient = new QueryClient();
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_USER],
-		queryFn: () => postUserServer(),
-	});
+	const supabase = await createClient();
 
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_TIME_CAPSULES],
-		queryFn: () => getTimeCapsules(),
-	});
+	await prefetchUser(supabase, queryClient);
+	await prefetchTimeCapsules(supabase, queryClient);
 
 	const dehydratedState = dehydrate(queryClient);
 

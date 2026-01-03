@@ -4,7 +4,7 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
-import { postUserServer } from "@/apis/auth/server/post.user";
+import { postUserServer } from "@/apis/apis-auth-server";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
 import type { User } from "@/types/user.types";
 import AdminLoginTemplate from "./_components/login-page-template";

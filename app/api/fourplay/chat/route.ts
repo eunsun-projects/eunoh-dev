@@ -344,12 +344,11 @@ export async function POST(req: Request) {
 			},
 		});
 
-		// 스트림을 수동으로 처리하여 완료 시점에 DB 저장 보장
+		// 스트림을 수동으로 처리하여 클라이언트에 마크다운 스트리밍
 		const encoder = new TextEncoder();
 
 		const stream = new ReadableStream({
 			async start(controller) {
-				let fullText = "";
 				let lastMarkdown = "";
 
 				try {
@@ -380,13 +379,6 @@ export async function POST(req: Request) {
 						}
 					}
 
-					if (!fullText.trim()) {
-						const resultObject = await result.output;
-						fullText = JSON.stringify(resultObject);
-					}
-
-					// 스트림 완료 후 DB 저장
-					await updateTurnWithPayload(fullText);
 					controller.close();
 				} catch (error) {
 					console.error("Streaming error:", error);

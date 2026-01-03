@@ -4,9 +4,11 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import { getProjectServer, getProjectsServer } from "@/apis/projects";
+import { getProjectsServer } from "@/apis/apis-projects";
 import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
+import { getProject } from "@/lib/crud";
 import { processProjectImages } from "@/utils/image/processProjectImages";
+import { createStaticClient } from "@/utils/supabase/static";
 import ProjectTemplate from "../_components/ProjectTemplate";
 
 interface ProjectPageProps {
@@ -30,9 +32,9 @@ export async function generateStaticParams() {
 async function ProjectPage({ params }: ProjectPageProps) {
 	const engTitle = (await params).engTitle;
 	const queryClient = new QueryClient();
+	const supabase = createStaticClient();
 
-	// API 라우트 대신 직접 DB 접근
-	const project = await getProjectServer(engTitle);
+	const project = await getProject(supabase, engTitle);
 
 	if (!project) notFound();
 

@@ -1,6 +1,10 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import axiosLib from "axios";
 
+export interface RetryableRequestConfig extends AxiosRequestConfig {
+	shouldRetry?: boolean;
+}
+
 // API 응답 구조 정의
 export interface ApiResponse<T> {
 	data: T;
@@ -271,54 +275,56 @@ export abstract class BaseAxiosClient {
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
-	// HTTP 메서드 (타입 안전성 및 요청 취소 지원)
-	// AxiosRequestConfig를 그대로 사용하여 axios의 모든 옵션을 자동으로 지원
-	// (onUploadProgress, onDownloadProgress, timeout, headers 등)
 	public get<T = unknown>(
 		url: string,
-		config?: AxiosRequestConfig,
+		config?: RetryableRequestConfig,
 	): Promise<T> {
 		return this.retryRequest(
 			() => this.axiosInstance.get(url, config) as Promise<T>,
+			config?.shouldRetry ?? true,
 		);
 	}
 
 	public delete<T = unknown>(
 		url: string,
-		config?: AxiosRequestConfig,
+		config?: RetryableRequestConfig,
 	): Promise<T> {
 		return this.retryRequest(
 			() => this.axiosInstance.delete(url, config) as Promise<T>,
+			config?.shouldRetry ?? false,
 		);
 	}
 
 	public post<T = unknown>(
 		url: string,
 		data?: unknown,
-		config?: AxiosRequestConfig,
+		config?: RetryableRequestConfig,
 	): Promise<T> {
 		return this.retryRequest(
 			() => this.axiosInstance.post(url, data, config) as Promise<T>,
+			config?.shouldRetry ?? false,
 		);
 	}
 
 	public put<T = unknown>(
 		url: string,
 		data?: unknown,
-		config?: AxiosRequestConfig,
+		config?: RetryableRequestConfig,
 	): Promise<T> {
 		return this.retryRequest(
 			() => this.axiosInstance.put(url, data, config) as Promise<T>,
+			config?.shouldRetry ?? false,
 		);
 	}
 
 	public patch<T = unknown>(
 		url: string,
 		data?: unknown,
-		config?: AxiosRequestConfig,
+		config?: RetryableRequestConfig,
 	): Promise<T> {
 		return this.retryRequest(
 			() => this.axiosInstance.patch(url, data, config) as Promise<T>,
+			config?.shouldRetry ?? false,
 		);
 	}
 }
