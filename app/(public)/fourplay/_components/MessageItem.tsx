@@ -24,11 +24,7 @@ interface MessageItemProps {
 	streamingText?: string;
 }
 
-export default function MessageItem({
-	turn,
-	isStreaming,
-	streamingText,
-}: MessageItemProps) {
+export default function MessageItem({ turn, isStreaming }: MessageItemProps) {
 	const isUser = turn.role === "user";
 	const isAssistant = turn.role === "assistant";
 
@@ -93,7 +89,7 @@ export default function MessageItem({
 				</div>
 
 				{/* 본문 */}
-				{isStreaming && !streamingText ? (
+				{isStreaming ? (
 					<div className="space-y-2">
 						<Skeleton className="h-4 w-3/4" />
 						<Skeleton className="h-4 w-1/2" />

@@ -37,7 +37,7 @@ async function AdminLayout({ children }: PropsWithChildren) {
 	const user: User | undefined = await queryClient.getQueryData([
 		QUERY_KEY_USER,
 	]);
-	if (!user) return redirect("/admin");
+	if (!user || !user.isAdmin) return redirect("/admin");
 
 	const dehydratedState = dehydrate(queryClient);
 
