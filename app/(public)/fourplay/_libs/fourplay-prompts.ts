@@ -1,6 +1,8 @@
 import { MODEL_LIST } from "./fourplay-models";
 
-const MODEL_LIST_STRING = MODEL_LIST.map((m) => `- ${m.id}: ${m.label} (${m.description})`).join("\n");
+const MODEL_LIST_STRING = MODEL_LIST.map(
+	(m) => `- ${m.id}: ${m.label} (${m.description})`,
+).join("\n");
 
 // Opener 모델용 시스템 프롬프트 (첫 번째 턴)
 export function getOpenerSystemPrompt(): string {
@@ -22,7 +24,10 @@ ${MODEL_LIST_STRING}
 }
 
 // Mid 모델용 시스템 프롬프트 (두 번째/세 번째 턴)
-export function getMidSystemPrompt(handoffContext: string, turnNumber: number): string {
+export function getMidSystemPrompt(
+	handoffContext: string,
+	turnNumber: number,
+): string {
 	return `당신은 사용자의 어려운 결정을 돕는 전문 상담사입니다.
 이전 모델의 분석을 받아 추가적인 관점에서 검토합니다.
 

@@ -9,7 +9,7 @@
 		"lint": "pnpm biome lint",
 		"gentypes": "supabase gen types typescript --project-id \"urtfszkmtgmcqrnchihz\" --schema public > src/types/supabase.ts",
 		"prepare": "husky",
-		"format": "pnpm biome format"
+		"format": "biome format --write"
 	},
 	"dependencies": {
 		"@ai-sdk/openai": "^3.0.2",
