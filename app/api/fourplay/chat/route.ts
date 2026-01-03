@@ -1,7 +1,8 @@
-import { gateway, Output, streamText } from "ai";
+import { type FlexibleSchema, gateway, Output, streamText } from "ai";
 import {
 	DEFAULT_MODEL,
 	type FourplayModelId,
+	getProviderFromModelId,
 	SUMMARY_MODEL,
 } from "@/app/(public)/fourplay/_libs/fourplay-models";
 import {
@@ -16,9 +17,57 @@ import {
 	finalSummaryPayloadSchema,
 	minimalPayloadSchema,
 } from "@/app/(public)/fourplay/_libs/fourplay-schema";
+import type { Json } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 
 export const maxDuration = 60;
+
+const PROVIDER_SEQUENCE = ["openai", "anthropic", "google"] as const;
+type ProviderSequence = (typeof PROVIDER_SEQUENCE)[number];
+
+const PROVIDER_DEFAULT_MODEL: Record<ProviderSequence, FourplayModelId> = {
+	openai: DEFAULT_MODEL,
+	anthropic: "anthropic/claude-sonnet-4.5",
+	google: "google/gemini-3-pro-preview",
+};
+
+function getForcedNextModelInfo(
+	assistantTurns: { model: string | null }[],
+	currentModel: FourplayModelId,
+): { model: FourplayModelId; reason: string } {
+	const usedProviders = new Set<ProviderSequence>();
+
+	for (const turn of assistantTurns) {
+		if (!turn.model) continue;
+		const provider = getProviderFromModelId(turn.model) as ProviderSequence;
+		if (PROVIDER_SEQUENCE.includes(provider)) {
+			usedProviders.add(provider);
+		}
+	}
+
+	const currentProvider = getProviderFromModelId(
+		currentModel,
+	) as ProviderSequence;
+	if (PROVIDER_SEQUENCE.includes(currentProvider)) {
+		usedProviders.add(currentProvider);
+	}
+
+	const nextProvider = PROVIDER_SEQUENCE.find(
+		(provider) => !usedProviders.has(provider),
+	);
+
+	if (nextProvider) {
+		return {
+			model: PROVIDER_DEFAULT_MODEL[nextProvider],
+			reason: `Auto-selected to use remaining provider: ${nextProvider}.`,
+		};
+	}
+
+	return {
+		model: PROVIDER_DEFAULT_MODEL.openai,
+		reason: "Auto-selected to wrap up with OpenAI.",
+	};
+}
 
 export async function POST(req: Request) {
 	const supabase = await createClient();
@@ -117,6 +166,9 @@ export async function POST(req: Request) {
 		turnKind = assistantTurns.length === 0 ? "opener" : "mid";
 	}
 
+	const forcedNextModelInfo =
+		mode === "summary" ? null : getForcedNextModelInfo(assistantTurns, modelId);
+
 	// 시스템 프롬프트 생성
 	let systemPrompt: string;
 	const userTurn = turns?.find((t) => t.role === "user");
@@ -130,8 +182,7 @@ export async function POST(req: Request) {
 				return `### 모델 ${i + 1} (${t.model}):\n${conclusion}`;
 			})
 			.join("\n\n");
-		systemPrompt =
-			getFinalSummarySystemPrompt(allResponses) + JSON_INSTRUCTION;
+		systemPrompt = getFinalSummarySystemPrompt(allResponses) + JSON_INSTRUCTION;
 	} else if (turnKind === "opener") {
 		systemPrompt = getOpenerSystemPrompt() + JSON_INSTRUCTION;
 	} else {
@@ -179,42 +230,56 @@ export async function POST(req: Request) {
 					markdown: text,
 					nextModel: DEFAULT_MODEL,
 				});
-				await supabase
+				const normalizedPayload = forcedNextModelInfo
+					? {
+							...minimalPayload,
+							nextModel: forcedNextModelInfo.model,
+							nextModelReason: forcedNextModelInfo.reason,
+						}
+					: minimalPayload;
+				const { error: updateError } = await supabase
 					.from("fourplay_turns")
 					.update({
-						payload: minimalPayload,
+						payload: normalizedPayload,
 						raw_text: text,
-						next_model: minimalPayload.nextModel,
+						next_model: forcedNextModelInfo?.model ?? null,
+						next_model_reason: forcedNextModelInfo?.reason ?? null,
 					})
 					.eq("id", newTurn.id);
+				if (updateError) {
+					console.error("Turn update failed (parse fallback):", updateError);
+				}
 				return;
 			}
 
 			// 2. 스키마 검증 시도
-			const schema = mode === "summary" ? finalSummaryPayloadSchema : assistantPayloadSchema;
+			const schema =
+				mode === "summary" ? finalSummaryPayloadSchema : assistantPayloadSchema;
 			const validationResult = schema.safeParse(parsedJson);
 
 			if (validationResult.success) {
 				// 검증 성공
 				const payload = validationResult.data;
-				const markdown =
-					"markdown" in payload
-						? (payload.markdown as string)
-						: JSON.stringify(payload, null, 2);
-
-				await supabase
+				const normalizedPayload = forcedNextModelInfo
+					? {
+							...payload,
+							nextModel: forcedNextModelInfo.model,
+							nextModelReason: forcedNextModelInfo.reason,
+						}
+					: payload;
+				const { error: updateError } = await supabase
 					.from("fourplay_turns")
 					.update({
-						payload,
-						raw_text: markdown,
-						next_model:
-							"nextModel" in payload ? (payload.nextModel as string) : null,
-						next_model_reason:
-							"nextModelReason" in payload
-								? (payload.nextModelReason as string)
-								: null,
+						payload: normalizedPayload,
+						payload_raw: parsedJson as Json,
+						raw_text: text,
+						next_model: forcedNextModelInfo?.model ?? null,
+						next_model_reason: forcedNextModelInfo?.reason ?? null,
 					})
 					.eq("id", newTurn.id);
+				if (updateError) {
+					console.error("Turn update failed (validated):", updateError);
+				}
 
 				// Final summary인 경우 thread 업데이트
 				if (mode === "summary") {
@@ -242,43 +307,100 @@ export async function POST(req: Request) {
 					markdown: text,
 				});
 
-				await supabase
+				const normalizedPayload = forcedNextModelInfo
+					? {
+							...minimalPayload,
+							nextModel: forcedNextModelInfo.model,
+							nextModelReason: forcedNextModelInfo.reason,
+						}
+					: minimalPayload;
+				const { error: updateError } = await supabase
 					.from("fourplay_turns")
 					.update({
-						payload: minimalPayload,
+						payload: normalizedPayload,
+						payload_raw: parsedJson as Json,
 						raw_text: text,
-						next_model: minimalPayload.nextModel,
+						next_model: forcedNextModelInfo?.model ?? null,
+						next_model_reason: forcedNextModelInfo?.reason ?? null,
 					})
 					.eq("id", newTurn.id);
+				if (updateError) {
+					console.error("Turn update failed (schema fallback):", updateError);
+				}
 			}
 		};
 
 		// AI 스트리밍 시작 - 모드에 따라 다른 스키마 사용
-		if (mode === "summary") {
-			const result = streamText({
-				model: gateway(modelId),
-				system: systemPrompt,
-				prompt: userQuestion,
-				output: Output.object({ schema: finalSummaryPayloadSchema }),
-				onFinish: async ({ text }) => {
-					await updateTurnWithPayload(text);
-				},
-			});
-			return result.toTextStreamResponse();
-		}
+		const schema =
+			mode === "summary" ? finalSummaryPayloadSchema : assistantPayloadSchema;
 
-		// 일반 모드 (opener / mid)
 		const result = streamText({
 			model: gateway(modelId),
 			system: systemPrompt,
 			prompt: userQuestion,
-			output: Output.object({ schema: assistantPayloadSchema }),
+			output: Output.object({ schema: schema as FlexibleSchema }),
 			onFinish: async ({ text }) => {
 				await updateTurnWithPayload(text);
 			},
 		});
 
-		return result.toTextStreamResponse();
+		// 스트림을 수동으로 처리하여 완료 시점에 DB 저장 보장
+		const encoder = new TextEncoder();
+
+		const stream = new ReadableStream({
+			async start(controller) {
+				let fullText = "";
+				let lastMarkdown = "";
+
+				try {
+					for await (const partial of result.partialOutputStream) {
+						const markdown = (partial as { markdown?: string }).markdown;
+						if (typeof markdown !== "string") continue;
+
+						// 첫 메시지이면 그대로 내보내기
+						if (!lastMarkdown) {
+							lastMarkdown = markdown;
+							if (markdown) {
+								controller.enqueue(encoder.encode(markdown));
+							}
+							continue;
+						}
+
+						// 이전 상태와 비교하여 delta만 전송
+						if (markdown.startsWith(lastMarkdown)) {
+							const delta = markdown.slice(lastMarkdown.length);
+							if (delta) {
+								controller.enqueue(encoder.encode(delta));
+							}
+							lastMarkdown = markdown;
+						} else {
+							// 예상과 다른 경우 전체 치환
+							controller.enqueue(encoder.encode(markdown));
+							lastMarkdown = markdown;
+						}
+					}
+
+					if (!fullText.trim()) {
+						const resultObject = await result.output;
+						fullText = JSON.stringify(resultObject);
+					}
+
+					// 스트림 완료 후 DB 저장
+					await updateTurnWithPayload(fullText);
+					controller.close();
+				} catch (error) {
+					console.error("Streaming error:", error);
+					controller.error(error);
+				}
+			},
+		});
+
+		return new Response(stream, {
+			headers: {
+				"Content-Type": "text/plain; charset=utf-8",
+				"Transfer-Encoding": "chunked",
+			},
+		});
 	} catch (error) {
 		console.error("Fourplay chat error:", error);
 		return new Response(

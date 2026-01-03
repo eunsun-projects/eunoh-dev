@@ -6,12 +6,13 @@ import { DefaultChatTransport } from "ai";
 import { Image, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import ReactMarkdown, { type Components } from "react-markdown";
+import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { z } from "zod/v3";
 import { useShallow } from "zustand/react/shallow";
 import type { MyUIMessage } from "@/app/api/chat/route";
+import { components } from "@/components/common/react-markdown-components";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -31,11 +32,6 @@ import {
 } from "../_hooks/query.hooks";
 import { type Model, useUsageCalculatorStore } from "../_libs/zustand";
 import ChatTextArea from "./ChatTextArea";
-
-interface MarkdownProps {
-	children: React.ReactNode;
-	node: React.ReactNode;
-}
 
 const formSchema = z.object({
 	message: z.string().min(5, { message: "메시지는 5자 이상이어야 합니다." }),
@@ -469,58 +465,3 @@ function Chat() {
 }
 
 export default Chat;
-
-const components = {
-	p: ({ ...props }: MarkdownProps) => (
-		<p className="text-neutral-200" {...props} />
-	),
-	a: ({ ...props }: MarkdownProps) => (
-		<a className="text-neutral-200" {...props} />
-	),
-	h1: ({ ...props }: MarkdownProps) => (
-		<h1 className="text-neutral-200" {...props} />
-	),
-	h2: ({ ...props }: MarkdownProps) => (
-		<h2 className="text-neutral-200" {...props} />
-	),
-	h3: ({ ...props }: MarkdownProps) => (
-		<h3 className="text-neutral-200" {...props} />
-	),
-	h4: ({ ...props }: MarkdownProps) => (
-		<h4 className="text-neutral-200" {...props} />
-	),
-	h5: ({ ...props }: MarkdownProps) => (
-		<h5 className="text-neutral-200" {...props} />
-	),
-	h6: ({ ...props }: MarkdownProps) => (
-		<h6 className="text-neutral-200" {...props} />
-	),
-	ul: ({ ...props }: MarkdownProps) => (
-		<ul className="text-neutral-200" {...props} />
-	),
-	ol: ({ ...props }: MarkdownProps) => (
-		<ol className="text-neutral-200" {...props} />
-	),
-	li: ({ ...props }: MarkdownProps) => (
-		<li className="text-neutral-200" {...props} />
-	),
-	blockquote: ({ ...props }: MarkdownProps) => (
-		<blockquote className="text-neutral-200" {...props} />
-	),
-	code: ({ ...props }: MarkdownProps) => (
-		<code className="text-neutral-200" {...props} />
-	),
-	img: ({ ...props }: MarkdownProps) => (
-		<img
-			className="h-full w-full text-neutral-200"
-			{...props}
-			alt="this is markdown img"
-		/>
-	),
-	pre: ({ ...props }: MarkdownProps) => (
-		<pre className="text-neutral-200" {...props} />
-	),
-	table: ({ ...props }: MarkdownProps) => (
-		<table className="text-neutral-200" {...props} />
-	),
-} as Components;

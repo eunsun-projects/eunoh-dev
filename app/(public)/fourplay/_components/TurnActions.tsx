@@ -52,7 +52,11 @@ export default function TurnActions({
 	return (
 		<div className="flex flex-wrap items-center gap-2 border-t bg-muted/50 p-4">
 			{/* 계속 (제안대로) */}
-			<Button onClick={onContinue} disabled={isLoading} className="gap-2">
+			<Button
+				onClick={onContinue}
+				disabled={isLoading}
+				className="cursor-pointer gap-2"
+			>
 				<ArrowRight className="h-4 w-4" />
 				Continue
 				{nextModel && <span className="text-xs opacity-70">({nextModel})</span>}
@@ -61,7 +65,11 @@ export default function TurnActions({
 			{/* 계속 (모델 지정) */}
 			<Dialog open={isModelDialogOpen} onOpenChange={setIsModelDialogOpen}>
 				<DialogTrigger asChild>
-					<Button variant="outline" disabled={isLoading}>
+					<Button
+						variant="outline"
+						disabled={isLoading}
+						className="cursor-pointer"
+					>
 						Select Model
 					</Button>
 				</DialogTrigger>
@@ -102,7 +110,7 @@ export default function TurnActions({
 					variant="secondary"
 					onClick={onSummary}
 					disabled={isLoading}
-					className="gap-2"
+					className="cursor-pointer gap-2"
 				>
 					<CheckCircle className="h-4 w-4" />
 					Get Summary
@@ -114,7 +122,7 @@ export default function TurnActions({
 				variant="ghost"
 				onClick={onFinish}
 				disabled={isLoading}
-				className="gap-2"
+				className="cursor-pointer gap-2"
 			>
 				<SkipForward className="h-4 w-4" />
 				Finish Now

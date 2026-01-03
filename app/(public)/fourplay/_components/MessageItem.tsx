@@ -3,6 +3,7 @@
 import { Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { fourplayComponents } from "@/components/common/react-markdown-components";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -28,11 +29,8 @@ export default function MessageItem({
 		: null;
 
 	// 표시할 텍스트 결정
-	const displayText = isStreaming
-		? streamingText
-		: (turn.payload as Record<string, unknown>)?.markdown ||
-			turn.raw_text ||
-			"";
+	const displayText =
+		(turn.payload as Record<string, unknown>)?.markdown ?? turn.raw_text ?? "";
 
 	return (
 		<div
@@ -41,7 +39,7 @@ export default function MessageItem({
 			{/* 아이콘 */}
 			<div
 				className={cn(
-					"flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
+					"flex h-6 w-6 shrink-0 items-center justify-center rounded-full",
 					isUser ? "bg-primary text-primary-foreground" : "bg-muted",
 				)}
 			>
@@ -80,10 +78,17 @@ export default function MessageItem({
 					</div>
 				) : (
 					<div className="prose prose-sm dark:prose-invert max-w-none">
-						<ReactMarkdown remarkPlugins={[remarkGfm]}>
+						<ReactMarkdown
+							remarkPlugins={[remarkGfm]}
+							components={fourplayComponents}
+						>
 							{displayText as string}
 						</ReactMarkdown>
 					</div>
+				)}
+
+				{turn.kind === "final_summary" && (
+					<FinalSummary payload={turn.payload as Record<string, unknown>} />
 				)}
 
 				{/* Assistant 메타 정보 (payload 요약) */}
@@ -105,47 +110,123 @@ function AssistantMeta({ payload }: { payload: Record<string, unknown> }) {
 	if (!conclusion) return null;
 
 	return (
-		<Card className="mt-4 border-dashed">
+		<Card className="mt-8 border-dashed">
 			<CardHeader className="pb-2">
 				<p className="font-medium text-sm">Summary</p>
 			</CardHeader>
 			<CardContent className="space-y-3 text-sm">
 				{conclusion && (
-					<div>
+					<div className="flex flex-col gap-1">
 						<p className="font-medium text-muted-foreground">Conclusion</p>
-						<p>{conclusion}</p>
+						<p className="text-xs">{conclusion}</p>
 					</div>
 				)}
 
 				{reasons && reasons.length > 0 && (
-					<div>
+					<div className="flex flex-col gap-1">
 						<p className="font-medium text-muted-foreground">Reasons</p>
 						<ul className="list-inside list-disc">
 							{reasons.map((r, i) => (
-								<li key={i}>{r}</li>
+								<li key={i} className="text-xs">
+									{r}
+								</li>
 							))}
 						</ul>
 					</div>
 				)}
 
 				{risks && risks.length > 0 && (
-					<div>
+					<div className="flex flex-col gap-1">
 						<p className="font-medium text-muted-foreground">Risks</p>
 						<ul className="list-inside list-disc text-orange-600 dark:text-orange-400">
 							{risks.map((r, i) => (
-								<li key={i}>{r}</li>
+								<li key={i} className="text-xs">
+									{r}
+								</li>
 							))}
 						</ul>
 					</div>
 				)}
 
 				{nextModel && (
-					<div className="rounded bg-muted p-2">
+					<div className="flex flex-col gap-1 rounded bg-muted p-2">
 						<p className="text-muted-foreground text-xs">Next recommended:</p>
-						<p className="font-medium">{nextModel}</p>
+						<p className="font-medium text-xs">{nextModel}</p>
 						{nextModelReason && (
 							<p className="text-muted-foreground text-xs">{nextModelReason}</p>
 						)}
+					</div>
+				)}
+			</CardContent>
+		</Card>
+	);
+}
+
+function FinalSummary({ payload }: { payload: Record<string, unknown> }) {
+	const decision = payload.decision as string | undefined;
+	const rationale = payload.rationale as string[] | undefined;
+	const checklist = payload.checklist as string[] | undefined;
+	const monitoring = payload.monitoring as string[] | undefined;
+	const nextQuestions = payload.nextQuestions as string[] | undefined;
+
+	return (
+		<Card className="mt-8 border-dashed">
+			<CardHeader className="pb-2">
+				<p className="font-medium text-sm">Final Summary</p>
+			</CardHeader>
+			<CardContent className="space-y-3 text-sm">
+				{decision && (
+					<div className="flex flex-col gap-1">
+						<p className="font-medium text-muted-foreground">Decision</p>
+						<p className="text-xs">{decision}</p>
+					</div>
+				)}
+				{rationale && rationale.length > 0 && (
+					<div className="flex flex-col gap-1">
+						<p className="font-medium text-muted-foreground">Rationale</p>
+						<ul className="list-inside list-disc">
+							{rationale.map((r, i) => (
+								<li key={i} className="text-xs">
+									{r}
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+				{checklist && checklist.length > 0 && (
+					<div className="flex flex-col gap-1">
+						<p className="font-medium text-muted-foreground">Checklist</p>
+						<ul className="list-inside list-disc">
+							{checklist.map((c, i) => (
+								<li key={i} className="text-xs">
+									{c}
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+				{monitoring && monitoring.length > 0 && (
+					<div className="flex flex-col gap-1">
+						<p className="font-medium text-muted-foreground">Monitoring</p>
+						<ul className="list-inside list-disc">
+							{monitoring.map((m, i) => (
+								<li key={i} className="text-xs">
+									{m}
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+				{nextQuestions && nextQuestions.length > 0 && (
+					<div className="flex flex-col gap-1">
+						<p className="font-medium text-muted-foreground">Next Questions</p>
+						<ul className="list-inside list-disc">
+							{nextQuestions.map((q, i) => (
+								<li key={i} className="text-xs">
+									{q}
+								</li>
+							))}
+						</ul>
 					</div>
 				)}
 			</CardContent>

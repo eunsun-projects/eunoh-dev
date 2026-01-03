@@ -32,6 +32,7 @@ export interface Turn {
 	next_model: string | null;
 	next_model_reason: string | null;
 	payload: Record<string, unknown> | null;
+	payload_raw: Record<string, unknown> | null;
 	raw_text: string | null;
 	latency_ms: number | null;
 	token_usage: Record<string, unknown> | null;

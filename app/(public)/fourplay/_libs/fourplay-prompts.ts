@@ -68,4 +68,6 @@ export const JSON_INSTRUCTION = `
 ## 중요: JSON 형식 필수
 응답은 반드시 유효한 JSON 형식이어야 합니다.
 마크다운 코드블럭(\`\`\`json)으로 감싸지 마세요.
-JSON 객체만 출력하세요.`;
+JSON 객체만 출력하세요.
+
+모든 필드는 필수입니다. 배열 필드(risks, counterpoints, questions 등)는 내용이 없더라도 빈 배열 []을 반드시 포함하세요.`;

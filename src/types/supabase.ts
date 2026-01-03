@@ -54,6 +54,7 @@ export type Database = {
           next_model: string | null
           next_model_reason: string | null
           payload: Json | null
+          payload_raw: Json | null
           raw_text: string | null
           role: string
           selected_by: string | null
@@ -70,6 +71,7 @@ export type Database = {
           next_model?: string | null
           next_model_reason?: string | null
           payload?: Json | null
+          payload_raw?: Json | null
           raw_text?: string | null
           role: string
           selected_by?: string | null
@@ -86,6 +88,7 @@ export type Database = {
           next_model?: string | null
           next_model_reason?: string | null
           payload?: Json | null
+          payload_raw?: Json | null
           raw_text?: string | null
           role?: string
           selected_by?: string | null

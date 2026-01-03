@@ -34,12 +34,9 @@ export const AuthContext = createContext<AuthContextType>(initialValue);
 export function AuthProvider({ children }: PropsWithChildren) {
 	const pathname = usePathname();
 	const [isPending, setIsPending] = useState<boolean>(false);
-	const isAdminPage = useMemo(
-		() => pathname.startsWith("/admin/authed"),
-		[pathname],
-	);
 
 	const isQueryEnabled = useMemo(() => {
+		const isAdminPage = pathname.startsWith("/admin/authed");
 		const isUsageCalculatorPage = pathname.startsWith(
 			"/tests/usage-calculator",
 		);
@@ -51,7 +48,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 			isTimeCapsulePage ||
 			isFourPlayPage
 		);
-	}, [pathname, isAdminPage]);
+	}, [pathname]);
 
 	const {
 		data: user,
@@ -67,7 +64,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 	const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
 		async (provider: string, next = "/admin/authed") => {
-			// console.log("loginWithProvider", provider);
 			try {
 				const data = await getLogInWithProvider(provider, next);
 
@@ -100,15 +96,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	useEffect(() => {
 		if (isUserPending) {
 			setIsPending(true);
+		} else {
+			setIsPending(false);
 		}
 	}, [isUserPending]);
 
 	useEffect(() => {
 		if (error) console.error(error);
-		if (error?.message === "Cookie not found" && isAdminPage) {
+		if (error?.message === "Cookie not found" && isQueryEnabled) {
 			router.push("/admin");
 		}
-	}, [error, router, isAdminPage]);
+	}, [error, router, isQueryEnabled]);
 
 	useEffect(() => {
 		if (!isQueryEnabled) return;

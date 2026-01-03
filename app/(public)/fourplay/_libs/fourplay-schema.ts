@@ -8,25 +8,15 @@ export const assistantPayloadSchema = z.object({
 		.min(3)
 		.max(6)
 		.describe("결론을 뒷받침하는 이유들"),
-	risks: z
-		.array(z.string())
-		.max(4)
-		.describe("고려해야 할 리스크/단점")
-		.default([]),
-	counterpoints: z
-		.array(z.string())
-		.max(4)
-		.describe("반대 의견이나 대안")
-		.default([]),
-	questions: z
-		.array(z.string())
-		.max(4)
-		.describe("사용자에게 확인할 질문")
-		.default([]),
+	risks: z.array(z.string()).max(4).describe("고려해야 할 리스크/단점"),
+	counterpoints: z.array(z.string()).max(4).describe("반대 의견이나 대안"),
+	questions: z.array(z.string()).max(4).describe("사용자에게 확인할 질문"),
 	nextModel: z.string().describe("다음 턴에 추천하는 모델 ID"),
 	nextModelReason: z.string().describe("해당 모델을 추천하는 이유 (1~2줄)"),
 	handoffContext: z.string().describe("다음 모델에게 전달할 핵심 요약"),
-	markdown: z.string().describe("사용자에게 보여줄 전체 마크다운 (코드블럭 포함 가능)"),
+	markdown: z
+		.string()
+		.describe("사용자에게 보여줄 전체 마크다운 (코드블럭 포함 가능)"),
 });
 
 export type AssistantPayload = z.infer<typeof assistantPayloadSchema>;
@@ -37,10 +27,7 @@ export const finalSummaryPayloadSchema = z.object({
 	rationale: z.array(z.string()).describe("결정의 근거들"),
 	checklist: z.array(z.string()).describe("실행 체크리스트"),
 	monitoring: z.array(z.string()).describe("모니터링/주의사항"),
-	nextQuestions: z
-		.array(z.string())
-		.describe("추가로 고려할 질문들")
-		.default([]),
+	nextQuestions: z.array(z.string()).describe("추가로 고려할 질문들"),
 });
 
 export type FinalSummaryPayload = z.infer<typeof finalSummaryPayloadSchema>;

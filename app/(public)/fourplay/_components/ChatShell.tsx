@@ -50,11 +50,10 @@ export default function ChatShell({
 	// 스트리밍 처리
 	const handleStream = useCallback(
 		async (request: ChatRequest) => {
-			if (!threadId) return;
+			if (!request.threadId) return;
 
 			setIsStreaming(true);
 			setStreamingText("");
-
 			try {
 				const stream = await streamChat(request);
 				const reader = stream.getReader();
@@ -76,7 +75,7 @@ export default function ChatShell({
 				}
 
 				// 스트리밍 완료 후 데이터 새로고침
-				invalidateThread(threadId);
+				invalidateThread(request.threadId);
 			} catch (error) {
 				console.error("Streaming error:", error);
 				toast.error(
@@ -88,7 +87,7 @@ export default function ChatShell({
 				setStreamingText("");
 			}
 		},
-		[threadId, invalidateThread],
+		[invalidateThread],
 	);
 
 	// 새 대화 시작
@@ -110,13 +109,11 @@ export default function ChatShell({
 			onThreadCreated(result.threadId);
 
 			// 첫 번째 AI 응답 요청
-			setTimeout(() => {
-				handleStream({
-					threadId: result.threadId,
-					mode: "model",
-					userAction: "continue",
-				});
-			}, 100);
+			handleStream({
+				threadId: result.threadId,
+				mode: "model",
+				userAction: "continue",
+			});
 		} catch (error) {
 			console.error("Create thread error:", error);
 			toast.error("Failed to create conversation");
@@ -201,6 +198,7 @@ export default function ChatShell({
 					latency_ms: null,
 					token_usage: null,
 					created_at: new Date().toISOString(),
+					payload_raw: null,
 				},
 			]
 		: turns;
