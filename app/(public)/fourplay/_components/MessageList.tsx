@@ -18,6 +18,7 @@ export default function MessageList({
 }: MessageListProps) {
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
+	const turnsLength = turns.length;
 
 	// 스크롤을 최하단으로 이동하는 함수
 	const scrollToBottom = useCallback(() => {
@@ -33,9 +34,10 @@ export default function MessageList({
 	}, []);
 
 	// 새 메시지가 추가될 때 스크롤
+	// biome-ignore lint/correctness/useExhaustiveDependencies: turns.length만 변경될 때 스크롤해야 함
 	useEffect(() => {
 		scrollToBottom();
-	}, [scrollToBottom]);
+	}, [turnsLength, scrollToBottom]);
 
 	// 스트리밍 텍스트가 변경될 때마다 스크롤
 	useEffect(() => {

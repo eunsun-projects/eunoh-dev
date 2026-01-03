@@ -26,7 +26,6 @@ function FourplayTemplate() {
 	const handleLogin = async () => {
 		try {
 			loginWithProvider("google", "/fourplay");
-			console.log("loginWithProvider clicked");
 		} catch (error) {
 			console.error(error);
 			alert("로그인 실패");
