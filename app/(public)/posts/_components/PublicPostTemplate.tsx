@@ -1,6 +1,6 @@
 "use client";
 
-import "highlight.js/styles/a11y-dark.css";
+import "highlight.js/styles/tokyo-night-dark.css";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";

@@ -1,7 +1,11 @@
 "use client";
 
+// highlight.js 테마: 다크 모드용
+import "highlight.js/styles/tokyo-night-dark.css";
+// 라이트 모드용 테마는 CSS에서 오버라이드
 import { Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 import { fourplayComponents } from "@/components/common/react-markdown-components";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -80,6 +84,7 @@ export default function MessageItem({
 					<div className="prose prose-sm dark:prose-invert max-w-none">
 						<ReactMarkdown
 							remarkPlugins={[remarkGfm]}
+							rehypePlugins={[rehypeHighlight]}
 							components={fourplayComponents}
 						>
 							{displayText as string}
