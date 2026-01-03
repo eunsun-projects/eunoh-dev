@@ -348,6 +348,12 @@ export async function POST(req: Request) {
 			async start(controller) {
 				let lastMarkdown = "";
 
+				const sendChunk = (type: "append" | "replace", content: string) => {
+					controller.enqueue(
+						encoder.encode(`${JSON.stringify({ type, content })}\n`),
+					);
+				};
+
 				try {
 					for await (const partial of result.partialOutputStream) {
 						const markdown = (partial as { markdown?: string }).markdown;
@@ -356,7 +362,7 @@ export async function POST(req: Request) {
 						if (!lastMarkdown) {
 							lastMarkdown = markdown;
 							if (markdown) {
-								controller.enqueue(encoder.encode(markdown));
+								sendChunk("append", markdown);
 							}
 							continue;
 						}
@@ -364,11 +370,11 @@ export async function POST(req: Request) {
 						if (markdown.startsWith(lastMarkdown)) {
 							const delta = markdown.slice(lastMarkdown.length);
 							if (delta) {
-								controller.enqueue(encoder.encode(delta));
+								sendChunk("append", delta);
 							}
 							lastMarkdown = markdown;
 						} else {
-							controller.enqueue(encoder.encode(markdown));
+							sendChunk("replace", markdown);
 							lastMarkdown = markdown;
 						}
 					}

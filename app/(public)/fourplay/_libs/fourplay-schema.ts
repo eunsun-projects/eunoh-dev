@@ -25,6 +25,9 @@ export type AssistantPayload = z.infer<typeof assistantPayloadSchema>;
 
 // 최종 요약 페이로드 스키마
 export const finalSummaryPayloadSchema = z.object({
+	markdown: z
+		.string()
+		.describe("사용자에게 보여줄 최종 요약 마크다운 - 반드시 첫 번째로 생성"),
 	decision: z.string().describe("최종 결정/권고사항"),
 	rationale: z.array(z.string()).describe("결정의 근거들"),
 	checklist: z.array(z.string()).describe("실행 체크리스트"),

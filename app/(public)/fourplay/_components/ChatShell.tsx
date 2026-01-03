@@ -64,24 +64,45 @@ export default function ChatShell({
 				setStreamingTurnId(tempTurnId);
 
 				let fullText = "";
+				let buffer = "";
 
 				while (true) {
 					const { done, value } = await reader.read();
 					if (done) break;
 
-					const chunk = decoder.decode(value, { stream: true });
-					fullText += chunk;
-					setStreamingText(fullText);
+					buffer += decoder.decode(value, { stream: true });
+					const lines = buffer.split("\n");
+					buffer = lines.pop() || "";
+
+					for (const line of lines) {
+						if (!line.trim()) continue;
+						try {
+							const { type, content } = JSON.parse(line) as {
+								type: "append" | "replace";
+								content: string;
+							};
+							if (type === "replace") {
+								fullText = content;
+							} else {
+								fullText += content;
+							}
+							setStreamingText(fullText);
+						} catch {
+							fullText += line;
+							setStreamingText(fullText);
+						}
+					}
 				}
 
-				// 스트리밍 완료 후 데이터 새로고침
-				invalidateThread(request.threadId);
+				await invalidateThread(request.threadId);
+				setIsStreaming(false);
+				setStreamingTurnId(null);
+				setStreamingText("");
 			} catch (error) {
 				console.error("Streaming error:", error);
 				toast.error(
 					error instanceof Error ? error.message : "Streaming failed",
 				);
-			} finally {
 				setIsStreaming(false);
 				setStreamingTurnId(null);
 				setStreamingText("");
