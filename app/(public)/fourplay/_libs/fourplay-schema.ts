@@ -1,7 +1,12 @@
 import { z } from "zod";
 
-// Assistant 턴의 JSON 페이로드 스키마
+// Assistant 턴의 JSON 페이로드 스키마 (markdown 필드가 첫 번째 = 스트리밍 즉시 시작)
 export const assistantPayloadSchema = z.object({
+	markdown: z
+		.string()
+		.describe(
+			"사용자에게 보여줄 전체 마크다운 (코드블럭 포함 가능) - 반드시 첫 번째로 생성",
+		),
 	conclusion: z.string().describe("핵심 결론 (1~3줄)"),
 	reasons: z
 		.array(z.string())
@@ -14,9 +19,6 @@ export const assistantPayloadSchema = z.object({
 	nextModel: z.string().describe("다음 턴에 추천하는 모델 ID"),
 	nextModelReason: z.string().describe("해당 모델을 추천하는 이유 (1~2줄)"),
 	handoffContext: z.string().describe("다음 모델에게 전달할 핵심 요약"),
-	markdown: z
-		.string()
-		.describe("사용자에게 보여줄 전체 마크다운 (코드블럭 포함 가능)"),
 });
 
 export type AssistantPayload = z.infer<typeof assistantPayloadSchema>;

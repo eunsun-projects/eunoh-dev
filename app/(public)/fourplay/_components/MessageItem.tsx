@@ -24,7 +24,11 @@ interface MessageItemProps {
 	streamingText?: string;
 }
 
-export default function MessageItem({ turn, isStreaming }: MessageItemProps) {
+export default function MessageItem({
+	turn,
+	isStreaming,
+	streamingText,
+}: MessageItemProps) {
 	const isUser = turn.role === "user";
 	const isAssistant = turn.role === "assistant";
 
@@ -89,13 +93,26 @@ export default function MessageItem({ turn, isStreaming }: MessageItemProps) {
 				</div>
 
 				{/* 본문 */}
-				{isStreaming ? (
-					<div className="space-y-2">
-						<Skeleton className="h-4 w-3/4" />
-						<Skeleton className="h-4 w-1/2" />
-						<Skeleton className="h-4 w-2/3" />
-					</div>
-				) : (
+				{isStreaming &&
+					(streamingText ? (
+						<div className="prose prose-sm dark:prose-invert max-w-none">
+							<ReactMarkdown
+								remarkPlugins={[remarkGfm]}
+								rehypePlugins={[rehypeHighlight]}
+								components={fourplayComponents}
+							>
+								{streamingText}
+							</ReactMarkdown>
+						</div>
+					) : (
+						<div className="space-y-2">
+							<Skeleton className="h-4 w-3/4" />
+							<Skeleton className="h-4 w-1/2" />
+							<Skeleton className="h-4 w-2/3" />
+						</div>
+					))}
+
+				{!isStreaming && turn.kind !== "final_summary" && (
 					<div className="prose prose-sm dark:prose-invert max-w-none">
 						<ReactMarkdown
 							remarkPlugins={[remarkGfm]}

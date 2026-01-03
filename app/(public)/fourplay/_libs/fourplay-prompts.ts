@@ -67,7 +67,6 @@ ${allResponses}
 4. 결정 후 모니터링해야 할 사항을 명시하세요.`;
 }
 
-// JSON 강제 지시문
 export const JSON_INSTRUCTION = `
 
 ## 중요: JSON 형식 필수
@@ -75,4 +74,5 @@ export const JSON_INSTRUCTION = `
 마크다운 코드블럭(\`\`\`json)으로 감싸지 마세요.
 JSON 객체만 출력하세요.
 
+**필드 순서**: 반드시 "markdown" 필드를 가장 먼저 작성하세요. 스트리밍을 위해 필수입니다.
 모든 필드는 필수입니다. 배열 필드(risks, counterpoints, questions 등)는 내용이 없더라도 빈 배열 []을 반드시 포함하세요.`;

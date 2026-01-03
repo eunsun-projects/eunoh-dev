@@ -157,7 +157,7 @@ export const fourplayComponents = {
 		<a className="text-neutral-200" {...props} />
 	),
 	h1: ({ ...props }: MarkdownProps) => (
-		<h1 className="text-neutral-200" {...props} />
+		<h1 className="text-lg text-neutral-200" {...props} />
 	),
 	h2: ({ ...props }: MarkdownProps) => (
 		<h2 className="text-neutral-200 text-sm" {...props} />
