@@ -144,7 +144,7 @@ function TimeCapsuleUI() {
 				{isOpen.isLogInOpen &&
 					!methods.formState.errors.password?.message &&
 					!user && (
-						<div className="-translate-y-1/2 pointer-events-auto absolute top-1/2 right-1/2 translate-x-1/2 rounded-md border border-neutral-700 bg-neutral-800/50 p-2 text-neutral-200 hover:bg-neutral-800/70 active:bg-neutral-800/90">
+						<div className="pointer-events-auto absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 rounded-md border border-neutral-700 bg-neutral-800/50 p-2 text-neutral-200 hover:bg-neutral-800/70 active:bg-neutral-800/90">
 							<button
 								type="button"
 								onClick={() =>

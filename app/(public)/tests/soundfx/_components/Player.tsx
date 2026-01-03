@@ -302,7 +302,6 @@ export default function Player({
 							{musicUrlArr.map((item, i) => (
 								// biome-ignore lint/a11y/useKeyWithClickEvents: for handleListClick
 								<p
-									// biome-ignore lint/suspicious/noArrayIndexKey: for i
 									key={i}
 									data-num={i}
 									style={{ color: select === i ? "#000" : "#fff" }}

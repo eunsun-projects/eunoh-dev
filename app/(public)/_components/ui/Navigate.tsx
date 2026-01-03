@@ -15,8 +15,8 @@ const Navigate: React.FC<NavigateProps> = ({ mode, onClick, className }) => {
 			className={cn(
 				"absolute z-40 flex h-6 w-6 items-center justify-center text-black hover:text-primary-color-400",
 				mode === "before"
-					? "-left-[15px] -translate-y-[50%] top-[60%]"
-					: "-right-[15px] -translate-y-[50%] top-[60%]",
+					? "top-[60%] -left-[15px] -translate-y-[50%]"
+					: "top-[60%] -right-[15px] -translate-y-[50%]",
 				className,
 			)}
 		>

@@ -56,7 +56,6 @@ export default function Firework({ position }: FireworkProps) {
 			{sparks.length > 0 &&
 				sparks.map((spark, index) => (
 					<mesh
-						// biome-ignore lint/suspicious/noArrayIndexKey: for index
 						key={index}
 						position={position}
 						ref={(mesh) => {

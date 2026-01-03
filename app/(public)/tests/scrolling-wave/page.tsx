@@ -65,7 +65,6 @@ function ScrollingWavePage() {
 					{leftVarWidths.length > 0 &&
 						leftVarWidths.map((width, i) => (
 							<motion.div
-								// biome-ignore lint/suspicious/noArrayIndexKey: for i
 								key={i}
 								className="h-[1vh] bg-slate-300"
 								style={{
@@ -78,7 +77,6 @@ function ScrollingWavePage() {
 					{rightVarWidths.length > 0 &&
 						rightVarWidths.map((width, i) => (
 							<motion.div
-								// biome-ignore lint/suspicious/noArrayIndexKey: for i
 								key={i}
 								className="h-[1vh] bg-slate-300"
 								style={{
