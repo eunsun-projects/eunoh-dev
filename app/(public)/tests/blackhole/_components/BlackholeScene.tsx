@@ -161,11 +161,7 @@ function DistantStars() {
 	return (
 		<group ref={starsRef}>
 			{stars.map((star, i) => (
-				<mesh
-					// biome-ignore lint/suspicious/noArrayIndexKey: star is unique
-					key={i}
-					position={star.position as [number, number, number]}
-				>
+				<mesh key={i} position={star.position as [number, number, number]}>
 					<sphereGeometry args={[star.size, 16, 16]} />
 					<meshBasicMaterial
 						color={star.color}

@@ -4,7 +4,7 @@ import {
 	editTimeCapsule,
 	getTimeCapsules,
 	postTimeCapsule,
-} from "@/apis/tests/api.tests";
+} from "@/apis/apis-tests";
 import { QUERY_KEY_TIME_CAPSULES } from "@/constants/query.constants";
 import type { TimeCapsule, TimeCapsuleFromSupabase } from "@/types/tests.type";
 

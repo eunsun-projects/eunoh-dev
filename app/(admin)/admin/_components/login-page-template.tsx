@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
-import { getLogInWithProvider } from "@/apis/auth/client";
+import { getLogInWithProvider } from "@/apis/apis-auth-client";
 import type { AuthContextType } from "@/contexts/auth.context";
 import { useUserQuery } from "@/hooks/queries/auth";
 import GoogleLoginButton from "./google-login-button";

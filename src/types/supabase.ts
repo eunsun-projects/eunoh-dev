@@ -10,10 +10,102 @@ export type Database = {
 	// Allows to automatically instantiate createClient with right options
 	// instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
 	__InternalSupabase: {
-		PostgrestVersion: "12.2.3 (519615d)";
+		PostgrestVersion: "13.0.5";
 	};
 	public: {
 		Tables: {
+			fourplay_threads: {
+				Row: {
+					created_at: string;
+					final_decision: Json | null;
+					id: string;
+					status: string;
+					title: string | null;
+					updated_at: string;
+					user_id: string | null;
+				};
+				Insert: {
+					created_at?: string;
+					final_decision?: Json | null;
+					id?: string;
+					status?: string;
+					title?: string | null;
+					updated_at?: string;
+					user_id?: string | null;
+				};
+				Update: {
+					created_at?: string;
+					final_decision?: Json | null;
+					id?: string;
+					status?: string;
+					title?: string | null;
+					updated_at?: string;
+					user_id?: string | null;
+				};
+				Relationships: [];
+			};
+			fourplay_turns: {
+				Row: {
+					created_at: string;
+					id: string;
+					kind: string | null;
+					latency_ms: number | null;
+					model: string | null;
+					next_model: string | null;
+					next_model_reason: string | null;
+					payload: Json | null;
+					payload_raw: Json | null;
+					raw_text: string | null;
+					role: string;
+					selected_by: string | null;
+					thread_id: string;
+					token_usage: Json | null;
+					turn_index: number;
+				};
+				Insert: {
+					created_at?: string;
+					id?: string;
+					kind?: string | null;
+					latency_ms?: number | null;
+					model?: string | null;
+					next_model?: string | null;
+					next_model_reason?: string | null;
+					payload?: Json | null;
+					payload_raw?: Json | null;
+					raw_text?: string | null;
+					role: string;
+					selected_by?: string | null;
+					thread_id: string;
+					token_usage?: Json | null;
+					turn_index: number;
+				};
+				Update: {
+					created_at?: string;
+					id?: string;
+					kind?: string | null;
+					latency_ms?: number | null;
+					model?: string | null;
+					next_model?: string | null;
+					next_model_reason?: string | null;
+					payload?: Json | null;
+					payload_raw?: Json | null;
+					raw_text?: string | null;
+					role?: string;
+					selected_by?: string | null;
+					thread_id?: string;
+					token_usage?: Json | null;
+					turn_index?: number;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "fourplay_turns_thread_id_fkey";
+						columns: ["thread_id"];
+						isOneToOne: false;
+						referencedRelation: "fourplay_threads";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			posts: {
 				Row: {
 					category: string | null;

@@ -10,7 +10,7 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { deleteLogOut, getLogInWithProvider } from "@/apis/auth/client";
+import { deleteLogOut, getLogInWithProvider } from "@/apis/apis-auth-client";
 import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { useUserQuery } from "@/hooks/queries/auth";
 import type { User } from "@/types/user.types";
@@ -34,18 +34,21 @@ export const AuthContext = createContext<AuthContextType>(initialValue);
 export function AuthProvider({ children }: PropsWithChildren) {
 	const pathname = usePathname();
 	const [isPending, setIsPending] = useState<boolean>(false);
-	const isAdminPage = useMemo(
-		() => pathname.startsWith("/admin/authed"),
-		[pathname],
-	);
 
 	const isQueryEnabled = useMemo(() => {
+		const isAdminPage = pathname.startsWith("/admin/authed");
 		const isUsageCalculatorPage = pathname.startsWith(
 			"/tests/usage-calculator",
 		);
 		const isTimeCapsulePage = pathname.startsWith("/tests/timecapsule");
-		return isAdminPage || isUsageCalculatorPage || isTimeCapsulePage;
-	}, [pathname, isAdminPage]);
+		const isFourPlayPage = pathname.startsWith("/fourplay");
+		return (
+			isAdminPage ||
+			isUsageCalculatorPage ||
+			isTimeCapsulePage ||
+			isFourPlayPage
+		);
+	}, [pathname]);
 
 	const {
 		data: user,
@@ -61,7 +64,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
 	const loginWithProvider: AuthContextType["loginWithProvider"] = useCallback(
 		async (provider: string, next = "/admin/authed") => {
-			// console.log("loginWithProvider", provider);
 			try {
 				const data = await getLogInWithProvider(provider, next);
 
@@ -94,15 +96,20 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	useEffect(() => {
 		if (isUserPending) {
 			setIsPending(true);
+		} else {
+			setIsPending(false);
 		}
 	}, [isUserPending]);
 
 	useEffect(() => {
 		if (error) console.error(error);
-		if (error?.message === "Cookie not found" && isAdminPage) {
+		if (
+			error?.message === "Cookie not found" &&
+			pathname.startsWith("/admin")
+		) {
 			router.push("/admin");
 		}
-	}, [error, router, isAdminPage]);
+	}, [error, router, pathname]);
 
 	useEffect(() => {
 		if (!isQueryEnabled) return;

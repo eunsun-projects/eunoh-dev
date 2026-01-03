@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postPost } from "@/apis/posts";
+import { postPost } from "@/apis/apis-posts";
 import { QUERY_KEY_POSTS } from "@/constants/query.constants";
 import type { PartialPost } from "@/types/post.types";
 

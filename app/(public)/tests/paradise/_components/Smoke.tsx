@@ -36,7 +36,7 @@ export default function Smoke() {
 
 	return (
 		<div ref={canvasBoxRef} className={styles.smokecanvasbox}>
-				<canvas className={styles.smokecanvas} ref={canvasRef} />
-			</div>
+			<canvas className={styles.smokecanvas} ref={canvasRef} />
+		</div>
 	);
 }

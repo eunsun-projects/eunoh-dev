@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postProject } from "@/apis/projects/post.project";
+import { postProject } from "@/apis/apis-projects";
 import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
 
 export function useProjectMutation() {

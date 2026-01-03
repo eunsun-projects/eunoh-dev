@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postSajuImageTest } from "@/apis/tests/api.tests";
+import { postSajuImageTest } from "@/apis/apis-tests";
 import type { SajuImageTestResponse } from "@/types/tests.type";
 
 export function useSajuImageMutation() {

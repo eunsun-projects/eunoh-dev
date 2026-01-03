@@ -128,8 +128,6 @@ export default function ModernMoveTemplate() {
 		}
 	}, [setAudio]);
 
-	console.log("canvas 1 render");
-
 	return (
 		<>
 			<audio

@@ -5,15 +5,16 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
-import { postUserServer } from "@/apis/auth/server/post.user";
-import { getPosts } from "@/apis/posts";
-import { getProjects } from "@/apis/projects";
+import { postUserServer } from "@/apis/apis-auth-server";
+import { getPosts } from "@/apis/apis-posts";
+import { getProjects } from "@/apis/apis-projects";
 import {
 	QUERY_KEY_POSTS,
 	QUERY_KEY_PROJECTS,
 	QUERY_KEY_USER,
 } from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
+import type { User } from "@/types/user.types";
 import AdminHeader from "./_components/AdminHeader";
 
 async function AdminLayout({ children }: PropsWithChildren) {
@@ -33,8 +34,10 @@ async function AdminLayout({ children }: PropsWithChildren) {
 		queryFn: () => getPosts(),
 	});
 
-	const user = await queryClient.getQueryData([QUERY_KEY_USER]);
-	if (!user) return redirect("/admin");
+	const user: User | undefined = await queryClient.getQueryData([
+		QUERY_KEY_USER,
+	]);
+	if (!user || !user.isAdmin) return redirect("/admin");
 
 	const dehydratedState = dehydrate(queryClient);
 

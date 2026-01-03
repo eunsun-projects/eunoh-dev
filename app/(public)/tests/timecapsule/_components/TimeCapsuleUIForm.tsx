@@ -109,7 +109,7 @@ function TimeCapsuleUIForm({ isOpen, setIsOpen }: TimeCapsuleUIFormProps) {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="-translate-y-1/2 pointer-events-auto absolute top-1/2 right-1/2 flex translate-x-1/2 flex-col gap-2 rounded-md border border-neutral-700 bg-neutral-800/50 p-2 text-neutral-200 hover:bg-neutral-800/70 active:bg-neutral-800/90"
+			className="pointer-events-auto absolute top-1/2 right-1/2 flex translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-md border border-neutral-700 bg-neutral-800/50 p-2 text-neutral-200 hover:bg-neutral-800/70 active:bg-neutral-800/90"
 		>
 			<div className="flex justify-end">
 				<IoClose className="cursor-pointer" onClick={handleClose} />

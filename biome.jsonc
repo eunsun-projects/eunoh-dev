@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
 	"files": {
 		"includes": [
 			"**",
@@ -110,7 +110,8 @@
 				"noDuplicateElseIf": "error", // 0b, 0o 같은 최신 숫자 리터럴 표기법 사용 권장
 				"noHeadImportInDocument": "warn", // Next.js: _document.js에서 next/head import 금지
 				"noIrregularWhitespace": "error", // 불규칙한 공백 문자 금지
-				"noExplicitAny": "off" // 'any' 타입의 명시적 사용 금지
+				"noExplicitAny": "off", // 'any' 타입의 명시적 사용 금지
+				"noArrayIndexKey": "off"
 			},
 			"security": {
 				"noBlankTarget": "error", // target=\"_blank\" 사용 시 rel=\"noopener noreferrer\" 강제 (보안)

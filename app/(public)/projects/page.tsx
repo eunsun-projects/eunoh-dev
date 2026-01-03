@@ -3,19 +3,17 @@ import {
 	HydrationBoundary,
 	QueryClient,
 } from "@tanstack/react-query";
-import { getProjects } from "@/apis/projects";
-import { QUERY_KEY_PROJECTS } from "@/constants/query.constants";
+import { prefetchProjects } from "@/lib/prefetch";
+import { createStaticClient } from "@/utils/supabase/static";
 import ProjectsListTemplate from "./_components/ProjectsListTemplate";
 
 export const dynamic = "force-static";
 
 async function ProjectsPage() {
 	const queryClient = new QueryClient();
+	const supabase = createStaticClient();
 
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_PROJECTS],
-		queryFn: () => getProjects(),
-	});
+	await prefetchProjects(supabase, queryClient);
 
 	const dehydratedState = dehydrate(queryClient);
 

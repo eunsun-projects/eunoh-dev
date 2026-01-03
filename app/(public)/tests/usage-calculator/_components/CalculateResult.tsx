@@ -58,23 +58,6 @@ function CalculateResult() {
 			};
 		}
 
-		// 기타 형식 (promptTokens, completionTokens)
-		if (
-			"promptTokens" in usage &&
-			"completionTokens" in usage &&
-			typeof usage.promptTokens === "number" &&
-			typeof usage.completionTokens === "number"
-		) {
-			const input = base.input_txt_base.basePrice * usage.promptTokens;
-			const output = base.output_txt_base.basePrice * usage.completionTokens;
-			const total = input + output;
-			return {
-				inputPrice: Math.floor(input * 100000) / 100000,
-				outputPrice: Math.floor(output * 100000) / 100000,
-				totalPrice: Math.floor(total * 100000) / 100000,
-			};
-		}
-
 		return price;
 	}, [usage, base]);
 

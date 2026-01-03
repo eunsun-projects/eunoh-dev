@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPost } from "@/apis/post";
+import { getPost } from "@/apis/apis-posts";
 import { QUERY_KEY_POSTS } from "@/constants/query.constants";
 
 interface UsePostQueryProps {

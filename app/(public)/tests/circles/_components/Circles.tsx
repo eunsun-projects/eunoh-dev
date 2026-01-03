@@ -380,45 +380,45 @@ export default function Circles({ ready, audio }: CirclesProps) {
 
 	return (
 		<div
-				style={{
-					position: "absolute",
-					height: "calc(var(--vh, 1vh) * 100)",
-					width: "100vw",
-					margin: "0px",
-					opacity: ready ? "1" : "0",
+			style={{
+				position: "absolute",
+				height: "calc(var(--vh, 1vh) * 100)",
+				width: "100vw",
+				margin: "0px",
+				opacity: ready ? "1" : "0",
+			}}
+		>
+			<div style={{ width: "100%", height: "100%", position: "absolute" }}>
+				<div
+					ref={joysticRef}
+					style={{
+						width: "100px",
+						height: "100px",
+						position: "absolute",
+						right: "3%",
+						bottom: "3%",
+					}}
+				/>
+			</div>
+
+			<Canvas
+				ref={canvasRef}
+				linear
+				dpr={[2, 4]}
+				onCreated={({ gl, camera, scene }) => {
+					// gl.setClearColor(new THREE.Color('#1d1052'))
+					if (gl && camera && scene) {
+						setCanvasReady(true);
+					}
 				}}
 			>
-				<div style={{ width: "100%", height: "100%", position: "absolute" }}>
-					<div
-						ref={joysticRef}
-						style={{
-							width: "100px",
-							height: "100px",
-							position: "absolute",
-							right: "3%",
-							bottom: "3%",
-						}}
-					/>
-				</div>
+				<color attach="background" args={["#a293c9"]} />
+				<fog args={[0xffffff, 10, 300]} attach="fog" />
 
-				<Canvas
-					ref={canvasRef}
-					linear
-					dpr={[2, 4]}
-					onCreated={({ gl, camera, scene }) => {
-						// gl.setClearColor(new THREE.Color('#1d1052'))
-						if (gl && camera && scene) {
-							setCanvasReady(true);
-						}
-					}}
-				>
-					<color attach="background" args={["#a293c9"]} />
-					<fog args={[0xffffff, 10, 300]} attach="fog" />
+				{ready && <CircleScene audio={audio} joysticRef={joysticRef} />}
 
-					{ready && <CircleScene audio={audio} joysticRef={joysticRef} />}
-
-					{canvasReady && <ManualComposer />}
-				</Canvas>
-			</div>
+				{canvasReady && <ManualComposer />}
+			</Canvas>
+		</div>
 	);
 }
