@@ -104,7 +104,6 @@ function ScrollingWavePage() {
 				</h1>
 			</motion.div>
 			{new Array(PAGE_COUNT).fill(null).map((_, index) => (
-				// biome-ignore lint/suspicious/noArrayIndexKey: for index
 				<div className="h-dvh w-dvw bg-gray-700" key={index} />
 			))}
 		</>
