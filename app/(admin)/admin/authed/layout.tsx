@@ -5,34 +5,18 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
-import { postUserServer } from "@/apis/apis-auth-server";
-import { getPosts } from "@/apis/apis-posts";
-import { getProjects } from "@/apis/apis-projects";
-import {
-	QUERY_KEY_POSTS,
-	QUERY_KEY_PROJECTS,
-	QUERY_KEY_USER,
-} from "@/constants/query.constants";
+import { QUERY_KEY_USER } from "@/constants/query.constants";
 import { AuthProvider } from "@/contexts/auth.context";
+import { prefetchAll } from "@/lib/prefetch";
 import type { User } from "@/types/user.types";
+import { createClient } from "@/utils/supabase/server";
 import AdminHeader from "./_components/AdminHeader";
 
 async function AdminLayout({ children }: PropsWithChildren) {
 	const queryClient = new QueryClient();
+	const supabase = await createClient();
 
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_USER],
-		queryFn: () => postUserServer(),
-	});
-
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_PROJECTS],
-		queryFn: () => getProjects(),
-	});
-	await queryClient.prefetchQuery({
-		queryKey: [QUERY_KEY_POSTS],
-		queryFn: () => getPosts(),
-	});
+	await prefetchAll(supabase, queryClient);
 
 	const user: User | undefined = await queryClient.getQueryData([
 		QUERY_KEY_USER,
