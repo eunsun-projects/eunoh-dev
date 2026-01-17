@@ -47,3 +47,14 @@ export async function prefetchTimeCapsules(
 		queryFn: () => getTimeCapsules(supabase),
 	});
 }
+
+export async function prefetchAll(
+	supabase: SupabaseClient,
+	queryClient: QueryClient,
+) {
+	await Promise.all([
+		prefetchUser(supabase, queryClient),
+		prefetchProjects(supabase, queryClient),
+		prefetchPosts(supabase, queryClient),
+	]);
+}
