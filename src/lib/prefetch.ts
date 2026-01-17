@@ -52,7 +52,9 @@ export async function prefetchAll(
 	supabase: SupabaseClient,
 	queryClient: QueryClient,
 ) {
-	await prefetchUser(supabase, queryClient);
-	await prefetchProjects(supabase, queryClient);
-	await prefetchPosts(supabase, queryClient);
+	await Promise.all([
+		prefetchUser(supabase, queryClient),
+		prefetchProjects(supabase, queryClient),
+		prefetchPosts(supabase, queryClient),
+	]);
 }
