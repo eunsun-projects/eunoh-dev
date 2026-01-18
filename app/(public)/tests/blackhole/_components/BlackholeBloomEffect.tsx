@@ -23,9 +23,9 @@ function BlackholeBloomEffect() {
 		// 블랙홀에 특화된 UnrealBloomPass 설정
 		const bloomPass = new UnrealBloomPass(
 			new THREE.Vector2(size.width, size.height), // 해상도
-			2.2, // Bloom 강도 (블랙홀의 강렬한 빛을 위해 높게)
-			1.1, // Bloom 반경 (넓은 범위로 확산)
-			0.05, // Bloom 임계값 (낮게 설정하여 더 많은 빛이 블룸됨)
+			2, // Bloom 강도 (블랙홀의 강렬한 빛을 위해 높게)
+			1, // Bloom 반경 (넓은 범위로 확산)
+			0.56, // Bloom 임계값 (낮게 설정하여 더 많은 빛이 블룸됨)
 		);
 		composerRef.current.addPass(bloomPass);
 
