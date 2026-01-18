@@ -29,9 +29,8 @@ function PublicPostTemplate({ post }: PublicPostTemplateProps) {
 				</div>
 				<Back isDarkLightModeButton />
 			</div>
-			<div>
+			<div className={styles.markdown}>
 				<ReactMarkdown
-					className={styles.markdown}
 					rehypePlugins={[rehypeHighlight]}
 					remarkPlugins={[remarkGfm]}
 				>
