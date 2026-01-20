@@ -75,14 +75,15 @@ function SolarTemplate() {
 				console.log("simulator initialized");
 				simulatorRef.current = simulator;
 				setIsLoading(false);
-				window.addEventListener("resize", () => {
-					simulator.updateSimulationSize();
-				});
 			}
 		});
 
+		const handleResize = () => {
+			simulatorRef.current?.updateSimulationSize();
+		};
+		window.addEventListener("resize", handleResize);
 		return () => {
-			window.removeEventListener("resize", () => null);
+			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
 
