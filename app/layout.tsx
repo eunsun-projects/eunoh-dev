@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import QueryProvider from "@/providers/QueryProvider";
-import { d2coding } from "./fonts";
+import { d2coding } from "../src/fonts/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {

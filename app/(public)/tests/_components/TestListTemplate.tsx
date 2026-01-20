@@ -100,6 +100,12 @@ const testLists = [
 		description: "원샷 프롬프트 - 블랙홀",
 		href: "/tests/blackhole",
 	},
+	{
+		id: 17,
+		title: "solar",
+		description: "원샷 프롬프트 - 태양계",
+		href: "/tests/solar",
+	},
 ];
 
 function TestListTemplate() {
