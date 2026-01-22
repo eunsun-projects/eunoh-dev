@@ -1,6 +1,6 @@
 "use client";
 
-import { Earth, Loader, Pause, Play } from "lucide-react";
+import { Earth, FastForward, Loader, Play } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaGithub } from "react-icons/fa";
@@ -26,8 +26,9 @@ import {
 
 function SolarTemplate() {
 	const [isLoading, setIsLoading] = useState(true);
-	const [isPlaying, setIsPlaying] = useState(true);
+	const [isFastForward, setIsFastForward] = useState(false);
 	const canvasDivRef = useRef<HTMLDivElement | null>(null);
+	const labelRootRef = useRef<HTMLDivElement | null>(null);
 	const simulatorRef = useRef<Simulator | null>(null);
 	const objectsRef = useRef<SolarSystemMap | null>(null);
 	const initialTargetRef = useRef<SolarSysObj | null>(null);
@@ -35,9 +36,17 @@ function SolarTemplate() {
 
 	useEffect(() => {
 		if (!canvasDivRef.current) return;
+		const labelRoot = document.createElement("div");
+		labelRoot.className = "solar-label-root";
+		document.body.appendChild(labelRoot);
+		labelRootRef.current = labelRoot;
+
 		const initializeSimulator = async (container: HTMLElement) => {
 			try {
-				const simulator = new Simulator({ container });
+				const simulator = new Simulator({
+					container,
+					labelRoot: labelRootRef.current ?? container,
+				});
 
 				const textures = await loadTextures("/solar/data/textures.json");
 				const { objects, maxYear } = await loadObjectsData(
@@ -61,6 +70,7 @@ function SolarTemplate() {
 					initialLookFromRef.current = lookFrom.clone();
 				}
 				simulator.setLabelsVisibility(objects, true);
+				simulator.setSimulationSpeed(1);
 				simulator.startSimulation(new Date());
 
 				objectsRef.current = objects;
@@ -84,17 +94,17 @@ function SolarTemplate() {
 		window.addEventListener("resize", handleResize);
 		return () => {
 			window.removeEventListener("resize", handleResize);
+			labelRootRef.current?.remove();
+			labelRootRef.current = null;
 		};
 	}, []);
 
-	const handlePlayPause = () => {
+	const handleSpeedToggle = () => {
 		if (!simulatorRef.current) return;
-		if (isPlaying) {
-			simulatorRef.current.stopSimulation();
-		} else {
-			simulatorRef.current.startSimulation();
-		}
-		setIsPlaying(!isPlaying);
+		const nextFastForward = !isFastForward;
+		const speed = nextFastForward ? 604_800 : 1; // 1주 / 초
+		simulatorRef.current.setSimulationSpeed(speed);
+		setIsFastForward(nextFastForward);
 	};
 
 	const handleSelectPlanet = (planet: SolarSysObj) => {
@@ -125,6 +135,7 @@ function SolarTemplate() {
 			from = new Vector3(0, 0, dist);
 		}
 		simulatorRef.current.lookAt(planet, from);
+		simulatorRef.current.setFollowTarget(true);
 	};
 
 	const handleResetToOriginal = () => {
@@ -152,13 +163,16 @@ function SolarTemplate() {
 			{!isLoading && <SolarInitialDialog />}
 			<div className="fixed inset-0 z-[1000] h-svh w-svw overflow-hidden bg-black">
 				<div className="absolute top-1 right-1/2 z-[1001] flex translate-x-1/2 gap-2">
-					{isPlaying ? (
-						<Pause
+					{isFastForward ? (
+						<Play
 							className="size-6 cursor-pointer"
-							onClick={handlePlayPause}
+							onClick={handleSpeedToggle}
 						/>
 					) : (
-						<Play className="size-6 cursor-pointer" onClick={handlePlayPause} />
+						<FastForward
+							className="size-6 cursor-pointer"
+							onClick={handleSpeedToggle}
+						/>
 					)}
 					<SolarDialog
 						objects={objectsRef.current}
@@ -167,7 +181,7 @@ function SolarTemplate() {
 					/>
 				</div>
 				<Back className="absolute top-4 right-4 z-[1001]" />
-				<div ref={canvasDivRef} />
+				<div ref={canvasDivRef} className="absolute inset-0" />
 			</div>
 		</>
 	);
@@ -256,9 +270,10 @@ function SolarInitialDialog() {
 						가 원본입니다.
 					</p>
 					<p>
-						원샷은 아니고... 꽤나
+						원샷은 아니고...
+						<br />꽤 여러번 시도했습니다.
 						<br />
-						프롬프팅이 필요했습니다.
+						빨리감기 안해도 움직이고 있습니다..
 					</p>
 				</div>
 			</DialogContent>
