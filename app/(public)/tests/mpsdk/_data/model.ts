@@ -21,7 +21,7 @@ export const model = [
 		inputs: {
 			url: "/assets/mpsdk/01_TheDawnofChristianity.glb",
 		},
-		position: [2, 0, -1],
+		position: [4, 0, -1],
 		rotation: [0, 0, 0],
 		scale: [0.3, 0.3, 0.3],
 		shadowScale: {

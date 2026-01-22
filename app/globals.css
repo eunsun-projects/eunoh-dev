@@ -101,6 +101,28 @@
   .text-stroke-green {
     -webkit-text-stroke: 0.5px rgb(0, 255, 0);
   }
+
+  .object-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.9);
+    transform-origin: top left;
+  }
+
+  .solar-label-root {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+  }
 }
 
 @keyframes opacity-animate {

@@ -61,6 +61,10 @@ export class Simulator {
 	private labelsVisible = false;
 	private followTarget = true;
 	private lookingFrom = false;
+	private lastTargetPosition = new Vector3();
+	private hasLastTargetPosition = false;
+	private followTargetPosition = new Vector3();
+	private followDelta = new Vector3();
 
 	private currentDateTime: Date = new Date();
 	private simulating = false;
@@ -119,6 +123,8 @@ export class Simulator {
 
 		this.currentDateTime = new Date();
 
+		this.setObjectsScale(solarSystem, DEFAULT_SIZE_SCALE);
+
 		for (const obj of Object.values(solarSystem)) {
 			this.universe.add(obj);
 			if (obj instanceof OrbitingObj) {
@@ -140,8 +146,6 @@ export class Simulator {
 		this.controls.enablePan = false;
 		this.controls.autoRotate = false;
 		this.controls.maxDistance = maxDistance;
-
-		this.setObjectsScale(solarSystem, DEFAULT_SIZE_SCALE);
 		this.setLabelsVisibility(solarSystem, false);
 
 		if (this.targetObj) {
@@ -184,11 +188,11 @@ export class Simulator {
 			this.clock.start();
 		}
 
+		this.controls.update();
+
 		if (this.labelsVisible) {
 			this.updateLabels();
 		}
-
-		this.controls.update();
 		this.renderer.render(this.universe, this.camera);
 		requestAnimationFrame(() => this.render());
 	}
@@ -284,6 +288,29 @@ export class Simulator {
 
 		if (this.lookingFrom) {
 			this.updateCameraPosition();
+		} else if (this.followTarget) {
+			this.updateFollowTarget();
+		}
+	}
+
+	private updateFollowTarget() {
+		if (!this.targetObj) {
+			this.hasLastTargetPosition = false;
+			return;
+		}
+		const targetPosition =
+			this.targetObj.getWorldPosition(this.followTargetPosition);
+		if (!this.hasLastTargetPosition) {
+			this.lastTargetPosition.copy(targetPosition);
+			this.controls.target.copy(targetPosition);
+			this.hasLastTargetPosition = true;
+			return;
+		}
+		this.followDelta.subVectors(targetPosition, this.lastTargetPosition);
+		if (this.followDelta.lengthSq() > 0) {
+			this.camera.position.add(this.followDelta);
+			this.controls.target.add(this.followDelta);
+			this.lastTargetPosition.copy(targetPosition);
 		}
 	}
 
@@ -391,8 +418,9 @@ export class Simulator {
 	}
 
 	updateSimulationSize() {
-		const width = window.innerWidth || 0;
-		const height = window.innerHeight || 0;
+		const rect = this.labelRoot.getBoundingClientRect();
+		const width = rect.width || window.innerWidth || 0;
+		const height = rect.height || window.innerHeight || 0;
 		this.camera.aspect = width / height;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(width, height);
@@ -417,6 +445,8 @@ export class Simulator {
 		const targetPosition = object.getWorldPosition(new Vector3());
 		this.camera.lookAt(targetPosition);
 		this.controls.target.copy(targetPosition);
+		this.lastTargetPosition.copy(targetPosition);
+		this.hasLastTargetPosition = true;
 		this.controls.minDistance =
 			object.radius * object.getScale() * (multiplier ?? 2);
 		this.updateCameraPosition(from ?? null);
@@ -542,8 +572,15 @@ export class Simulator {
 
 	setFollowTarget(follow: boolean) {
 		this.followTarget = follow;
-		if (this.targetObj && !(this.targetObj instanceof Star)) {
-			this.lookAt(this.targetObj);
+		if (!follow) {
+			this.hasLastTargetPosition = false;
+			return;
+		}
+		if (this.targetObj) {
+			this.targetObj.getWorldPosition(this.followTargetPosition);
+			this.lastTargetPosition.copy(this.followTargetPosition);
+			this.controls.target.copy(this.followTargetPosition);
+			this.hasLastTargetPosition = true;
 		}
 	}
 
