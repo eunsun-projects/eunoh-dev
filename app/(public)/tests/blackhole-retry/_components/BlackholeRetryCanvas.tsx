@@ -12,6 +12,8 @@ struct Uniforms {
   mass: f32,
   intensity: f32,
   temperature: f32,
+  maxSteps: f32,
+  fbmOctaves: f32,
   camPos: vec3f,
   camTarget: vec3f,
 };
@@ -53,10 +55,14 @@ fn noise(p: vec2f) -> f32 {
 }
 
 fn fbm(p: vec2f) -> f32 {
+  let octaves = i32(u.fbmOctaves);
   var value: f32 = 0.0;
   var amplitude: f32 = 0.5;
   var st = p;
   for (var i = 0; i < 5; i++) {
+    if (i >= octaves) {
+      break;
+    }
     value += amplitude * noise(st);
     st *= 2.0;
     amplitude *= 0.5;
@@ -89,7 +95,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
   var glow = 0.0;
 
   let dt = 0.05;
-  let maxSteps = 300;
+  let maxSteps = i32(u.maxSteps);
 
   let innerRadius = 2.0 * u.mass;
   let diskInner = 2.6 * u.mass;
@@ -97,7 +103,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
   var hitHorizon = false;
 
-  for (var i = 0; i < maxSteps; i++) {
+  for (var i = 0; i < 300; i++) {
+    if (i >= maxSteps) {
+      break;
+    }
     let distSq = dot(pos, pos);
     let dist = sqrt(distSq);
 
@@ -261,6 +270,15 @@ function BlackholeRetryCanvas({ params }: Props) {
 			}
 		};
 
+		const isProbablyMobile =
+			window.matchMedia("(pointer: coarse)").matches ||
+			Math.min(window.innerWidth, window.innerHeight) < 768;
+
+		// Keep resolution (DPR) for mobile, but reduce shader detail.
+		const quality = isProbablyMobile
+			? { maxSteps: 140, fbmOctaves: 3, fpsCap: 30 }
+			: { maxSteps: 300, fbmOctaves: 5, fpsCap: 0 };
+
 		const run = async () => {
 			if (!navigator.gpu) {
 				setStatus({
@@ -327,12 +345,27 @@ function BlackholeRetryCanvas({ params }: Props) {
 
 				if (!destroyed) setStatus({ kind: "ready" });
 
-				const render = () => {
+				let lastRenderMs: number | null = null;
+
+				const render = (nowMs: number) => {
 					if (destroyed) return;
+
+					if (quality.fpsCap > 0 && lastRenderMs != null) {
+						const minDeltaMs = 1000 / quality.fpsCap;
+						if (nowMs - lastRenderMs < minDeltaMs) {
+							rafRef.current = requestAnimationFrame(render);
+							return;
+						}
+					}
+
+					const deltaMs = lastRenderMs == null ? 16.67 : nowMs - lastRenderMs;
+					lastRenderMs = nowMs;
+
 					applyCanvasSize();
 
 					const p = paramsRef.current;
-					state.time += 0.01 * p.speed;
+					// Keep animation speed consistent even when capped to 30fps.
+					state.time += (deltaMs / 1000) * 0.6 * p.speed;
 
 					const width = canvas.width;
 					const height = canvas.height;
@@ -350,8 +383,8 @@ function BlackholeRetryCanvas({ params }: Props) {
 
 					uniformValues[4] = p.intensity;
 					uniformValues[5] = p.temperature;
-					uniformValues[6] = 0;
-					uniformValues[7] = 0;
+					uniformValues[6] = quality.maxSteps;
+					uniformValues[7] = quality.fbmOctaves;
 
 					uniformValues[8] = camX;
 					uniformValues[9] = camY;
