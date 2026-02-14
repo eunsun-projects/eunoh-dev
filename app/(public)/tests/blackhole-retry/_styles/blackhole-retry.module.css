@@ -15,20 +15,19 @@
 	color: var(--text-color);
 	font-family: "Noto Sans KR", sans-serif;
 	overflow: hidden;
+	z-index: 1001;
 }
 
 /* Header / Branding */
 .header {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
-	padding: 1.5rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	z-index: 100;
-	pointer-events: none; /* click-through to canvas */
+	z-index: 9999;
 }
 
 .brand {
@@ -95,14 +94,66 @@
 	transition: opacity 0.3s ease;
 }
 
+.controlsCollapsed {
+	padding-bottom: 1rem;
+}
+
+.controlsToggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: inherit;
+}
+
 .controlsTitle {
 	font-family: "Orbitron", sans-serif;
 	font-size: 1.1rem;
-	margin: 0 0 1rem;
+	margin: 0;
 	color: var(--primary-color);
 	display: flex;
 	align-items: center;
 	gap: 10px;
+}
+
+.controlsChevron {
+	color: var(--primary-color);
+	transition: transform 0.3s ease;
+	flex-shrink: 0;
+}
+
+.controlsChevronCollapsed {
+	transform: rotate(180deg);
+}
+
+.controlsBody {
+	display: grid;
+	grid-template-rows: 1fr;
+	transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+	overflow: hidden;
+	opacity: 1;
+	padding-top: 1rem;
+}
+.hidden {
+	visibility: hidden;	
+	height: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: visibility 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+}
+
+.controlsCollapsed .controlsBody {
+	grid-template-rows: 0fr;
+	opacity: 0;
+	padding-top: 0;
+}
+
+.controlsBody > * {
+	min-height: 0;
 }
 
 .controlGroup {
@@ -214,10 +265,10 @@
 		left: 1rem;
 		bottom: 1rem;
 		width: min(320px, calc(100vw - 2rem));
+		padding: 0.5rem;
 	}
 
 	.instructions {
-		right: 1rem;
-		bottom: 1rem;
+		visibility: hidden;
 	}
 }
