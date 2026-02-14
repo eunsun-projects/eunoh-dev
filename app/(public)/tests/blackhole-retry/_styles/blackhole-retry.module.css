@@ -1,0 +1,263 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+KR:wght@300;500;700&display=swap");
+
+:root {
+	--primary-color: #00d2ff;
+	--secondary-color: #ff0055;
+	--bg-color: #050505;
+	--panel-bg: rgba(20, 20, 30, 0.75);
+	--text-color: #ffffff;
+}
+
+.root {
+	position: fixed;
+	inset: 0;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	font-family: "Noto Sans KR", sans-serif;
+	overflow: hidden;
+	z-index: 1001;
+}
+
+/* Header / Branding */
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 9999;
+}
+
+.brand {
+	font-family: "Orbitron", sans-serif;
+	font-weight: 700;
+	font-size: 1.5rem;
+	letter-spacing: 2px;
+	text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+	pointer-events: auto;
+}
+
+.brandAccent {
+	color: var(--primary-color);
+	font-size: 0.8em;
+}
+
+.sourceLink {
+	font-family: "Orbitron", sans-serif;
+	font-size: 0.9rem;
+	color: var(--text-color);
+	text-decoration: none;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	padding: 8px 16px;
+	border-radius: 20px;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(5px);
+	transition: all 0.3s ease;
+	pointer-events: auto;
+}
+
+.sourceLink:hover {
+	background: var(--primary-color);
+	color: #000;
+	box-shadow: 0 0 15px var(--primary-color);
+	border-color: var(--primary-color);
+}
+
+/* Canvas */
+.canvasWrap {
+	position: absolute;
+	inset: 0;
+}
+
+.canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* UI Overlay */
+.controls {
+	position: absolute;
+	bottom: 2rem;
+	left: 2rem;
+	width: 300px;
+	background: var(--panel-bg);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	padding: 1.5rem;
+	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+	z-index: 100;
+	transition: opacity 0.3s ease, padding-bottom 0.3s ease;
+}
+
+.controlsToggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: inherit;
+}
+
+.controlsTitle {
+	font-family: "Orbitron", sans-serif;
+	font-size: 1.1rem;
+	margin: 0;
+	color: var(--primary-color);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.controlsChevron {
+	color: var(--primary-color);
+	transition: transform 0.3s ease;
+	flex-shrink: 0;
+}
+
+.controlsChevronCollapsed {
+	transform: rotate(180deg);
+}
+
+.controlsBody {
+	display: grid;
+	grid-template-rows: 1fr;
+	transition: grid-template-rows 0.3s ease, opacity 0.3s ease, padding-top 0.3s ease;
+	overflow: hidden;
+	opacity: 1;
+	padding-top: 1rem;
+}
+
+.controlsBodyInner {
+	min-height: 0;
+}
+
+.controlsCollapsed .controlsBody {
+	grid-template-rows: 0fr;
+	opacity: 0;
+	padding-top: 0;
+}
+
+.controlGroup {
+	margin-bottom: 1rem;
+}
+
+.controlLabel {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.85rem;
+	margin-bottom: 0.5rem;
+	color: #ccc;
+}
+
+.controlValue {
+	color: #fff;
+}
+
+.controls input[type="range"] {
+	width: 100%;
+	-webkit-appearance: none;
+	background: transparent;
+	height: 6px;
+	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.1);
+	outline: none;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: var(--primary-color);
+	cursor: pointer;
+	box-shadow: 0 0 10px var(--primary-color);
+	margin-top: -5px;
+	transition: transform 0.1s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb:hover {
+	transform: scale(1.2);
+}
+
+.controls input[type="range"]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 6px;
+	cursor: pointer;
+}
+
+.status {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 200;
+	background: rgba(0, 0, 0, 0.9);
+	padding: 2rem;
+	border-radius: 10px;
+	border: 1px solid var(--secondary-color);
+	display: block;
+	max-width: min(520px, calc(100vw - 40px));
+}
+
+.statusError {
+	color: var(--secondary-color);
+}
+
+.status h3 {
+	margin: 0 0 1rem;
+	font-family: "Orbitron", sans-serif;
+}
+
+/* Loading Spinner */
+.loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50px;
+	height: 50px;
+	border: 3px solid rgba(255, 255, 255, 0.1);
+	border-radius: 50%;
+	border-top-color: var(--primary-color);
+	animation: spin 1s ease-in-out infinite;
+	z-index: 150;
+}
+
+@keyframes spin {
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+.instructions {
+	position: absolute;
+	bottom: 2rem;
+	right: 2rem;
+	text-align: right;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.5);
+	pointer-events: none;
+	z-index: 100;
+}
+
+@media (max-width: 640px) {
+	.controls {
+		left: 1rem;
+		bottom: 1rem;
+		width: min(320px, calc(100vw - 2rem));
+		padding: 0.5rem;
+	}
+
+	.instructions {
+		visibility: hidden;
+	}
+}

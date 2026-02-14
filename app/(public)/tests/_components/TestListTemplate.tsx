@@ -106,6 +106,12 @@ const testLists = [
 		description: "원샷 프롬프트 - 태양계",
 		href: "/tests/solar",
 	},
+	{
+		id: 18,
+		title: "blackhole-retry",
+		description: "WebGPU + WGSL - 블랙홀(재도전)",
+		href: "/tests/blackhole-retry",
+	},
 ];
 
 function TestListTemplate() {
