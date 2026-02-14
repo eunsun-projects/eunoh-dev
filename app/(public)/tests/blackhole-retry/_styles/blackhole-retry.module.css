@@ -91,11 +91,7 @@
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 	z-index: 100;
-	transition: opacity 0.3s ease;
-}
-
-.controlsCollapsed {
-	padding-bottom: 1rem;
+	transition: opacity 0.3s ease, padding-bottom 0.3s ease;
 }
 
 .controlsToggle {
@@ -133,27 +129,20 @@
 .controlsBody {
 	display: grid;
 	grid-template-rows: 1fr;
-	transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+	transition: grid-template-rows 0.3s ease, opacity 0.3s ease, padding-top 0.3s ease;
 	overflow: hidden;
 	opacity: 1;
 	padding-top: 1rem;
 }
-.hidden {
-	visibility: hidden;	
-	height: 0;
-	overflow: hidden;
-	opacity: 0;
-	transition: visibility 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+
+.controlsBodyInner {
+	min-height: 0;
 }
 
 .controlsCollapsed .controlsBody {
 	grid-template-rows: 0fr;
 	opacity: 0;
 	padding-top: 0;
-}
-
-.controlsBody > * {
-	min-height: 0;
 }
 
 .controlGroup {

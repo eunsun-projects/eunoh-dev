@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { SiHuggingface } from "react-icons/si";
 import { Back } from "@/app/(public)/_components/ui";
 import { useIsMobileState } from "@/hooks/use-mobile";
@@ -28,25 +28,17 @@ function BlackholeRetryTemplate() {
 	const [params, setParams] = useState<BlackholeParams | null>(null);
 
 	useEffect(() => {
-		if (isMobile === undefined) return;
-		if (params) return;
-		setParams(isMobile ? defaultParamsMobile : defaultParams);
-	}, [isMobile, params]);
-
-	const headerLink = useMemo(
-		() => ({
-			href: "https://huggingface.co/spaces/idgmatrix/anycoder-37d1a261",
-			label: "Source (anycoder)",
-		}),
-		[],
-	);
+		if (isMobile !== undefined) {
+			setParams((p) => p ?? (isMobile ? defaultParamsMobile : defaultParams));
+		}
+	}, [isMobile]);
 
 	return (
 		<div className={styles.root}>
 			<header className={styles.header}>
 				<div className="absolute top-4 right-4 z-[1001] flex items-center gap-2">
 					<Link
-						href={headerLink.href}
+						href="https://huggingface.co/spaces/idgmatrix/anycoder-37d1a261"
 						target="_blank"
 						className="flex items-center gap-2 text-white"
 					>

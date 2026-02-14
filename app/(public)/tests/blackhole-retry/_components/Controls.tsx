@@ -55,85 +55,87 @@ function Controls({ value, onChange }: Props) {
 				</svg>
 			</button>
 
-			<div
-				className={`${styles.controlsBody} ${collapsed ? styles.hidden : ""}`}
-			>
-				<div className={styles.controlGroup}>
-					<label className={styles.controlLabel} htmlFor="mass">
-						<span>블랙홀 질량 (Mass)</span>
-						<span className={styles.controlValue}>{value.mass.toFixed(1)}</span>
-					</label>
-					<input
-						id="mass"
-						type="range"
-						min={0.1}
-						max={3.0}
-						step={0.1}
-						value={value.mass}
-						onChange={(e) =>
-							onChange({ ...value, mass: Number(e.target.value) })
-						}
-					/>
-				</div>
+			<div className={styles.controlsBody}>
+				<div className={styles.controlsBodyInner}>
+					<div className={styles.controlGroup}>
+						<label className={styles.controlLabel} htmlFor="mass">
+							<span>블랙홀 질량 (Mass)</span>
+							<span className={styles.controlValue}>
+								{value.mass.toFixed(1)}
+							</span>
+						</label>
+						<input
+							id="mass"
+							type="range"
+							min={0.1}
+							max={3.0}
+							step={0.1}
+							value={value.mass}
+							onChange={(e) =>
+								onChange({ ...value, mass: Number(e.target.value) })
+							}
+						/>
+					</div>
 
-				<div className={styles.controlGroup}>
-					<label className={styles.controlLabel} htmlFor="intensity">
-						<span>원반 밝기 (Intensity)</span>
-						<span className={styles.controlValue}>
-							{value.intensity.toFixed(1)}
-						</span>
-					</label>
-					<input
-						id="intensity"
-						type="range"
-						min={0.1}
-						max={5.0}
-						step={0.1}
-						value={value.intensity}
-						onChange={(e) =>
-							onChange({ ...value, intensity: Number(e.target.value) })
-						}
-					/>
-				</div>
+					<div className={styles.controlGroup}>
+						<label className={styles.controlLabel} htmlFor="intensity">
+							<span>원반 밝기 (Intensity)</span>
+							<span className={styles.controlValue}>
+								{value.intensity.toFixed(1)}
+							</span>
+						</label>
+						<input
+							id="intensity"
+							type="range"
+							min={0.1}
+							max={5.0}
+							step={0.1}
+							value={value.intensity}
+							onChange={(e) =>
+								onChange({ ...value, intensity: Number(e.target.value) })
+							}
+						/>
+					</div>
 
-				<div className={styles.controlGroup}>
-					<label className={styles.controlLabel} htmlFor="temperature">
-						<span>가스 온도 (Temperature)</span>
-						<span className={styles.controlValue}>
-							{value.temperature.toFixed(2)}
-						</span>
-					</label>
-					<input
-						id="temperature"
-						type="range"
-						min={0.0}
-						max={1.0}
-						step={0.01}
-						value={value.temperature}
-						onChange={(e) =>
-							onChange({ ...value, temperature: Number(e.target.value) })
-						}
-					/>
-				</div>
+					<div className={styles.controlGroup}>
+						<label className={styles.controlLabel} htmlFor="temperature">
+							<span>가스 온도 (Temperature)</span>
+							<span className={styles.controlValue}>
+								{value.temperature.toFixed(2)}
+							</span>
+						</label>
+						<input
+							id="temperature"
+							type="range"
+							min={0.0}
+							max={1.0}
+							step={0.01}
+							value={value.temperature}
+							onChange={(e) =>
+								onChange({ ...value, temperature: Number(e.target.value) })
+							}
+						/>
+					</div>
 
-				<div className={styles.controlGroup}>
-					<label className={styles.controlLabel} htmlFor="speed">
-						<span>시뮬레이션 속도 (Speed)</span>
-						<span className={styles.controlValue}>
-							{value.speed.toFixed(1)}
-						</span>
-					</label>
-					<input
-						id="speed"
-						type="range"
-						min={0.0}
-						max={5.0}
-						step={0.1}
-						value={value.speed}
-						onChange={(e) =>
-							onChange({ ...value, speed: Number(e.target.value) })
-						}
-					/>
+					<div className={styles.controlGroup}>
+						<label className={styles.controlLabel} htmlFor="speed">
+							<span>시뮬레이션 속도 (Speed)</span>
+							<span className={styles.controlValue}>
+								{value.speed.toFixed(1)}
+							</span>
+						</label>
+						<input
+							id="speed"
+							type="range"
+							min={0.0}
+							max={5.0}
+							step={0.1}
+							value={value.speed}
+							onChange={(e) =>
+								onChange({ ...value, speed: Number(e.target.value) })
+							}
+						/>
+					</div>
 				</div>
 			</div>
 		</section>
