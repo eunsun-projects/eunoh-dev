@@ -94,7 +94,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
   var color = vec3f(0.0);
   var glow = 0.0;
 
-  let dt = 0.05;
+  // Slightly larger step helps when running fewer steps on mobile.
+  let dt = mix(0.07, 0.05, smoothstep(180.0, 260.0, u.maxSteps));
   let maxSteps = i32(u.maxSteps);
 
   let innerRadius = 2.0 * u.mass;
@@ -128,7 +129,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
     let prevPos = pos;
     pos += rd * dt;
 
-    if (prevPos.y * pos.y < 0.0 || abs(pos.y) < 0.1) {
+    // Thicker plane intersection improves disk visibility under lower step counts.
+    if (prevPos.y * pos.y < 0.0 || abs(pos.y) < 0.18) {
       let midPoint = (prevPos + pos) * 0.5;
       let r = length(midPoint.xz);
 
@@ -275,8 +277,9 @@ function BlackholeRetryCanvas({ params }: Props) {
 			Math.min(window.innerWidth, window.innerHeight) < 768;
 
 		// Keep resolution (DPR) for mobile, but reduce shader detail.
+		// NOTE: Too-low maxSteps can cause the horizon/disk to be under-sampled on some mobiles.
 		const quality = isProbablyMobile
-			? { maxSteps: 140, fbmOctaves: 3, fpsCap: 30 }
+			? { maxSteps: 200, fbmOctaves: 3, fpsCap: 30 }
 			: { maxSteps: 300, fbmOctaves: 5, fpsCap: 0 };
 
 		const run = async () => {
