@@ -12,7 +12,7 @@ export default function AmaeChildLayout({ children }: PropsWithChildren) {
 	return (
 		<>
 			<section className="absolute top-0 left-0 z-50 flex min-h-svh w-svw flex-col items-center justify-start bg-gradient-to-b from-purple-100 to-blue-200">
-				<Back className="absolute top-1 right-1" iconClassName="text-white" />
+				<Back className="absolute top-1 right-1" iconClassName="text-black" />
 				{children}
 			</section>
 			<Script
