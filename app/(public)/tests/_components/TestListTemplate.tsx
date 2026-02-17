@@ -68,7 +68,7 @@ const testLists = [
 		id: 11,
 		title: "애매한이날",
 		description: "어린이날 선물 받아도 될까?",
-		href: "https://iffygiftyday.vercel.app/",
+		href: "/tests/amaechild",
 	},
 	{
 		id: 12,

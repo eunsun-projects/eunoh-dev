@@ -10,7 +10,8 @@
 			"!**/.vscode",
 			"!**/public",
 			"!**/components/ui",
-			"!**/packages/**/*"
+			"!**/packages/**/*",
+			"!**/app/globals.css"
 		]
 	},
 	"vcs": {

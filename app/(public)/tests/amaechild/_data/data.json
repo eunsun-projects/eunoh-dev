@@ -1,0 +1,106 @@
+[
+	{
+		"brand": "LG전자",
+		"name": "스탠바이미 Go",
+		"age_group": "0-20",
+		"description": "휴대성과 다양한 콘텐츠 활용을 중시하는 사용자에게 적합한 포터블 스크린입니다. 특히 0-20세 연령대의 사용자에게 추천할 수 있는 학습, 엔터테인먼트, 게임 등 다양한 용도로 활용할 수 있는 제품입니다.",
+		"product_link": "https://www.lge.co.kr/stan-by-me/27lx5qkna",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/0-20_standbyme-go.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "그램 43.1cm",
+		"age_group": "0-20",
+		"description": "17인치 대화면과 초경량 설계를 결합한 프리미엄 노트북입니다. 약 1.35kg의 가벼운 무게로 휴대성이 뛰어나며, 고성능 인텔 프로세서와 NVMe SSD를 탑재하여 학업, 콘텐츠 제작, 멀티태스킹 등 다양한 용도에 적합합니다",
+		"product_link": "https://www.lge.co.kr/notebook/17z90s-ga5pk",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/0-20_gram.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "스탠바이미 2",
+		"age_group": "0-20",
+		"description": "27인치 FHD 터치 디스플레이를 탑재한 무선 이동형 스크린으로, 자유로운 각도 조절과 회전이 가능하여 다양한 공간에서 활용할 수 있습니다.",
+		"product_link": "https://www.lge.co.kr/stan-by-me/27lx6tpga",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/0-20_standbyme2.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "스타일러 오브제컬렉션",
+		"age_group": "21-40",
+		"description": "의류를 위생적으로 관리하면서도 공간의 품격을 높여주는 프리미엄 의류관리기입니다. 트루스팀 기술을 활용하여 의류 속 유해 세균과 바이러스를 99.99% 제거하며, 고압 스팀으로 생활 주름을 빠르게 펴줍니다. 또한, 5벌의 옷과 바지 1벌을 동시에 관리할 수 있는 대용량 수납 공간을 제공합니다.",
+		"product_link": "https://www.lge.co.kr/lg-styler/sc5gmr80a",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/21-40_styler.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "코드제로 무선청소기",
+		"age_group": "21-40",
+		"description": "최대 320W의 강력한 흡입력과 스팀 물걸레 기능으로 바닥의 찌든 때까지 깨끗하게 청소합니다. 자동 물 공급 시스템과 가벼운 무게로 효율적이고 편리한 청소를 제공합니다.",
+		"product_link": "https://www.lge.co.kr/vacuum-cleaners/ai958wa",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/21-40_codezero.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "오브제컬렉션 광파오븐",
+		"age_group": "21-40",
+		"description": "트리플 광파쿡과 스팀 분사 기능을 통해 균일하고 타지 않는 조리를 실현하며, 영양소 손실을 최소화한 해동 및 에어수비드 기능을 제공합니다",
+		"product_link": "https://www.lge.co.kr/microwaves-and-ovens/mlj32ers",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/21-40_oven.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "오브제컬렉션 2in1 에어컨",
+		"age_group": "41-60",
+		"description": "세련된 디자인과 강력한 냉방 성능을 갖춘 제품입니다. 스탠드형과 벽걸이형 실내기가 함께 제공되어 다양한 공간에 효율적으로 냉방을 제공합니다.",
+		"product_link": "https://www.lge.co.kr/air-conditioners/fq18fc2ea2",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/41-60_objet-aircon.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "트롬 세탁기+건조기 세트",
+		"age_group": "41-60",
+		"description": "대용량 세탁기(24kg)와 건조기(20kg)를 수직으로 쌓아 설치할 수 있는 스태킹키트가 포함된 제품입니다. AI 기반의 세탁 및 건조 기능을 통해 의류의 종류와 오염도를 자동으로 감지하여 최적의 세탁 및 건조 코스를 제공합니다.",
+		"product_link": "https://www.lge.co.kr/washing-machines/fx24ene-gng",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/41-60_objet-trom.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "오브제컬렉션 전자레인지",
+		"age_group": "41-60",
+		"description": "20L 용량의 슬림형 전자레인지로, 세련된 크리스탈 베이지 컬러와 강화유리 소재의 전면 디자인이 특징입니다. 5단계 출력 조절 기능을 통해 다양한 요리를 섬세하게 조리할 수 있으며, 이지클린 코팅으로 내부 청소가 용이합니다. 또한, 절전 기능과 잊음 방지 알림 기능이 탑재되어 있어 사용 편의성을 높였습니다.",
+		"product_link": "https://www.lge.co.kr/microwaves-and-ovens/mwj20edn",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/41-60_range.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "퓨리케어 공기청정기",
+		"age_group": "61-",
+		"description": "100㎡의 넓은 공간을 커버하며, 360도 전방위 흡입과 상단 회전형 클린부스터를 통해 실내 공기를 빠르게 정화합니다. PM1.0 센서와 6단계 필터 시스템으로 초미세먼지와 유해가스를 효과적으로 제거하며, LG ThinQ 앱을 통해 원격 제어와 실시간 공기질 모니터링이 가능합니다.",
+		"product_link": "https://www.lge.co.kr/air-purifier/as305dwwl",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/61_air.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "힐링미 안마의자",
+		"age_group": "61-",
+		"description": "손 마사지처럼 섬세한 핸드모션 입체 안마 기능을 제공하여, 전신의 피로를 효과적으로 풀어주는 프리미엄 안마의자입니다. 한국인 표준 체형에 맞춰 설계되어 편안한 착석감을 제공하며, 무중력 모드와 온열 기능, 간편 조작 버튼 등을 통해 사용자 편의를 극대화했습니다.",
+		"product_link": "https://www.lge.co.kr/massage-chairs/mx91wr",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/61_massage-chair.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "오브제컬렉션 안마의자",
+		"age_group": "61-",
+		"description": "세련된 곡선형 디자인과 오브제컬렉션 컬러로 인테리어에 조화를 이루며, 손 마사지처럼 섬세한 핸드모션 입체 안마 기능을 제공합니다. 편안한 안마를 위한 릴렉스 편의기능도 탑재되어 있어, 고급스러운 휴식을 원하는 사용자에게 적합한 제품입니다.",
+		"product_link": "https://www.lge.co.kr/massage-chairs/mh21bb",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/61_objet-chair.avif"
+	},
+	{
+		"brand": "LG전자",
+		"name": "LG QNED TV",
+		"age_group": "기타",
+		"description": "대형 화면을 자랑하는 4K UHD 해상도의 스마트 TV로, 퀀텀닷과 나노셀 기술을 결합하여 생생하고 정교한 색감을 제공합니다. 20W 출력의 2.0채널 스피커를 탑재하여 몰입감 있는 사운드를 구현하며, 벽걸이형 디자인으로 공간 활용도를 높였습니다.",
+		"product_link": "https://www.lge.co.kr/tvs/86qned70tea-wall",
+		"product_img": "https://urtfszkmtgmcqrnchihz.supabase.co/storage/v1/object/public/images/lg/all_tv.avif"
+	}
+]
