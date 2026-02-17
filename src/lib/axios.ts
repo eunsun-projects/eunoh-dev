@@ -5,14 +5,6 @@ export interface RetryableRequestConfig extends AxiosRequestConfig {
 	shouldRetry?: boolean;
 }
 
-// API 응답 구조 정의
-export interface ApiResponse<T> {
-	data: T;
-	access_token?: string;
-	message?: string;
-	status?: string;
-}
-
 // 에러 응답 구조 정의 (통일된 포맷 + 레거시 포맷 모두 허용)
 export type ApiErrorResponse =
 	| {
@@ -58,24 +50,6 @@ const CLIENT_MESSAGE_BY_STATUS: Record<number, string> = {
 	404: "Resource not found.",
 	409: "Conflict detected.",
 };
-
-const SERVER_MESSAGE_ALLOWLIST = [
-	/^\/api\/checkout/,
-	/^\/api\/purchase\/status/,
-	/^\/api\/pillars-chart/,
-	/^\/api\/pillars-ai\/start/,
-];
-
-function shouldUseServerMessage(url?: string): boolean {
-	if (!url) return false;
-
-	try {
-		const path = new URL(url, "http://localhost").pathname;
-		return SERVER_MESSAGE_ALLOWLIST.some((pattern) => pattern.test(path));
-	} catch {
-		return false;
-	}
-}
 
 function extractServerErrorInfo(data?: ApiErrorResponse): ServerErrorInfo {
 	if (!data || typeof data !== "object") {
@@ -125,8 +99,13 @@ function getClientErrorMessage(status: number, info: ServerErrorInfo): string {
 	return "Request failed. Please try again.";
 }
 
+function shouldUseServerMessage(status: number, info: ServerErrorInfo): boolean {
+	// 4xx는 사용자 액션으로 해결 가능한 경우가 많아 서버 메시지를 우선 노출
+	return status >= 400 && status < 500 && Boolean(info.message);
+}
+
 // 환경별 설정 인터페이스
-export interface ApiConfig {
+interface ApiConfig {
 	apiUrl: string;
 	timeout?: number;
 	retryAttempts?: number;
@@ -134,7 +113,7 @@ export interface ApiConfig {
 }
 
 // 커스텀 에러 클래스
-export class ApiError extends Error {
+class ApiError extends Error {
 	public status: number;
 	public data?: any;
 	public serverMessage?: string;
@@ -159,7 +138,7 @@ export class ApiError extends Error {
 // - 네트워크 오류 처리를 위한 리트라이 로직 내장
 // - 서버/클라이언트 환경별 설정 지원
 // 추상 클래스로서 extends로 상속하여 사용합니다.
-export abstract class BaseAxiosClient {
+abstract class BaseAxiosClient {
 	protected readonly axiosInstance: AxiosInstance;
 	private readonly config: ApiConfig;
 
@@ -208,9 +187,9 @@ export abstract class BaseAxiosClient {
 		const status = response?.status ?? 0;
 		const data = response?.data;
 		const serverErrorInfo = extractServerErrorInfo(data);
-		const allowServerMessage = shouldUseServerMessage(error.config?.url);
 		const message =
-			allowServerMessage && serverErrorInfo.message
+			shouldUseServerMessage(status, serverErrorInfo) &&
+			serverErrorInfo.message
 				? serverErrorInfo.message
 				: getClientErrorMessage(status, serverErrorInfo);
 
