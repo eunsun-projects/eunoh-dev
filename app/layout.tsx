@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import QueryProvider from "@/providers/QueryProvider";
 import { d2coding } from "../src/fonts/fonts";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
 	title: "EunOh's Portfolio",
@@ -21,6 +22,7 @@ export default function RootLayout({
 			>
 				<QueryProvider>{children}</QueryProvider>
 				<Analytics />
+				<Toaster richColors position="top-center" />
 			</body>
 		</html>
 	);
