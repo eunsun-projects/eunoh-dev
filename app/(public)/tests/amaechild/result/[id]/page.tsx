@@ -1,4 +1,4 @@
-import IffyResultTemplate from "../../_components/iffy-result-template";
+import SharedResultTemplate from "../../_components/shared-result-template";
 
 interface EachResultPageProps {
 	params: Promise<{ id: string }>;
@@ -6,7 +6,7 @@ interface EachResultPageProps {
 
 async function IffyResultPage({ params }: EachResultPageProps) {
 	const { id } = await params;
-	return <IffyResultTemplate id={id} />;
+	return <SharedResultTemplate id={id} />;
 }
 
 export default IffyResultPage;

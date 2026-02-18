@@ -45,9 +45,10 @@ export default function UploadModal({ loading, setLoading }: UploadModalProps) {
 
 		try {
 			const response = await startIffy({ formData });
-			if (response.status === "completed") {
+			if (response.id && response.status !== "failed") {
 				router.push(`/tests/amaechild/result?id=${response.id}`);
 			} else {
+				setLoading({ ...loading, open: false });
 				toast.error("생성에 실패했어요. 다시 시도해주세요.");
 			}
 		} catch (error) {
@@ -161,6 +162,7 @@ export default function UploadModal({ loading, setLoading }: UploadModalProps) {
 					) : (
 						<button
 							type="button"
+							disabled={loading.open}
 							className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 border-none bg-transparent p-4 text-center text-gray-400 text-xs"
 							onClick={handleUploadClick}
 						>

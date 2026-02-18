@@ -63,6 +63,26 @@ export async function updateIffyImageCompleted(
 	return data;
 }
 
+export async function updateIffyFailed(
+	supabase: SupabaseClient<Database>,
+	id: string,
+	commentary: string,
+): Promise<void> {
+	const { error } = await supabase
+		.from("iffy")
+		.update({
+			status: "failed",
+			is_error: true,
+			commentary,
+			updated_at: new Date().toISOString(),
+		})
+		.eq("id", id);
+
+	if (error) {
+		throw new Error("실패 상태 업데이트 중 오류가 발생했습니다.");
+	}
+}
+
 export async function getCurrentUserId(
 	supabase: SupabaseClient<Database>,
 ): Promise<string | null> {

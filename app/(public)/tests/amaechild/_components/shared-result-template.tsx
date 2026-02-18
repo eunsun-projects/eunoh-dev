@@ -13,7 +13,7 @@ interface EachResultTemplateProps {
 	id: string;
 }
 
-function IffyResultTemplate({ id }: EachResultTemplateProps) {
+function SharedResultTemplate({ id }: EachResultTemplateProps) {
 	const router = useRouter();
 	const { data: iffy, isLoading } = useIffyQuery({ id });
 
@@ -118,4 +118,4 @@ function IffyResultTemplate({ id }: EachResultTemplateProps) {
 	);
 }
 
-export default IffyResultTemplate;
+export default SharedResultTemplate;

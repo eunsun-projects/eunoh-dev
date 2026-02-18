@@ -13,7 +13,7 @@ export async function analyzeImage(
 ): Promise<ImageAnalysisResult> {
 	try {
 		const { output } = await generateText({
-			model: "openai/gpt-5-nano",
+			model: "google/gemini-2.5-flash",
 			output: Output.object({ schema: ImageAnalysisSchema }),
 			messages: [
 				{

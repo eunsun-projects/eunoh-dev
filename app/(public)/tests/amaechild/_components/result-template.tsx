@@ -1,5 +1,6 @@
 "use client";
 
+import { LoaderPinwheel } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -10,17 +11,12 @@ import useKakao, { useIffyQuery } from "../_hooks/hooks";
 import type { Iffy } from "../_types/types";
 import SparkleStars from "./sparkle-stars";
 
-// 이미지 로딩 상태 타입
-type ImageStatus = "loading" | "loaded" | "error";
-
 function Result() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { handleShareToKakao } = useKakao();
-	const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
-	const imageStatusRef = useRef<ImageStatus>(imageStatus);
-	imageStatusRef.current = imageStatus;
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const prevImageUrlRef = useRef<string | null>(null);
 
 	const id = searchParams.get("id");
 
@@ -35,12 +31,10 @@ function Result() {
 		isLoading,
 		isError,
 		error,
-		refetch,
 	} = useIffyQuery({ id: id as string });
 
-	const handleReturnHome = () => {
-		router.push("/tests/amaechild");
-	};
+	const isProcessing = iffyFinal?.status === "processing";
+	const isCompleted = iffyFinal?.status === "completed";
 
 	useEffect(() => {
 		if (!isLoading && (!id || !iffyFinal)) {
@@ -51,7 +45,6 @@ function Result() {
 
 	useEffect(() => {
 		if (isError) {
-			console.error("Error fetching final result:", error);
 			const errorMessage =
 				(error as Error)?.message || "결과를 불러오는 중 오류가 발생했습니다.";
 			toast.error(errorMessage);
@@ -62,52 +55,11 @@ function Result() {
 		}
 	}, [isError, error, iffyFinal, router]);
 
-	useEffect(() => {
-		const imageUrl = iffyFinal?.gift_image_url;
-
-		if (timeoutRef.current) {
-			clearTimeout(timeoutRef.current);
-			timeoutRef.current = null;
-		}
-
-		if (imageUrl) {
-			setImageStatus("loading");
-			const preloader = new Image();
-
-			const timer = setTimeout(() => {
-				if (imageStatusRef.current === "loading") {
-					console.error(
-						`Image load timed out after 3 seconds for URL: ${imageUrl}`,
-					);
-					setImageStatus("error");
-					refetch();
-				}
-			}, 3000);
-			timeoutRef.current = timer;
-
-			preloader.onload = () => {
-				clearTimeout(timer);
-				timeoutRef.current = null;
-				setImageStatus("loaded");
-			};
-
-			preloader.onerror = (_err) => {
-				clearTimeout(timer);
-				timeoutRef.current = null;
-				setImageStatus("error");
-				refetch();
-			};
-
-			preloader.src = imageUrl;
-
-			return () => {
-				clearTimeout(timer);
-				preloader.onload = null;
-				preloader.onerror = null;
-			};
-		}
-		setImageStatus("error");
-	}, [iffyFinal?.gift_image_url, refetch]);
+	const currentImageUrl = iffyFinal?.gift_image_url ?? null;
+	if (prevImageUrlRef.current !== currentImageUrl) {
+		prevImageUrlRef.current = currentImageUrl;
+		if (imageLoaded) setImageLoaded(false);
+	}
 
 	if (isLoading || !id) {
 		return (
@@ -130,95 +82,93 @@ function Result() {
 	return (
 		<div className="h-auto p-1">
 			<div className="flex flex-col gap-5">
-				<div className="flex flex-row items-center justify-center gap-2 space-y-2 p-1">
+				<div className="flex flex-col items-center justify-center gap-2 space-y-2 p-1 sm:flex-row">
 					<SparkleStars />
-					<h2 className="flex items-center gap-2 whitespace-pre-wrap break-words break-keep font-bold text-2xl text-purple-800 tracking-tight">
-						{iffyFinal?.humor}
-					</h2>
+					<div className="flex flex-col items-center justify-center">
+						<h2 className="flex w-full items-center gap-2 whitespace-pre-wrap break-words break-keep text-center font-bold text-purple-800 text-xl tracking-tight sm:w-1/2">
+							{iffyFinal.humor}
+						</h2>
+					</div>
 				</div>
 
 				<div className="flex flex-col items-center justify-center gap-3">
-					<div className="relative h-[80svw] max-h-[500px] w-[80svw] max-w-[500px] rounded-md bg-gray-200">
-						{imageStatus === "loading" && (
-							<div className="absolute inset-0 flex animate-pulse items-center justify-center text-gray-500">
-								이미지 로딩 중...
+					<div className="relative h-[80svw] max-h-[500px] w-[80svw] max-w-[500px] overflow-hidden rounded-md bg-gray-200">
+						{isProcessing && (
+							<div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+								<LoaderPinwheel className="h-10 w-10 animate-spin text-purple-500" />
+								<p className="animate-pulse font-semibold text-purple-700 text-sm">
+									캐릭터 이미지 생성 중...
+								</p>
 							</div>
 						)}
-						{imageStatus === "loaded" && iffyFinal?.gift_image_url && (
-							<img
-								key={iffyFinal.gift_image_url}
-								src={iffyFinal.gift_image_url}
-								alt="선물 이미지"
-								style={{
-									position: "absolute",
-									width: "100%",
-									height: "100%",
-									objectFit: "cover",
-								}}
-								onError={(e) => {
-									console.error(
-										"Final img tag error (should not happen often):",
-										e,
-									);
-									setImageStatus("error");
-								}}
-							/>
-						)}
-						{imageStatus === "error" && (
-							<div className="absolute inset-0 flex items-center justify-center text-red-500">
-								이미지 표시 불가
-							</div>
+						{isCompleted && iffyFinal.gift_image_url && (
+							<>
+								{!imageLoaded && (
+									<div className="absolute inset-0 flex animate-pulse items-center justify-center text-gray-500">
+										이미지 로딩 중...
+									</div>
+								)}
+								<img
+									key={iffyFinal.gift_image_url}
+									src={iffyFinal.gift_image_url}
+									alt="선물 이미지"
+									className="absolute inset-0 h-full w-full object-cover"
+									onLoad={() => setImageLoaded(true)}
+									onError={() => setImageLoaded(false)}
+								/>
+							</>
 						)}
 					</div>
-					{iffyFinal?.is_person && (
-						<p className="w-full rounded-md bg-white/50 py-2 text-center font-semibold text-blue-500 text-lg">
-							{iffyFinal?.age}세로 추정돼요!
+
+					{iffyFinal.is_person && (
+						<p className="w-full rounded-md bg-white/50 py-2 text-center font-semibold text-blue-500 text-lg sm:w-1/2">
+							{iffyFinal.age}세로 추정돼요!
 						</p>
 					)}
-					<div className="w-full space-y-3 rounded-md bg-white/50 p-5 px-4">
+
+					<div className="w-full space-y-3 rounded-md bg-white/50 p-5 px-4 sm:w-1/2">
 						<div className="flex w-full items-center font-bold text-purple-800 text-xl tracking-tight md:text-2xl">
 							<div className="whitespace-pre-wrap break-words break-keep text-center">
 								<span>
-									{iffyFinal?.brand} {iffyFinal?.gift_name}
+									{iffyFinal.brand} {iffyFinal.gift_name}
 								</span>
 								을 선물해 드릴게요.
 							</div>
 						</div>
 						<p className="font-semibold text-base text-purple-950">
-							{iffyFinal?.commentary}
+							{iffyFinal.commentary}
 						</p>
 					</div>
-				</div>
-
-				<div className="flex flex-col items-center justify-center gap-3">
-					{!iffyFinal?.is_error && (
-						<Button
-							className="flex h-12 w-full cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 font-bold text-lg text-white shadow-lg transition-all duration-1000 hover:from-purple-700 hover:to-blue-600 hover:shadow-xl"
-							onClick={() =>
-								handleShareToKakao({ iffyData: iffyFinal as Iffy })
-							}
-						>
-							공유하기
-							<RiKakaoTalkFill height={24} width={24} className="size-6" />
-						</Button>
-					)}
-
-					<div className="flex w-full gap-2 text-center">
-						{iffyFinal?.link && (
-							<Link
-								target="_blank"
-								className="flex flex-1 items-center justify-center rounded-full bg-purple-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-purple-600 hover:shadow-xl"
-								href={iffyFinal.link}
+					<div className="flex w-full flex-col items-center justify-center gap-3 sm:w-1/2">
+						{!iffyFinal.is_error && isCompleted && (
+							<Button
+								className="flex h-12 w-full cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 font-bold text-lg text-white shadow-lg transition-all duration-1000 hover:from-purple-700 hover:to-blue-600 hover:shadow-xl"
+								onClick={() =>
+									handleShareToKakao({ iffyData: iffyFinal as Iffy })
+								}
 							>
-								직접 사러가기
-							</Link>
+								공유하기
+								<RiKakaoTalkFill height={24} width={24} className="size-6" />
+							</Button>
 						)}
-						<Button
-							className="flex-1 cursor-pointer gap-2 rounded-full bg-purple-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-purple-600 hover:shadow-xl"
-							onClick={handleReturnHome}
-						>
-							다시하기
-						</Button>
+
+						<div className="flex w-full gap-2 text-center">
+							{iffyFinal.link && (
+								<Link
+									target="_blank"
+									className="flex flex-1 items-center justify-center rounded-full bg-purple-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-purple-600 hover:shadow-xl"
+									href={iffyFinal.link}
+								>
+									직접 사러가기
+								</Link>
+							)}
+							<Button
+								className="flex-1 cursor-pointer gap-2 rounded-full bg-purple-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-purple-600 hover:shadow-xl"
+								onClick={() => router.push("/tests/amaechild")}
+							>
+								다시하기
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>

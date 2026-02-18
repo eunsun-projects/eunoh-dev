@@ -1,7 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { getAllIffies, getIffy, postIffy } from "../_apis/apis";
-import { QUERY_KEY_ALL_GIFTS, QUERY_KEY_IFFY } from "../_constants/consts";
+import {
+	POLLING_INTERVAL_MS,
+	QUERY_KEY_ALL_GIFTS,
+	QUERY_KEY_IFFY,
+} from "../_constants/consts";
 import useIffyStore from "../_store/store";
 import type { AllGiftsResponse, Iffy } from "../_types/types";
 
@@ -24,6 +28,11 @@ export const useIffyQuery = ({ id }: { id: string }) => {
 		queryKey: [QUERY_KEY_IFFY, id],
 		queryFn: () => getIffy({ id }),
 		enabled: !!id,
+		refetchInterval: (query) => {
+			const status = query.state.data?.status;
+			if (status === "processing") return POLLING_INTERVAL_MS;
+			return false;
+		},
 	});
 };
 

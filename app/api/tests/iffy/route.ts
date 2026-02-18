@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { type NextRequest, NextResponse } from "next/server";
 import giftJson from "@/app/(public)/tests/amaechild/_data/data.json";
 import type {
@@ -23,6 +24,7 @@ import {
 	getIffyCount,
 	insertIffy,
 	updateIffyImageCompleted,
+	updateIffyFailed,
 } from "./_lib/iffy.repository";
 import {
 	convertToPngBuffer,
@@ -68,21 +70,52 @@ export async function POST(request: NextRequest) {
 
 	const supabase = await createClient();
 
-	// 1단계: 이미지 변환 + AI 분석 + 선물 추천 + 원본 업로드
-	const analysisPhaseResult = await runAnalysisPhase(
-		imageFile,
-		giftData,
-		supabase,
-	);
-	if (analysisPhaseResult instanceof NextResponse) {
-		return analysisPhaseResult;
+	// Phase 1: 이미지 변환 + AI 분석 + 선물 추천 + 원본 업로드 (병렬)
+	const analysisResult = await runAnalysisPhase(imageFile, giftData, supabase);
+	if (analysisResult instanceof NextResponse) {
+		return analysisResult;
 	}
 
-	// 2단계: DB 저장 + 이미지 생성 + 최종 업데이트
-	return runGenerationPhase(analysisPhaseResult, supabase);
+	// Phase 2: DB 저장 → 즉시 응답 → 이미지 생성은 백그라운드
+	const userId = await getCurrentUserId(supabase);
+	const iffyRecord = buildIffyRecord(analysisResult, userId);
+
+	try {
+		await insertIffy(supabase, iffyRecord);
+	} catch {
+		return NextResponse.json(
+			{ error: "데이터베이스 저장 중 오류가 발생했습니다." },
+			{ status: 500 },
+		);
+	}
+
+	if (analysisResult.isError) {
+		return NextResponse.json(iffyRecord);
+	}
+
+	// Phase 3: 이미지 생성을 응답 후 백그라운드에서 실행
+	after(async () => {
+		try {
+			const base64Image = await generateStylizedImage(
+				analysisResult.pngBuffer,
+				analysisResult.stylePrompt,
+			);
+			const stylizedUrl = await uploadStylizedImage(supabase, base64Image);
+			await updateIffyImageCompleted(supabase, analysisResult.id, stylizedUrl);
+		} catch (error) {
+			console.error("백그라운드 이미지 생성 실패:", error);
+			await updateIffyFailed(
+				supabase,
+				analysisResult.id,
+				"이미지 생성에 실패했습니다. 다시 시도해주세요.",
+			).catch((e) => console.error("상태 업데이트 실패:", e));
+		}
+	});
+
+	return NextResponse.json(iffyRecord);
 }
 
-// ─── Phase 1: 분석 및 추천 ──────────────────────────────────────────
+// ─── Phase 1: 분석 및 추천 (병렬 처리) ─────────────────────────────
 
 interface AnalysisPhaseData {
 	id: string;
@@ -104,24 +137,28 @@ async function runAnalysisPhase(
 ): Promise<AnalysisPhaseData | NextResponse> {
 	const { imageBuffer, pngBuffer } = await convertToPngBuffer(imageFile);
 
-	// Step 1: AI 분석 + 선물 추천 (실패 시 전체 폴백)
-	let isPerson = false;
-	let age = 0;
-	let desc = "분석 실패";
-	let gift: GiftResult;
+	// AI 분석과 원본 업로드를 병렬 실행 (서로 독립적)
+	const [analysisSettled, uploadSettled] = await Promise.allSettled([
+		analyzeImage(imageBuffer),
+		uploadOriginalImage(supabase, pngBuffer),
+	]);
 
-	try {
-		const analysis = await analyzeImage(imageBuffer);
-		isPerson = analysis.is_person;
-		desc = analysis.desc;
-		age = analysis.age;
+	// 업로드 결과: 실패해도 폴백 URL 사용
+	const imageUrl =
+		uploadSettled.status === "fulfilled"
+			? uploadSettled.value
+			: FALLBACK_IMAGE_URL;
 
-		gift = isPerson
-			? await resolveGiftForPerson(giftData, desc, age)
-			: selectGiftForNonPerson(giftData);
-	} catch (error) {
+	if (uploadSettled.status === "rejected") {
+		console.error("원본 이미지 업로드 실패, 폴백 URL 사용:", uploadSettled.reason);
+	}
+
+	// 분석 결과: 실패 시 전체 폴백
+	if (analysisSettled.status === "rejected") {
 		const message =
-			error instanceof Error ? error.message : "알 수 없는 오류";
+			analysisSettled.reason instanceof Error
+				? analysisSettled.reason.message
+				: "알 수 없는 오류";
 
 		if (message.includes("AI 최대 사용량을 초과했어요")) {
 			return NextResponse.json({ error: message }, { status: 500 });
@@ -149,16 +186,40 @@ async function runAnalysisPhase(
 		};
 	}
 
-	// Step 2: 원본 이미지 업로드 (실패해도 분석 결과 보존)
-	const stylePrompt = buildStylePrompt(isPerson, age, desc);
-	let imageUrl: string;
+	const { is_person: isPerson, desc, age } = analysisSettled.value;
 
+	// 선물 추천 (분석 결과에 의존)
+	let gift: GiftResult;
 	try {
-		imageUrl = await uploadOriginalImage(supabase, pngBuffer);
+		gift = isPerson
+			? await resolveGiftForPerson(giftData, desc, age)
+			: selectGiftForNonPerson(giftData);
 	} catch (error) {
-		console.error("원본 이미지 업로드 실패, 폴백 URL 사용:", error);
-		imageUrl = FALLBACK_IMAGE_URL;
+		const message =
+			error instanceof Error ? error.message : "알 수 없는 오류";
+		return {
+			id: crypto.randomUUID(),
+			isPerson,
+			age,
+			desc,
+			stylePrompt: "",
+			imageUrl,
+			pngBuffer,
+			gift: {
+				giftName: "🤖",
+				brand: "",
+				giftLink: "",
+				reason: "문제가 발생했어요. 다시 시도해볼까요?",
+				humor: "사진이 너무 귀여워서 AI가 심쿵했어요… 추천은 잠시 쉬어갈게요!",
+				productImgUrl: "",
+				needsAiRecommendation: false,
+			},
+			isError: true,
+			errorReason: `선물 추천 중 오류: ${message}`,
+		};
 	}
+
+	const stylePrompt = buildStylePrompt(isPerson, age, desc);
 
 	return {
 		id: crypto.randomUUID(),
@@ -193,50 +254,7 @@ async function resolveGiftForPerson(
 	);
 }
 
-// ─── Phase 2: DB 저장 및 이미지 생성 ────────────────────────────────
-
-async function runGenerationPhase(
-	data: AnalysisPhaseData,
-	supabase: Awaited<ReturnType<typeof createClient>>,
-): Promise<NextResponse> {
-	const { id } = data;
-
-	try {
-		const userId = await getCurrentUserId(supabase);
-		const iffyRecord = buildIffyRecord(data, userId);
-		await insertIffy(supabase, iffyRecord);
-
-		if (data.isError) {
-			return NextResponse.json(iffyRecord);
-		}
-
-		const base64Image = await generateStylizedImage(
-			data.pngBuffer,
-			data.stylePrompt,
-		);
-		const stylizedImageUrl = await uploadStylizedImage(supabase, base64Image);
-		const updatedIffy = await updateIffyImageCompleted(
-			supabase,
-			id,
-			stylizedImageUrl,
-		);
-
-		return NextResponse.json(updatedIffy);
-	} catch (error) {
-		const message = error instanceof Error ? error.message : "알 수 없는 오류";
-		console.error("최종 처리 중 오류:", message);
-
-		return NextResponse.json(
-			{
-				is_error: true,
-				commentary: `최종 처리 중 오류: ${message}`,
-				status: "failed",
-				updated_at: new Date().toISOString(),
-			} satisfies Partial<Iffy>,
-			{ status: 500 },
-		);
-	}
-}
+// ─── Helpers ─────────────────────────────────────────────────────────
 
 function buildIffyRecord(data: AnalysisPhaseData, userId: string | null): Iffy {
 	const now = new Date().toISOString();
