@@ -81,6 +81,19 @@
     ); /* Text color for dark mode */
     --text-color--low: rgb(186 186 186 / var(--tw-text-opacity, 1));
   }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .gallery-key-arrows:active {
+    box-shadow: 0 0 10px white;
+    transform: translate(0, 2px);
+  }
+  .gallery-key-arrows.pressed {
+    box-shadow: 0 0 10px white;
+    transform: translate(0, 2px);
+  }
 }
 
 @layer utilities {
@@ -134,12 +147,6 @@
   }
 }
 
-@layer base {
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 @keyframes scan {
 	0% {
 		top: 0%;
@@ -148,3 +155,24 @@
 		top: 100%;
 	}
 }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -67,7 +67,7 @@
 						"allowInvalidRoles": ["none", "text"]
 					}
 				},
-				"noStaticElementInteractions": "warn", // 정적 HTML 요소에 이벤트 핸들러 사용 금지 (접근성)
+				"noStaticElementInteractions": "off", // 정적 HTML 요소에 이벤트 핸들러 사용 금지 (접근성)
 				"useSemanticElements": "off", // <div> 대신 시맨틱 HTML 요소 사용 권장
 				"noSvgWithoutTitle": "warn", // 접근성을 위해 <svg>에 <title> 요소 포함 권장
 				"useMediaCaption": "warn", // <video> 또는 <audio> 요소에 캡션 제공 강제

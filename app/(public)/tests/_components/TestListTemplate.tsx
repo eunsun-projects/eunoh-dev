@@ -40,11 +40,18 @@ const testLists = [
 		description: "위치기반 군중 게임 프로토타입",
 		href: "/tests/paradise",
 	},
+	// {
+	// 	id: 7,
+	// 	title: "Matterport SDK",
+	// 	description: "Matterport SDK 테스트",
+	// 	href: "/tests/mpsdk",
+	// },
+
 	{
 		id: 7,
-		title: "Matterport SDK",
-		description: "Matterport SDK 테스트",
-		href: "/tests/mpsdk",
+		title: "Small Gallery",
+		description: "Small Gallery 테스트",
+		href: "/tests/small-gallery",
 	},
 	{
 		id: 8,
