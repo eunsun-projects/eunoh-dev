@@ -119,6 +119,18 @@ const testLists = [
 		description: "WebGPU + WGSL - 블랙홀(재도전)",
 		href: "/tests/blackhole-retry",
 	},
+	{
+		id: 19,
+		title: "src",
+		description: "src(2022 가상 개인전)",
+		href: "/tests/src",
+	},
+	{
+		id: 20,
+		title: "sanctum",
+		description: "sanctum",
+		href: "/tests/sanctum",
+	},
 ];
 
 function TestListTemplate() {

@@ -57,10 +57,12 @@ export interface GalleryPlayer {
 export type GalleryControls = PointerLockControls & { [key: string]: boolean };
 
 /** BoundingBox를 가진 Object3D (충돌용) */
-type Object3DWithBoundingBox = THREE.Object3D & { BoundingBox?: THREE.Box3 };
+export type Object3DWithBoundingBox = THREE.Object3D & {
+	BoundingBox?: THREE.Box3;
+};
 
 /** GLTF 씬 노드에 붙이는 커스텀 필드 */
-type SceneObjectWithMeta = THREE.Object3D & {
+export type SceneObjectWithMeta = THREE.Object3D & {
 	number?: number;
 	scaleFactor?: number;
 	customProperty?: string;

@@ -2,16 +2,15 @@
 
 import { useEffect } from "react";
 import GalleryCanvas from "./gallery-canvas";
-import { GalleryProvider, useGallery } from "./gallery-loading-context";
+import { GalleryProvider } from "./gallery-loading-context";
 import GalleryNavHelpLayout from "./gallery-nav-layout";
 
 interface GalleryTemplateProps {
 	title: string;
+	minCount: number;
 }
 
-function GalleryTemplate({ title }: GalleryTemplateProps) {
-	const { isPaused } = useGallery();
-
+function GalleryTemplate({ title, minCount }: GalleryTemplateProps) {
 	useEffect(() => {
 		/** ============ set screensize =============== */
 		function setScreenSize() {
@@ -47,7 +46,11 @@ function GalleryTemplate({ title }: GalleryTemplateProps) {
 			</div>
 
 			<div className="h-[calc(var(--vh,1vh)*100)] w-svw touch-none overflow-hidden">
-				<GalleryNavHelpLayout href="/tests/gallery" title={title} minCount={1}>
+				<GalleryNavHelpLayout
+					href="/tests/gallery"
+					title={title}
+					minCount={minCount}
+				>
 					<GalleryCanvas title={title} />
 				</GalleryNavHelpLayout>
 			</div>

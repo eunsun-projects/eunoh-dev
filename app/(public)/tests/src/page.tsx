@@ -1,7 +1,7 @@
 import GalleryTemplate from "@/components/gallery/gallery-template";
 
 function page() {
-	return <GalleryTemplate title="small-gallery" minCount={1} />;
+	return <GalleryTemplate title="src" minCount={26} />;
 }
 
 export default page;

@@ -6,6 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import Gallery from "@/lib/gallery/class/gallery.class";
 import Sanctum from "@/lib/gallery/class/sanctum.class";
 import SmallGallery from "@/lib/gallery/class/small-gallery.class";
+import Src from "@/lib/gallery/class/src.class";
 import {
 	galleryLights,
 	galleryTextures,
@@ -20,6 +21,7 @@ import {
 	smallGalleryModels,
 	smallGalleryTextures,
 } from "@/lib/gallery/data/small-gallery.data";
+import { srcLights, srcModels, srcTextures } from "@/lib/gallery/data/src.data";
 import GalleryKeyArrows from "./gallery-key-arrows";
 import { useGallery } from "./gallery-loading-context";
 import useManager from "./hooks/use-manager";
@@ -30,7 +32,9 @@ interface VasCanvasProps {
 
 function GalleryCanvas({ title }: VasCanvasProps) {
 	const isMobile = useIsMobile();
-	const [threeApp, setThreeApp] = useState<Gallery | Sanctum | null>(null);
+	const [threeApp, setThreeApp] = useState<Gallery | Sanctum | Src | null>(
+		null,
+	);
 	const [nipplejs, setNipplejs] = useState<typeof import("nipplejs") | null>(
 		null,
 	);
@@ -44,48 +48,68 @@ function GalleryCanvas({ title }: VasCanvasProps) {
 	const manager = useManager({ isMobile, app: threeApp, nipplejs, options });
 
 	useEffect(() => {
-		let app: Gallery | Sanctum;
+		let app: Gallery | Sanctum | Src;
 		if (!canvasDivRef.current) return;
-		if (title === "sanctum") {
-			app = new Sanctum({
-				canvasdiv: canvasDivRef.current,
-				title,
-				actions: loadingActions,
-				infoActions: infoActions,
-				textures: sanctumTextures,
-				paintings: [],
-				models: sanctumModels,
-				lights: sanctumLights,
-			});
-		} else if (title === "small-gallery") {
-			app = new SmallGallery({
-				canvasdiv: canvasDivRef.current,
-				title,
-				actions: loadingActions,
-				infoActions: infoActions,
-				textures: smallGalleryTextures,
-				paintings: [],
-				lights: smallGalleryLights,
-				models: smallGalleryModels,
-			});
-		} else {
-			app = new Gallery({
-				canvasdiv: canvasDivRef.current,
-				title,
-				actions: loadingActions,
-				infoActions: infoActions,
-				textures: galleryTextures,
-				paintings: [],
-				models: [],
-				lights: galleryLights,
-			});
+		switch (title) {
+			case "sanctum":
+				app = new Sanctum({
+					canvasdiv: canvasDivRef.current,
+					title,
+					actions: loadingActions,
+					infoActions: infoActions,
+					textures: sanctumTextures,
+					paintings: [],
+					models: sanctumModels,
+					lights: sanctumLights,
+				});
+				break;
+			case "small-gallery":
+				app = new SmallGallery({
+					canvasdiv: canvasDivRef.current,
+					title,
+					actions: loadingActions,
+					infoActions: infoActions,
+					textures: smallGalleryTextures,
+					paintings: [],
+					lights: smallGalleryLights,
+					models: smallGalleryModels,
+				});
+				break;
+			case "src":
+				app = new Src({
+					canvasdiv: canvasDivRef.current,
+					title,
+					actions: loadingActions,
+					infoActions: infoActions,
+					textures: srcTextures,
+					paintings: [],
+					models: srcModels,
+					lights: srcLights,
+				});
+				break;
+			default:
+				app = new Gallery({
+					canvasdiv: canvasDivRef.current,
+					title,
+					actions: loadingActions,
+					infoActions: infoActions,
+					textures: galleryTextures,
+					paintings: [],
+					models: [],
+					lights: galleryLights,
+				});
+				break;
 		}
 		setThreeApp(app);
+
 		// 초기화 및 설정 메소드 호출
 		// vasApp.init(); // 초기화는 인스턴스 안에서
 		app.addWorldLight(); // 빛 추가 시작
 		app.addWallFloorCeiling(); // 벽 바닥 천장 추가 시작
 		app.addModelAndLight(); // 모델 및 빛 추가 (있을경우) 시작
+		if (app instanceof Src) {
+			app.addDirectionalLight(); // 방향성 빛 (있을경우) 추가 시작
+		}
 		app.addPaintings(); // 2d 작품 추가 (있을경우) 시작
 		app.addPedestal(); // 좌대 추가 (true 인경우) 시작
 		app.rotate(); // 화면 회전 기능 추가 시작
