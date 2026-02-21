@@ -8,6 +8,8 @@ import type {
 import { PointerLockControls } from "../controls/gallery.controls";
 import type { galleryLights, galleryTextures } from "../data/gallery.data";
 
+export const DISTANCE_THRESHOLD = 10; // Set the distance threshold for displaying the painting information
+
 /** 모델 메타데이터 (sanctum.data 등에서 사용) */
 export interface GalleryModelInfo {
 	title: string;
@@ -68,7 +70,7 @@ interface constructorParams {
 	canvasdiv: HTMLDivElement;
 	title: string;
 	actions: GalleryActions;
-	boolActions: GalleryInfoActions;
+	infoActions: GalleryInfoActions;
 	textures: typeof galleryTextures;
 	paintings: GalleryPaintingItem[];
 	models: GalleryModel[];
@@ -77,7 +79,7 @@ interface constructorParams {
 
 export default class Gallery {
 	actions: GalleryActions;
-	boolActions: GalleryInfoActions;
+	infoActions: GalleryInfoActions;
 	canvasdiv: HTMLDivElement;
 	title: string;
 	running: boolean;
@@ -117,14 +119,14 @@ export default class Gallery {
 		canvasdiv,
 		title,
 		actions,
-		boolActions,
+		infoActions,
 		textures,
 		paintings,
 		models,
 		lights,
 	}: constructorParams) {
 		this.actions = actions;
-		this.boolActions = boolActions;
+		this.infoActions = infoActions;
 		this.canvasdiv = canvasdiv;
 		this.title = title;
 		this.running = true;
@@ -814,7 +816,6 @@ export default class Gallery {
 		this.previousPosition.copy(this._camera.position); // 여기에 한번더 카피 해줘야함
 	}
 	informDisplay() {
-		const distanceThreshold = 17; // Set the distance threshold for displaying the painting information
 		let shouldHide = true;
 
 		if (this.infoArr.length > 0) {
@@ -823,15 +824,15 @@ export default class Gallery {
 				if (!this._camera) return;
 				const distance = this._camera.position.distanceTo(e);
 
-				if (distance < distanceThreshold) {
-					this.boolActions.setTrue(this.infoArr[i].info);
+				if (distance < DISTANCE_THRESHOLD) {
+					this.infoActions.setTrue(this.infoArr[i].info);
 					// displayPaintingInfo(infoArr[i].info);  여기 체크할 것 !!!!!!!!!!!!!!!!
 					shouldHide = false; // If we displayed info, we should not hide
 				}
 			});
 
 			if (shouldHide) {
-				this.boolActions.setFalse({});
+				this.infoActions.setFalse({});
 				// hidePaintingInfo();  여기 체크할 것 !!!!!!!!!!!!!!!!
 			}
 		}

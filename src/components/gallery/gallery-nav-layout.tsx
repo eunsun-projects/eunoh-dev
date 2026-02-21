@@ -30,7 +30,7 @@ function GalleryNavHelpLayout({
 					isPaused ? "blockpointer-events-none touch-none" : "hidden",
 				)}
 			/>
-			<div className="fixed top-0 left-0 z-1006 flex flex-row gap-1 text-white">
+			<div className="fixed top-2 left-2 z-1006 flex flex-row gap-1 text-white">
 				<button
 					type="button"
 					className="flex h-6 w-6 cursor-pointer items-center justify-center border-2 border-white bg-slate-300/40 backdrop-blur-sm"

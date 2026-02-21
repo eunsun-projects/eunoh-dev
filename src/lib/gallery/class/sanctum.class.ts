@@ -13,7 +13,7 @@ interface constructorParams {
 	canvasdiv: HTMLDivElement;
 	title: string;
 	actions: GalleryActions;
-	boolActions: GalleryInfoActions;
+	infoActions: GalleryInfoActions;
 	textures: typeof sanctumTextures;
 	paintings: GalleryPaintingItem[];
 	models: GalleryModel[];
@@ -27,7 +27,7 @@ export default class Sanctum extends Gallery {
 		canvasdiv,
 		title,
 		actions,
-		boolActions,
+		infoActions,
 		textures,
 		paintings,
 		models,
@@ -37,7 +37,7 @@ export default class Sanctum extends Gallery {
 			canvasdiv,
 			title,
 			actions,
-			boolActions,
+			infoActions,
 			textures,
 			paintings,
 			models,

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function SmallGalleryLayout({ children }: PropsWithChildren) {
 	return (
 		<section className="absolute top-0 left-0 z-50 flex min-h-svh w-svw flex-col items-center justify-start">
-			<Back className="absolute top-1 right-1" iconClassName="text-black" />
+			<Back className="absolute top-1 right-1" iconClassName="text-white" />
 			{children}
 		</section>
 	);

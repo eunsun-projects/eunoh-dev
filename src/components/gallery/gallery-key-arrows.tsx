@@ -76,7 +76,7 @@ function GalleryKeyArrows<T extends Gallery>({
 	return (
 		<div
 			className={cn(
-				"fixed right-15 bottom-10 z-1010 m-auto flex h-auto w-auto flex-col flex-wrap items-center justify-center text-center align-content-flex-start",
+				"fixed right-5 bottom-5 z-1010 m-auto flex h-auto w-auto flex-col flex-wrap items-center justify-center text-center align-content-flex-start",
 				mobile && "right-4 bottom-3",
 			)}
 			onMouseDown={handleDown}

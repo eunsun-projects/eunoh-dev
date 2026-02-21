@@ -16,7 +16,7 @@ interface constructorParams {
 	canvasdiv: HTMLDivElement;
 	title: string;
 	actions: GalleryActions;
-	boolActions: GalleryInfoActions;
+	infoActions: GalleryInfoActions;
 	textures: typeof smallGalleryTextures;
 	paintings: GalleryPaintingItem[];
 	lights: typeof smallGalleryLights;
@@ -30,7 +30,7 @@ export default class SmallGallery extends Gallery {
 		canvasdiv,
 		title,
 		actions,
-		boolActions,
+		infoActions,
 		textures,
 		paintings,
 		models,
@@ -40,7 +40,7 @@ export default class SmallGallery extends Gallery {
 			canvasdiv,
 			title,
 			actions,
-			boolActions,
+			infoActions,
 			textures,
 			paintings,
 			models,

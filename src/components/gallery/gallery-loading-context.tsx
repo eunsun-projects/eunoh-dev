@@ -93,14 +93,14 @@ export function GalleryProvider({ children }: { children: React.ReactNode }) {
 			setTrue(info: any) {
 				setIsInfoOpen((prev) => ({
 					...prev,
-					bool: true,
+					open: true,
 					info,
 				}));
 			},
 			setFalse(info: any) {
 				setIsInfoOpen((prev) => ({
 					...prev,
-					bool: false,
+					open: false,
 					info,
 				}));
 			},
