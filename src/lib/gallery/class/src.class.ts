@@ -279,18 +279,9 @@ export default class Src extends Gallery {
 				},
 				(xhr) => {
 					const loadCounter = (xhr.loaded / xhr.total) * 100;
-					if (loadCounter < 100) {
-						if (this.loadingBoxGroup) {
-							this.loadingBoxGroup.add(this.loadingBox(position));
-							if (this._scene && this.loadingBoxGroup) {
-								this._scene.add(this.loadingBoxGroup);
-							}
-						}
-					} else if (loadCounter === 100) {
-						if (this._scene && this.loadingBoxGroup) {
-							this._scene.remove(this.loadingBoxGroup);
-						}
-					}
+					console.log(
+						`${model.userdata.info.title} ${loadCounter.toFixed(2)}% loaded`,
+					);
 				},
 				(error) => {
 					console.error(error);
