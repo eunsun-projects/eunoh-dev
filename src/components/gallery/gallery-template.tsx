@@ -46,11 +46,7 @@ function GalleryTemplate({ title, minCount }: GalleryTemplateProps) {
 			</div>
 
 			<div className="h-[calc(var(--vh,1vh)*100)] w-svw touch-none overflow-hidden">
-				<GalleryNavHelpLayout
-					href="/tests/gallery"
-					title={title}
-					minCount={minCount}
-				>
+				<GalleryNavHelpLayout href="/tests" title={title} minCount={minCount}>
 					<GalleryCanvas title={title} />
 				</GalleryNavHelpLayout>
 			</div>
