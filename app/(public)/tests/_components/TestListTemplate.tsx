@@ -81,7 +81,7 @@ const testLists = [
 		id: 12,
 		title: "memomemo",
 		description: "맥 메모앱 클론 테스트",
-		href: "https://memoapp-study.vercel.app/",
+		href: "/tests/memo",
 	},
 	{
 		id: 13,
