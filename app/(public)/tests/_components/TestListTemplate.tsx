@@ -131,6 +131,12 @@ const testLists = [
 		description: "sanctum",
 		href: "/tests/sanctum",
 	},
+	{
+		id: 21,
+		title: "pokedex",
+		description: "포켓몬 도감",
+		href: "/tests/pokedex",
+	},
 ];
 
 function TestListTemplate() {

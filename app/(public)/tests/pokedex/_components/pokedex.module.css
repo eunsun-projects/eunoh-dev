@@ -1,0 +1,13 @@
+.bg_custom_gradient {
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 219, 112, 0.8) 45%,
+        rgba(132, 50, 255, 0.6) 50%,
+        transparent 54%
+    );
+}
+
+.filter_opacity {
+    filter: opacity(0.6);
+}
