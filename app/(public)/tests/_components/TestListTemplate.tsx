@@ -87,7 +87,7 @@ const testLists = [
 		id: 13,
 		title: "toaster",
 		description: "토스트 잘되나~?",
-		href: "https://toast-study.vercel.app/",
+		href: "/tests/toast",
 	},
 	{
 		id: 14,

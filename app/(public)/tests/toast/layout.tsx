@@ -5,8 +5,8 @@ import { Back } from "@/app/(public)/_components/ui";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-	title: "메모",
-	description: "맥 메모앱 클론 테스트",
+	title: "토스트",
+	description: "토스트 UI 테스트",
 };
 
 const geist = Geist({
@@ -14,7 +14,7 @@ const geist = Geist({
 	display: "swap",
 });
 
-export default function MemoLayout({ children }: PropsWithChildren) {
+export default function ToastLayout({ children }: PropsWithChildren) {
 	return (
 		<section
 			className={cn(
@@ -22,10 +22,7 @@ export default function MemoLayout({ children }: PropsWithChildren) {
 				geist.className,
 			)}
 		>
-			<Back
-				className="absolute top-1 right-1 z-1006"
-				iconClassName="text-black"
-			/>
+			<Back className="absolute top-1 right-1" iconClassName="text-black" />
 			{children}
 		</section>
 	);
