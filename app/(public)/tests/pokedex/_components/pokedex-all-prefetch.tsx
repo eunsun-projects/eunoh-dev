@@ -15,7 +15,7 @@ async function PokedexAllPrefetch() {
 		getNextPageParam: (
 			lastPage: PokemonWithSpecies[],
 			allPages: PokemonWithSpecies[][],
-		) => (lastPage.length === 0 ? null : allPages.length),
+		) => (lastPage.length === 0 ? null : allPages.length + 1),
 		queryFn: ({ pageParam }) => getPokemons(pageParam),
 		pages: 1,
 	});

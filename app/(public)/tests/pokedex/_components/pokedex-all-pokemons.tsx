@@ -15,7 +15,7 @@ function AllPokemons() {
 		hasNextPage,
 	} = useInfiniteQuery({
 		queryKey: ["pokemons"],
-		initialPageParam: 2,
+		initialPageParam: 1,
 		getNextPageParam: (
 			lastPage: PokemonWithSpecies[],
 			allPages: PokemonWithSpecies[][],
