@@ -137,6 +137,12 @@ const testLists = [
 		description: "포켓몬 도감",
 		href: "/tests/pokedex",
 	},
+	{
+		id: 22,
+		title: "animate",
+		description: "Animate",
+		href: "/tests/animate",
+	},
 ];
 
 function TestListTemplate() {

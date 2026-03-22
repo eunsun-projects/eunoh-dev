@@ -136,6 +136,10 @@
     z-index: 1000;
     pointer-events: none;
   }
+  
+  .animate-loader8 {
+    animation: loader8 1s infinite ease-in-out;
+  }
 }
 
 @keyframes opacity-animate {
@@ -176,3 +180,20 @@
   }
 }
 
+/* 8-dot loader animation */
+@keyframes loader8 {
+  0%,
+  20% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+}
